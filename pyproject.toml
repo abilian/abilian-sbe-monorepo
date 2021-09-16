@@ -11,8 +11,10 @@ packages = [
 
 
 [tool.poetry.dependencies]
-# python = "^3.8"
+
+# Fix Python version (temporarily) to please the python-poetry-buildpack
 python = "== 3.9.7"
+# python = "^3.8"
 
 # Flask and friends
 Flask = "^1.0"
