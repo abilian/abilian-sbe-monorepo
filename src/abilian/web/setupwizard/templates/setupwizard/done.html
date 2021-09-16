@@ -1,0 +1,22 @@
+{% extends "setupwizard/_base.html" %}
+
+{% from "macros/box.html" import m_box %}
+{% set cmd = app.name %}
+
+{% block content %}
+  <h1>Success!</h1>
+
+  <p>Configuration file sucessfully written.</p>
+
+  {%- call m_box(title="Location") %}
+    <div class="list-group">
+      <div class="list-group-item">{{ config_file }}</div>
+      <div class="list-group-item">{{ logging_file }}</div>
+    </div>
+  {%- endcall %}
+
+  <p>
+    Now you have to restart the application in order to be able to login with
+    the admin account.
+  </p>
+{% endblock %}

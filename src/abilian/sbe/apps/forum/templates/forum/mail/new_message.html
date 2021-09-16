@@ -1,0 +1,44 @@
+<html>
+<body>
+{%- set thread=post.thread %}
+{%- set community=thread.community %}
+
+{%- if SBE_FORUM_REPLY_BY_MAIL %}
+  <p>{{ MAIL_REPLY_MARKER }}</p>
+{%- endif %}
+
+<p style="color: dimgray;">
+  {{ post.creator }} posted in the
+  <a href="{{ url_for("communities.community", community_id=community.slug, _external=True) }}#thread_{{ post.id }}">{{ community.name }}</a>
+  community.
+</p>
+
+<hr>
+
+<h1 style="font-size: 1.5em;"><a href="{{ url_for(post, _external=True) }}">{{ post.title }}</a></h1>
+
+{{ post.body_html|safe }}
+
+{%- if post.attachments %}
+  <h3>Attachment(s)</h3>
+  <div id="attachments">
+    <ul>
+      {%- for attachment in post.attachments %}
+        <li>
+          <span class="attachment-item">
+          <a href="{{ url_for(attachment, _external=True) }}">{{ attachment.name }}</a>
+          ({{ attachment.content_length|filesize }})
+          </span>
+        </li>
+      {%- endfor %}
+    </ul>
+  </div>
+{%- endif %}
+
+<hr>
+
+<p style="color: dimgray;">
+  You received this message because you are a member of the
+  {{ community.name }} community on the {{ config["SITE_NAME"] }} website.</p>
+</body>
+</html>

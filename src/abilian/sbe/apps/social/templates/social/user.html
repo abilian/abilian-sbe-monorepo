@@ -1,0 +1,70 @@
+{% extends "social/base.html" %}
+
+{% from "macros/box.html" import m_box %}
+{% from "macros/activity.html" import m_activities %}
+
+{% block content %}
+
+  {% call m_box(_("Profile")) %}
+    <img width="140" height="140"
+         src="{{ user_photo_url(user, size=140) }}"
+         class="media-object avatar pull-left" alt=""/>
+
+    <div class="info col-xs-6">
+      <h2 class="title">{{ user.name }}
+        {#
+          {%- if can_edit %}
+            <a class="btn btn-default"
+                href="{{ url_for('.user_edit', user_id=user.id) }}"><i
+                class="fa fa-edit"></i>{{ _("Edit") }}</a>
+          {%- endif %}
+#}
+      </h2>
+
+      {%- if user.email %}
+        <div class="row">
+          <a class="col-xs-10 email" href="mailto:{{ user.email }}"><i
+              class="fa fa-envelope"></i> {{ user.email }}</a>
+        </div>
+      {%- endif %}
+
+      {%- if user.location %}
+        <div class="row">
+          <b class="col-xs-3"><i class="fa fa-map-marker"></i>{{ _("Location:") }}
+          </b><span class="col-xs-8">{{ user.location }}</span>
+        </div>
+      {%- endif %}
+
+    </div>
+  {% endcall %}
+
+  <div class="clearfix"></div>
+
+  {% call m_box(_("Details")) %}
+
+    {%- if view_form.communautes.data %}
+      <h2>{{ _("Communities") }}</h2>
+
+      <p>{{ view_form.communautes.view_widget.render_view(view_form.communautes)|safe }}</p>
+    {%- endif %}
+
+    <h2>{{ _("Stats") }}</h2>
+
+    <p>
+      <b>{{ _("Joined on:") }}</b> {{ user.created_at|date_age }}. </p>
+
+    <p>
+      <b>{{ _("Latest connection:") }}</b>
+      {%- if user.last_active %}
+        {{ user.last_active|date_age }}.
+      {%- else %}
+        {{ _("Never") }}.
+      {%- endif %}
+    </p>
+  {% endcall %}
+
+  {% call m_box(_("Recent activities")) %}
+    {{ m_activities(activity_entries) }}
+  {% endcall %}
+
+{% endblock %}

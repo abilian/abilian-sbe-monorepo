@@ -1,0 +1,1029 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version:  abilian-core\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-02-04 13:12+0100\n"
+"PO-Revision-Date: 2017-12-11 07:38-0500\n"
+"Last-Translator: sf <sf@fermigier.com>\n"
+"Language: nl_NL\n"
+"Language-Team: Dutch\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: abilian/core/extensions/csrf.py:25
+msgid ""
+"Security informations are missing or expired. This may happen if you have"
+" opened the form for a long time. <br /><br />Please try to resubmit the "
+"form."
+msgstr ""
+"Beveiligingsinformatie ontbreekt of is verlopen. Dit kan gebeuren als u "
+"het formulier voor een lange tijd hebt geopend. <br /> <br /> Probeer het"
+" formulier opnieuw in te dienen."
+
+#: abilian/services/auth/service.py:63
+msgid "Logout"
+msgstr "Uitloggen"
+
+#: abilian/services/auth/service.py:75
+msgid "Login"
+msgstr "Aanmelden"
+
+#: abilian/services/auth/views.py:64
+msgid "You must provide your email and password."
+msgstr "U moet uw e-mailadres en wachtwoord opgeven."
+
+#: abilian/services/auth/views.py:74 abilian/services/auth/views.py:167
+msgid "Sorry, we couldn't find an account for email '{email}'."
+msgstr "Sorry, we konden geen account voor e-mail vinden '{email}'."
+
+#: abilian/services/auth/views.py:82
+msgid "Sorry, wrong password."
+msgstr "Sorry, verkeerd wachtwoord."
+
+#: abilian/services/auth/views.py:158
+msgid "You must provide your email address."
+msgstr "U moet uw e-mailadres opgeven."
+
+#: abilian/services/auth/views.py:180
+msgid "Password reset instructions have been sent to your email address."
+msgstr "Wachtwoord reset instructies zijn verstuurd naar uw e-mailadres."
+
+#: abilian/services/auth/views.py:190 abilian/services/auth/views.py:209
+msgid "Invalid reset password token."
+msgstr "Ongeldige reset wachtwoord token."
+
+#: abilian/services/auth/views.py:192 abilian/services/auth/views.py:211
+msgid "Password reset expired"
+msgstr "Wachtwoordreset verlopen"
+
+#: abilian/services/auth/views.py:218
+msgid "You must provide a password."
+msgstr "U moet een wachtwoord opgeven."
+
+#: abilian/services/auth/views.py:223
+msgid "Your new password must be at least 8 characters long"
+msgstr "Uw nieuwe wachtwoord moet minimaal 8 karakters zijn"
+
+#: abilian/services/auth/views.py:228
+msgid "Your new password must contain upper case and lower case letters"
+msgstr "Uw nieuwe wachtwoord moet hoofdletters en kleine letters bevatten"
+
+#: abilian/services/auth/views.py:234
+msgid "Your new password must contain at least one digit"
+msgstr "Uw nieuwe wachtwoord moet minimaal één cijfer bevatten"
+
+#: abilian/services/auth/views.py:241
+msgid "Your password has been changed. You can now login with your new password"
+msgstr "Uw wachtwoord is gewijzigd. U kunt nu inloggen met uw nieuwe wachtwoord"
+
+#: abilian/services/auth/views.py:276
+msgid "Password reset instruction for {site_name}"
+msgstr "Wachtwoord reset instructie voor {site_name}"
+
+#: abilian/services/auth/templates/login/forgotten_password.html:9
+#: abilian/services/auth/templates/login/login.html:23
+msgid "Forgot password?"
+msgstr "Wachtwoord vergeten?"
+
+#: abilian/services/auth/templates/login/forgotten_password.html:18
+msgid "Send me a new password"
+msgstr "Stuur mij een nieuw wachtwoord"
+
+#: abilian/services/auth/templates/login/login.html:8
+#, python-format
+msgid "Login to %(site_name)s"
+msgstr "Inloggen op %(site_name)s"
+
+#: abilian/services/auth/templates/login/login.html:16
+#: abilian/services/auth/templates/login/password_reset.fr.html:18
+#: abilian/services/auth/templates/login/password_reset.html:18
+#: abilian/web/admin/panels/users/forms.py:91
+msgid "Password"
+msgstr "Wachtwoord"
+
+#: abilian/services/auth/templates/login/login.html:21
+msgid "Sign in"
+msgstr "Aanmelden"
+
+#: abilian/services/auth/templates/login/password_reset.fr.html:8
+#: abilian/services/auth/templates/login/password_reset.html:8
+msgid "Please choose a new password"
+msgstr "Kies een nieuw wachtwoord alstublieft"
+
+#: abilian/services/auth/templates/login/password_reset.fr.html:22
+#: abilian/services/auth/templates/login/password_reset.html:22
+msgid "Change password"
+msgstr "Wachtwoord wijzigen"
+
+#: abilian/services/auth/templates/login/password_reset.fr.html:23
+#: abilian/services/auth/templates/login/password_reset.html:23
+#: abilian/web/templates/default/list_view.html:69
+#: abilian/web/templates/macros/attachment_default.html:44
+#: abilian/web/templates/macros/comment.html:33
+#: abilian/web/templates/preferences/user.html:20
+#: abilian/web/templates/widgets/frontend_action_delete_confim.html:8
+#: abilian/web/views/object.py:165
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: abilian/services/indexing/debug_toolbar.py:36
+#: abilian/services/indexing/debug_toolbar.py:50
+msgid "Indexed Terms"
+msgstr "Geïndexeerde termen"
+
+#: abilian/services/indexing/debug_toolbar.py:42
+#: abilian/services/security/debug_toolbar.py:37
+msgid "No current object"
+msgstr "Geen actueel object"
+
+#: abilian/services/preferences/service.py:27
+#: abilian/services/preferences/service.py:135
+#: abilian/web/templates/preferences/_base.html:8
+msgid "Preferences"
+msgstr "Voorkeuren"
+
+#: abilian/services/security/debug_toolbar.py:31
+msgid "Security Info"
+msgstr "Beveiligingsinfo"
+
+#: abilian/services/security/models.py:122
+msgid "role_anonymous"
+msgstr "role_anonymous"
+
+#: abilian/services/security/models.py:125
+msgid "role_authenticated"
+msgstr "role_authenticated"
+
+#: abilian/services/security/models.py:128
+msgid "role_administrator"
+msgstr "role_administrator"
+
+#: abilian/services/security/models.py:131
+msgid "role_manager"
+msgstr "role_manager"
+
+#: abilian/services/vocabularies/admin.py:19
+msgid "Vocabulary entry"
+msgstr "Vermelding van de woordenschat"
+
+#: abilian/services/vocabularies/admin.py:63
+msgid "Vocabularies"
+msgstr "Woordenlijsten"
+
+#: abilian/services/vocabularies/admin.py:209
+#: abilian/services/vocabularies/templates/admin/vocabularies.html:7
+msgid "Global"
+msgstr "Globaal"
+
+#: abilian/services/vocabularies/forms.py:20
+#: abilian/services/vocabularies/templates/admin/macros/vocabularies.html:23
+msgid "Label"
+msgstr "Label"
+
+#: abilian/services/vocabularies/forms.py:21
+#, python-format
+msgid "allowed tags: %(tags)s"
+msgstr "toegestane tags: %(tags)s"
+
+#: abilian/services/vocabularies/forms.py:25
+#: abilian/services/vocabularies/templates/admin/macros/vocabularies.html:24
+msgid "Default"
+msgstr "Standaard"
+
+#: abilian/services/vocabularies/forms.py:26
+#: abilian/services/vocabularies/templates/admin/macros/vocabularies.html:25
+msgid "Active"
+msgstr "Actieve"
+
+#: abilian/services/vocabularies/templates/admin/vocabularies.html:14
+msgid "Add new value"
+msgstr "Voeg een nieuwe waarde toe"
+
+#: abilian/services/vocabularies/templates/admin/macros/vocabularies.html:51
+msgid "No item in this vocabulary"
+msgstr "Geen item in deze woordenlijst"
+
+#: abilian/web/admin/templates/admin/group_view.html:8
+#: abilian/web/frontend.py:213
+#: abilian/web/templates/macros/attachment_default.html:32
+#: abilian/web/templates/macros/comment.html:19
+msgid "Edit"
+msgstr "Bewerken"
+
+#: abilian/web/frontend.py:223
+#: abilian/web/templates/macros/attachment_default.html:43
+#: abilian/web/templates/macros/comment.html:32
+#: abilian/web/templates/macros/comment.html:36
+#: abilian/web/templates/widgets/frontend_action_delete_confim.html:7
+#: abilian/web/views/object.py:505
+msgid "Delete"
+msgstr "Verwijderen"
+
+#: abilian/web/frontend.py:553
+msgid "Create New"
+msgstr "Nieuwe maken"
+
+#: abilian/web/admin/extension.py:45
+msgid "Admin"
+msgstr "Admin"
+
+#: abilian/web/admin/panels/audit.py:313
+msgid "{user} created {entity_type} {entity_id} \"{entity}\""
+msgstr "{user} gemaakt {entity_type} {entity_id} \"{entity}\""
+
+#: abilian/web/admin/panels/audit.py:315
+msgid "{user} made changes on {entity_type} {entity_id} \"{entity}\""
+msgstr ""
+"{user} wijzigingen aangebracht op de {entity_type} {entity_id} "
+"\"{entity}\""
+
+#: abilian/web/admin/panels/audit.py:317
+msgid "{user} has deleted {entity_type}: {entity_id} \"{entity}\""
+msgstr "{user} werd verwijderd en {entity_type}: {entity_id} \"{entity}\""
+
+#: abilian/web/admin/panels/audit.py:377
+msgid "{manager} has activated inheritance on {entity}"
+msgstr "{manager} heeft geactiveerd erfenis op {entity}"
+
+#: abilian/web/admin/panels/audit.py:379
+msgid "{manager} has deactivated inheritance on {entity}"
+msgstr "{manager} heeft gedeactiveerd erfenis op {entity}"
+
+#: abilian/web/admin/panels/audit.py:381
+msgid "{manager} has given role \"{role}\" to {principal} on {entity}"
+msgstr "{manager} heeft gegeven rol \"{role}\" te {principal} op {entity}"
+
+#: abilian/web/admin/panels/audit.py:385
+msgid "{manager} has revoked role \"{role}\" from {principal} on {entity}"
+msgstr "{manager} heeft ingetrokken rol \"{role}\" van {principal} op {entity}"
+
+#: abilian/web/admin/panels/audit.py:393
+msgid "{manager} has given role \"{role}\" to {principal}"
+msgstr "{manager} heeft rol \"{role}\" gegeven aan {principal}"
+
+#: abilian/web/admin/panels/audit.py:395
+msgid "{manager} has revoked role \"{role}\" from {principal}"
+msgstr "{manager} heeft ingetrokken rol \"{role}\" van {principal}"
+
+#: abilian/web/admin/panels/dashboard.py:22
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: abilian/web/admin/panels/dashboard.py:39
+msgid "Daily"
+msgstr "Dagelijks"
+
+#: abilian/web/admin/panels/dashboard.py:41
+msgid "Weekly"
+msgstr "Wekelijks"
+
+#: abilian/web/admin/panels/dashboard.py:47
+msgid "Monthly"
+msgstr "Maandelijks"
+
+#: abilian/web/admin/panels/dashboard.py:54
+msgid "New"
+msgstr "Nieuw"
+
+#: abilian/web/admin/panels/dashboard.py:55
+msgid "Total"
+msgstr "Totaal"
+
+#: abilian/web/admin/panels/login_sessions.py:28
+msgid "Country unknown"
+msgstr "Onbekend land"
+
+#: abilian/web/admin/panels/settings.py:47
+msgid "Session lifetime"
+msgstr "Levensduur van de sessie"
+
+#: abilian/web/admin/panels/settings.py:48
+msgid ""
+"Session expiration time after last visit. When session is expired user "
+"must login again."
+msgstr ""
+"Sessie verlopen tijd na het laatste bezoek. Wanneer de sessie is verlopen"
+" gebruiker moet opnieuw inloggen."
+
+#: abilian/web/admin/panels/settings.py:62
+msgid "Minimum session lifetime is 10 minutes. Value has been adjusted."
+msgstr "Minimale sessie levensduur is 10 minuten. Waarde is afgesteld."
+
+#: abilian/web/admin/panels/settings.py:98
+#: abilian/web/admin/templates/admin/settings.html:6
+msgid "Settings"
+msgstr "Instellingen"
+
+#: abilian/web/admin/panels/settings.py:104
+msgid "Site name"
+msgstr "Sitenaam"
+
+#: abilian/web/admin/panels/settings.py:105
+msgid "Mail sender"
+msgstr "E-mail afzender"
+
+#: abilian/web/admin/panels/settings.py:132
+msgid "Changes saved."
+msgstr "Wijzigingen opgeslagen."
+
+#: abilian/web/admin/panels/groups/__init__.py:18
+#: abilian/web/admin/panels/users/forms.py:45
+#: abilian/web/admin/templates/admin/groups.html:8
+#: abilian/web/admin/templates/admin/users.html:20
+msgid "Groups"
+msgstr "Groepen"
+
+#: abilian/web/admin/panels/groups/__init__.py:44
+#: abilian/web/admin/panels/users/__init__.py:42
+#: abilian/web/forms/widgets.py:196 abilian/web/forms/widgets.py:348
+msgid "Filter records:"
+msgstr "Records filteren:"
+
+#: abilian/web/admin/panels/groups/__init__.py:45
+#: abilian/web/admin/panels/users/__init__.py:43
+#: abilian/web/forms/widgets.py:349
+msgid "Previous"
+msgstr "Vorige"
+
+#: abilian/web/admin/panels/groups/__init__.py:46
+#: abilian/web/admin/panels/users/__init__.py:44
+#: abilian/web/forms/widgets.py:349
+msgid "Next"
+msgstr "Volgende"
+
+#: abilian/web/admin/panels/groups/__init__.py:47
+#: abilian/web/admin/panels/users/__init__.py:45
+#: abilian/web/forms/widgets.py:351 abilian/web/forms/widgets.py:352
+msgid "Showing _START_ to _END_ of _TOTAL_ entries"
+msgstr "Weergegeven: van _START_ tot _END_ van _TOTAL_ posten"
+
+#: abilian/web/admin/panels/groups/__init__.py:48
+#: abilian/web/admin/panels/users/__init__.py:46
+#: abilian/web/forms/widgets.py:353
+msgid "(filtered from _MAX_ total entries)"
+msgstr "(gefilterd uit _MAX_ totale inzendingen)"
+
+#: abilian/web/admin/panels/groups/__init__.py:49
+#: abilian/web/admin/panels/users/__init__.py:47
+#: abilian/web/forms/widgets.py:354
+msgid "Add a filter"
+msgstr "Filter toevoegen"
+
+#: abilian/web/admin/panels/groups/forms.py:13
+#: abilian/web/admin/templates/admin/groups.html:16
+#: abilian/web/admin/templates/admin/users.html:17
+msgid "Name"
+msgstr "Naam"
+
+#: abilian/web/admin/panels/groups/forms.py:14
+msgid "Description"
+msgstr "Omschrijving"
+
+#: abilian/web/admin/panels/groups/forms.py:16
+#: abilian/web/admin/templates/admin/groups.html:19
+msgid "Public"
+msgstr "Openbaar"
+
+#: abilian/web/admin/panels/groups/forms.py:19
+#: abilian/web/admin/panels/users/forms.py:54
+#: abilian/web/admin/templates/admin/group_view.html:13
+#: abilian/web/admin/templates/admin/groups.html:18
+#: abilian/web/admin/templates/admin/users.html:21
+msgid "Roles"
+msgstr "Rollen"
+
+#: abilian/web/admin/panels/groups/views.py:104
+msgid "Add"
+msgstr "Toevoegen"
+
+#: abilian/web/admin/panels/users/__init__.py:18
+#: abilian/web/admin/templates/admin/dashboard.html:114
+#: abilian/web/admin/templates/admin/dashboard.html:120
+#: abilian/web/admin/templates/admin/users.html:8
+msgid "Users"
+msgstr "Gebruikers"
+
+#: abilian/web/admin/panels/users/forms.py:19
+#: abilian/web/admin/templates/admin/users.html:18
+msgid "Email"
+msgstr "E-mail"
+
+#: abilian/web/admin/panels/users/forms.py:20
+msgid "Users log in with their email address."
+msgstr "Gebruikers loggen in met hun e-mailadres."
+
+#: abilian/web/admin/panels/users/forms.py:26
+msgid "First Name"
+msgstr "Voornaam"
+
+#: abilian/web/admin/panels/users/forms.py:27
+msgid "ex: John"
+msgstr "ex: John"
+
+#: abilian/web/admin/panels/users/forms.py:32
+msgid "Last Name"
+msgstr "Achternaam"
+
+#: abilian/web/admin/panels/users/forms.py:33
+msgid "ex: Smith"
+msgstr "ex: Smith"
+
+#: abilian/web/admin/panels/users/forms.py:39
+#: abilian/web/admin/templates/admin/users.html:19
+msgid "Login enabled"
+msgstr "Aanmelden ingeschakeld"
+
+#: abilian/web/admin/panels/users/forms.py:40
+msgid "If unchecked, user will not be able to connect."
+msgstr "Als dit niet is aangevinkt, kan de gebruiker geen verbinding maken."
+
+#: abilian/web/admin/panels/users/forms.py:55
+msgid ""
+"Prefer groups to manage access rights. Directly assigning roles to users "
+"is possible but discouraged."
+msgstr ""
+"Geef de voorkeur aan groepen om toegangsrechten te beheren. Het direct "
+"toewijzen van rollen aan gebruikers is mogelijk maar wordt afgeraden."
+
+#: abilian/web/admin/panels/users/forms.py:63
+#: abilian/web/preferences/user.py:24
+msgid "New Password"
+msgstr "Nieuw wachtwoord"
+
+#: abilian/web/admin/panels/users/forms.py:64
+msgid "If empty the current password will not be changed."
+msgstr "Indien leeg zal de huidige wachtwoord niet worden gewijzigd."
+
+#: abilian/web/admin/panels/users/forms.py:72
+#: abilian/web/preferences/user.py:27
+msgid "Confirm new password"
+msgstr "Bevestig het nieuwe wachtwoord"
+
+#: abilian/web/admin/panels/users/forms.py:81
+#: abilian/web/preferences/user.py:50
+msgid ""
+"Passwords differ. Ensure you have typed same password in both "
+"\"password\" field and \"confirm password\" field."
+msgstr ""
+"Wachtwoorden verschillen. Zorg ervoor dat u hetzelfde wachtwoord hebt "
+"getypt in het veld \"wachtwoord\" en \"Bevestig wachtwoord\" veld."
+
+#: abilian/web/admin/panels/users/forms.py:92
+msgid "If empty a random password will be generated."
+msgstr "Indien leeg wordt een willekeurig wachtwoord gegenereerd."
+
+#: abilian/web/admin/panels/users/views.py:111
+msgid "Never logged in"
+msgstr "Nooit ingelogd"
+
+#: abilian/web/admin/templates/admin/_macros.html:22
+msgid "active users"
+msgstr "actieve gebruikers"
+
+#: abilian/web/admin/templates/admin/_macros.html:27
+msgid "new members"
+msgstr "nieuwe leden"
+
+#: abilian/web/admin/templates/admin/_macros.html:32
+msgid "new documents"
+msgstr "nieuwe documenten"
+
+#: abilian/web/admin/templates/admin/_macros.html:37
+msgid "new messages"
+msgstr "nieuwe berichten"
+
+#: abilian/web/admin/templates/admin/audit.html:8
+msgid "Newer"
+msgstr "Nieuwer"
+
+#: abilian/web/admin/templates/admin/audit.html:12
+msgid "Older"
+msgstr "Ouder"
+
+#: abilian/web/admin/templates/admin/audit.html:38
+msgid "All contents"
+msgstr "Alle inhoud"
+
+#: abilian/web/admin/templates/admin/audit.html:95
+msgid "Select user"
+msgstr "Selecteer gebruiker"
+
+#: abilian/web/admin/templates/admin/dashboard.html:72
+msgid "[Right axis]"
+msgstr "[Rechteras]"
+
+#: abilian/web/admin/templates/admin/dashboard.html:73
+msgid "[Left axis]"
+msgstr "[Linkeras]"
+
+#: abilian/web/admin/templates/admin/dashboard.html:158
+msgid "unique connections"
+msgstr "unieke verbindingen"
+
+#: abilian/web/admin/templates/admin/group_view.html:21
+msgid "Members"
+msgstr "Leden"
+
+#: abilian/web/admin/templates/admin/group_view.html:29
+msgid "User"
+msgstr "Gebruiker"
+
+#: abilian/web/admin/templates/admin/group_view.html:38
+#: abilian/web/admin/templates/admin/group_view.html:58
+msgid "account disabled"
+msgstr "account uitgeschakeld"
+
+#: abilian/web/admin/templates/admin/groups.html:10
+msgid "New Group..."
+msgstr "Nieuwe Groep..."
+
+#: abilian/web/admin/templates/admin/settings.html:20
+#: abilian/web/templates/preferences/user.html:17
+#: abilian/web/views/object.py:170
+msgid "Save"
+msgstr "Opslaan"
+
+#: abilian/web/admin/templates/admin/settings_session_lifetime.html:3
+msgid "Days"
+msgstr "Dagen"
+
+#: abilian/web/admin/templates/admin/settings_session_lifetime.html:8
+msgid "Hours"
+msgstr "Uren"
+
+#: abilian/web/admin/templates/admin/settings_session_lifetime.html:13
+msgid "Minutes"
+msgstr "Minuten"
+
+#: abilian/web/admin/templates/admin/users.html:10
+msgid "New user..."
+msgstr "Nieuwe gebruiker..."
+
+#: abilian/web/admin/templates/admin/users.html:22
+msgid "Last connection"
+msgstr "Laatste verbinding"
+
+#: abilian/web/attachments/forms.py:16
+msgid "file"
+msgstr "bestand"
+
+#: abilian/web/attachments/forms.py:19
+msgid "description (optional)"
+msgstr "beschrijving (optioneel)"
+
+#: abilian/web/attachments/views.py:37
+msgid "Send"
+msgstr "Verzenden"
+
+#: abilian/web/attachments/views.py:104
+msgid "Attachment edited"
+msgstr "Bijlage bewerkt"
+
+#: abilian/web/attachments/views.py:113
+msgid "Attachment added"
+msgstr "Bijlage toegevoegd"
+
+#: abilian/web/attachments/views.py:127
+msgid "New attachment on \"{title}\""
+msgstr "Nieuwe bijlage op \"{title}\""
+
+#: abilian/web/comments/forms.py:16
+msgid "Comment"
+msgstr "Commentaar"
+
+#: abilian/web/comments/views.py:36
+msgid "Post"
+msgstr "Verzenden"
+
+#: abilian/web/comments/views.py:77
+msgid "Comment edited"
+msgstr "Comentaar bewerkt"
+
+#: abilian/web/comments/views.py:80
+msgid "Edit comment on \"{title}\""
+msgstr "Bewerken van commentaar op \"{title}\""
+
+#: abilian/web/comments/views.py:106
+msgid "Comment added"
+msgstr "Commentaar toegevoegd"
+
+#: abilian/web/comments/views.py:122
+msgid "New comment on \"{title}\""
+msgstr "Nieuwe commentaar op \"{title}\""
+
+#: abilian/web/comments/views.py:135
+msgid "Comment deleted"
+msgstr "Commentaar verwijderd"
+
+#: abilian/web/forms/fields.py:356 abilian/web/forms/fields.py:403
+msgid "Not a valid datetime value"
+msgstr "Ongeldige datum/tijd waarde"
+
+#: abilian/web/forms/fields.py:605
+msgid "Not a valid choice"
+msgstr "Ongeldige keuze"
+
+#: abilian/web/forms/validators.py:46
+msgid "Invalid email address."
+msgstr "Ongeldig e-mailadres."
+
+#: abilian/web/forms/validators.py:64
+msgid "This field is required."
+msgstr "Dit veld is verplicht."
+
+#: abilian/web/forms/validators.py:118
+#, python-format
+msgid "Field must be at least %(min)d character long."
+msgid_plural "Field must be at least %(min)d characters long."
+msgstr[0] "Veld moet minstens %(min)d karakter lang zijn."
+msgstr[1] "Veld moet minstens %(min)d karakters lang zijn."
+
+#: abilian/web/forms/validators.py:125
+#, python-format
+msgid "Field cannot be longer than %(max)d character."
+msgid_plural "Field cannot be longer than %(max)d characters."
+msgstr[0] "Veld mag niet langer zijn dan %(max)d karakter."
+msgstr[1] "Veld mag niet langer zijn dan %(max)d karakters."
+
+#: abilian/web/forms/validators.py:132
+#, python-format
+msgid "Field must be between %(min)d and %(max)d characters long."
+msgstr "Veld moet tussen %(min)d en %(max)d karakters lang zijn."
+
+#: abilian/web/forms/validators.py:202
+msgid "Virus detected!"
+msgstr "Virus gedetecteerd!"
+
+#: abilian/web/forms/validators.py:253
+msgid "SIRET must have exactly 14 characters ({count})"
+msgstr "SIRET moet precies 14 tekens ({count})"
+
+#: abilian/web/forms/validators.py:260
+#, fuzzy, python-format
+msgid ""
+"SIRET looks like special SIRET but geographical code seems invalid "
+"(%(code)s)"
+msgstr ""
+"SIRET ziet eruit als speciale SIRET maar geografische code lijkt ongeldig"
+" (%s)"
+
+#: abilian/web/forms/validators.py:268
+msgid "SIRET number is invalid (length is ok: verify numbers)"
+msgstr "SIRET-nummer is ongeldig (lengte is ok: nummers verifiëren)"
+
+#: abilian/web/forms/widgets.py:350
+msgid "Entries per page: _MENU_"
+msgstr "Items per pagina: _MENU_"
+
+#: abilian/web/forms/widgets.py:355 abilian/web/forms/widgets.py:356
+msgid "No matching records found"
+msgstr "Geen overeenkomende gegevens gevonden"
+
+#: abilian/web/forms/widgets.py:740
+msgid "Add file"
+msgstr "Bestand toevoegen"
+
+#: abilian/web/forms/widgets.py:740
+msgid "Select file"
+msgstr "Bestand selecteren"
+
+#: abilian/web/forms/widgets.py:1251
+msgid "hour(s)"
+msgstr "uren(n)"
+
+#: abilian/web/preferences/user.py:31
+msgid "Photo"
+msgstr "Foto"
+
+#: abilian/web/preferences/user.py:35
+msgid "Preferred Language"
+msgstr "Voorkeurstaal"
+
+#: abilian/web/preferences/user.py:41
+msgid "Time zone"
+msgstr "Tijdzone"
+
+#: abilian/web/preferences/user.py:66 abilian/web/preferences/user.py:71
+msgid "Only PNG or JPG image files are accepted"
+msgstr "Alleen PNG of JPG beeldbestanden worden geaccepteerd"
+
+#: abilian/web/preferences/user.py:79
+msgid "Could not decode image file"
+msgstr "Kan afbeeldingsbestand niet decoderen"
+
+#: abilian/web/preferences/user.py:90
+msgid "About me"
+msgstr "Over mij"
+
+#: abilian/web/preferences/user.py:138
+msgid "Password changed"
+msgstr "Wachtwoord gewijzigd"
+
+#: abilian/web/preferences/user.py:144
+msgid "Preferences saved."
+msgstr "Voorkeuren opgeslagen."
+
+#: abilian/web/search/views.py:126
+msgid "All"
+msgstr "Alle"
+
+#: abilian/web/search/templates/search/search.html:15
+#: abilian/web/templates/navbar.html:40
+msgid "Search"
+msgstr "Zoeken"
+
+#: abilian/web/search/templates/search/search.html:28
+msgid "Your query didn't match any results."
+msgstr "Uw zoekopdracht leverde geen resultaten op."
+
+#: abilian/web/search/templates/search/search.html:31
+#, python-format
+msgid "%(count)d items found"
+msgstr "%(count)d items gevonden"
+
+#: abilian/web/search/templates/search/search.html:41
+msgid "Filter by type"
+msgstr "Filteren op type"
+
+#: abilian/web/search/templates/search/search.html:79
+#: abilian/web/templates/widgets/render_single.html:15
+msgid "by"
+msgstr "door"
+
+#: abilian/web/search/templates/search/search.html:82
+#, python-format
+msgid "Last modification: %(date)s"
+msgstr "Laatste wijziging: %(date)s"
+
+#: abilian/web/tags/admin.py:110
+msgid "Unknown action"
+msgstr "Onbekende actie"
+
+#: abilian/web/tags/admin.py:132 abilian/web/views/object.py:302
+msgid "Please fix the error(s) below"
+msgstr "Controleer de onderstaande fout(en)"
+
+#: abilian/web/tags/admin.py:133
+msgid "Must be checked to ensure you intent to delete these tags"
+msgstr ""
+"Moet worden gecontroleerd om ervoor te zorgen dat u deze tags wilt "
+"verwijderen"
+
+#: abilian/web/tags/admin.py:142
+msgid "No action performed: no tags selected"
+msgstr "Geen acties uitvoeren: geen tags geselecteerd"
+
+#: abilian/web/tags/admin.py:152
+#, python-format
+msgid "%(tag)s deleted"
+msgid_plural ""
+"%(num)d tags deleted:\n"
+"%(tags)s"
+msgstr[0] "%(tag)s verwijderd"
+msgstr[1] "%(num)d tags verwijderd:%(tags)s"
+
+#: abilian/web/tags/admin.py:165
+msgid "You must select a target tag to merge to"
+msgstr "U moet een doeltag selecteren om mee samen te voegen"
+
+#: abilian/web/tags/admin.py:171
+msgid "Target tag not found, no action performed"
+msgstr "Doeltag niet gevonden, geen actie uitgevoerd"
+
+#: abilian/web/tags/admin.py:180
+msgid "No tag selected for merging"
+msgstr "Geen tag geselecteerd voor samenvoegen"
+
+#: abilian/web/tags/admin.py:230 abilian/web/tags/views.py:31
+msgid "Tag edited"
+msgstr "Tag bewerkt"
+
+#: abilian/web/tags/admin.py:253 abilian/web/tags/criterion.py:22
+#: abilian/web/tags/extension.py:95
+#: abilian/web/templates/default/single_view.html:15
+msgid "Tags"
+msgstr "Tags"
+
+#: abilian/web/tags/views.py:39
+msgid "Tag created"
+msgstr "Tag aangemaakt"
+
+#: abilian/web/tags/views.py:47
+msgid "Tag deleted"
+msgstr "Tag verwijderd"
+
+#: abilian/web/tags/templates/admin/tags.html:5
+msgid ""
+"\n"
+"    Tags are grouped by namespaces, so that different set of tags can be\n"
+"    defined for different type of objects, or for a different purpose.\n"
+"    "
+msgstr ""
+"\n"
+"Tags worden gegroepeerd op namespaces, zodat verschillende set van tags "
+"kunnen worden\n"
+"gedefinieerd voor verschillende soorten objecten, of voor een ander doel."
+"    "
+
+#: abilian/web/tags/templates/admin/tags.html:14
+msgid "Namespace"
+msgstr "Namespace"
+
+#: abilian/web/tags/templates/admin/tags.html:15
+msgid "# Tags"
+msgstr "# Tags"
+
+#: abilian/web/tags/templates/admin/tags.html:16
+#: abilian/web/tags/templates/admin/tags_ns.html:14
+msgid "# Tagged objects"
+msgstr "# Tagged objecten"
+
+#: abilian/web/tags/templates/admin/tags_ns.html:13
+msgid "Tag"
+msgstr "Tag"
+
+#: abilian/web/tags/templates/admin/tags_ns.html:33
+#: abilian/web/tags/templates/admin/tags_ns.html:45
+msgid "Merge tags"
+msgstr "Tags samenvoegen"
+
+#: abilian/web/tags/templates/admin/tags_ns.html:35
+msgid "Target tag"
+msgstr "Doeltag"
+
+#: abilian/web/tags/templates/admin/tags_ns.html:50
+#: abilian/web/tags/templates/admin/tags_ns.html:60
+msgid "Delete selected tags"
+msgstr "Verwijder geselecteerde tags"
+
+#: abilian/web/tags/templates/admin/tags_ns.html:54
+msgid "Check to confirm definitive deletion of selected tags"
+msgstr ""
+"Vink aan om de definitieve verwijdering van geselecteerde tags te "
+"bevestigen"
+
+#: abilian/web/templates/abilian_base.html:64
+msgid "Skip to content"
+msgstr "Ga naar de inhoud"
+
+#: abilian/web/templates/error404.html:7
+msgid ""
+"Page or entity not found. The object you are trying to view may have been"
+" deleted."
+msgstr ""
+"Pagina of entiteit niet gevonden. Het object dat u probeert te bekijken, "
+"is mogelijk verwijderd."
+
+#: abilian/web/templates/macros.html:45
+#: abilian/web/templates/macros/box.html:32
+msgid "Menu"
+msgstr "Menu"
+
+#: abilian/web/templates/macros.html:127
+#: abilian/web/templates/macros/audit.html:56
+msgid "Audit Log"
+msgstr "Controlelogboek"
+
+#: abilian/web/templates/macros.html:174
+#: abilian/web/templates/macros/recent.html:5
+msgid "Recent items"
+msgstr "Recente items"
+
+#: abilian/web/templates/debug_panels/security_info_panel.html:21
+msgid "No permissions defined"
+msgstr "Geen machtigingen gedefinieerd"
+
+#: abilian/web/templates/debug_panels/security_info_panel.html:54
+msgid "No roles set"
+msgstr "Geen rollen ingesteld"
+
+#: abilian/web/templates/default/list_view.html:29
+msgid "Export to Excel"
+msgstr "Exporteren naar Excel"
+
+#: abilian/web/templates/default/list_view.html:43
+msgid "Import from Excel"
+msgstr "Importeren uit Excel"
+
+#: abilian/web/templates/default/list_view.html:46
+msgid "Download a file suitable for importing new objects"
+msgstr "Het downloaden van een bestand is geschikt voor nieuwe objecten importeren"
+
+#: abilian/web/templates/default/list_view.html:47
+msgid "Download import template"
+msgstr "Download de importsjabloon"
+
+#: abilian/web/templates/default/list_view.html:60
+msgid "Upload Excel file"
+msgstr "Excel-bestand uploaden"
+
+#: abilian/web/templates/default/list_view.html:71
+msgid "Upload"
+msgstr "Uploaden"
+
+#: abilian/web/templates/default/list_view.html:84
+msgid "Export XML"
+msgstr "Exporteren XML"
+
+#: abilian/web/templates/default/single_view.html:37
+#, python-format
+msgid "Comments (%(count)d)"
+msgstr "Commentaren (%(count)d)"
+
+#: abilian/web/templates/default/single_view.html:61
+#, python-format
+msgid "Attachments (%(count)d)"
+msgstr "Bijlagen (%(count)d)"
+
+#: abilian/web/templates/macros/attachment_default.html:41
+msgid "Delete attachment ?"
+msgstr "Bijlage verwijderen?"
+
+#: abilian/web/templates/macros/attachment_default.html:42
+msgid "Do you really want to delete this attachment?"
+msgstr "Wilt u deze bijlage echt verwijderen?"
+
+#: abilian/web/templates/macros/attachment_default.html:55
+msgid "Download"
+msgstr "Downloaden"
+
+#: abilian/web/templates/macros/audit.html:11
+msgid "{key} changed:"
+msgstr "{key} gewijzigd:"
+
+#: abilian/web/templates/macros/audit.html:16
+msgid "{key} changed from {old_value} to {new_value}"
+msgstr "{key} veranderd van {old_value} naar {new_value}"
+
+#: abilian/web/templates/macros/audit.html:19
+msgid "{key} set to {new_value}"
+msgstr "{key} ingesteld op {new_value}"
+
+#: abilian/web/templates/macros/comment.html:30
+msgid "Delete comment ?"
+msgstr "Commentaar verwijderen?"
+
+#: abilian/web/templates/macros/comment.html:31
+msgid "Do you really want to delete this comment?"
+msgstr "Wil je deze reactie echt verwijderen?"
+
+#: abilian/web/templates/macros/comment.html:61
+#, python-format
+msgid "edited"
+msgid_plural "edited %(count)d times"
+msgstr[0] "bewerkt"
+msgstr[1] "bewerkte %(count)d keer"
+
+#: abilian/web/templates/widgets/frontend_action_delete_confim.html:6
+msgid "Do you really want to delete this entity?"
+msgstr "Wilt u deze entiteit echt verwijderen?"
+
+#: abilian/web/templates/widgets/render_ajax_table.html:30
+msgid "Loading..."
+msgstr "Laden..."
+
+#: abilian/web/templates/widgets/render_single.html:13
+msgid "Created at:"
+msgstr "Gemaakt op:"
+
+#: abilian/web/templates/widgets/render_single.html:19
+msgid "Updated at:"
+msgstr "Bijgewerkt op:"
+
+#: abilian/web/views/object.py:176
+msgid "Create and add another"
+msgstr "Maken en nog een toevoegen"
+
+#: abilian/web/views/object.py:204
+msgid "Entity successfully edited"
+msgstr "Entiteit met succes bewerkt"
+
+#: abilian/web/views/object.py:380
+msgid "An entity with this name already exists in the system."
+msgstr "Een entiteit met deze naam bestaat al in het systeem."
+
+#: abilian/web/views/object.py:433
+msgid "Create"
+msgstr "Maken"
+
+#: abilian/web/views/object.py:438
+msgid "Create and add new"
+msgstr "Maken en nieuwe toevoegen"
+
+#: abilian/web/views/object.py:449
+msgid "Entity successfully added"
+msgstr "Entiteit succesvol toegevoegd"
+
+#: abilian/web/views/object.py:517
+msgid "Entity deleted"
+msgstr "Entiteit verwijderd"
+
+#: abilian/web/views/object.py:543
+msgid "This entity is referenced by another object and cannot be deleted."
+msgstr ""
+"Naar deze entiteit wordt verwezen door een ander object en kan niet "
+"worden verwijderd."

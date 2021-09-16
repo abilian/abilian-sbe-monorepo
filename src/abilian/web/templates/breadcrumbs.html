@@ -1,0 +1,5 @@
+<ol class="breadcrumb">
+  {%- for item in g.breadcrumb %}
+    <li {%- if loop.last %} class="active"{%- endif %}>{{ item.render() }}</li>
+  {%- endfor %}
+</ol>
