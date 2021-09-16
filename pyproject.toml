@@ -152,6 +152,7 @@ raven = "*"
 flask-env = "*"
 newrelic = "*"
 rich = "^10.9.0"
+python-dotenv = "^0.19.0"
 
 
 [tool.poetry.dev-dependencies]
