@@ -6,11 +6,6 @@
     "extranet",
     "digital workplace"
   ],
-  "buildpacks": [
-    {
-      "url": "https://github.com/moneymeets/python-poetry-buildpack.git"
-    }
-  ],
   "addons": [
     "heroku-postgresql:hobby-dev",
     "heroku-redis:premium-0"
