@@ -14,7 +14,6 @@ from abilian.core.models.subjects import User
 
 from .dummy import DummyContact
 
-
 # @fixture
 # def session() -> Session:
 #     engine = create_engine("sqlite:///:memory:", echo=False)
