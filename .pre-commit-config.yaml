@@ -1,0 +1,21 @@
+repos:
+-   repo: git://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+    -   id: trailing-whitespace
+    -   id: debug-statements
+    -   id: check-xml
+    -   id: check-yaml
+    -   id: check-json
+    -   id: check-ast
+
+-   repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.9.3
+    hooks:
+    -   id: isort
+
+
+-   repo: https://gitlab.com/pycqa/flake8
+    rev: 3.9.2
+    hooks:
+    -   id: flake8

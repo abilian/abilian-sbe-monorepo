@@ -5,8 +5,8 @@ description = ""
 authors = ["Abilian SAS <contact@abilian.com>"]
 
 packages = [
-	{ include = "extranet", from = "src" },
-	{ include = "abilian", from = "src" },
+  { include = "extranet", from = "src" },
+  { include = "abilian", from = "src" },
 ]
 
 
@@ -169,7 +169,7 @@ profilehooks = "*"
 pre-commit = "*"
 
 # Testing
-flake8-mypy = "*"
+flake8 = "*"
 flake8-bugbear = "*"
 flake8-comprehensions = "*"
 flake8-mutable = "*"
