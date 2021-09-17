@@ -205,6 +205,7 @@ types-chardet = "^0.1.5"
 types-Markdown = "^3.3.2"
 honcho = "^1.0.1"
 pytest-xdist = "^2.3.0"
+safety = "^1.10.3"
 
 
 [build-system]
