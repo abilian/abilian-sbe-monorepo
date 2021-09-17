@@ -13,6 +13,9 @@ from .base import Service, ServiceState
 # Don't remove (used to force import order)
 assert Service, ServiceState
 
+# flake8: noqa
+# Import below are flagged as problematic due to the trick above.
+
 from .activity import ActivityService
 from .antivirus import service as antivirus
 from .audit import audit_service
