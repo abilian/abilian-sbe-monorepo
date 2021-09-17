@@ -24,24 +24,27 @@ USER_TZ = pytz.timezone(user_tz())
 
 # test filters
 def test_strip():
-    assert filters.strip(None) == ""
-    assert filters.strip(4) == 4
-    assert filters.strip(" a string ") == "a string"
-    assert filters.strip(" voilà ") == "voilà"
+    strip = filters.strip
+    assert strip(None) == ""
+    assert strip(4) == 4
+    assert strip(" a string ") == "a string"
+    assert strip(" voilà ") == "voilà"
 
 
 def test_uppercase():
-    assert filters.uppercase(None) is None
-    assert filters.uppercase(4) == 4
-    assert filters.uppercase(" a string ") == " A STRING "
-    assert filters.uppercase(" Voilà ") == " VOILÀ "
+    uppercase = filters.uppercase
+    assert uppercase(None) is None
+    assert uppercase(4) == 4
+    assert uppercase(" a string ") == " A STRING "
+    assert uppercase(" Voilà ") == " VOILÀ "
 
 
 def test_lowercase():
-    assert filters.lowercase(None) is None
-    assert filters.lowercase(4) == 4
-    assert filters.lowercase(" A STRING ") == " a string "
-    assert filters.lowercase(" VOILÀ ") == " voilà "
+    lowercase = filters.lowercase
+    assert lowercase(None) is None
+    assert lowercase(4) == 4
+    assert lowercase(" A STRING ") == " a string "
+    assert lowercase(" VOILÀ ") == " voilà "
 
 
 # FormPermissions
