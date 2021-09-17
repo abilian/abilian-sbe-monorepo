@@ -1,17 +1,12 @@
 .DS_Store
 .cache
 .coverage
-.coveralls.yml
-.dox
 .env
 .idea
 .mypy_cache
-.ropeproject
 .tox
-.travis-solo
 .vagrant
 .venv
-.cov2emacs.log
 
 *,cover
 
