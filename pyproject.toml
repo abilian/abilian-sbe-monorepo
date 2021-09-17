@@ -156,6 +156,7 @@ raven = "*"
 rich = "^10.9.0"
 flask-env = "*"
 python-dotenv = "^0.19.0"
+importlib-resources = "^5.2.2"
 
 
 [tool.poetry.dev-dependencies]
