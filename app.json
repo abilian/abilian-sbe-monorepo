@@ -17,6 +17,6 @@
     }
   },
   "scripts": {
-    "postdeploy": "flask db upgrade"
+    "postdeploy": "ls ; pip list ; flask db upgrade"
   }
 }
