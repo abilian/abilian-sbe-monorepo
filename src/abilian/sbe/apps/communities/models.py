@@ -282,7 +282,8 @@ class Community(Entity):
                         security.grant_role(user, READER, self.folder)
 
     def ungrant_all_roles_on_folder(self) -> None:
-        if self.folder:
+        # Only needed if the object is not being created
+        if self.folder and self.id:
             role_assignments = security.get_role_assignements(self.folder)
             for principal, role in role_assignments:
                 security.ungrant_role(principal, role, self.folder)

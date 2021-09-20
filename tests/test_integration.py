@@ -2,49 +2,41 @@
 """
 
 import warnings
+from typing import Iterator
 
+import rich
+from werkzeug.routing import Rule
+
+from abilian.app import Application
 from abilian.core.models.subjects import User
 from abilian.services import get_service
 from abilian.services.security import Admin
 from abilian.web import url_for
 
-# PUBLIC_ENDPOINTS = [
-#     'Adhesion.adhesion_create',
-#     'Adhesion.adhesion_academique',
-#     'Adhesion.adhesion_entreprise',
-#     'Adhesion.adhesion_collectivite',
-#     'Adhesion.adhesion_referencement',
-#     'Adhesion.index',
-#     'Adhesion.selection',
-#     'Adhesion.referencement',
-#     'ami_public.ami_home',
-#     'calendar.calendar_ics',
-#     'calendar.index',
-#     'home.public',
-#     'home.legal',
-#     'login.forgotten_pw_form',
-#     'login.login_form',
-#     'evenement_public.list_view',
-#     'debug.index',
-#     'calendar.events_feed',
-#     'api.adherents',
-#     'api.amis',
-#     'api.calendar',
-#     'api.manifestations',
-#     'api.projets',
-# ]
+PUBLIC_ENDPOINTS = [
+    "login.forgotten_pw_form",
+    "login.login_form",
+    # 'calendar.calendar_ics',
+    # 'calendar.index',
+    # 'home.public',
+    # 'home.legal',
+    # 'evenement_public.list_view',
+    # 'debug.index',
+    # 'calendar.events_feed',
+    # 'api.adherents',
+    # 'api.amis',
+    # 'api.calendar',
+    # 'api.manifestations',
+    # 'api.projets',
+]
 
 ENDPOINTS_TO_IGNORE = [
-    "admin.audit_search_users",
-    "bilan.export_xls",
-    "communities.new",
-    "crm_excel.task_status",
     "login.logout",
     "notifications.debug_social",
 ]
 
 
-def all_rules_to_test(app):
+def all_rules_to_test(app: Application) -> Iterator[Rule]:
     rules = []
     for rule in app.url_map.iter_rules():
         if "GET" not in rule.methods:
@@ -57,9 +49,30 @@ def all_rules_to_test(app):
     return sorted(rules, key=lambda r: r.endpoint)
 
 
-def test_all_simple_endpoints_with_no_login(client, app, request_ctx):
+def test_public_endpoints_with_no_login(client, app: Application, request_ctx):
     warnings.simplefilter("ignore")
-    app.services["security"].start()
+    app.services["security"].start(ignore_state=True)
+
+    errors = []
+    for endpoint in PUBLIC_ENDPOINTS:
+        if endpoint in ENDPOINTS_TO_IGNORE:
+            continue
+        try:
+            url = url_for(endpoint)
+            r = client.get(url)
+            assert r.status_code in [200, 302]
+        except Exception as e:
+            errors.append(f"Failed: {endpoint} :\n{e}\n")
+
+    app.services["security"].stop()
+    if errors:
+        rich.print(errors)
+        assert False
+
+
+def test_all_simple_endpoints_with_no_login(client, app: Application, request_ctx):
+    warnings.simplefilter("ignore")
+    app.services["security"].start(ignore_state=True)
 
     for rule in all_rules_to_test(app):
         if rule.endpoint in ENDPOINTS_TO_IGNORE:
@@ -74,7 +87,7 @@ def test_all_simple_endpoints_with_no_login(client, app, request_ctx):
             raise
 
 
-def test_all_simple_endpoints_as_admin(client, app, db, request_ctx):
+def test_all_simple_endpoints_as_admin(client, app: Application, db, request_ctx):
     # FIXME: not done yet
     warnings.simplefilter("ignore")
     # app.services['security'].start()
@@ -110,15 +123,26 @@ def test_all_simple_endpoints_as_admin(client, app, db, request_ctx):
     print()
 
 
+def test_login_as_admin(client, db):
+    login_as_admin(client, db)
+
+
+def test_failed_login(client, db):
+    data = {"email": "test@example.com", "password": "admin"}
+    r = client.post(url_for("login.login_post"), data=data)
+    assert r.status_code == 401
+
+
 #
 # Util
 #
-
-
 def login_as_admin(client, db):
     email = "admin@example.com"
     password = "secret"
     user = User(email=email, can_login=True, password=password)
+
+    # Needed for grant_role to not raise an exception
+    db.session.add(user)
 
     security = get_service("security")
     security.grant_role(user, Admin)
@@ -129,13 +153,6 @@ def login_as_admin(client, db):
     data = {"email": email, "password": password}
     r = client.post(url_for("login.login_post"), data=data)
     assert r.status_code == 302
-
-
-# r = client.get(url_for("debug.index"))
-# print(r.data)
-# print(r.json())
-#
-# assert current_user.email == email
 
 
 def logout(client):
