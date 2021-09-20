@@ -67,7 +67,7 @@ def test_public_endpoints_with_no_login(client, app: Application, request_ctx):
     app.services["security"].stop()
     if errors:
         rich.print(errors)
-        assert False
+        raise AssertionError("Some public web tests failed")
 
 
 def test_all_simple_endpoints_with_no_login(client, app: Application, request_ctx):
