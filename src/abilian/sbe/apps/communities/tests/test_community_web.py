@@ -12,10 +12,7 @@ from abilian.testing.util import client_login
 
 
 def test_index(
-    community1: Community,
-    app: Application,
-    db: SQLAlchemy,
-    client: FlaskClient,
+    community1: Community, app: Application, db: SQLAlchemy, client: FlaskClient
 ) -> None:
     security_service.start()
 
@@ -26,10 +23,7 @@ def test_index(
 
 
 def test_community_home(
-    community1: Community,
-    community2: Community,
-    app: Application,
-    client: FlaskClient,
+    community1: Community, community2: Community, app: Application, client: FlaskClient
 ) -> None:
     security_service.start()
 
@@ -52,10 +46,7 @@ def test_community_home(
 
 
 def test_new(
-    community1: Community,
-    app: Application,
-    client: FlaskClient,
-    db: SQLAlchemy,
+    community1: Community, app: Application, client: FlaskClient, db: SQLAlchemy
 ) -> None:
     # security_service.use_cache = False
     security_service.start()
@@ -75,9 +66,7 @@ def test_new(
 
 
 def test_community_settings(
-    app: Application,
-    client: FlaskClient,
-    community1: Community,
+    app: Application, client: FlaskClient, community1: Community
 ) -> None:
     security_service.start()
 

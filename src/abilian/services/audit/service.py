@@ -39,10 +39,7 @@ class AuditableMeta:
     enduser_ids: list[str]
 
     def __init__(
-        self,
-        name: str | None = None,
-        id_attr: str | None = None,
-        related: bool = False,
+        self, name: str | None = None, id_attr: str | None = None, related: bool = False
     ):
         self.name = name
         self.id_attr = id_attr

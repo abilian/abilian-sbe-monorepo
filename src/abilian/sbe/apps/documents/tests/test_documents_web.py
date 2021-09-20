@@ -48,10 +48,7 @@ def community(community1: Community, db: SQLAlchemy) -> Community:
 
 
 def test_util_create(
-    app: Application,
-    client: FlaskClient,
-    db: SQLAlchemy,
-    community: Community,
+    app: Application, client: FlaskClient, db: SQLAlchemy, community: Community
 ) -> None:
     folder = community.folder
     user = community.test_user
@@ -79,10 +76,7 @@ def test_util_create(
 
 
 def test_home(
-    app: Application,
-    client: FlaskClient,
-    db: SQLAlchemy,
-    community: Community,
+    app: Application, client: FlaskClient, db: SQLAlchemy, community: Community
 ) -> None:
     folder = community.folder
     user = community.test_user

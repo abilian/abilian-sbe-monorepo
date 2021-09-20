@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import sqlalchemy as sa
 from flask import Flask
-from flask.ctx import RequestContext
 from flask.signals import request_started
 from pytest import mark
 from wtforms import Form, IntegerField, StringField
@@ -46,7 +45,7 @@ class DummyForm(Form):
     email = StringField("email", view_widget=EmailWidget())
 
 
-def test_table_view(app: Flask, test_request_context: RequestContext):
+def test_table_view(app: Flask):
     @default_view(app, WidgetTestModel)
     @app.route("/dummy_view/<object_id>")
     def dummy_view(object_id):
@@ -67,7 +66,7 @@ def test_table_view(app: Flask, test_request_context: RequestContext):
     assert "10000" in res
 
 
-def test_single_view(test_request_context: RequestContext):
+def test_single_view(req_ctx):
     model = WidgetTestModel(name="Renault Megane", price=10000, email="joe@example.com")
     panels = [Panel("main", Row("name"), Row("price"), Row("email"))]
     form = DummyForm(obj=model)

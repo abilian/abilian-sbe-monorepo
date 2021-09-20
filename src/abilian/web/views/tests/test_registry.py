@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import sqlalchemy as sa
 from flask import Blueprint
-from flask.ctx import RequestContext
 from pytest import fixture, raises
 
 from abilian.app import Application
@@ -59,9 +58,7 @@ def test_custom_url_func(app: Application, registry: Registry):
     assert registry.url_for(obj) == "test_registry.RegEntity:1"
 
 
-def test_default_url_func(
-    app: Application, registry: Registry, test_request_context: RequestContext
-):
+def test_default_url_func(app: Application, registry: Registry):
     obj = RegEntity(id=1)
 
     @app.route("/regentities_path/<int:object_id>/view", endpoint="regentity.view")
@@ -75,9 +72,7 @@ def test_default_url_func(
     )
 
 
-def test_default_view_decorator(
-    app: Application, registry: Registry, test_request_context: RequestContext
-):
+def test_default_view_decorator(app: Application, registry: Registry):
     bp = Blueprint("registry", __name__, url_prefix="/blueprint")
 
     @default_view(bp, RegEntity)

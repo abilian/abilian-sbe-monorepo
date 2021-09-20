@@ -3,7 +3,6 @@ from __future__ import annotations
 import re
 
 from flask import Flask, g, url_for
-from flask.ctx import RequestContext
 from flask_sqlalchemy import SQLAlchemy
 from pytest import fixture
 from toolz import first
@@ -52,7 +51,7 @@ def community2(db, user2):
     return community
 
 
-def test_home(client, community1, user1, req_ctx):
+def test_home(client, community1, user1):
     with client_login(client, user1):
         response = client.get(url_for("wiki.index", community_id=community1.slug))
         assert response.status_code == 302
@@ -63,7 +62,7 @@ def test_home(client, community1, user1, req_ctx):
         assert response.status_code == 200
 
 
-def test_create_page_initial_form(client, community1, user1, req_ctx):
+def test_create_page_initial_form(client, community1, user1):
     with client_login(client, user1):
         g.community = community1
         view = views.PageCreate()
@@ -82,7 +81,6 @@ def test_wiki_indexed(
     app: Flask,
     db: SQLAlchemy,
     client,
-    req_ctx: RequestContext,
 ):
     SERVICES = ("security", "indexing")
     for svc in SERVICES:
@@ -121,7 +119,7 @@ def test_wiki_indexed(
         assert hit["object_key"] == page2.object_key
 
 
-def test_create_page(community1, app, admin_user, client, req_ctx):
+def test_create_page(community1, app, admin_user, client):
     community = community1
 
     with client_login(client, admin_user):

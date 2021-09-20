@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from flask import Flask
-from flask.ctx import AppContext, RequestContext
+from flask.ctx import AppContext
 from jinja2 import Markup
 
 from abilian.app import Application
@@ -89,7 +89,7 @@ def test_action_url_from_context():
     assert OTHER_CAT.url({}) == "http://count?0"
 
 
-def test_render(app: Application, test_request_context: RequestContext):
+def test_render(app: Application):
     setup_actions(app)
 
     assert BASIC.render() == Markup(

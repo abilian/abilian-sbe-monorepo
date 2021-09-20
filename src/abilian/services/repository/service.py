@@ -504,10 +504,7 @@ class RepositoryTransaction:
         self._add_to(uuid, self._deleted, self._set)
 
     def set(
-        self,
-        uuid: UUID,
-        content: IO | bytes | str,
-        encoding: str | None = "utf-8",
+        self, uuid: UUID, content: IO | bytes | str, encoding: str | None = "utf-8"
     ):
         self.begin()
         self._add_to(uuid, self._set, self._deleted)

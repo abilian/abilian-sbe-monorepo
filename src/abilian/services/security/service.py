@@ -585,10 +585,7 @@ class SecurityService(Service):
             del principal.__roles_cache__
 
     def ungrant_role(
-        self,
-        principal: Principal,
-        role: Role | str,
-        object: Model | None = None,
+        self, principal: Principal, role: Role | str, object: Model | None = None
     ):
         """Ungrant `role` to `user` (either globally, if `object` is None, or
         on the specific `object`)."""
