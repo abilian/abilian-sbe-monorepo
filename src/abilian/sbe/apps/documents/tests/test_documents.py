@@ -11,6 +11,7 @@ from abilian.sbe.app import Application
 from abilian.sbe.apps.communities.models import Community
 from abilian.sbe.apps.documents.models import Document, Folder
 from abilian.sbe.apps.documents.views.folders import explore_archive
+from abilian.services import security_service
 from abilian.testing.util import login
 
 
@@ -111,7 +112,6 @@ def test_folder_indexed(
     index_service = app.services["indexing"]
     index_service.start()
 
-    security_service = app.services["security"]
     security_service.start()
 
     folder = Folder(title="Folder 1", parent=community1.folder)

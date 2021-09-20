@@ -247,10 +247,11 @@ class Action:
 
     Endpoint = Endpoint
 
-    # title = None
-    # description = None
-    # icon = None
-    _url = None
+    _title: LazyString | str
+    _description: str
+    _icon: str | Icon | None
+    _url: str | Callable
+
     CSS_CLASS = "action action-{category} action-{category}-{name}"
 
     template_string = (

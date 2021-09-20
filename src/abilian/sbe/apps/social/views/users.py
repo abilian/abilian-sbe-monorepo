@@ -18,7 +18,7 @@ from abilian.sbe.apps.communities.models import Membership
 from abilian.sbe.apps.social.forms import UserProfileForm, UserProfileViewForm
 from abilian.sbe.apps.wall.presenters import ActivityEntryPresenter
 from abilian.sbe.apps.wall.views import get_recent_entries
-from abilian.services import get_service
+from abilian.services import security_service
 from abilian.web import url_for
 from abilian.web.filters import age
 from abilian.web.views import ObjectEdit, default_view
@@ -146,14 +146,15 @@ def users_dt_json():
 @social.route("/users/<int:user_id>")
 @default_view(social, User, "user_id")
 def user(user_id: int) -> str:
-    security = get_service("security")
     user = User.query.get(user_id)
 
     # FIXME: use user profiles
     view_form = UserProfileViewForm(obj=user)
 
     communities = [m.community for m in user.communautes_membership]
-    if current_user != user and (not security.has_role(current_user, "manager")):
+    if current_user != user and (
+        not security_service.has_role(current_user, "manager")
+    ):
         # filter visible communautes (ticket 165)
         communities = [c for c in communities if c.has_member(current_user)]
 
@@ -175,12 +176,8 @@ def user(user_id: int) -> str:
 
 
 def can_edit(user: User) -> bool:
-    security = get_service("security")
-    if not security:
-        return True
-
     # TODO: introduce a "self" role?
-    return (user == current_user) or security.has_role(current_user, "admin")
+    return (user == current_user) or security_service.has_role(current_user, "admin")
 
 
 class UserProfileEdit(ObjectEdit):

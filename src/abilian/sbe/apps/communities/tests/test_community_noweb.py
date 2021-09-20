@@ -14,6 +14,7 @@ from abilian.core.models.subjects import User
 from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.sbe.app import Application
 from abilian.sbe.apps.documents.models import Folder
+from abilian.services import security_service
 from abilian.testing.util import login
 
 from .. import signals, views
@@ -150,14 +151,13 @@ def test_folder_roles(community: Community, db: SQLAlchemy, app: Application) ->
     folder = community.folder
     community.set_membership(user, "member")
     db.session.commit()
-    security = app.services["security"]
 
-    assert security.get_roles(user, folder) == ["reader"]
+    assert security_service.get_roles(user, folder) == ["reader"]
 
     # this tests a bug, where local roles whould disappear when setting
     # membership twice
     community.set_membership(user, "member")
-    assert security.get_roles(user, folder) == ["reader"]
+    assert security_service.get_roles(user, folder) == ["reader"]
 
 
 def test_community_content_decorator(community: Community, db: SQLAlchemy) -> None:
@@ -189,7 +189,6 @@ def test_community_indexed(
     index_service = app.services["indexing"]
     index_service.start()
 
-    security_service = app.services["security"]
     security_service.start()
 
     obj_types = (Community.entity_type,)
@@ -236,7 +235,6 @@ def test_default_view_kw_with_hit(
     index_service = app.services["indexing"]
     index_service.start()
 
-    security_service = app.services["security"]
     security_service.start()
 
     user = User(email="user_1@example.com")

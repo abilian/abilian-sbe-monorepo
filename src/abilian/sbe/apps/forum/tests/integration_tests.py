@@ -6,6 +6,7 @@ from flask_login import login_user
 from flask_sqlalchemy import SQLAlchemy
 
 from abilian.sbe.apps.communities.models import MANAGER, MEMBER
+from abilian.services import security_service
 from abilian.testing.util import client_login
 
 from ..cli import _inject_email
@@ -36,8 +37,7 @@ def test_posts_ordering(db: SQLAlchemy, community1):
 def test_thread_indexed(app, db: SQLAlchemy, community1, community2, req_ctx):
     index_svc = app.services["indexing"]
     index_svc.start()
-    security_svc = app.services["security"]
-    security_svc.start()
+    security_service.start()
 
     thread1 = Thread(title="Community 1", community=community1)
     db.session.add(thread1)
@@ -46,7 +46,6 @@ def test_thread_indexed(app, db: SQLAlchemy, community1, community2, req_ctx):
     db.session.add(thread2)
     db.session.commit()
 
-    index_svc = app.services["indexing"]
     obj_types = (Thread.entity_type,)
 
     login_user(community1.test_user)

@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from abilian.app import Application as BaseApplication
 from abilian.core.models.subjects import User
 from abilian.core.sqlalchemy import SQLAlchemy
-from abilian.services import get_service
+from abilian.services import get_service, security_service
 from abilian.services.security import SecurityService
 
 from .models import UserPreference
@@ -94,10 +94,9 @@ def test_preferences_with_various_types(app: Application, session: Session):
 
 def test_visible_panels(app: Application, db: SQLAlchemy):
     user = User(email="test@example.com")
-    security = cast(SecurityService, app.services["security"])
 
     with app.test_request_context():
-        security.start()
+        security_service.start()
         login_user(user)
 
         for cp in app.template_context_processors["preferences"]:
@@ -108,7 +107,7 @@ def test_visible_panels(app: Application, db: SQLAlchemy):
         expected = ["preferences.visible"]
         assert [p["endpoint"] for p in ctx["menu"]] == expected
 
-        security.grant_role(user, "admin")
+        security_service.grant_role(user, "admin")
         ctx = cp()
         expected = ["preferences.visible", "preferences.admin"]
         assert [p["endpoint"] for p in ctx["menu"]] == expected

@@ -40,6 +40,7 @@ def get_document(id: int) -> Document:
     """
     doc = repository.get_document_by_id(id)
     check_read_access(doc)
+    assert doc
     return doc
 
 
@@ -155,7 +156,7 @@ def get_selected_objects(folder: Folder) -> Tuple[List[Folder], List[Document]]:
     return folders, docs
 
 
-def check_read_access(obj: BaseContent) -> bool:
+def check_read_access(obj: BaseContent) -> None:
     """Checks the current user has appropriate read access on the given object.
 
     Will raise appropriates errors in case the object doesn't exist
@@ -165,11 +166,11 @@ def check_read_access(obj: BaseContent) -> bool:
     if not obj:
         raise NotFound()
     if not security.running:
-        return True
+        return
     if security.has_role(current_user, Admin):
-        return True
+        return
     if repository.has_access(current_user, obj):
-        return True
+        return
     raise Forbidden()
 
 
@@ -195,7 +196,7 @@ def check_write_access(obj: BaseContent) -> None:
     raise Forbidden()
 
 
-def check_manage_access(obj):
+def check_manage_access(obj) -> None:
     """Checks the current user has appropriate manage access on the given
     object.
 

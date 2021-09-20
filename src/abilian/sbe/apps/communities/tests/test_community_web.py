@@ -5,8 +5,8 @@ from flask.testing import FlaskClient
 from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.sbe.app import Application
 from abilian.sbe.apps.communities.models import Community
+from abilian.services import security_service
 from abilian.services.security import Admin
-from abilian.services.security.service import SecurityService
 from abilian.testing.util import client_login
 
 
@@ -17,7 +17,6 @@ def test_index(
     client: FlaskClient,
     req_ctx: RequestContext,
 ) -> None:
-    security_service: SecurityService = app.services["security"]
     security_service.start()
 
     user = community1.test_user
@@ -33,7 +32,6 @@ def test_community_home(
     client: FlaskClient,
     req_ctx: RequestContext,
 ) -> None:
-    security_service: SecurityService = app.services["security"]
     security_service.start()
 
     url = app.default_view.url_for(community1)
@@ -61,7 +59,6 @@ def test_new(
     db: SQLAlchemy,
     req_ctx: RequestContext,
 ) -> None:
-    security_service: SecurityService = app.services["security"]
     # security_service.use_cache = False
     security_service.start()
 
@@ -85,7 +82,6 @@ def test_community_settings(
     community1: Community,
     req_ctx: RequestContext,
 ) -> None:
-    security_service: SecurityService = app.services["security"]
     security_service.start()
 
     url = url_for("communities.settings", community_id=community1.slug)
@@ -95,7 +91,7 @@ def test_community_settings(
         response = client.get(url)
         assert response.status_code == 403
 
-        app.services["security"].grant_role(user, Admin)
+        security_service.grant_role(user, Admin)
         response = client.get(url)
         assert response.status_code == 200
 
@@ -119,7 +115,6 @@ def test_members(
     community2: Community,
     req_ctx: RequestContext,
 ) -> None:
-    security_service: SecurityService = app.services["security"]
     security_service.start()
 
     user1 = community1.test_user

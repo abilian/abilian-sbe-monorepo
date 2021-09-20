@@ -9,7 +9,7 @@ from werkzeug.routing import Rule
 
 from abilian.app import Application
 from abilian.core.models.subjects import User
-from abilian.services import get_service
+from abilian.services import get_service, security_service
 from abilian.services.security import Admin
 from abilian.web import url_for
 
@@ -51,7 +51,7 @@ def all_rules_to_test(app: Application) -> Iterator[Rule]:
 
 def test_public_endpoints_with_no_login(client, app: Application):
     warnings.simplefilter("ignore")
-    app.services["security"].start(ignore_state=True)
+    security_service.start(ignore_state=True)
 
     errors = []
     for endpoint in PUBLIC_ENDPOINTS:
@@ -64,7 +64,7 @@ def test_public_endpoints_with_no_login(client, app: Application):
         except Exception as e:
             errors.append(f"Failed: {endpoint} :\n{e}\n")
 
-    app.services["security"].stop()
+    security_service.stop()
     if errors:
         rich.print(errors)
         raise AssertionError("Some public web tests failed")
@@ -72,7 +72,7 @@ def test_public_endpoints_with_no_login(client, app: Application):
 
 def test_all_simple_endpoints_with_no_login(client, app: Application, request_ctx):
     warnings.simplefilter("ignore")
-    app.services["security"].start(ignore_state=True)
+    security_service.start(ignore_state=True)
 
     for rule in all_rules_to_test(app):
         if rule.endpoint in ENDPOINTS_TO_IGNORE:
