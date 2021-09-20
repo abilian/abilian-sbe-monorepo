@@ -60,7 +60,6 @@ def all_rules_to_test(app):
     return sorted(rules, key=lambda r: r.endpoint)
 
 
-@skip
 def test_all_simple_endpoints_with_no_login(client, app, request_ctx):
     warnings.simplefilter("ignore")
     app.services["security"].start()
@@ -78,7 +77,6 @@ def test_all_simple_endpoints_with_no_login(client, app, request_ctx):
             raise
 
 
-@skip
 def test_all_simple_endpoints_as_admin(client, app, db, request_ctx):
     # FIXME: not done yet
     warnings.simplefilter("ignore")
