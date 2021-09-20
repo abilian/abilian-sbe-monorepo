@@ -2,8 +2,9 @@
 
 import os
 
-from extranet.app import create_app
-
 os.environ["PYTHONPATH"] = "src"
+
+
+from extranet.app import create_app
 
 app = create_app()
