@@ -97,13 +97,13 @@ class PluginManager:
     config: Config
 
     #: Custom apps may want to always load some plugins: list them here.
-    APP_PLUGINS = (
+    APP_PLUGINS = [
         "abilian.web.search",
         "abilian.web.tags",
         "abilian.web.comments",
         "abilian.web.uploads",
         "abilian.web.attachments",
-    )
+    ]
 
     def register_plugin(self, name: str):
         """Load and register a plugin given its package name."""

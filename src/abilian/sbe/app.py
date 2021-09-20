@@ -30,7 +30,7 @@ class CeleryLoader(CeleryBaseLoader):
 
 class Application(BaseApplication):
 
-    APP_PLUGINS = BaseApplication.APP_PLUGINS + (
+    APP_PLUGINS = BaseApplication.APP_PLUGINS + [
         "abilian.sbe.apps.main",
         "abilian.sbe.apps.notifications",
         "abilian.sbe.apps.preferences",
@@ -42,7 +42,7 @@ class Application(BaseApplication):
         "abilian.sbe.apps.communities",
         "abilian.sbe.apps.social",
         "abilian.sbe.apps.preferences",
-    )
+    ]
 
     def setup(self, config: Optional[Type]) -> None:
         super().setup(config)

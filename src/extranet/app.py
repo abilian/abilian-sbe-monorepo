@@ -139,7 +139,7 @@ def home():
 
 
 class Application(BaseApplication):
-    APP_PLUGINS = BaseApplication.APP_PLUGINS + (
+    APP_PLUGINS = BaseApplication.APP_PLUGINS + [
         "abilian.sbe.apps.notifications",
         "abilian.sbe.apps.wiki",
         "abilian.sbe.apps.wall",
@@ -148,7 +148,7 @@ class Application(BaseApplication):
         "abilian.sbe.apps.communities",
         "abilian.sbe.apps.social",
         "abilian.sbe.apps.preferences",
-    )
+    ]
 
     def init_extensions(self):
         super().init_extensions()

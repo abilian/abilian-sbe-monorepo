@@ -16,7 +16,6 @@ from abilian.core.models.subjects import User
 from abilian.core.signals import user_loaded
 from abilian.core.util import unwrap
 from abilian.services import Service, ServiceState
-from abilian.services.security.service import SecurityService
 from abilian.web.action import DynamicIcon, actions
 from abilian.web.nav import NavGroup, NavItem
 
@@ -155,15 +154,14 @@ class AuthService(Service):
         # `g.logged_user` is the actual user. In the future for example we may allow
         # a manager to see site as another user (impersonate), or propose a "see as
         # anonymous" function
-        from abilian.services import get_security_service
+        from abilian.services import security_service
 
         g.user = g.logged_user = user
         is_anonymous = user is None or user.is_anonymous
-        security = get_security_service()
         g.is_manager = (
             user
             and not is_anonymous
-            and (security.has_role(user, "admin") or security.has_role(user, "manager"))
+            and (security_service.has_role(user, "admin") or security_service.has_role(user, "manager"))
         )
 
     def user_logged_out(self, app: Application, user: User):
@@ -182,7 +180,7 @@ class AuthService(Service):
     def do_access_control(self) -> Response | None:
         """`before_request` handler to check if user should be redirected to
         login page."""
-        from abilian.services import get_service
+        from abilian.services import security_service
 
         if current_app.testing and current_app.config.get("NO_LOGIN"):
             # Special case for tests
@@ -197,8 +195,7 @@ class AuthService(Service):
         if current_app.testing and getattr(user, "is_admin", False):
             return None
 
-        security: SecurityService = get_service("security")
-        user_roles = frozenset(security.get_roles(user))
+        user_roles = frozenset(security_service.get_roles(user))
         endpoint = request.endpoint
         blueprint = request.blueprint
 

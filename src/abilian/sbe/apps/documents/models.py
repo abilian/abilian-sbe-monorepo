@@ -2,6 +2,8 @@
 
 TODO: move to an independent service / app.
 """
+from __future__ import annotations
+
 import itertools
 import logging
 import mimetypes
@@ -144,8 +146,8 @@ class CmisObject(InheritSecurity, Entity):
             self.name = title
 
     def clone(
-        self, title: Optional[str] = None, parent: Optional["Folder"] = None
-    ) -> "CmisObject":
+        self, title: Optional[str] = None, parent: Optional[Folder] = None
+    ) -> CmisObject:
         if not title:
             title = self.title
         new_obj = self.__class__(title=title, name=title, parent=parent)
@@ -186,7 +188,7 @@ class CmisObject(InheritSecurity, Entity):
         return self._parent_id is None
 
     @property
-    def community(self) -> Optional["Community"]:
+    def community(self) -> Optional[Community]:
         if not self.is_folder:
             return self.parent and self.parent.community
 
@@ -221,7 +223,7 @@ class PathAndSecurityIndexable:
 
     def _iter_to_root(
         self, skip_self: bool = False
-    ) -> Iterator[Union["Document", "Folder"]]:
+    ) -> Iterator[BaseContent]:
         obj = self if not skip_self else self.parent
         while obj:
             yield obj
@@ -304,7 +306,7 @@ class Folder(PathAndSecurityIndexable, CmisObject):
         return icon_url("folder.png")
 
     @property
-    def children(self) -> List[Union["Document", "Folder"]]:
+    def children(self) -> List[BaseContent]:
         return self.subfolders + self.documents
 
     @property
@@ -321,18 +323,18 @@ class Folder(PathAndSecurityIndexable, CmisObject):
 
         return self.parent.depth + 1
 
-    def create_subfolder(self, title: str) -> "Folder":
+    def create_subfolder(self, title: str) -> Folder:
         subfolder = Folder(title=title, parent=self)
         assert subfolder in self.children
         return subfolder
 
-    def create_document(self, title: str) -> "Document":
+    def create_document(self, title: str) -> Document:
         doc = Document(title=title, parent=self)
         assert doc.parent == self
         assert doc in self.children
         return doc
 
-    def get_object_by_path(self, path: str) -> Union["Document", "Folder", None]:
+    def get_object_by_path(self, path: str) -> Union[BaseContent, None]:
         assert path.startswith("/")
         assert "//" not in path
 
@@ -362,13 +364,13 @@ class Folder(PathAndSecurityIndexable, CmisObject):
     # Security related methods
     #
     @property
-    def filtered_children(self) -> List[Union["Folder", "Document"]]:
+    def filtered_children(self) -> List[BaseContent]:
         return security.filter_with_permission(
             current_user, "read", self.children, inherit=True
         )
 
     @property
-    def filtered_subfolders(self) -> List["Folder"]:
+    def filtered_subfolders(self) -> List[Folder]:
         return security.filter_with_permission(
             current_user, "read", self.subfolders, inherit=True
         )
