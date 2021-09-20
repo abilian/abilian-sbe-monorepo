@@ -17,9 +17,14 @@ def initdb():
 
 
 @click.command()
+@click.option("-y", "--yes", is_flag=True)
 @with_appcontext
-def dropdb():
+def dropdb(yes=None):
     """Drop the application DB."""
+    if yes:
+        db.drop_all()
+        return
+
     confirm = input("Are you sure you want to drop the database? (Y/N) ")
     print(f"Dropping DB using engine: {db}")
     if confirm.lower() == "y":
