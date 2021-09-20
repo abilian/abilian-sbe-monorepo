@@ -4,9 +4,9 @@ common: &common
   working_directory: ~/repo
   steps:
     - checkout
-    - restore_cache:
-        keys:
-          - v2-deps-{{ .Environment.CIRCLE_JOB }}-{{ checksum "poetry.lock" }}
+    # - restore_cache:
+    #    keys:
+    #      - v2-deps-{{ .Environment.CIRCLE_JOB }}-{{ checksum "poetry.lock" }}
     - run:
         name: install dependencies
         command: |
