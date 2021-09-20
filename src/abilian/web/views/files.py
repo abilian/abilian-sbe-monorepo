@@ -7,7 +7,6 @@ from flask import Response, request, send_file
 from werkzeug.exceptions import BadRequest
 
 from abilian.core.util import utc_dt
-
 from .base import View
 
 

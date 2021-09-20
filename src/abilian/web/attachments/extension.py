@@ -8,7 +8,6 @@ from flask_login import current_user
 from abilian.core.models import attachment as attachments
 from abilian.services.security import READ, WRITE, security
 from abilian.web import url_for
-
 from .forms import AttachmentForm
 from .views import UPLOAD_BUTTON
 from .views import bp as blueprint

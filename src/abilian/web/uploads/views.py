@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import typing
-from typing import Dict
 
 from flask import current_app, send_file
 from flask_login import current_user

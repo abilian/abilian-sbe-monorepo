@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import uuid
 from io import StringIO
-
 #
 # Unit tests
 #

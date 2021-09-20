@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import os
 import sys
-from typing import Dict, List
 
 import pkg_resources
 from flask import current_app, render_template

@@ -9,7 +9,7 @@ import copy
 import logging
 import re
 from collections import OrderedDict
-from typing import Any, Callable, Collection, Dict, List, Optional, Tuple
+from typing import Any, Callable, Collection
 
 import sqlalchemy as sa
 from flask import (
@@ -36,7 +36,6 @@ from abilian.i18n import _l
 from abilian.services import audit_service, get_service
 from abilian.services.security import READ  # noqa
 from abilian.services.vocabularies.models import BaseVocabulary
-
 from . import search
 from .action import (
     Action,

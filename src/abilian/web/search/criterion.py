@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Any, Optional, Tuple, Type
+from typing import TYPE_CHECKING, Any
 
 from flask import Request
 from sqlalchemy import func, orm

@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
 
 import sqlalchemy as sa
 import sqlalchemy.orm
@@ -23,7 +22,6 @@ from abilian.web.views.object import (
     ObjectDelete,
     ObjectEdit,
 )
-
 from .forms import CommentForm
 
 bp = Blueprint("comments", __name__, url_prefix="/comments")

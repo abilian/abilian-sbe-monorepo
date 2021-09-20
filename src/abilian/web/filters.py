@@ -5,7 +5,7 @@ import re
 from calendar import timegm
 from datetime import date, datetime
 from functools import wraps
-from typing import Any, Callable, Optional, Union
+from typing import Any, Callable
 
 import bleach
 import dateutil.parser
@@ -19,7 +19,6 @@ from pytz import utc
 from werkzeug.routing import BuildError
 
 from abilian.core.util import local_dt, slugify, utc_dt
-
 from .util import url_for
 
 

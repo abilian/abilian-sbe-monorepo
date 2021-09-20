@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Callable, List
+from typing import Callable
 
 import sqlalchemy as sa
 import sqlalchemy.orm

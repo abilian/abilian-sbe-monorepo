@@ -1,8 +1,6 @@
 """"""
 from __future__ import annotations
 
-from typing import Optional
-
 import sqlalchemy as sa
 import sqlalchemy.orm
 from flask import current_app, send_file
@@ -17,7 +15,6 @@ from abilian.web import nav, url_for
 from abilian.web.action import ButtonAction, actions
 from abilian.web.blueprints import Blueprint
 from abilian.web.views import BaseObjectView, ObjectCreate, ObjectDelete, ObjectEdit
-
 from .forms import AttachmentForm
 
 bp = Blueprint("attachments", __name__, url_prefix="/attachments")

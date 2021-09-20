@@ -10,7 +10,6 @@ from wtforms.form import Form
 from abilian.app import Application
 from abilian.core.entities import Entity
 from abilian.services.security import READ, WRITE, Anonymous, Owner, Role
-
 from . import FormPermissions, fields, filters
 
 

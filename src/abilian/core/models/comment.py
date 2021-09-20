@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import abc
-from typing import Any, Type
+from typing import Any
 
 from sqlalchemy import CheckConstraint, Column, ForeignKey, Integer, UnicodeText
 from sqlalchemy.orm import backref, relationship

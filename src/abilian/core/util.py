@@ -9,7 +9,7 @@ import time
 import unicodedata
 from datetime import datetime
 from math import ceil
-from typing import Any, Union
+from typing import Any
 
 import pytz
 from babel.dates import LOCALTZ

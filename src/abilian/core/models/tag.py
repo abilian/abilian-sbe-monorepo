@@ -8,7 +8,6 @@ import sqlalchemy.orm
 
 from abilian.core.entities import Entity
 from abilian.core.extensions import db
-
 from .base import IdMixin, Model
 
 #: backref attribute on tagged elements

@@ -4,7 +4,7 @@ from __future__ import annotations
 import colorsys
 import hashlib
 from pathlib import Path
-from typing import Any, Dict, Tuple
+from typing import Any
 
 import pkg_resources
 import sqlalchemy as sa
@@ -16,7 +16,6 @@ from abilian.core.models.blob import Blob
 from abilian.core.models.subjects import User
 from abilian.services.image import CROP, RESIZE_MODES, get_format, get_size, resize
 from abilian.web.util import url_for
-
 from .files import BaseFileDownload
 
 blueprint = Blueprint("images", __name__, url_prefix="/images")

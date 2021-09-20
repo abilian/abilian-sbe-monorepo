@@ -4,8 +4,8 @@ from __future__ import annotations
 import imghdr
 from io import BytesIO
 
-import babel.dates
 import PIL.Image
+import babel.dates
 from flask import current_app, flash, g, redirect, render_template, request, url_for
 from werkzeug.exceptions import InternalServerError
 from wtforms.fields import StringField

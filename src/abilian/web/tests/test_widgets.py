@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Union
-
 import sqlalchemy as sa
 from flask import Flask
 from flask.ctx import RequestContext

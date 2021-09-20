@@ -51,7 +51,7 @@ import unicodedata
 from datetime import datetime, tzinfo
 from gettext import GNUTranslations
 from pathlib import Path
-from typing import Any, Iterator, List, Optional, Tuple
+from typing import Any, Iterator
 
 import flask_babel
 import pytz

@@ -5,7 +5,7 @@ import logging
 import typing
 from collections import OrderedDict
 from functools import partial
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from flask import g, has_app_context
 from flask_login import current_user
@@ -18,7 +18,6 @@ from abilian.core.logging import patch_logger
 from abilian.core.models.subjects import User
 from abilian.i18n import _, _n
 from abilian.services.security import Permission
-
 from .widgets import DefaultViewWidget
 
 if typing.TYPE_CHECKING:

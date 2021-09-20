@@ -7,14 +7,13 @@ should appear in user menu
 from __future__ import annotations
 
 import typing
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any
 
 from flask import g
 from flask_babel.speaklater import LazyString
 from jinja2 import Markup, Template
 
 from abilian.web.action import Endpoint
-
 from .action import ACTIVE, ENABLED, Action, Glyphicon, getset
 
 if typing.TYPE_CHECKING:

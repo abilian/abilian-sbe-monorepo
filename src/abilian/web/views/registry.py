@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import inspect
 from operator import attrgetter, itemgetter
-from typing import TYPE_CHECKING, Any, Callable, Dict, Optional, Type, Union
+from typing import TYPE_CHECKING, Any, Callable
 
 from flask import Blueprint, url_for
 from flask.blueprints import BlueprintSetupState

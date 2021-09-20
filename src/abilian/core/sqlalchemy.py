@@ -6,7 +6,7 @@ import logging
 import sys
 import uuid
 from sqlite3 import Connection
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 import babel
 import babel.dates

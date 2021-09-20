@@ -1,7 +1,7 @@
 """"""
 from __future__ import annotations
 
-from typing import Any, Dict, List
+from typing import Any
 
 from flask import g
 from sqlalchemy.ext.declarative import declared_attr

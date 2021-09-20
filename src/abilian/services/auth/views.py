@@ -8,7 +8,7 @@ from __future__ import annotations
 import random
 import string
 from datetime import datetime
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any
 from urllib.parse import urljoin, urlparse
 
 from flask import (
@@ -42,7 +42,6 @@ from abilian.core.util import md5, unwrap
 from abilian.i18n import _, render_template_i18n
 from abilian.services.security import Anonymous
 from abilian.web.blueprints import Blueprint
-
 from .models import LoginSession
 
 __all__ = ("login",)

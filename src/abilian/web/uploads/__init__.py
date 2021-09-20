@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from abilian.app import Application
-
 from .extension import FileUploadsExtension
 
 

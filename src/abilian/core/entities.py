@@ -6,17 +6,6 @@ import collections
 import re
 from datetime import datetime
 from inspect import isclass
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Dict,
-    FrozenSet,
-    List,
-    Optional,
-    Tuple,
-    Type,
-    cast,
-)
 
 import sqlalchemy as sa
 from flask import current_app

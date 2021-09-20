@@ -11,7 +11,6 @@ import random
 import string
 from abc import ABCMeta, abstractmethod
 from datetime import datetime, timedelta
-from typing import Type, Union
 
 import bcrypt
 import sqlalchemy as sa
@@ -26,7 +25,6 @@ from sqlalchemy.types import Boolean, DateTime, Integer, LargeBinary, UnicodeTex
 
 from abilian.core import sqlalchemy as sa_types
 from abilian.core.util import fqcn
-
 from .base import SEARCHABLE, SYSTEM, IdMixin, Indexable, TimestampedMixin, db
 
 __all__ = (

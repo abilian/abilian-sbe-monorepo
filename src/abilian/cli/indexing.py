@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import time
 from collections import deque
-from typing import Set
 
 import click
 import sqlalchemy as sa

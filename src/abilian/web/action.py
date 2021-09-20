@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import logging
 import re
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Any, Callable
 
 from flask import current_app, g
 from flask.app import Flask

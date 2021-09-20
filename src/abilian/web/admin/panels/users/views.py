@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import html
-from typing import Dict, cast
+from typing import cast
 
 import sqlalchemy as sa
 import sqlalchemy.orm

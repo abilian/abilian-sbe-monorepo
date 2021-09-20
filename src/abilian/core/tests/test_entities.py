@@ -3,16 +3,13 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from pytest import fixture
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 
 from abilian.core.entities import Entity
 from abilian.core.models.base import AUDITABLE, NOT_SEARCHABLE, SEARCHABLE, Info
 from abilian.core.models.subjects import User
-
 from .dummy import DummyContact
+
 
 # @fixture
 # def session() -> Session:

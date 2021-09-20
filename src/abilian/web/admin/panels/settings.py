@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from datetime import timedelta
-from typing import Optional
 
 from flask import current_app, flash, redirect, render_template, request, url_for
 from flask_babel import gettext as _

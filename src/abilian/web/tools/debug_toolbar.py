@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import sys
-from typing import List
 
 from blinker import Namespace, Signal
 from flask import current_app, g

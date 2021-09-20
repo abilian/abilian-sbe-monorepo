@@ -9,7 +9,6 @@ from sqlalchemy import Column, ForeignKey, Integer, UnicodeText
 from sqlalchemy.orm import backref, relationship
 
 from abilian.core.entities import Entity, EntityQuery
-
 from .blob import Blob
 
 #: name of backref on target :class:`Entity` object
