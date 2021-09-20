@@ -2,9 +2,6 @@
 """
 
 import warnings
-from unittest import skip
-
-from _pytest import mark
 
 from abilian.core.models.subjects import User
 from abilian.services import get_service
