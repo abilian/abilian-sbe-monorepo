@@ -22,6 +22,7 @@ from abilian.web.views.object import (
     ObjectDelete,
     ObjectEdit,
 )
+
 from .forms import CommentForm
 
 bp = Blueprint("comments", __name__, url_prefix="/comments")

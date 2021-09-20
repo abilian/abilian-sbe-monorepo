@@ -4,7 +4,7 @@ import shutil
 import typing
 import weakref
 from pathlib import Path
-from typing import IO, Any, Dict, Optional, Set, Union
+from typing import IO, Any
 from uuid import UUID, uuid1
 
 import sqlalchemy as sa

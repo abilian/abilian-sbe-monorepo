@@ -36,6 +36,7 @@ from abilian.i18n import _l
 from abilian.services import audit_service, get_service
 from abilian.services.security import READ  # noqa
 from abilian.services.vocabularies.models import BaseVocabulary
+
 from . import search
 from .action import (
     Action,

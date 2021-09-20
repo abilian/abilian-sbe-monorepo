@@ -39,6 +39,7 @@ from abilian.services import image
 from abilian.services.image import get_format
 from abilian.web import url_for
 from abilian.web.filters import babel2datepicker, labelize
+
 from .util import babel2datetime
 
 logger = logging.getLogger(__name__)

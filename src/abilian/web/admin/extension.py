@@ -16,6 +16,7 @@ from abilian.services.security import Admin as AdminRole
 from abilian.services.security import security
 from abilian.web.action import Endpoint, actions
 from abilian.web.nav import BreadcrumbItem, NavGroup, NavItem
+
 from .panel import AdminPanel
 
 logger = logging.getLogger(__name__)

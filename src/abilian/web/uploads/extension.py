@@ -17,6 +17,7 @@ from abilian.app import Application
 from abilian.core import signals
 from abilian.core.models.subjects import User
 from abilian.web import url_for
+
 from .views import bp as blueprint
 
 logger = logging.getLogger(__name__)

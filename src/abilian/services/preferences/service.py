@@ -8,7 +8,7 @@ Notes:
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any
 
 from flask import Blueprint, Flask, g, redirect, request, url_for
 from flask_login import current_user

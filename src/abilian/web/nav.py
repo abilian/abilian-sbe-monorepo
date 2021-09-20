@@ -14,6 +14,7 @@ from flask_babel.speaklater import LazyString
 from jinja2 import Markup, Template
 
 from abilian.web.action import Endpoint
+
 from .action import ACTIVE, ENABLED, Action, Glyphicon, getset
 
 if typing.TYPE_CHECKING:

@@ -19,6 +19,7 @@ from pytz import utc
 from werkzeug.routing import BuildError
 
 from abilian.core.util import local_dt, slugify, utc_dt
+
 from .util import url_for
 
 

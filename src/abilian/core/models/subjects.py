@@ -25,6 +25,7 @@ from sqlalchemy.types import Boolean, DateTime, Integer, LargeBinary, UnicodeTex
 
 from abilian.core import sqlalchemy as sa_types
 from abilian.core.util import fqcn
+
 from .base import SEARCHABLE, SYSTEM, IdMixin, Indexable, TimestampedMixin, db
 
 __all__ = (

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 from datetime import timedelta
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable
 
 import sqlalchemy as sa
 

@@ -12,7 +12,7 @@ import traceback
 from abc import ABCMeta, abstractmethod
 from base64 import b64decode, b64encode
 from pathlib import Path
-from typing import Any, List
+from typing import Any
 from xmlrpc.client import ServerProxy
 
 from flask import Flask

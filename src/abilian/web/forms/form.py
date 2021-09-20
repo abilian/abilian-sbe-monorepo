@@ -18,6 +18,7 @@ from abilian.core.logging import patch_logger
 from abilian.core.models.subjects import User
 from abilian.i18n import _, _n
 from abilian.services.security import Permission
+
 from .widgets import DefaultViewWidget
 
 if typing.TYPE_CHECKING:

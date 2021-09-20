@@ -7,6 +7,7 @@ from __future__ import annotations
 import hashlib
 import uuid
 from pathlib import Path
+from typing.io import IO
 
 import sqlalchemy as sa
 from sqlalchemy.event import listens_for
@@ -15,7 +16,6 @@ from sqlalchemy.orm.session import Session
 from sqlalchemy.orm.unitofwork import UOWTransaction
 from sqlalchemy.schema import Column
 from sqlalchemy.types import Integer
-from typing.io import IO
 
 from abilian.core.models.base import Model
 from abilian.core.sqlalchemy import UUID, JSONDict

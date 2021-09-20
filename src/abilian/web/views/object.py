@@ -15,9 +15,10 @@ from abilian.core.signals import activity
 from abilian.i18n import _, _l
 from abilian.services import get_service
 from abilian.services.security import CREATE, DELETE, READ, WRITE
-from .base import JSONView, View
+
 from .. import csrf, forms, nav
 from ..action import ButtonAction, Endpoint, actions
+from .base import JSONView, View
 
 logger = logging.getLogger(__name__)
 

@@ -3,19 +3,7 @@ from __future__ import annotations
 
 from functools import wraps
 from itertools import chain
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Callable,
-    Collection,
-    Dict,
-    FrozenSet,
-    List,
-    Optional,
-    Set,
-    Type,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, Callable, Collection
 
 import sqlalchemy as sa
 from flask import g

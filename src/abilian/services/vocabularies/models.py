@@ -1,7 +1,7 @@
 """"""
 from __future__ import annotations
 
-from typing import Any, Dict, Tuple, Type
+from typing import Any
 
 import sqlalchemy as sa
 import sqlalchemy.event

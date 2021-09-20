@@ -4,7 +4,7 @@ from __future__ import annotations
 import logging
 from abc import ABCMeta, abstractmethod
 from operator import attrgetter
-from typing import Any, Dict, Optional, Tuple, Type, Union
+from typing import Any
 
 import sqlalchemy as sa
 from sqlalchemy.orm.session import Session

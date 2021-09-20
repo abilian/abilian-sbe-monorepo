@@ -16,6 +16,7 @@ from abilian.core.models.blob import Blob
 from abilian.core.models.subjects import User
 from abilian.services.image import CROP, RESIZE_MODES, get_format, get_size, resize
 from abilian.web.util import url_for
+
 from .files import BaseFileDownload
 
 blueprint = Blueprint("images", __name__, url_prefix="/images")

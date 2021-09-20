@@ -1,6 +1,7 @@
 """"""
 from __future__ import annotations
 
+from multiprocessing.util import register_after_fork
 from typing import Any
 
 from celery import Celery
@@ -14,7 +15,6 @@ from flask import Flask
 from flask import current_app as flask_current_app
 from flask import has_app_context
 from flask.helpers import locked_cached_property
-from multiprocessing.util import register_after_fork
 from sqlalchemy.orm.session import Session
 
 from abilian.core.extensions import db

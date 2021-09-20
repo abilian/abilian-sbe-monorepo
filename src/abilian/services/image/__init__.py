@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import hashlib
 from io import BytesIO
-from typing import Any, Dict, Tuple, Union
+from typing import Any
 
 from PIL import Image
 

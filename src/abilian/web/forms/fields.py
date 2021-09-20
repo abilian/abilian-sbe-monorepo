@@ -32,6 +32,7 @@ from wtforms_sqlalchemy.fields import has_identity_key
 from abilian import i18n
 from abilian.core.extensions import db
 from abilian.core.util import utc_dt
+
 from .util import babel2datetime
 from .widgets import DateInput, DateTimeInput, FileInput, Select2, Select2Ajax
 

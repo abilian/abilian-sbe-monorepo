@@ -10,7 +10,7 @@ from __future__ import annotations
 import logging
 from datetime import datetime
 from inspect import isclass
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set
+from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
 from flask import current_app, g

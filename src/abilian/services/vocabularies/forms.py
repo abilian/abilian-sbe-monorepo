@@ -1,8 +1,6 @@
 """"""
 from __future__ import annotations
 
-from typing import Dict, List
-
 import bleach
 from wtforms.fields import BooleanField, IntegerField, StringField
 from wtforms.widgets import HiddenInput
