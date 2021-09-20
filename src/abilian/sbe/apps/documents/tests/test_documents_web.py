@@ -8,7 +8,6 @@ from zipfile import ZipFile
 import flask_mail
 import pytest
 from flask import g, get_flashed_messages
-from flask.ctx import RequestContext
 from flask.testing import FlaskClient
 from pytest import fixture
 from toolz import first
@@ -53,7 +52,6 @@ def test_util_create(
     client: FlaskClient,
     db: SQLAlchemy,
     community: Community,
-    req_ctx: RequestContext,
 ) -> None:
     folder = community.folder
     user = community.test_user
@@ -85,7 +83,6 @@ def test_home(
     client: FlaskClient,
     db: SQLAlchemy,
     community: Community,
-    req_ctx: RequestContext,
 ) -> None:
     folder = community.folder
     user = community.test_user
@@ -159,27 +156,21 @@ def _test_upload(
     assert response.status_code == 404
 
 
-def test_text_upload(
-    client: FlaskClient, community: Community, req_ctx: RequestContext
-) -> None:
+def test_text_upload(client: FlaskClient, community: Community) -> None:
     name = "wikipedia-fr.txt"
     user = community.test_user
     with client_login(client, user):
         _test_upload(community, client, name, "text/plain", test_preview=False)
 
 
-def test_pdf_upload(
-    client: FlaskClient, community: Community, req_ctx: RequestContext
-) -> None:
+def test_pdf_upload(client: FlaskClient, community: Community) -> None:
     name = "onepage.pdf"
     user = community.test_user
     with client_login(client, user):
         _test_upload(community, client, name, "application/pdf")
 
 
-def test_image_upload(
-    client: FlaskClient, community: Community, req_ctx: RequestContext
-) -> None:
+def test_image_upload(client: FlaskClient, community: Community) -> None:
     name = "picture.jpg"
     user = community.test_user
     with client_login(client, user):
@@ -201,7 +192,7 @@ def test_binary_upload(client, community, req_ctx):
 
 
 def test_zip_upload_uncompress(
-    community: Community, db: SQLAlchemy, client: FlaskClient, req_ctx: RequestContext
+    community: Community, db: SQLAlchemy, client: FlaskClient
 ) -> None:
     subfolder = Folder(title="folder 1", parent=community.folder)
     db.session.add(subfolder)
@@ -227,9 +218,7 @@ def test_zip_upload_uncompress(
     assert expected == {f.title for f in folder.subfolders}
 
 
-def test_zip(
-    community: Community, client: FlaskClient, req_ctx: RequestContext
-) -> None:
+def test_zip(community: Community, client: FlaskClient) -> None:
     user = community.test_user
     with client_login(client, user):
         title = "onepage.pdf"
@@ -255,9 +244,7 @@ def test_zip(
         assert [zipfile.namelist()[0]] == [title]
 
 
-def test_recursive_zip(
-    community: Community, client: FlaskClient, req_ctx: RequestContext
-) -> None:
+def test_recursive_zip(community: Community, client: FlaskClient) -> None:
     user = community.test_user
     with client_login(client, user):
         data1 = {"action": "new", "title": "my folder"}
@@ -295,7 +282,7 @@ def test_recursive_zip(
 
 
 def test_document_send_by_mail(
-    app: Application, community: Community, client: FlaskClient, req_ctx: RequestContext
+    app: Application, community: Community, client: FlaskClient
 ) -> None:
     mail = app.extensions["mail"]
     folder = community.folder

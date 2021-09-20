@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import IO
 
 import pytest
-from flask.ctx import RequestContext
 from sqlalchemy.orm import Session
 
 from abilian.core.models.subjects import User
@@ -22,7 +21,7 @@ def open_file(filename: str) -> IO[bytes]:
     return path.open("rb")
 
 
-def test_document(app: Application, session: Session, req_ctx: RequestContext) -> None:
+def test_document(app: Application, session: Session) -> None:
     root = Folder(title="root")
     doc = Document(parent=root, title="test")
     data = open_file("onepage.pdf").read()
@@ -35,9 +34,7 @@ def test_document(app: Application, session: Session, req_ctx: RequestContext) -
     doc.ensure_antivirus_scheduled()
 
 
-def test_antivirus_properties(
-    app: Application, session: Session, req_ctx: RequestContext
-) -> None:
+def test_antivirus_properties(app: Application, session: Session) -> None:
     root = Folder(title="root")
     doc = Document(parent=root, title="test")
     doc.set_content(b"content", "text/plain")
@@ -109,7 +106,6 @@ def test_folder_indexed(
     session: Session,
     community1: Community,
     community2: Community,
-    req_ctx: RequestContext,
 ) -> None:
     index_service.start()
 

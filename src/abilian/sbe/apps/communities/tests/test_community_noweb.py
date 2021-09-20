@@ -6,7 +6,6 @@ from unittest import mock
 
 import pytest
 import sqlalchemy as sa
-from flask.ctx import RequestContext
 from pytest import fixture
 from sqlalchemy import orm
 from sqlalchemy.orm import Session
@@ -185,9 +184,7 @@ def test_community_content_decorator(community: Community, db: SQLAlchemy) -> No
 ##########################################################################
 
 
-def test_community_indexed(
-    app: Application, db: SQLAlchemy, req_ctx: RequestContext
-) -> None:
+def test_community_indexed(app: Application, db: SQLAlchemy) -> None:
     index_service.start()
 
     security_service.start()
@@ -231,7 +228,7 @@ def test_community_indexed(
 
 
 def test_default_view_kw_with_hit(
-    app: Application, db: SQLAlchemy, community: Community, req_ctx: RequestContext
+    app: Application, db: SQLAlchemy, community: Community
 ) -> None:
     index_service.start()
 

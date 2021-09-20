@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from flask import url_for
-from flask.ctx import RequestContext
 from flask.testing import FlaskClient
 
 from abilian.core.sqlalchemy import SQLAlchemy
@@ -17,7 +16,6 @@ def test_index(
     app: Application,
     db: SQLAlchemy,
     client: FlaskClient,
-    req_ctx: RequestContext,
 ) -> None:
     security_service.start()
 
@@ -32,7 +30,6 @@ def test_community_home(
     community2: Community,
     app: Application,
     client: FlaskClient,
-    req_ctx: RequestContext,
 ) -> None:
     security_service.start()
 
@@ -59,7 +56,6 @@ def test_new(
     app: Application,
     client: FlaskClient,
     db: SQLAlchemy,
-    req_ctx: RequestContext,
 ) -> None:
     # security_service.use_cache = False
     security_service.start()
@@ -82,7 +78,6 @@ def test_community_settings(
     app: Application,
     client: FlaskClient,
     community1: Community,
-    req_ctx: RequestContext,
 ) -> None:
     security_service.start()
 
@@ -115,7 +110,6 @@ def test_members(
     db: SQLAlchemy,
     community1: Community,
     community2: Community,
-    req_ctx: RequestContext,
 ) -> None:
     security_service.start()
 

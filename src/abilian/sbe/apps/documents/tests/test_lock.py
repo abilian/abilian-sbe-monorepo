@@ -3,7 +3,6 @@ from __future__ import annotations
 from datetime import datetime, timedelta
 from unittest import mock
 
-from flask.ctx import RequestContext
 from flask_login import login_user
 from pytz import UTC
 from sqlalchemy.orm import Session
@@ -26,7 +25,7 @@ def test_lock() -> None:
     assert l.date == date
 
 
-def test_lock2(app: Application, session: Session, req_ctx: RequestContext) -> None:
+def test_lock2(app: Application, session: Session) -> None:
     user = User(
         email="test@example.com", first_name="Joe", last_name="Smith", can_login=True
     )
