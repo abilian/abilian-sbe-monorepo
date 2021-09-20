@@ -2,7 +2,6 @@
 
 Reuses fixtures defined in abilian-core.
 """
-import logging
 import os
 
 from pytest import fixture
