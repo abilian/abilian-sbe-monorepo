@@ -10,15 +10,14 @@ from werkzeug.wrappers.response import Response
 
 from abilian.core.models.subjects import User
 from abilian.sbe.apps.communities.presenters import CommunityPresenter
-from abilian.services import get_service
+from abilian.services import get_service, security_service
 from abilian.services.security import MANAGE
 
 
 def require_admin(func: Callable) -> Callable:
     @wraps(func)
     def decorated_view(*args: Any, **kwargs: Any) -> Union[str, Response]:
-        security = get_service("security")
-        is_admin = security.has_role(current_user, "admin")
+        is_admin = security_service.has_role(current_user, "admin")
         if not is_admin:
             raise Forbidden()
         return func(*args, **kwargs)
@@ -32,8 +31,7 @@ def require_manage(func: Callable) -> Callable:
         community = g.community
         if community and community.has_permission(current_user, MANAGE):
             return func(*args, **kwargs)
-        security = get_service("security")
-        is_admin = security.has_role(current_user, "admin")
+        is_admin = security_service.has_role(current_user, "admin")
         if not is_admin:
             raise Forbidden()
         return func(*args, **kwargs)
@@ -65,8 +63,7 @@ def has_access(
     if user.is_anonymous:
         return False
 
-    security = get_service("security")
-    is_admin = security.has_role(user, "admin")
+    is_admin = security_service.has_role(user, "admin")
     if is_admin:
         return True
 
@@ -82,7 +79,6 @@ def has_access(
 def is_manager(
     context: Optional[Dict[str, Any]] = None, user: Optional[User] = None
 ) -> bool:
-    security = get_service("security")
 
     if not user:
         user = current_user
@@ -97,7 +93,7 @@ def is_manager(
     if community.has_permission(user, MANAGE) or user == community.creator:
         return True
 
-    if security.has_role(user, "admin"):
+    if security_service.has_role(user, "admin"):
         return True
 
     return False
