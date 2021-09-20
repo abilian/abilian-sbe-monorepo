@@ -49,7 +49,7 @@ def all_rules_to_test(app: Application) -> Iterator[Rule]:
     return sorted(rules, key=lambda r: r.endpoint)
 
 
-def test_public_endpoints_with_no_login(client, app: Application, request_ctx):
+def test_public_endpoints_with_no_login(client, app: Application):
     warnings.simplefilter("ignore")
     app.services["security"].start(ignore_state=True)
 

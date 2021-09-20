@@ -163,6 +163,7 @@ importlib-resources = "^5.2.2"
 # Development / testing
 pytest-cov = "*"
 pytest-flask = "^1.0.0"
+pytest-xdist = "^2.3.0"
 coveralls = "*"
 Flask-LinkTester = "*"
 Flask-DebugToolbar = ">=0.10"
@@ -188,6 +189,7 @@ black = { version = "*", allow-prereleases = true }
 plumbum = "*"
 
 watchgod = "^0.7"
+honcho = "^1.0.1"
 
 # Added later...
 html5lib = "^1.1"
@@ -204,10 +206,7 @@ types-requests = "^2.25.1"
 types-setuptools = "^57.0.0"
 types-chardet = "^0.1.5"
 types-Markdown = "^3.3.2"
-honcho = "^1.0.1"
-pytest-xdist = "^2.3.0"
 safety = "^1.10.3"
-pyannotate = "^1.2.0"
 MonkeyType = "^21.5.0"
 
 

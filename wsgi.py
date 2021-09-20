@@ -1,5 +1,7 @@
 """Create an application instance."""
 
+# flake8: noqa
+
 import sys
 
 sys.path = ["src"] + sys.path
