@@ -221,9 +221,7 @@ class PathAndSecurityIndexable:
         ("_indexable_roles_and_users", ("allowed_roles_and_users",)),
     )
 
-    def _iter_to_root(
-        self, skip_self: bool = False
-    ) -> Iterator[BaseContent]:
+    def _iter_to_root(self, skip_self: bool = False) -> Iterator[BaseContent]:
         obj = self if not skip_self else self.parent
         while obj:
             yield obj

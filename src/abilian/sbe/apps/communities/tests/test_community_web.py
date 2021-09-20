@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from flask import url_for
 from flask.ctx import RequestContext
 from flask.testing import FlaskClient

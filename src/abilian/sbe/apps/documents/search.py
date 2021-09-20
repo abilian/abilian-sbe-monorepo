@@ -1,4 +1,6 @@
 """Indexing related utilities for Folder, Documents."""
+from __future__ import annotations
+
 import sqlalchemy as sa
 
 from abilian.core.entities import Entity

@@ -1,4 +1,6 @@
 """Parses XML messages and converts them to objects."""
+from __future__ import annotations
+
 import base64
 from datetime import datetime
 from typing import Dict, List

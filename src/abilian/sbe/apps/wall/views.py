@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import date
 from itertools import groupby, islice
 from typing import Any, Dict

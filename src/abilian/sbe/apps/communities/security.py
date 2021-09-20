@@ -1,5 +1,7 @@
 """Decorators and helpers to check access to communities."""
 
+from __future__ import annotations
+
 from functools import wraps
 from typing import Any, Callable, Dict, Optional, Union
 

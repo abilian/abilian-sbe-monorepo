@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from tempfile import NamedTemporaryFile
 from typing import IO
 

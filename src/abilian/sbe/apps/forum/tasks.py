@@ -1,4 +1,6 @@
 """Celery tasks related to document transformation and preview."""
+from __future__ import annotations
+
 import email
 import mailbox
 import re

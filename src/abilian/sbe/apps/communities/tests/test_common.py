@@ -1,6 +1,8 @@
 # Note: this test suite is using pytest instead of the unittest-based scaffolding
 # provided by SBE. Hopefully one day all of SBE will follow.
 
+from __future__ import annotations
+
 from datetime import datetime, timedelta
 from typing import Iterator, Union
 

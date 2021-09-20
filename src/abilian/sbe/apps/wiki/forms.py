@@ -1,4 +1,6 @@
 """Forms for the Wiki module."""
+from __future__ import annotations
+
 from typing import Any, Optional
 
 from wtforms import HiddenField, StringField, TextAreaField, ValidationError

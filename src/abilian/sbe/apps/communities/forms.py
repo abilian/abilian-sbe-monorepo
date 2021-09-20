@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import imghdr
 from typing import List, Tuple
 

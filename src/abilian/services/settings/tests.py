@@ -6,8 +6,8 @@ from typing import Any
 import pytest
 from pytest import raises
 
-from .models import Setting, empty_value
 from .. import settings_service
+from .models import Setting, empty_value
 
 
 def test_type_set():
@@ -116,7 +116,12 @@ def test_namespace(app, session):
     session.flush()
     assert sub.get("1") == 1
     assert ns.get("1") == 42
-    assert sorted(settings_service.keys()) == ["other", "test:1", "test:sub:1", "test:sub:2"]
+    assert sorted(settings_service.keys()) == [
+        "other",
+        "test:1",
+        "test:sub:1",
+        "test:sub:2",
+    ]
 
     # as dict
     assert sub.as_dict() == {"1": 1, "2": 2}

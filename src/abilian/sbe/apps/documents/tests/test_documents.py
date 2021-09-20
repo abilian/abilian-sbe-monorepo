@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import sys
 from pathlib import Path
 from typing import IO
@@ -11,7 +13,7 @@ from abilian.sbe.app import Application
 from abilian.sbe.apps.communities.models import Community
 from abilian.sbe.apps.documents.models import Document, Folder
 from abilian.sbe.apps.documents.views.folders import explore_archive
-from abilian.services import security_service, index_service
+from abilian.services import index_service, security_service
 from abilian.testing.util import login
 
 

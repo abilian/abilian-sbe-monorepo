@@ -1,4 +1,6 @@
 """Celery tasks related to document transformation and preview."""
+from __future__ import annotations
+
 import logging
 from contextlib import contextmanager
 from typing import TYPE_CHECKING, Iterator, Optional, Tuple

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abilian.sbe.apps.documents.cmis.parser import Entry
 
 XML_ENTRY = b"""\

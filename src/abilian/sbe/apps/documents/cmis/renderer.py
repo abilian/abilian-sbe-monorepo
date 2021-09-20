@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Any, List, Union
 
 from flask import render_template

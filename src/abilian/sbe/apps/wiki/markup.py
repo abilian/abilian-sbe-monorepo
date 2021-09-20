@@ -2,6 +2,8 @@
 
 Add extensions here (for now).
 """
+from __future__ import annotations
+
 import markdown
 from flask import url_for
 from markdown.core import Markdown

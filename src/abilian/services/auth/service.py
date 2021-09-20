@@ -161,7 +161,10 @@ class AuthService(Service):
         g.is_manager = (
             user
             and not is_anonymous
-            and (security_service.has_role(user, "admin") or security_service.has_role(user, "manager"))
+            and (
+                security_service.has_role(user, "admin")
+                or security_service.has_role(user, "manager")
+            )
         )
 
     def user_logged_out(self, app: Application, user: User):

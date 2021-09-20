@@ -1,5 +1,7 @@
 """Tests from test_community are currently refactored using pytest in this
 module."""
+from __future__ import annotations
+
 from unittest import mock
 
 import pytest
@@ -14,7 +16,7 @@ from abilian.core.models.subjects import User
 from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.sbe.app import Application
 from abilian.sbe.apps.documents.models import Folder
-from abilian.services import security_service, index_service
+from abilian.services import index_service, security_service
 from abilian.testing.util import login
 
 from .. import signals, views

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Any
 
 from abilian.sbe.apps.communities.models import VALID_ROLES, Community, Membership
