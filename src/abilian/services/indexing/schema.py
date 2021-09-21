@@ -9,7 +9,6 @@ from whoosh.analysis import (
     PathTokenizer,
     RegexTokenizer,
 )
-
 #: A Whoosh analyzer that splits on word boundaries and folds accents and case.
 from whoosh.fields import (
     DATETIME,

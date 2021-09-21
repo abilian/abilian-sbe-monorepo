@@ -40,7 +40,6 @@ from abilian.core.util import fqcn as base_fqcn
 from abilian.core.util import friendly_fqcn
 from abilian.services import Service, ServiceState
 from abilian.services.security import Anonymous, Authenticated, Role, security
-
 from .adapter import SAAdapter
 from .schema import DefaultSearchSchema, indexable_role
 

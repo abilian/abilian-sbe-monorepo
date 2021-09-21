@@ -11,7 +11,6 @@ from abilian.core.models.subjects import User
 from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.services import get_service, security_service
 from abilian.services.security import SecurityService
-
 from .models import UserPreference
 from .panel import PreferencePanel
 from .service import PreferenceService

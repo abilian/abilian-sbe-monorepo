@@ -16,7 +16,6 @@ from abilian.services.conversion.handlers import (
     PdfToPpmHandler,
     PdfToTextHandler,
 )
-
 from .exceptions import ConversionError
 from .service import Converter, HandlerNotFound
 

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, List, Optional
+from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
 from sqlalchemy.orm import object_session
@@ -9,7 +9,6 @@ from abilian.core.entities import Entity
 from abilian.core.models.subjects import User
 from abilian.core.signals import activity
 from abilian.services import Service
-
 from .models import ActivityEntry
 
 if TYPE_CHECKING:

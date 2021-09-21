@@ -14,7 +14,6 @@ from abilian.core.entities import Entity
 from abilian.core.extensions import db
 from abilian.core.models.base import AUDITABLE_HIDDEN, SEARCHABLE
 from abilian.core.models.subjects import create_root_user
-
 from . import CREATION, DELETION, UPDATE, AuditEntry, audit_service
 
 

@@ -5,7 +5,6 @@ from typing import Any, Iterator
 
 from abilian.core.extensions import db
 from abilian.services import Service
-
 from .models import Setting
 
 

@@ -19,7 +19,6 @@ from flask import Flask
 from magic import Magic
 
 from abilian.services.image import resize
-
 from .exceptions import ConversionError
 from .util import get_tmp_dir, make_temp_file
 

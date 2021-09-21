@@ -23,7 +23,6 @@ from abilian.services.base import Service, ServiceState
 from abilian.services.preferences.panel import PreferencePanel
 from abilian.web.action import Endpoint
 from abilian.web.nav import BreadcrumbItem, NavItem
-
 from .models import UserPreference
 
 if TYPE_CHECKING:
@@ -79,7 +78,7 @@ class PreferenceService(Service):
             user = current_user
         return {pref.key: pref.value for pref in user.preferences}
 
-    def set_preferences(self, user: User = None, **kwargs: Any):
+    def set_preferences(self, user: User | None = None, **kwargs: Any):
         """Set preferences from keyword arguments."""
         if user is None:
             user = current_user
@@ -92,7 +91,7 @@ class PreferenceService(Service):
                 d[k] = UserPreference(user=user, key=k, value=v)
                 db.session.add(d[k])
 
-    def clear_preferences(self, user: User = None):
+    def clear_preferences(self, user: User | None = None):
         """Clear the user preferences."""
         if user is None:
             user = current_user
