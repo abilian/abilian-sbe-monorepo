@@ -20,6 +20,10 @@ import icecream
 icecream.install()
 
 # Normal bootstrap
+from flask.cli import load_dotenv
 from extranet.app import create_app
 
+load_dotenv()
+
 app = create_app()
+
