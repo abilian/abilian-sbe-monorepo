@@ -1,6 +1,5 @@
 """Forum module."""
 
-
 from __future__ import annotations
 
 from abilian.sbe.app import Application

@@ -243,8 +243,6 @@ def deleteObject():
         path = request.args.get("path")
     else:
         path = ""
-    log.debug(f"deleteObject called on id={id}, path={path}")
-    log.debug(f"URL: {request.url}")
 
     obj = get_object(id)
 
@@ -252,6 +250,8 @@ def deleteObject():
     parent = obj.parent
     if parent:
         child_count_0 = len(parent.children)
+    else:
+        child_count_0 = 0
 
     db.session.delete(obj)
     db.session.commit()
@@ -260,7 +260,7 @@ def deleteObject():
         child_count_1 = len(parent.children)
         assert child_count_1 == child_count_0 - 1
 
-    return ("", 204, {})
+    return "", 204, {}
 
 
 #
