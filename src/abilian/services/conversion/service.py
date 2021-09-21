@@ -16,9 +16,9 @@ import subprocess
 from io import BytesIO
 from pathlib import Path
 
+from flask import Flask
 from PIL import Image
 from PIL.ExifTags import TAGS
-from flask import Flask
 
 from .cache import Cache
 from .exceptions import HandlerNotFound

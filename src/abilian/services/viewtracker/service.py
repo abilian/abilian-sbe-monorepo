@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from abilian.core.extensions import db
 from abilian.services import Service
+
 from .models import Hit, View
 
 __all__ = ["viewtracker"]

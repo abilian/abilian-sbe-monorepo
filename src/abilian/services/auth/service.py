@@ -18,6 +18,7 @@ from abilian.core.util import unwrap
 from abilian.services import Service, ServiceState
 from abilian.web.action import DynamicIcon, actions
 from abilian.web.nav import NavGroup, NavItem
+
 from .models import LoginSession
 from .views import login as login_views
 

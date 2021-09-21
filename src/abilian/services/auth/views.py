@@ -42,6 +42,7 @@ from abilian.core.util import md5, unwrap
 from abilian.i18n import _, render_template_i18n
 from abilian.services.security import Anonymous
 from abilian.web.blueprints import Blueprint
+
 from .models import LoginSession
 
 __all__ = ("login",)

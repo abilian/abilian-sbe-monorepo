@@ -9,6 +9,7 @@ from abilian.core.models.subjects import Group
 from abilian.i18n import _
 from abilian.services import get_service
 from abilian.web.action import actions
+
 from .models import Anonymous
 
 

@@ -13,6 +13,7 @@ from whoosh.fields import ID, TEXT, Schema
 from abilian.core.entities import Entity
 from abilian.core.extensions import db
 from abilian.core.models import Model
+
 from .schema import accent_folder
 
 __all__ = ["SchemaAdapter", "SAAdapter"]

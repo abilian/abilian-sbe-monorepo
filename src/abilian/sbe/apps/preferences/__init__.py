@@ -9,5 +9,6 @@ from .panels.sbe_notifications import SbeNotificationsPanel
 
 
 def register_plugin(app: Application) -> None:
-    app.register_jinja_loaders(jinja2.PackageLoader(__name__, "templates"))
+    loader = jinja2.PackageLoader("abilian.sbe.apps.preferences")
+    app.register_jinja_loaders(loader)
     preferences.register_panel(SbeNotificationsPanel(), app)

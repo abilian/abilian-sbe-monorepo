@@ -23,6 +23,7 @@ from sqlalchemy.orm.unitofwork import UOWTransaction
 from abilian.core.entities import Entity
 from abilian.core.extensions import db
 from abilian.services import Service, ServiceState
+
 from .models import CREATION, DELETION, RELATED, UPDATE, AuditEntry, Changes
 
 if TYPE_CHECKING:

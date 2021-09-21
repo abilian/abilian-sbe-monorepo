@@ -9,6 +9,7 @@ from abilian.core.entities import Entity
 from abilian.core.models.subjects import User
 from abilian.core.signals import activity
 from abilian.services import Service
+
 from .models import ActivityEntry
 
 if TYPE_CHECKING:

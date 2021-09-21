@@ -2,6 +2,15 @@
 applications."""
 from __future__ import annotations
 
+# Temps monkey patches
+# flake8:noqa
+import werkzeug.datastructures
+import werkzeug.urls
+
+werkzeug.url_encode = werkzeug.urls.url_encode
+werkzeug.FileStorage = werkzeug.datastructures.FileStorage
+
+# Rest of the imports
 import errno
 import importlib
 import logging.config

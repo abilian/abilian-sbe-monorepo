@@ -1,14 +1,16 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import Any
 
 import jinja2
+import rich
 from flask import Flask, current_app
 from flask.helpers import locked_cached_property
 from flask.templating import Environment
 from flask_babel import get_locale as babel_get_locale
-from jinja2.loaders import ChoiceLoader, PackageLoader
+from jinja2.loaders import ChoiceLoader, FileSystemLoader, PackageLoader
 from sqlalchemy.orm.attributes import NEVER_SET, NO_VALUE
 
 import abilian.core.util
@@ -62,6 +64,7 @@ class JinjaManagerMixin(Flask):
 
         if self.debug and self.config.get("TEMPLATE_DEBUG", False):
             options["undefined"] = jinja2.StrictUndefined
+
         return options
 
     def register_jinja_loaders(self, *loaders: PackageLoader):
@@ -91,6 +94,9 @@ class JinjaManagerMixin(Flask):
         behaviour), fallback on abilian templates."""
         loaders = self._jinja_loaders
         del self._jinja_loaders
-        loaders.append(Flask.jinja_loader.func(self))
+        flask_jinja_loader = FileSystemLoader(
+            os.path.join(self.root_path, self.template_folder)
+        )
+        loaders.append(flask_jinja_loader)
         loaders.reverse()
         return jinja2.ChoiceLoader(loaders)

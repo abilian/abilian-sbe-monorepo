@@ -19,6 +19,15 @@ from abilian.core.models import Model
 from abilian.core.models.subjects import Group, Principal, User
 from abilian.core.util import unwrap
 from abilian.services import Service, ServiceState
+from abilian.services.security.models import (
+    CREATE,
+    DELETE,
+    MANAGE,
+    PERMISSIONS_ATTR,
+    READ,
+    WRITE,
+    Admin,
+)
 from abilian.services.security.models import Anonymous as AnonymousRole
 from abilian.services.security.models import (
     Authenticated,
@@ -34,15 +43,6 @@ from abilian.services.security.models import (
     RoleAssignment,
     SecurityAudit,
     Writer,
-)
-from abilian.services.security.models import (
-    CREATE,
-    DELETE,
-    MANAGE,
-    PERMISSIONS_ATTR,
-    READ,
-    WRITE,
-    Admin,
 )
 
 if TYPE_CHECKING:

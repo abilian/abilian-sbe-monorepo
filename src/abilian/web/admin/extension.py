@@ -5,7 +5,7 @@ import logging
 from typing import Any, Callable
 
 from flask import Blueprint, Flask, g
-from flask.helpers import _endpoint_from_view_func
+from flask.scaffold import _endpoint_from_view_func
 from flask_login import current_user
 from werkzeug.exceptions import Forbidden
 from werkzeug.utils import import_string

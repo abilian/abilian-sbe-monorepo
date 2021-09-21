@@ -48,7 +48,7 @@ class Application(BaseApplication):
 
     def setup(self, config: Optional[Type]) -> None:
         super().setup(config)
-        loader = jinja2.PackageLoader("abilian.sbe", "templates")
+        loader = jinja2.PackageLoader("abilian.sbe")
         self.register_jinja_loaders(loader)
 
     def init_extensions(self) -> None:

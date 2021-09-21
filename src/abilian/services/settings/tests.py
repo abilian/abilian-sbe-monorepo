@@ -6,8 +6,8 @@ from typing import Any
 import pytest
 from pytest import raises
 
-from .models import Setting, empty_value
 from .. import settings_service
+from .models import Setting, empty_value
 
 
 def test_type_set():
