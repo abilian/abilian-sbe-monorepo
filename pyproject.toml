@@ -107,7 +107,7 @@ jsmin = "*"
 cssmin = "*"
 closure = "==20161201"
 # closure = "*"
-devtools = "*"
+
 
 
 # Pinned temporarily
@@ -148,13 +148,16 @@ gunicorn = "*"
 raven = "*"
 
 
-# Additional stuff
+# Debug tools
 rich = "^10.9.0"
-flask-env = "*"
-python-dotenv = "^0.19.0"
-importlib-resources = "^5.2.2"
-pytest-testmon = "^1.2.0"
 icecream = "^2.1.1"
+devtools = "*"
+
+
+# Additional stuff
+python-dotenv = "^0.19.0"
+flask-env = "*"
+importlib-resources = "^5.2.2"
 
 
 [tool.poetry.dev-dependencies]
@@ -162,6 +165,7 @@ icecream = "^2.1.1"
 pytest-cov = "*"
 pytest-flask = "^1.0.0"
 pytest-xdist = "^2.3.0"
+pytest-testmon = "^1.2.0"
 coveralls = "*"
 Flask-LinkTester = "*"
 Flask-DebugToolbar = ">=0.10"

@@ -43,7 +43,7 @@ test = ["astroid", "pytest"]
 name = "atomicwrites"
 version = "1.4.0"
 description = "Atomic file writes."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -51,7 +51,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 name = "attrs"
 version = "21.2.0"
 description = "Classes Without Boilerplate"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
@@ -300,7 +300,7 @@ test = ["flake8 (==3.7.8)", "hypothesis (==3.55.3)"]
 name = "coverage"
 version = "5.5"
 description = "Code coverage measurement for Python"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
 
@@ -826,7 +826,7 @@ test = ["pytest (>=2.2.3)", "Pygments (>=1.2)", "six (>=1.4.1)", "flake8 (>=2.4.
 name = "iniconfig"
 version = "1.1.1"
 description = "iniconfig: brain-dead simple config-ini parsing"
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 
@@ -936,7 +936,7 @@ numpy = "*"
 
 [[package]]
 name = "libcst"
-version = "0.3.20"
+version = "0.3.21"
 description = "A concrete syntax tree with AST-like properties for Python 3.5, 3.6, 3.7 and 3.8 programs."
 category = "dev"
 optional = false
@@ -948,7 +948,7 @@ typing-extensions = ">=3.7.4.2"
 typing-inspect = ">=0.4.0"
 
 [package.extras]
-dev = ["black (==20.8b1)", "codecov (>=2.1.4)", "coverage (>=4.5.4)", "fixit (==0.1.1)", "flake8 (>=3.7.8)", "hypothesis (>=4.36.0)", "hypothesmith (>=0.0.4)", "isort (==5.5.3)", "jupyter (>=1.0.0)", "nbsphinx (>=0.4.2)", "pyre-check (==0.0.41)", "sphinx-rtd-theme (>=0.4.3)", "prompt-toolkit (>=2.0.9)", "tox (>=3.18.1)"]
+dev = ["black (==20.8b1)", "coverage (>=4.5.4)", "fixit (==0.1.1)", "flake8 (>=3.7.8)", "hypothesis (>=4.36.0)", "hypothesmith (>=0.0.4)", "jupyter (>=1.0.0)", "nbsphinx (>=0.4.2)", "prompt-toolkit (>=2.0.9)", "pyre-check (==0.9.3)", "setuptools-scm (>=6.0.1)", "sphinx-rtd-theme (>=0.4.3)", "tox (>=3.18.1)", "ufmt (==1.2)", "usort (==0.6.3)"]
 
 [[package]]
 name = "lxml"
@@ -1141,7 +1141,7 @@ test = ["appdirs (==1.4.4)", "pytest (>=6)", "pytest-cov (>=2.7)", "pytest-mock 
 name = "pluggy"
 version = "1.0.0"
 description = "plugin and hook calling mechanisms for python"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 
@@ -1201,7 +1201,7 @@ python-versions = ">=3.6"
 name = "py"
 version = "1.10.0"
 description = "library with cross-python path, ini-parsing, io, code, log facilities"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -1268,7 +1268,7 @@ pywin32 = ">=223"
 name = "pytest"
 version = "6.2.5"
 description = "pytest: simple powerful testing with Python"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 
@@ -1333,7 +1333,7 @@ pytest = ">=3.10"
 name = "pytest-testmon"
 version = "1.2.0"
 description = "selects tests affected by changed files and methods"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 
@@ -1590,7 +1590,7 @@ python-versions = ">=3.5"
 name = "toml"
 version = "0.10.2"
 description = "Python Library for Tom's Obvious, Minimal Language"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
@@ -1692,7 +1692,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-requests"
-version = "2.25.7"
+version = "2.25.8"
 description = "Typing stubs for requests"
 category = "dev"
 optional = false
@@ -1933,7 +1933,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "9aad7a9625fc548bf26123109b6c74991914b753b1067d770af88f9791be95ae"
+content-hash = "9b3e3303b4d1ef1961bc8c3a1f9c15a2900ed797743a699fdf3bd17b93aef13d"
 
 [metadata.files]
 alembic = [
@@ -2328,8 +2328,8 @@ langid = [
     {file = "langid-1.1.6.tar.gz", hash = "sha256:044bcae1912dab85c33d8e98f2811b8f4ff1213e5e9a9e9510137b84da2cb293"},
 ]
 libcst = [
-    {file = "libcst-0.3.20-py3-none-any.whl", hash = "sha256:d213e833fdbad43c4fcaf9c952a695b36d601dce1c527ec724e75aa36e60834f"},
-    {file = "libcst-0.3.20.tar.gz", hash = "sha256:9d50d4eab28b570e254cc63287ce3009b945be4114c7a29662b67204cfc18060"},
+    {file = "libcst-0.3.21-py3-none-any.whl", hash = "sha256:a9c6fea4fa3bf92f87e40c6850dec099aaa7aaf963a934c763844544b32d3a1e"},
+    {file = "libcst-0.3.21.tar.gz", hash = "sha256:4302a8f09cd9e5ab5962f8e126d032bba98541893dd38cce6b4770969fed059d"},
 ]
 lxml = [
     {file = "lxml-4.6.3-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:df7c53783a46febb0e70f6b05df2ba104610f2fb0d27023409734a3ecbb78fb2"},
@@ -2915,8 +2915,8 @@ types-redis = [
     {file = "types_redis-3.5.8-py3-none-any.whl", hash = "sha256:85814769071721044857c34841e46064b867ccdd58fc81221c43462bd07e4892"},
 ]
 types-requests = [
-    {file = "types-requests-2.25.7.tar.gz", hash = "sha256:4b279513a34b789bef75ce05bee5eb4ce934a892318388400f7511fbcdf56f87"},
-    {file = "types_requests-2.25.7-py3-none-any.whl", hash = "sha256:24bbe4682373ce0b1927f432b30ba1dcf46b66512fb6e848e72998c79797d040"},
+    {file = "types-requests-2.25.8.tar.gz", hash = "sha256:225ac2e86549b6ef3a8a44bf955f80b4955855704a15d2883d8445c8df637242"},
+    {file = "types_requests-2.25.8-py3-none-any.whl", hash = "sha256:26e90866bcd773d76b316de7e6bd6e24641f9e1653cf27241c533886600f6824"},
 ]
 types-setuptools = [
     {file = "types-setuptools-57.4.0.tar.gz", hash = "sha256:5034f81b237429c1dc0ad84d3e9015e74730400c4db2b4db40daba216d39289b"},
