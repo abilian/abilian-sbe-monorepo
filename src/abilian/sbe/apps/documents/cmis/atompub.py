@@ -243,6 +243,8 @@ def deleteObject():
         path = request.args.get("path")
     else:
         path = ""
+    # Remove once we figure out what to do with path...
+    assert path + "xxx"
 
     obj = get_object(id)
 
