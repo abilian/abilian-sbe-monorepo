@@ -39,7 +39,7 @@ class View(db.Model):
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     user = relationship(User, foreign_keys=user_id)
 
-    hits = db.relationship(
+    hits = relationship(
         "Hit", backref="view", order_by="Hit.viewed_at", lazy="dynamic"
     )
 
@@ -48,8 +48,7 @@ class Hit(db.Model):
     __tablename__ = "hit"
 
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
-
-    view_id = db.Column(db.Integer, db.ForeignKey(View.id))
+    view_id = Column(Integer, ForeignKey(View.id))
 
     #: time of view
     viewed_at = Column(DateTime, default=datetime.utcnow, nullable=True)
