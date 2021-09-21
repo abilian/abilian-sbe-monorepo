@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from flask import Flask
 from flask.ctx import AppContext
-from jinja2 import Markup
+from markupsafe import Markup
 
 from abilian.app import Application
 from abilian.web.action import Action, Glyphicon, StaticIcon, actions

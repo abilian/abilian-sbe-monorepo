@@ -12,9 +12,9 @@ import dateutil.parser
 import flask_babel as babel
 from babel.dates import DateTimePattern, format_timedelta, parse_pattern
 from deprecated import deprecated
-from jinja2 import Environment, escape, evalcontextfilter
+from jinja2 import Environment, evalcontextfilter
 from jinja2.nodes import EvalContext
-from markupsafe import Markup
+from markupsafe import Markup, escape
 from pytz import utc
 from werkzeug.routing import BuildError
 
