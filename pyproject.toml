@@ -153,6 +153,7 @@ flask-env = "*"
 python-dotenv = "^0.19.0"
 importlib-resources = "^5.2.2"
 pytest-testmon = "^1.2.0"
+icecream = "^2.1.1"
 
 
 [tool.poetry.dev-dependencies]
