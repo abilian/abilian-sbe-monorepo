@@ -2,8 +2,7 @@
 
 Reuses fixtures defined in abilian-core.
 """
-import os
-
+import icecream
 from pytest import fixture
 
 from abilian.sbe.app import create_app
@@ -14,6 +13,8 @@ pytest_plugins = [
     "abilian.sbe.apps.communities.tests.fixtures",
 ]
 
+
+icecream.install()
 
 class NoCsrfTestConfig(TestConfig):
     WTF_CSRF_ENABLED = False
