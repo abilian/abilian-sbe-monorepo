@@ -25,6 +25,8 @@ from .owned import OwnedMixin
 
 
 class BaseMixin(IdMixin, TimestampedMixin, OwnedMixin):
+    name: str
+
     def __init__(self):
         OwnedMixin.__init__(self)
 

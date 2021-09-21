@@ -7,7 +7,7 @@ from __future__ import annotations
 import hashlib
 import uuid
 from pathlib import Path
-from typing.io import IO
+from typing import IO
 
 import sqlalchemy as sa
 from sqlalchemy.event import listens_for
