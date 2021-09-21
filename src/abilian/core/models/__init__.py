@@ -4,7 +4,6 @@ from __future__ import annotations
 import json
 from datetime import datetime
 
-from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm.util import class_mapper
 
 from .base import (
@@ -26,10 +25,6 @@ from .owned import OwnedMixin
 
 
 class BaseMixin(IdMixin, TimestampedMixin, OwnedMixin):
-    @declared_attr
-    def __tablename__(cls):
-        return cls.__name__.lower()
-
     def __init__(self):
         OwnedMixin.__init__(self)
 
@@ -40,7 +35,7 @@ class BaseMixin(IdMixin, TimestampedMixin, OwnedMixin):
 
     @property
     def column_names(self):
-        return [col.name for col in class_mapper(self.__class__).mapped_table.c]
+        return [col.name for col in class_mapper(self.__class__).persist_selectable.c]
 
     def to_dict(self):
         if hasattr(self, "__exportable__"):

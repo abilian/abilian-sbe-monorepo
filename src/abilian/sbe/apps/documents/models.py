@@ -428,8 +428,6 @@ class Folder(PathAndSecurityIndexable, CmisObject):
 class BaseContent(CmisObject):
     """A base class for cmisobject with an attached file."""
 
-    __tablename__: Optional[str] = None
-
     _content_id = Column(Integer, db.ForeignKey(Blob.id))
     content_blob = relationship(Blob, cascade="all, delete", foreign_keys=[_content_id])
 
