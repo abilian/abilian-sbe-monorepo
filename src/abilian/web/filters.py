@@ -12,7 +12,7 @@ import dateutil.parser
 import flask_babel as babel
 from babel.dates import DateTimePattern, format_timedelta, parse_pattern
 from deprecated import deprecated
-from jinja2 import Environment, evalcontextfilter
+from jinja2 import Environment, pass_eval_context
 from jinja2.nodes import EvalContext
 from markupsafe import Markup, escape
 from pytz import utc
@@ -26,7 +26,7 @@ from .util import url_for
 def autoescape(filter_func: Callable) -> Callable:
     """Decorator to autoescape result from filters."""
 
-    @evalcontextfilter
+    @pass_eval_context
     @wraps(filter_func)
     def _autoescape(eval_ctx: EvalContext, *args: str, **kwargs: Any) -> Markup | str:
         result = filter_func(*args, **kwargs)

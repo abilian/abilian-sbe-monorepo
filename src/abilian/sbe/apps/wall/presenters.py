@@ -5,7 +5,8 @@ from functools import singledispatch
 
 import bleach
 from flask import render_template_string
-from jinja2 import Markup, Template
+from jinja2 import Template
+from markupsafe import Markup
 
 from abilian.core.util import BasePresenter
 from abilian.i18n import _, _l

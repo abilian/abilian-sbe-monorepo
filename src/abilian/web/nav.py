@@ -11,7 +11,8 @@ from typing import Any
 
 from flask import g
 from flask_babel.speaklater import LazyString
-from jinja2 import Markup, Template
+from jinja2 import Template
+from markupsafe import Markup
 
 from abilian.web.action import Endpoint
 
