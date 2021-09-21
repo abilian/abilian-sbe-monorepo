@@ -88,7 +88,7 @@ class AttachmentDownload(BaseAttachmentView, BaseObjectView):
         return send_file(
             stream,
             as_attachment=True,
-            attachment_filename=filename,
+            download_name=filename,
             mimetype=content_type,
             cache_timeout=0,
             add_etags=False,

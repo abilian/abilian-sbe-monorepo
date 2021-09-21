@@ -125,7 +125,9 @@ def _before_insert(mapper, connection, target):
     """Set item to last position if position not defined."""
     if target.position is None:
         func = sa.sql.func
-        stmt = sa.select([func.coalesce(func.max(mapper.mapped_table.c.position), -1)])
+        stmt = sa.select(
+            [func.coalesce(func.max(mapper.persist_selectable.c.position), -1)]
+        )
         target.position = connection.execute(stmt).scalar() + 1
 
 

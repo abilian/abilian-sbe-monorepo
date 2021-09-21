@@ -16,6 +16,7 @@ pytest_plugins = [
 
 icecream.install()
 
+
 class NoCsrfTestConfig(TestConfig):
     WTF_CSRF_ENABLED = False
 
