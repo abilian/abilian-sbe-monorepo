@@ -161,7 +161,7 @@ importlib-resources = "^5.2.2"
 
 
 [tool.poetry.dev-dependencies]
-# Development / testing
+# Testing
 pytest-cov = "*"
 pytest-flask = "^1.0.0"
 pytest-xdist = "^2.3.0"
@@ -172,7 +172,7 @@ Flask-DebugToolbar = ">=0.10"
 profilehooks = "*"
 pre-commit = "*"
 
-# Testing
+# Linting
 flake8 = "*"
 flake8-bugbear = "*"
 flake8-comprehensions = "*"
