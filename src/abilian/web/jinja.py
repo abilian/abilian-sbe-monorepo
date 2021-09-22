@@ -62,8 +62,8 @@ class JinjaManagerMixin(Flask):
                 str(cache_dir), "%s.cache"
             )
 
-        if self.debug and self.config.get("TEMPLATE_DEBUG", False):
-            options["undefined"] = jinja2.StrictUndefined
+        # if self.debug and self.config.get("TEMPLATE_DEBUG", False):
+        #     options["undefined"] = jinja2.StrictUndefined
 
         return options
 
