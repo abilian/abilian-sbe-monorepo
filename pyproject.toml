@@ -78,6 +78,9 @@ lxml = "*"
 # Used by the logging config loader (TODO: remove)
 PyYAML = "*"
 
+# Configuration
+toml = "*"
+
 # Used by the connection audit
 pygeoip = "*"
 
