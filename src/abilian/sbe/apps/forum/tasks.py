@@ -67,14 +67,14 @@ def send_post_by_email(post_id):
         for idx, member_id in enumerate(members_id):
             chunk.append(member_id)
             if idx % CHUNK_SIZE == 0:
-                batch_send_post_to_users.delay(post.id, chunk)
+                batch_send_post_to_users(post.id, chunk)
                 chunk = []
 
         if chunk:
-            batch_send_post_to_users.delay(post.id, chunk)
+            batch_send_post_to_users(post.id, chunk)
 
 
-@shared_task(max_retries=10, rate_limit="12/m")
+# @shared_task(max_retries=10, rate_limit="12/m")
 def batch_send_post_to_users(post_id, members_id, failed_ids=None):
     """Task run from send_post_by_email; auto-retry for mails that could not be
     successfully sent.
@@ -113,16 +113,16 @@ def batch_send_post_to_users(post_id, members_id, failed_ids=None):
         else:
             successfully_sent.append(user.id)
 
-    if failed:
-        if failed_ids is not None:
-            failed_ids = set(failed_ids)
-
-        if failed == failed_ids:
-            # 5 minutes * (2** retry count)
-            countdown = 300 * 2 ** batch_send_post_to_users.request.retries
-            batch_send_post_to_users.retry([post_id, list(failed)], countdown=countdown)
-        else:
-            batch_send_post_to_users.apply_async([post_id, list(failed)])
+    # if failed:
+    #     if failed_ids is not None:
+    #         failed_ids = set(failed_ids)
+    #
+    #     if failed == failed_ids:
+    #         # 5 minutes * (2** retry count)
+    #         countdown = 300 * 2 ** batch_send_post_to_users.request.retries
+    #         batch_send_post_to_users.retry([post_id, list(failed)], countdown=countdown)
+    #     else:
+    #         batch_send_post_to_users.apply_async([post_id, list(failed)])
 
     return {
         "post_id": post_id,
