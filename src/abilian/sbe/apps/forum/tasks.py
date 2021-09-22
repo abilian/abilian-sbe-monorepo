@@ -45,16 +45,11 @@ def init_app(app: Application) -> None:
     if SCHEDULE_ID not in celerybeat_schedule:
         celerybeat_schedule[SCHEDULE_ID] = DEFAULT_SCHEDULE
 
-#     global check_maildir
-#     if app.config["INCOMING_MAIL_USE_MAILDIR"]:
-#         make_task = periodic_task(run_every=crontab(minute="*"))
-#         check_maildir = make_task(check_maildir)
-
 
 @shared_task()
 def send_post_by_email(post_id):
     """Send a post to community members by email."""
-    with current_app.test_request_context("/send_post_by_email"):
+    with current_app.test_request_context("/tasks/send_post_by_email"):
         post = Post.query.get(post_id)
         if post is None:
             # deleted after task queued, but before task run
@@ -72,11 +67,11 @@ def send_post_by_email(post_id):
         for idx, member_id in enumerate(members_id):
             chunk.append(member_id)
             if idx % CHUNK_SIZE == 0:
-                batch_send_post_to_users.apply_async((post.id, chunk))
+                batch_send_post_to_users.delay(post.id, chunk)
                 chunk = []
 
         if chunk:
-            batch_send_post_to_users.apply_async((post.id, chunk))
+            batch_send_post_to_users.delay(post.id, chunk)
 
 
 @shared_task(max_retries=10, rate_limit="12/m")

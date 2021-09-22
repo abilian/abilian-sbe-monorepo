@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import logging
 import os
-from pathlib import Path
 
 import click
+import toml
 from flask import Blueprint, abort, current_app, g, redirect, request
 from flask.cli import AppGroup, FlaskGroup
-from flask_env import MetaFlaskEnv
 from flask_login import current_user
 
 import abilian.cli
@@ -20,8 +19,7 @@ from abilian.web.action import actions
 from abilian.web.nav import NavItem
 from abilian.web.util import url_for
 
-# from abilian.cli import *  # noqa
-
+from .config import Config
 
 __all__ = ["create_app"]
 
@@ -30,39 +28,22 @@ logger = logging.getLogger(__name__)
 HOME_ACTION = NavItem("section", "home", title=_l("Home"), endpoint="social.home")
 
 
-class Config(metaclass=MetaFlaskEnv):
-    ENV_PREFIX = "FLASK_"
+class Application(BaseApplication):
+    APP_PLUGINS = BaseApplication.APP_PLUGINS + [
+        "abilian.sbe.apps.notifications",
+        "abilian.sbe.apps.wiki",
+        "abilian.sbe.apps.wall",
+        "abilian.sbe.apps.documents",
+        "abilian.sbe.apps.forum",
+        "abilian.sbe.apps.communities",
+        "abilian.sbe.apps.social",
+        "abilian.sbe.apps.preferences",
+    ]
 
-    MAIL_ASCII_ATTACHMENTS = True
-    # False: it's ok if antivirus task was run but service
-    # couldn't get a result
-    ANTIVIRUS_CHECK_REQUIRED = True
-    BABEL_ACCEPT_LANGUAGES = ("fr", "en")
+    def init_extensions(self):
+        super().init_extensions()
 
-    CONTENT_SECURITY_POLICY = {
-        "default-src": "'self' https://stats.abilian.com/ https://sentry.io/",
-        "child-src": "'self' blob:",
-        "img-src": "* data:",
-        "style-src": [
-            "'self'",
-            "https://cdn.rawgit.com/novus/",
-            "https://cdnjs.cloudflare.com/",
-            "'unsafe-inline'",
-        ],
-        "object-src": "'self'",
-        "script-src": [
-            "'self'",
-            "https://browser.sentry-cdn.com/",
-            "https://stats.abilian.com/",
-            "https://cdnjs.cloudflare.com/",
-            "'unsafe-inline'",
-            "'unsafe-eval'",
-        ],
-        "worker-src": "'self' blob:",
-    }
-
-    DEBUG = False
-    PRODUCTION = True
+        sbe.init_app(self)
 
 
 def create_app(config=None, **kw):
@@ -70,9 +51,7 @@ def create_app(config=None, **kw):
     app.config.from_object(Config)
 
     if not config:
-        config_path = Path(app.instance_path) / "config.py"
-        if config_path.exists():
-            app.config.from_pyfile(str(config_path))
+        read_config(app)
 
     for k in os.environ:
         if k.startswith("FLASK_"):
@@ -98,6 +77,21 @@ def create_app(config=None, **kw):
 
     # Done
     return app
+
+
+def read_config(app):
+    read_toml_config(app, "base.toml")
+    if app.config["ENV"] == "development":
+        read_toml_config(app, "development.toml")
+    else:
+        read_toml_config(app, "production.toml")
+    read_toml_config(app, "secrets.toml")
+
+
+def read_toml_config(app, filename):
+    absolute_filename = os.path.join(os.getcwd(), "config", filename)
+    if os.path.exists(absolute_filename):
+        app.config.from_file(absolute_filename, load=toml.load)
 
 
 @click.group(cls=FlaskGroup, create_app=create_app)
@@ -128,25 +122,8 @@ def home():
     Home page. Actually there is no home page, so we redirect to the most
     appropriate place.
     """
+    ic(url_for("social.home"))
     return redirect(url_for("social.home"))
-
-
-class Application(BaseApplication):
-    APP_PLUGINS = BaseApplication.APP_PLUGINS + [
-        "abilian.sbe.apps.notifications",
-        "abilian.sbe.apps.wiki",
-        "abilian.sbe.apps.wall",
-        "abilian.sbe.apps.documents",
-        "abilian.sbe.apps.forum",
-        "abilian.sbe.apps.communities",
-        "abilian.sbe.apps.social",
-        "abilian.sbe.apps.preferences",
-    ]
-
-    def init_extensions(self):
-        super().init_extensions()
-
-        sbe.init_app(self)
 
 
 def login_required():

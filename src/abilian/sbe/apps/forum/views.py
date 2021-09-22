@@ -333,6 +333,8 @@ class ThreadCreate(BaseThreadView, views.ObjectCreate):
     def commit_success(self):
         if self.send_by_email:
             task = send_post_by_email.delay(self.post.id)
+
+            # task = send_post_by_email.delay(self.post.id)
             meta = self.post.meta.setdefault("abilian.sbe.forum", {})
             meta["send_post_by_email_task"] = task.id
             self.post.meta.changed()

@@ -42,6 +42,7 @@ def send_daily_social_digest_task():
         config = current_app.config
         if not config.get("PRODUCTION") or config.get("DEMO"):
             return
+
         send_daily_social_digest()
 
 
