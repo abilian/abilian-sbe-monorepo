@@ -9,7 +9,6 @@ from celery import current_app as celery_current_app
 from celery import current_task, task
 from celery.app.task import Task
 from celery.loaders.base import BaseLoader
-from celery.task import PeriodicTask as CeleryPeriodicTask
 from celery.utils.imports import symbol_by_name
 from flask import Flask
 from flask import current_app as flask_current_app
@@ -126,17 +125,6 @@ class FlaskTask(Task):
 
         with self.app.loader.flask_app.app_context():
             return super().__call__(*args, **kwargs)
-
-
-class PeriodicTask(FlaskTask, CeleryPeriodicTask):
-    __doc__ = CeleryPeriodicTask.__doc__
-    abstract = True
-
-
-def periodic_task(*args, **options):
-    """Deprecated decorator, please use :setting:`CELERYBEAT_SCHEDULE`."""
-    # FIXME: 'task' below is not callable. Fix or remove.
-    return task(**dict({"base": PeriodicTask}, **options))
 
 
 class FlaskCelery(Celery):

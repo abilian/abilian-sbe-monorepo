@@ -61,7 +61,7 @@ MarkupSafe = ">=0.21"
 Whoosh = "^2.5"
 
 # Task queue
-celery = "~4"
+celery = "~5"
 redis = "~3"
 
 # Security

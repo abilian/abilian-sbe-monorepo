@@ -4,6 +4,7 @@ from __future__ import annotations
 import email
 import mailbox
 import re
+from datetime import timedelta
 from os.path import expanduser
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
@@ -19,7 +20,6 @@ from flask_babel import get_locale
 from flask_mail import Message
 from itsdangerous import Serializer
 
-from abilian.core.celery import periodic_task
 from abilian.core.extensions import db, mail
 from abilian.core.models.subjects import User
 from abilian.core.signals import activity
@@ -37,12 +37,19 @@ MAIL_REPLY_MARKER = _l("_____Write above this line to post_____")
 # Celery logger
 logger = get_task_logger(__name__)
 
+SCHEDULE_ID = f"{__name__}.check_maildir"
+DEFAULT_SCHEDULE = {"task": SCHEDULE_ID, "schedule": timedelta(hours=1)}
+
 
 def init_app(app: Application) -> None:
-    global check_maildir
-    if app.config["INCOMING_MAIL_USE_MAILDIR"]:
-        make_task = periodic_task(run_every=crontab(minute="*"))
-        check_maildir = make_task(check_maildir)
+    celerybeat_schedule = app.config.setdefault("CELERYBEAT_SCHEDULE", {})
+    if SCHEDULE_ID not in celerybeat_schedule:
+        celerybeat_schedule[SCHEDULE_ID] = DEFAULT_SCHEDULE
+
+#     global check_maildir
+#     if app.config["INCOMING_MAIL_USE_MAILDIR"]:
+#         make_task = periodic_task(run_every=crontab(minute="*"))
+#         check_maildir = make_task(check_maildir)
 
 
 @shared_task()

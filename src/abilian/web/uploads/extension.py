@@ -66,9 +66,9 @@ class FileUploadsExtension:
         app.config["FILE_UPLOADS"] = self.config
 
         # celery schedule
-        CELERYBEAT_SCHEDULE = app.config.setdefault("CELERYBEAT_SCHEDULE", {})
-        if CLEANUP_SCHEDULE_ID not in CELERYBEAT_SCHEDULE:
-            CELERYBEAT_SCHEDULE[CLEANUP_SCHEDULE_ID] = DEFAULT_CLEANUP_SCHEDULE
+        celerybeat_schedule = app.config.setdefault("CELERYBEAT_SCHEDULE", {})
+        if CLEANUP_SCHEDULE_ID not in celerybeat_schedule:
+            celerybeat_schedule[CLEANUP_SCHEDULE_ID] = DEFAULT_CLEANUP_SCHEDULE
 
         path = self.UPLOAD_DIR = app.data_dir / "uploads"
         if not path.exists():
