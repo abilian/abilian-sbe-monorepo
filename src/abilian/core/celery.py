@@ -6,7 +6,7 @@ from typing import Any
 
 from celery import Celery
 from celery import current_app as celery_current_app
-from celery import current_task, task
+from celery import current_task
 from celery.app.task import Task
 from celery.loaders.base import BaseLoader
 from celery.utils.imports import symbol_by_name
