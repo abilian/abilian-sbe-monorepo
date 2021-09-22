@@ -1,16 +1,30 @@
+# Cruft
 .DS_Store
 .cache
 .coverage
-.env
 .idea
 .mypy_cache
 .tox
 .vagrant
 .venv
-
+*.pyc
+*.egg
+*.egg-info
+*.swp
+*.prof
+*.stats
+*.mo
 *,cover
+/.eggs/
 
+# Secret
+config
+.env
+ssl
 sandbox
+
+
+# More
 instance
 node_modules
 env
@@ -29,16 +43,9 @@ MANIFEST
 docs/_build
 htmlcov
 
+# Generated
 src/abilian/static/misc*
 src/abilian/static/.webassets-cache
 src/abilian/static/gen
 src/abilian/static/placeholders
 
-*.pyc
-*.egg
-*.egg-info
-*.swp
-*.prof
-*.stats
-*.mo
-/.eggs/
