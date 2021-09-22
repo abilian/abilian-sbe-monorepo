@@ -13,7 +13,6 @@ import bleach
 import chardet
 import html2text
 from celery import shared_task
-from celery.schedules import crontab
 from celery.utils.log import get_task_logger
 from flask import current_app, g
 from flask_babel import get_locale
@@ -466,6 +465,7 @@ def process_email(message: email.message.Message) -> bool:
     return True
 
 
+@shared_task()
 def check_maildir():
     """Check the MailDir for emails to be injected in Threads.
 
