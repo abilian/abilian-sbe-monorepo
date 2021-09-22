@@ -38,7 +38,7 @@ MAIL_REPLY_MARKER = _l("_____Write above this line to post_____")
 logger = get_task_logger(__name__)
 
 SCHEDULE_ID = f"{__name__}.check_maildir"
-DEFAULT_SCHEDULE = {"task": SCHEDULE_ID, "schedule": timedelta(hours=1)}
+DEFAULT_SCHEDULE = {"task": SCHEDULE_ID, "schedule": timedelta(minutes=1)}
 
 
 def init_app(app: Application) -> None:

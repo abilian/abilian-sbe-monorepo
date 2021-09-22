@@ -201,5 +201,6 @@ def periodic_clean_upload_directory():
     :data:`DEFAULT_CLEANUP_SCHEDULE`. `CELERYBEAT_SCHEDULE` key is
     :data:`CLEANUP_SCHEDULE_ID`.
     """
-    uploads = current_app.extensions["uploads"]
-    uploads.clear_stalled_files()
+    with current_app.test_request_context("/tasks/periodic_clean_upload_directory"):
+        uploads = current_app.extensions["uploads"]
+        uploads.clear_stalled_files()
