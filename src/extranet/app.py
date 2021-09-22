@@ -12,8 +12,6 @@ from flask_login import current_user
 
 import abilian.cli
 from abilian.app import Application as BaseApplication
-from abilian.core.celery import FlaskCelery as BaseCelery
-from abilian.core.celery import FlaskLoader as CeleryBaseLoader
 from abilian.core.extensions import csrf
 from abilian.i18n import _l
 from abilian.sbe.apps.social.views.social import social
@@ -120,13 +118,6 @@ def csrf_error_response(reason):
     logger.error("Csrf error report, reason: %s", reason, extra={"stack": True})
     return abort(400, reason)
 
-
-# loader to be used by celery workers
-class CeleryLoader(CeleryBaseLoader):
-    flask_app_factory = "extranet.app.create_app"
-
-
-celery = BaseCelery(loader=CeleryLoader)
 
 MAIN = Blueprint("main", __name__, url_prefix="")
 
