@@ -88,7 +88,7 @@ class WikiPage(Entity):
         revision.page = self
 
     @property
-    def last_revision(self) -> "WikiPageRevision":
+    def last_revision(self) -> WikiPageRevision:
         return (
             WikiPageRevision.query.filter(WikiPageRevision.page == self)
             .order_by(WikiPageRevision.number.desc())
@@ -108,7 +108,7 @@ class WikiPage(Entity):
 
 @listens_for(WikiPage.name, "set", active_history=True)
 def _wiki_sync_name_title(
-    entity: WikiPage, new_value: str, old_value: Union[_symbol, str], initiator: Event
+    entity: WikiPage, new_value: str, old_value: _symbol | str, initiator: Event
 ) -> str:
     """Synchronize wikipage name -> title.
 

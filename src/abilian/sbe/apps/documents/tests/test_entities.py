@@ -15,7 +15,7 @@ def app(config: type) -> Application:
     return create_app(config=config)
 
 
-def check_editable(object: Union[Document, Folder]) -> None:
+def check_editable(object: Document | Folder) -> None:
     if hasattr(object, "__editable__"):
         for k in object.__editable__:
             assert hasattr(object, k)

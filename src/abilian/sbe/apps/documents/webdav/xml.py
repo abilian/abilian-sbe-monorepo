@@ -13,7 +13,7 @@ E = ElementMaker(namespace="DAV:")
 class Propfind:
     def __init__(self, xml: bytes = b"") -> None:
         self.mode = ""
-        self.prop_names: List[str] = []
+        self.prop_names: list[str] = []
 
         if not xml:
             xml = b"<D:propfind xmlns:D='DAV:'><D:allprop/></D:propfind>"
@@ -32,9 +32,9 @@ class Propfind:
 
 class MultiStatus:
     def __init__(self) -> None:
-        self.responses: List[Response] = []
+        self.responses: list[Response] = []
 
-    def add_response_for(self, href: str, obj: Any, property_list: List[str]) -> None:
+    def add_response_for(self, href: str, obj: Any, property_list: list[str]) -> None:
         response = Response(href, obj, property_list)
         self.responses.append(response)
 
@@ -49,7 +49,7 @@ class MultiStatus:
 
 
 class Response:
-    def __init__(self, href: str, obj: Any, property_list: List[str]) -> None:
+    def __init__(self, href: str, obj: Any, property_list: list[str]) -> None:
         self.href = href
         self.property_list = property_list
         self.obj = obj

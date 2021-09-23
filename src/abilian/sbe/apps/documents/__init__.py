@@ -7,7 +7,7 @@ if typing.TYPE_CHECKING:
     from abilian.sbe.app import Application
 
 
-def register_plugin(app: "Application") -> None:
+def register_plugin(app: Application) -> None:
     from . import signals  # noqa
     from . import lock
     from .cli import antivirus

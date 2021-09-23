@@ -16,7 +16,7 @@ from .models import Community
 
 @activity.connect_via(ANY)
 def update_community(
-    sender: Any, verb: str, actor: User, object: Entity, target: Optional[Entity] = None
+    sender: Any, verb: str, actor: User, object: Entity, target: Entity | None = None
 ) -> None:
     if isinstance(object, Community):
         object.touch()

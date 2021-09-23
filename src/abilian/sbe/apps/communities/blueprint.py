@@ -54,12 +54,12 @@ def check_access() -> None:
         security.check_access(g.community)
 
 
-def init_current_tab(endpoint: str, values: Dict[str, int]) -> None:
+def init_current_tab(endpoint: str, values: dict[str, int]) -> None:
     """Ensure g.current_tab exists."""
     g.current_tab = None
 
 
-def pull_community(endpoint: str, values: Dict[str, Any]) -> None:
+def pull_community(endpoint: str, values: dict[str, Any]) -> None:
     """url_value_preprocessor function."""
     g.nav["active"] = "section:communities"
     g.breadcrumb.append(
