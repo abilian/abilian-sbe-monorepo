@@ -36,7 +36,7 @@ def test_posts_ordering(db: SQLAlchemy, community1):
     assert [p.id for p in thread.posts] == [p2_id, p1_id]
 
 
-def test_thread_indexed(app, db: SQLAlchemy, community1, community2, req_ctx):
+def test_thread_indexed(app, db: SQLAlchemy, community1, community2):
     index_svc = app.services["indexing"]
     index_svc.start()
     security_service.start()
@@ -63,12 +63,12 @@ def test_thread_indexed(app, db: SQLAlchemy, community1, community2, req_ctx):
     assert hit["object_key"] == thread2.object_key
 
 
-def test_forum_home(client, community1, login_admin, req_ctx):
+def test_forum_home(client, community1, login_admin):
     response = client.get(url_for("forum.index", community_id=community1.slug))
     assert response.status_code == 200
 
 
-def test_create_thread_informative(app, db: SQLAlchemy, client, community1, req_ctx):
+def test_create_thread_informative(app, db: SQLAlchemy, client, community1):
     """Test with 'informative' community.
 
     No mail sent, unless user is MANAGER
@@ -108,7 +108,7 @@ def test_create_thread_informative(app, db: SQLAlchemy, client, community1, req_
             assert len(outbox) == 0
 
 
-def test_build_reply_email_address(app, req_ctx):
+def test_build_reply_email_address(app):
     post = mock.Mock()
     post.id = 2
     post.thread_id = 3
@@ -121,13 +121,13 @@ def test_build_reply_email_address(app, req_ctx):
     assert result == expected
 
 
-def test_extract_mail_destination_1(app, req_ctx):
+def test_extract_mail_destination_1(app):
     test_address = "test+P-en-3-4-c33d74de7b0cc35a086c539c0e8f4fc3@example.com"
     infos = extract_email_destination(test_address)
     assert infos == ("en", "3", "4")
 
 
-def test_extract_mail_destination_2(app, req_ctx):
+def test_extract_mail_destination_2(app):
     test_address = (
         "John Q Public <test+P-en-3-4-c33d74de7b0cc35a086c539c0e8f4fc3@example.com>"
     )
@@ -135,7 +135,7 @@ def test_extract_mail_destination_2(app, req_ctx):
     assert infos == ("en", "3", "4")
 
 
-def test_extract_mail_destination_3(app, req_ctx):
+def test_extract_mail_destination_3(app):
     test_address = (
         '"John Q Public" <test+P-en-3-4-c33d74de7b0cc35a086c539c0e8f4fc3@example.com>'
     )
@@ -143,7 +143,7 @@ def test_extract_mail_destination_3(app, req_ctx):
     assert infos == ("en", "3", "4")
 
 
-def test_create_thread_and_post(community1, client, app, db, req_ctx):
+def test_create_thread_and_post(community1, client, app, db):
     community = community1
     user = community.test_user
 

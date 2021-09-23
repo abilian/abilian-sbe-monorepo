@@ -57,9 +57,7 @@ def check_access(
         raise Forbidden()
 
 
-def has_access(
-    community: CommunityPresenter = None, user: User | None = None
-) -> bool:
+def has_access(community: CommunityPresenter = None, user: User | None = None) -> bool:
     if not user:
         user = current_user
     if user.is_anonymous:
@@ -78,9 +76,7 @@ def has_access(
     return False
 
 
-def is_manager(
-    context: dict[str, Any] | None = None, user: User | None = None
-) -> bool:
+def is_manager(context: dict[str, Any] | None = None, user: User | None = None) -> bool:
 
     if not user:
         user = current_user

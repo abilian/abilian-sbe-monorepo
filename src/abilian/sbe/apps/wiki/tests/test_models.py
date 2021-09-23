@@ -12,7 +12,7 @@ from abilian.testing.util import client_login
 
 
 @pytest.mark.parametrize("text", ["TOTO", "x 123", "/#$", "/*€("])
-def test_wikilink_extension(text, db, req_ctx):
+def test_wikilink_extension(text, db):
     qtext = str(quote_plus(text.encode("utf-8")))
     wikilink = f"[[{text}]]"
 
@@ -48,7 +48,7 @@ def test_wikilink_extension(text, db, req_ctx):
     check(False)
 
 
-def test_new_page(user, client, req_ctx):
+def test_new_page(user, client):
     with client_login(client, user):
         page = WikiPage(title="Some page", body_src="abc")
         assert page.title == "Some page"
@@ -62,7 +62,7 @@ def test_new_page(user, client, req_ctx):
         assert revision.author == user
 
 
-def test_rename_page(user, req_ctx):
+def test_rename_page(user):
     page = WikiPage(title="Some page", body_src="abc")
     assert page.title == "Some page"
     assert page.name == "Some page"
@@ -76,7 +76,7 @@ def test_rename_page(user, req_ctx):
     assert page.name == "Name"
 
 
-def test_create_revision(user, client, req_ctx):
+def test_create_revision(user, client):
     with client_login(client, user):
         page = WikiPage("abc")
         page.create_revision("def", "page updated")
