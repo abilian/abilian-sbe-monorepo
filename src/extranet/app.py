@@ -122,7 +122,6 @@ def home():
     Home page. Actually there is no home page, so we redirect to the most
     appropriate place.
     """
-    ic(url_for("social.home"))
     return redirect(url_for("social.home"))
 
 
