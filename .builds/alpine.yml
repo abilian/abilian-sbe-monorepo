@@ -1,0 +1,27 @@
+image: alpine/latest
+packages:
+  - py3-tox
+  - curl
+  - gcc
+  - python3-dev
+  - libffi-dev
+  - musl-dev
+  - openssl-dev
+  - postgresql-dev
+  - libxslt-dev
+  - libjpeg-turbo-dev
+  - poppler-utils
+  - nodejs-dev
+  - npm
+
+sources:
+  - https://github.com/abilian/abilian-sbe-monorepo
+
+tasks:
+  - test-py39: |
+      sudo npm install -g less
+      cd abilian-sbe-monorepo
+      tox -e py39
+  - lint: |
+      cd abilian-sbe-monorepo
+      tox -e lint
