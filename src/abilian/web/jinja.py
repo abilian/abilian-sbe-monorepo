@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Any
 
 import jinja2
-import rich
 from flask import Flask, current_app
 from flask.helpers import locked_cached_property
 from flask.templating import Environment

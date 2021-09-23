@@ -9,7 +9,7 @@ import tempfile
 from datetime import datetime
 from functools import partial
 from io import StringIO
-from typing import IO, Any, Dict, Iterator, List, Tuple
+from typing import IO, Any, Iterator
 from urllib.parse import quote
 from zipfile import ZipFile, is_zipfile
 
