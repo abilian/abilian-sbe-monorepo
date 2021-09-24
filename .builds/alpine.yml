@@ -1,18 +1,20 @@
-image: alpine/latest
+image: alpine/edge
+
 packages:
-  - py3-tox
   - curl
   - gcc
-  - python3-dev
   - libffi-dev
-  - musl-dev
-  - openssl-dev
-  - postgresql-dev
-  - libxslt-dev
   - libjpeg-turbo-dev
-  - poppler-utils
+  - libxslt-dev
+  - musl-dev
   - nodejs-dev
   - npm
+  - openssl-dev
+  - poetry
+  - poppler-utils
+  - postgresql-dev
+  - py3-tox
+  - python3-dev
 
 sources:
   - https://github.com/abilian/abilian-sbe-monorepo
