@@ -24,6 +24,7 @@ tasks:
       tox -e lint
   - test-py38: |
       sudo npm install -g less
-      pip install --user poetry
+      sudo pip install -U poetry pip wheel
+      # pip install --user poetry
       cd abilian-sbe-monorepo
       tox -e py38
