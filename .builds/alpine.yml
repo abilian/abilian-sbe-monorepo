@@ -20,12 +20,12 @@ sources:
   - https://github.com/abilian/abilian-sbe-monorepo
 
 tasks:
+  - lint: |
+      # pip install --user poetry
+      cd abilian-sbe-monorepo
+      tox -e lint
   - test-py39: |
       # pip install --user poetry
       sudo npm install -g less
       cd abilian-sbe-monorepo
       tox -e py39
-  - lint: |
-      # pip install --user poetry
-      cd abilian-sbe-monorepo
-      tox -e lint
