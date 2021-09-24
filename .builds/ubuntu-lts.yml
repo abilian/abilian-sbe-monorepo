@@ -20,6 +20,7 @@ sources:
 
 tasks:
   - lint: |
+      sudo pip install -U poetry pip wheel
       cd abilian-sbe-monorepo
       tox -e lint
   - test-py38: |
