@@ -9,7 +9,6 @@ packages:
   - musl-dev
   - nodejs-dev
   - npm
-  - openssl-dev
   - poetry
   - poppler-utils
   - postgresql-dev
