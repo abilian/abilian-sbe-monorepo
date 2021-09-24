@@ -1,29 +1,27 @@
-image: alpine/edge
+image: ubuntu/lts
 
 packages:
   - curl
   - gcc
   - libffi-dev
-  - libjpeg-turbo-dev
+  - libjpeg-turbo8-dev
   - libxslt-dev
-  - musl-dev
-  - nodejs-dev
+  - libnode-dev
   - npm
   - poppler-utils
-  - postgresql-dev
-  - py3-tox
+  - postgresql-server-dev-all
+  - tox
   - python3-dev
 
 sources:
   - https://github.com/abilian/abilian-sbe-monorepo
 
 tasks:
-  - test-py39: |
-      pip install --user poetry
+  - test-py38: |
       sudo npm install -g less
-      cd abilian-sbe-monorepo
-      tox -e py39
-  - lint: |
       pip install --user poetry
+      cd abilian-sbe-monorepo
+      tox -e py38
+  - lint: |
       cd abilian-sbe-monorepo
       tox -e lint
