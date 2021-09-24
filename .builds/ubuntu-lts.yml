@@ -13,6 +13,7 @@ packages:
   - tox
   - python3-dev
   - python3-pip
+  - python3-wheel
 
 sources:
   - https://github.com/abilian/abilian-sbe-monorepo

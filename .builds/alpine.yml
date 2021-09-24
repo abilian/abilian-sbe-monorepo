@@ -14,17 +14,18 @@ packages:
   - python3-dev
   - py3-tox
   - py3-pip
+  - poetry
 
 sources:
   - https://github.com/abilian/abilian-sbe-monorepo
 
 tasks:
   - test-py39: |
-      pip install --user poetry
+      # pip install --user poetry
       sudo npm install -g less
       cd abilian-sbe-monorepo
       tox -e py39
   - lint: |
-      pip install --user poetry
+      # pip install --user poetry
       cd abilian-sbe-monorepo
       tox -e lint
