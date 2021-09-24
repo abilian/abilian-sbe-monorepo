@@ -11,8 +11,9 @@ packages:
   - npm
   - poppler-utils
   - postgresql-dev
-  - py3-tox
   - python3-dev
+  - py3-tox
+  - py3-pip
 
 sources:
   - https://github.com/abilian/abilian-sbe-monorepo
