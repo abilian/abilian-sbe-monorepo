@@ -1538,7 +1538,7 @@ class Select2(Select):
 
         kwargs.setdefault("data-init-with", self.js_init)
         kwargs["data-init-params"] = json.dumps(params)
-        return Select.__call__(self, field, **kwargs)
+        return super().__call__(field, **kwargs)
 
     def render_view(self, field, **kwargs):
         labels = [str(label) for v, label, checked in field.iter_choices() if checked]

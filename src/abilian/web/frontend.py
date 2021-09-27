@@ -358,7 +358,7 @@ class ModuleMeta(type):
     """
 
     def __init__(cls, classname: str, bases: tuple, fields: dict[str, Any]):
-        type.__init__(cls, classname, bases, fields)
+        super().__init__(classname, bases, fields)
 
         # Gather exposed views
         cls._urls = []

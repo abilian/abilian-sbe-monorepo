@@ -194,7 +194,7 @@ class Community(Entity):
         self.membership_count = 0
         self.document_count = 0
         self.members_can_send_by_email = False
-        Entity.__init__(self, **kw)
+        super().__init__(**kw)
         if self.has_documents and not self.folder:
             # FIXME: this should be done in documents by using signals
             name = self.name

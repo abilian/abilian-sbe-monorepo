@@ -562,7 +562,7 @@ class JSONBaseSearch(JSONView):
         self.minimum_input_length = minimum_input_length
 
     def prepare_args(self, args, kwargs):
-        args, kwargs = JSONView.prepare_args(self, args, kwargs)
+        args, kwargs = super().prepare_args(args, kwargs)
         kwargs["q"] = kwargs.get("q", "").replace("%", " ").lower()
         return args, kwargs
 

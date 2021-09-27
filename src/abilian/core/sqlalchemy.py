@@ -59,7 +59,7 @@ class SQLAlchemy(SAExtension):
     """
 
     def apply_driver_hacks(self, app: Flask, info: URL, options: dict[str, Any]):
-        SAExtension.apply_driver_hacks(self, app, info, options)
+        super().apply_driver_hacks(app, info, options)
 
         if info.drivername == "sqlite":
             connect_args = options.setdefault("connect_args", {})
@@ -301,7 +301,7 @@ class JSONUniqueListType(JSON):
         if value is not None and isinstance(value, (tuple, list)):
             value = sorted(set(value))
 
-        return JSON.process_bind_param(self, value, dialect)
+        return super().process_bind_param(value, dialect)
 
 
 def JSONDict(*args, **kwargs):

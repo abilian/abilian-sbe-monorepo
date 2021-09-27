@@ -233,7 +233,7 @@ class EntityMeta(BaseMeta):
 
     def __init__(cls, classname: str, bases: tuple[type, ...], d: dict[str, Any]):
         bases = cls.__bases__
-        BaseMeta.__init__(cls, classname, bases, d)
+        super().__init__(classname, bases, d)
 
 
 class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):

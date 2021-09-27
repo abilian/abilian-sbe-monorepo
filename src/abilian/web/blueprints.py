@@ -49,7 +49,7 @@ class Blueprint(BaseBlueprint):
         :param allowed_roles: role or list of roles required to access any view in this
             blueprint.
         """
-        BaseBlueprint.__init__(self, name, import_name, **kwargs)
+        super().__init__(name, import_name, **kwargs)
 
         if allowed_roles is not None:
             if isinstance(allowed_roles, str):

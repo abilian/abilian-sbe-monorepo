@@ -28,7 +28,7 @@ class JinjaManagerMixin(Flask):
     # Templating and context injection setup
     #
     def create_jinja_environment(self) -> Environment:
-        env = Flask.create_jinja_environment(self)
+        env = super().create_jinja_environment()
         env.globals.update(
             app=current_app,
             csrf=csrf,

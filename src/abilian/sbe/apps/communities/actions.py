@@ -31,7 +31,7 @@ class CommunityTabAction(Action):
 
     def url(self, context: dict[str, Any] = None) -> CommunityEndpoint | str:
         if self._url:
-            return Action.url(self)
+            return super().url()
 
         endpoint = self.endpoint
         if endpoint:

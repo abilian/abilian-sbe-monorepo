@@ -196,7 +196,7 @@ class FileField(BaseFileField):
     def __call__(self, **kwargs):
         if "multiple" not in kwargs and self.multiple:
             kwargs["multiple"] = "multiple"
-        return BaseFileField.__call__(self, **kwargs)
+        return super().__call__(**kwargs)
 
     def has_file(self):
         return self._has_uploads

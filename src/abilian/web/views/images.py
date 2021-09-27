@@ -117,7 +117,7 @@ class StaticImageView(BaseImageView):
     def prepare_args(self, args, kwargs):
         kwargs["image"] = self.image_path.open("rb")
         kwargs["filename"] = self.image_path.name
-        return BaseImageView.prepare_args(self, args, kwargs)
+        return super().prepare_args(args, kwargs)
 
 
 class BlobView(BaseImageView):
@@ -135,7 +135,7 @@ class BlobView(BaseImageView):
             self.id_arg = id_arg
 
     def prepare_args(self, args, kwargs):
-        args, kwargs = BaseImageView.prepare_args(self, args, kwargs)
+        args, kwargs = super().prepare_args(args, kwargs)
         blob_id = kwargs.get(self.id_arg)
         try:
             blob_id = int(blob_id)

@@ -74,7 +74,7 @@ class NavGroup(NavItem):
     def __init__(
         self, category: str, name: str, items: tuple[NavItem] = (), *args, **kwargs
     ):
-        NavItem.__init__(self, category, name, *args, **kwargs)
+        super().__init__(category, name, *args, **kwargs)
         self.items = list(items)
         self._paths = {self.path}
         for i in self.items:

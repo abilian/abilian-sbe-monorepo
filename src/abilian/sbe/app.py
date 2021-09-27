@@ -51,7 +51,7 @@ class Application(BaseApplication):
         self.register_jinja_loaders(loader)
 
     def init_extensions(self) -> None:
-        BaseApplication.init_extensions(self)
+        super().init_extensions()
         sbe.init_app(self)
         repository.init_app(self)
         converter.init_app(self)

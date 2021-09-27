@@ -27,7 +27,7 @@ class CmisContentAction(Action):
         if "permission" in kwargs:
             self.permission = kwargs.pop("permission")
 
-        Action.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def pre_condition(self, ctx: dict[str, Any]) -> bool:
         obj = ctx["object"]
@@ -71,7 +71,7 @@ class FolderButtonAction(BaseFolderAction):
         css_class = kwargs.pop("css_class", "btn-default")
         self.CSS_CLASS = f"{self.CSS_CLASS} {css_class}"
 
-        BaseFolderAction.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     @property
     def template_string(self):

@@ -59,7 +59,7 @@ class ErrorManagerMixin(Flask):
         else:
             self._remove_session_save_objects()
 
-        return Flask.handle_user_exception(self, e)
+        return super().handle_user_exception(e)
 
     def handle_exception(self, e):
         session = db.session()
@@ -68,7 +68,7 @@ class ErrorManagerMixin(Flask):
             # anymore.
             self._remove_session_save_objects()
 
-        return Flask.handle_exception(self, e)
+        return super().handle_exception(e)
 
     def _remove_session_save_objects(self):
         """Used during exception handling in case we need to remove() session:

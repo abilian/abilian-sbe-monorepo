@@ -208,9 +208,7 @@ class StaticIcon(DynamicIcon):
         css: str = "",
         size: int | None = None,
     ):
-        DynamicIcon.__init__(
-            self, endpoint, width, height, css, size, filename=filename
-        )
+        super().__init__(endpoint, width, height, css, size, filename=filename)
 
 
 class Endpoint:
@@ -494,7 +492,7 @@ class ButtonAction(Action):
         *args: Any,
         **kwargs: Any,
     ):
-        Action.__init__(self, category, name, *args, **kwargs)
+        super().__init__(category, name, *args, **kwargs)
         self.submit_name = submit_name
         self.btn_class = btn_class
 

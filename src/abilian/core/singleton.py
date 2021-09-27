@@ -26,7 +26,7 @@ class ValueSingletonMeta(type):
             return value
 
         if value not in cls.__instances__:
-            value_instance = type.__call__(cls, value, *args, **kwargs)
+            value_instance = super().__call__(value, *args, **kwargs)
             cls.__instances__[getattr(value_instance, cls.attr)] = value_instance
 
         result = cls.__instances__[value.lower()]
@@ -87,7 +87,7 @@ class UniqueNameType(TypeDecorator):
     def __init__(self, *args, **kwargs):
         assert self.Type is not None
         kwargs.setdefault("length", self.default_max_length)
-        TypeDecorator.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def process_bind_param(self, value: Any, dialect: Dialect) -> str | None:
         if value is not None:

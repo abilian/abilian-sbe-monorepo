@@ -42,7 +42,7 @@ class Blueprint(BaseBlueprint):
             url_prefix = url_prefix[:-1]
         kwargs["url_prefix"] = url_prefix
 
-        BaseBlueprint.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.url_value_preprocessor(pull_community)
         self.url_value_preprocessor(init_current_tab)
         self.before_request(check_access)
