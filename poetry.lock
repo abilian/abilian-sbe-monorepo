@@ -245,7 +245,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "charset-normalizer"
-version = "2.0.6"
+version = "2.0.7"
 description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
 category = "dev"
 optional = false
@@ -510,16 +510,16 @@ testing = ["covdefaults (>=1.2.0)", "coverage (>=4)", "pytest (>=4)", "pytest-co
 
 [[package]]
 name = "flake8"
-version = "3.9.2"
+version = "4.0.1"
 description = "the modular source code checker: pep8 pyflakes and co"
 category = "dev"
 optional = false
-python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
+python-versions = ">=3.6"
 
 [package.dependencies]
 mccabe = ">=0.6.0,<0.7.0"
-pycodestyle = ">=2.7.0,<2.8.0"
-pyflakes = ">=2.3.0,<2.4.0"
+pycodestyle = ">=2.8.0,<2.9.0"
+pyflakes = ">=2.4.0,<2.5.0"
 
 [[package]]
 name = "flake8-bugbear"
@@ -538,14 +538,14 @@ dev = ["coverage", "black", "hypothesis", "hypothesmith"]
 
 [[package]]
 name = "flake8-comprehensions"
-version = "3.6.1"
+version = "3.7.0"
 description = "A flake8 plugin to help you write better list/set/dict comprehensions."
 category = "dev"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-flake8 = ">=3.0,<3.2.0 || >3.2.0,<4"
+flake8 = ">=3.0,<3.2.0 || >3.2.0,<5"
 
 [[package]]
 name = "flake8-mutable"
@@ -582,14 +582,14 @@ flake8 = ">=3.0.0"
 
 [[package]]
 name = "flake8-tidy-imports"
-version = "4.4.1"
+version = "4.5.0"
 description = "A flake8 plugin that helps you write tidier imports."
 category = "dev"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-flake8 = ">=3.8.0,<4"
+flake8 = ">=3.8.0,<5"
 
 [[package]]
 name = "flask"
@@ -1281,11 +1281,11 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "pycodestyle"
-version = "2.7.0"
+version = "2.8.0"
 description = "Python style guide checker"
 category = "dev"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "pycparser"
@@ -1297,7 +1297,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "pyflakes"
-version = "2.3.1"
+version = "2.4.0"
 description = "passive checker of Python programs"
 category = "dev"
 optional = false
@@ -1701,7 +1701,7 @@ telegram = ["requests"]
 
 [[package]]
 name = "types-bleach"
-version = "4.1.0"
+version = "4.1.1"
 description = "Typing stubs for bleach"
 category = "dev"
 optional = false
@@ -1709,7 +1709,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-chardet"
-version = "4.0.0"
+version = "4.0.1"
 description = "Typing stubs for chardet"
 category = "dev"
 optional = false
@@ -1717,7 +1717,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-deprecated"
-version = "1.2.1"
+version = "1.2.3"
 description = "Typing stubs for Deprecated"
 category = "dev"
 optional = false
@@ -1725,7 +1725,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-markdown"
-version = "3.3.4"
+version = "3.3.5"
 description = "Typing stubs for Markdown"
 category = "dev"
 optional = false
@@ -1733,7 +1733,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-python-dateutil"
-version = "2.8.0"
+version = "2.8.1"
 description = "Typing stubs for python-dateutil"
 category = "dev"
 optional = false
@@ -1741,7 +1741,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-pytz"
-version = "2021.1.2"
+version = "2021.3.0"
 description = "Typing stubs for pytz"
 category = "dev"
 optional = false
@@ -1749,7 +1749,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-pyyaml"
-version = "5.4.10"
+version = "5.4.11"
 description = "Typing stubs for PyYAML"
 category = "dev"
 optional = false
@@ -1757,7 +1757,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-redis"
-version = "3.5.11"
+version = "3.5.12"
 description = "Typing stubs for redis"
 category = "dev"
 optional = false
@@ -1765,7 +1765,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-requests"
-version = "2.25.9"
+version = "2.25.10"
 description = "Typing stubs for requests"
 category = "dev"
 optional = false
@@ -1773,7 +1773,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-setuptools"
-version = "57.4.0"
+version = "57.4.1"
 description = "Typing stubs for setuptools"
 category = "dev"
 optional = false
@@ -2133,8 +2133,8 @@ chardet = [
     {file = "chardet-4.0.0.tar.gz", hash = "sha256:0d6f53a15db4120f2b08c94f11e7d93d2c911ee118b6b30a04ec3ee8310179fa"},
 ]
 charset-normalizer = [
-    {file = "charset-normalizer-2.0.6.tar.gz", hash = "sha256:5ec46d183433dcbd0ab716f2d7f29d8dee50505b3fdb40c6b985c7c4f5a3591f"},
-    {file = "charset_normalizer-2.0.6-py3-none-any.whl", hash = "sha256:5d209c0a931f215cee683b6445e2d77677e7e75e159f78def0db09d68fafcaa6"},
+    {file = "charset-normalizer-2.0.7.tar.gz", hash = "sha256:e019de665e2bcf9c2b64e2e5aa025fa991da8720daa3c1138cadd2fd1856aed0"},
+    {file = "charset_normalizer-2.0.7-py3-none-any.whl", hash = "sha256:f7af805c321bfa1ce6714c51f254e0d5bb5e5834039bc17db7ebe3a4cec9492b"},
 ]
 clamd = [
     {file = "clamd-1.0.2-py2.py3-none-any.whl", hash = "sha256:5c32546b7d1eb00fd6be00a889d79e00fbf980ed082826ccfa369bce3dcff5e7"},
@@ -2276,16 +2276,16 @@ filelock = [
     {file = "filelock-3.3.0.tar.gz", hash = "sha256:8c7eab13dc442dc249e95158bcc12dec724465919bdc9831fdbf0660f03d1785"},
 ]
 flake8 = [
-    {file = "flake8-3.9.2-py2.py3-none-any.whl", hash = "sha256:bf8fd333346d844f616e8d47905ef3a3384edae6b4e9beb0c5101e25e3110907"},
-    {file = "flake8-3.9.2.tar.gz", hash = "sha256:07528381786f2a6237b061f6e96610a4167b226cb926e2aa2b6b1d78057c576b"},
+    {file = "flake8-4.0.1-py2.py3-none-any.whl", hash = "sha256:479b1304f72536a55948cb40a32dce8bb0ffe3501e26eaf292c7e60eb5e0428d"},
+    {file = "flake8-4.0.1.tar.gz", hash = "sha256:806e034dda44114815e23c16ef92f95c91e4c71100ff52813adf7132a6ad870d"},
 ]
 flake8-bugbear = [
     {file = "flake8-bugbear-21.9.2.tar.gz", hash = "sha256:db9a09893a6c649a197f5350755100bb1dd84f110e60cf532fdfa07e41808ab2"},
     {file = "flake8_bugbear-21.9.2-py36.py37.py38-none-any.whl", hash = "sha256:4f7eaa6f05b7d7ea4cbbde93f7bcdc5438e79320fa1ec420d860c181af38b769"},
 ]
 flake8-comprehensions = [
-    {file = "flake8-comprehensions-3.6.1.tar.gz", hash = "sha256:4888de89248b7f7535159189ff693c77f8354f6d37a02619fa28c9921a913aa0"},
-    {file = "flake8_comprehensions-3.6.1-py3-none-any.whl", hash = "sha256:e9a010b99aa90c05790d45281ad9953df44a4a08a1a8f6cd41f98b4fc6a268a0"},
+    {file = "flake8-comprehensions-3.7.0.tar.gz", hash = "sha256:6b3218b2dde8ac5959c6476cde8f41a79e823c22feb656be2710cd2a3232cef9"},
+    {file = "flake8_comprehensions-3.7.0-py3-none-any.whl", hash = "sha256:a5d7aea6315bbbd6fbcb2b4e80bff6a54d1600155e26236e555d0c6fe1d62522"},
 ]
 flake8-mutable = [
     {file = "flake8-mutable-1.2.0.tar.gz", hash = "sha256:ee9b77111b867d845177bbc289d87d541445ffcc6029a0c5c65865b42b18c6a6"},
@@ -2300,8 +2300,8 @@ flake8-super-call = [
     {file = "flake8_super_call-1.0.0-py2.py3-none-any.whl", hash = "sha256:61cfcd0c8ad78e1cf1f4d1225cb7513666ab9c5a9900a238b2c4abee8ad9a7de"},
 ]
 flake8-tidy-imports = [
-    {file = "flake8-tidy-imports-4.4.1.tar.gz", hash = "sha256:c18b3351b998787db071e766e318da1f0bd9d5cecc69c4022a69e7aa2efb2c51"},
-    {file = "flake8_tidy_imports-4.4.1-py3-none-any.whl", hash = "sha256:631a1ba9daaedbe8bb53f6086c5a92b390e98371205259e0e311a378df8c3dc8"},
+    {file = "flake8-tidy-imports-4.5.0.tar.gz", hash = "sha256:ac637961d0f319012d099e49619f8c928e3221f74e00fe6eb89513bc64c40adb"},
+    {file = "flake8_tidy_imports-4.5.0-py3-none-any.whl", hash = "sha256:87eed94ae6a2fda6a5918d109746feadf1311e0eb8274ab7a7920f6db00a41c9"},
 ]
 flask = [
     {file = "Flask-2.0.2-py3-none-any.whl", hash = "sha256:cb90f62f1d8e4dc4621f52106613488b5ba826b2e1e10a33eac92f723093ab6a"},
@@ -2765,16 +2765,16 @@ py = [
     {file = "py-1.10.0.tar.gz", hash = "sha256:21b81bda15b66ef5e1a777a21c4dcd9c20ad3efd0b3f817e7a809035269e1bd3"},
 ]
 pycodestyle = [
-    {file = "pycodestyle-2.7.0-py2.py3-none-any.whl", hash = "sha256:514f76d918fcc0b55c6680472f0a37970994e07bbb80725808c17089be302068"},
-    {file = "pycodestyle-2.7.0.tar.gz", hash = "sha256:c389c1d06bf7904078ca03399a4816f974a1d590090fecea0c63ec26ebaf1cef"},
+    {file = "pycodestyle-2.8.0-py2.py3-none-any.whl", hash = "sha256:720f8b39dde8b293825e7ff02c475f3077124006db4f440dcbc9a20b76548a20"},
+    {file = "pycodestyle-2.8.0.tar.gz", hash = "sha256:eddd5847ef438ea1c7870ca7eb78a9d47ce0cdb4851a5523949f2601d0cbbe7f"},
 ]
 pycparser = [
     {file = "pycparser-2.20-py2.py3-none-any.whl", hash = "sha256:7582ad22678f0fcd81102833f60ef8d0e57288b6b5fb00323d101be910e35705"},
     {file = "pycparser-2.20.tar.gz", hash = "sha256:2d475327684562c3a96cc71adf7dc8c4f0565175cf86b6d7a404ff4c771f15f0"},
 ]
 pyflakes = [
-    {file = "pyflakes-2.3.1-py2.py3-none-any.whl", hash = "sha256:7893783d01b8a89811dd72d7dfd4d84ff098e5eed95cfa8905b22bbffe52efc3"},
-    {file = "pyflakes-2.3.1.tar.gz", hash = "sha256:f5bc8ecabc05bb9d291eb5203d6810b49040f6ff446a756326104746cc00c1db"},
+    {file = "pyflakes-2.4.0-py2.py3-none-any.whl", hash = "sha256:3bb3a3f256f4b7968c9c788781e4ff07dce46bdf12339dcda61053375426ee2e"},
+    {file = "pyflakes-2.4.0.tar.gz", hash = "sha256:05a85c2872edf37a4ed30b0cce2f6093e1d0581f8c19d7393122da7e25b2b24c"},
 ]
 pygeoip = [
     {file = "pygeoip-0.3.2-py2.py3-none-any.whl", hash = "sha256:1938b9dac7b00d77f94d040b9465ea52c938f3fcdcd318b5537994f3c16aef96"},
@@ -3006,44 +3006,44 @@ tqdm = [
     {file = "tqdm-4.62.3.tar.gz", hash = "sha256:d359de7217506c9851b7869f3708d8ee53ed70a1b8edbba4dbcb47442592920d"},
 ]
 types-bleach = [
-    {file = "types-bleach-4.1.0.tar.gz", hash = "sha256:682a70cf1d0158b11d1268e925abd1b45cfd6ac0eab1a7a1d14439b5708edf3d"},
-    {file = "types_bleach-4.1.0-py3-none-any.whl", hash = "sha256:98840e21ea555b8df01779c6daf7963366358550055947cf6e4733b553b4ecae"},
+    {file = "types-bleach-4.1.1.tar.gz", hash = "sha256:46f63fea54fd72ed94524a969be3d8093e05fbfbe4f80f091c62d473ad0c7b68"},
+    {file = "types_bleach-4.1.1-py3-none-any.whl", hash = "sha256:769505820fa86e791b61c1b407b4ebfd61e73b994dc6f9e66da1b3800bd6d88c"},
 ]
 types-chardet = [
-    {file = "types-chardet-4.0.0.tar.gz", hash = "sha256:a88c1a3b10a4e2c4186f6102d5b6e8e7c5815175d123550aae28c340a9507392"},
-    {file = "types_chardet-4.0.0-py3-none-any.whl", hash = "sha256:d82de6d33b8a1ce11381538765e4c0aaefed5df5fd93ce7ab476d83018d85d8f"},
+    {file = "types-chardet-4.0.1.tar.gz", hash = "sha256:6d2a73711c98f875ab73b87956e8bc1e7ac74f4bd9464631a1ce68f21bc3c1d1"},
+    {file = "types_chardet-4.0.1-py3-none-any.whl", hash = "sha256:a503019a8c4b945adc2c460857a0cc6958101e410a7ed8aa1a669a88b6179be1"},
 ]
 types-deprecated = [
-    {file = "types-Deprecated-1.2.1.tar.gz", hash = "sha256:748df744322b5337811604d62a6b0ec76b9b3db0b740075ab15c43f35a46b587"},
-    {file = "types_Deprecated-1.2.1-py3-none-any.whl", hash = "sha256:e51bdf4b295de12b794f6e893d3d941191b33ff4282918c9a4ec52f568c7f485"},
+    {file = "types-Deprecated-1.2.3.tar.gz", hash = "sha256:952849d3aad746f4fc416c610296d888c9ffab54ac115389867748b2025d84e0"},
+    {file = "types_Deprecated-1.2.3-py3-none-any.whl", hash = "sha256:eab547e4e2d8b17b40398595ef42545463f8b2209d8fd334bccc198241246733"},
 ]
 types-markdown = [
-    {file = "types-Markdown-3.3.4.tar.gz", hash = "sha256:24ff606f0d125d2c0731fae96bc4245489eb96c5a71a50ba742370c1c6a366ea"},
-    {file = "types_Markdown-3.3.4-py3-none-any.whl", hash = "sha256:9cb5f26092dbf3c5fc575e80fd9310961085b28c69cf4a2a63b1b8ae1859c324"},
+    {file = "types-Markdown-3.3.5.tar.gz", hash = "sha256:d2ae50059c2ce22cf91a7dbe5432578d43f511989130e44f2c8325240f2ad012"},
+    {file = "types_Markdown-3.3.5-py3-none-any.whl", hash = "sha256:92306c2106792abfcc885f2179c83a49bb6cb7f20b6ec0672459856bcddad3b4"},
 ]
 types-python-dateutil = [
-    {file = "types-python-dateutil-2.8.0.tar.gz", hash = "sha256:540c6c53c3a52433d7088254e3afdc3f6c86b5ae452aaa1b796c26d01c9fd73c"},
-    {file = "types_python_dateutil-2.8.0-py3-none-any.whl", hash = "sha256:9954d87dc982344bb2aad73a7fe505bdca72f89088ef653c4c40f52649183437"},
+    {file = "types-python-dateutil-2.8.1.tar.gz", hash = "sha256:abbdaba0635d4f5fed764c2844c449bb095ed82abbdf47fcdbd035e3bf708ea1"},
+    {file = "types_python_dateutil-2.8.1-py3-none-any.whl", hash = "sha256:dec1be9d9ea3caea7677d52d95ed9ee6b6334ea325afe1ef462a8af8e7522f83"},
 ]
 types-pytz = [
-    {file = "types-pytz-2021.1.2.tar.gz", hash = "sha256:448828a06f2aaa840e57364d866c661645a045e532f817e4f10c8c3ab2b66651"},
-    {file = "types_pytz-2021.1.2-py3-none-any.whl", hash = "sha256:28fb1c0f77f59aebe9b792d073ebfbbbf7b329f9d4af6a6079713a618a1c0f31"},
+    {file = "types-pytz-2021.3.0.tar.gz", hash = "sha256:86a61967834dceeaaf98b6902ed8357efdd262bb8afcaf4bc8ccecf748592778"},
+    {file = "types_pytz-2021.3.0-py3-none-any.whl", hash = "sha256:b5027e5de50a4c978cd60ca16849d934d44c44ebd7d29cf13ada009efaa9feef"},
 ]
 types-pyyaml = [
-    {file = "types-PyYAML-5.4.10.tar.gz", hash = "sha256:1d9e431e9f1f78a65ea957c558535a3b15ad67ea4912bce48a6c1b613dcf81ad"},
-    {file = "types_PyYAML-5.4.10-py3-none-any.whl", hash = "sha256:f1d1357168988e45fa20c65aecb3911462246a84809015dd889ebf8b1db74124"},
+    {file = "types-PyYAML-5.4.11.tar.gz", hash = "sha256:802566879aa630b3199f33f3523d4ba069d248d04cea1a12cfa35ecd0dd86622"},
+    {file = "types_PyYAML-5.4.11-py3-none-any.whl", hash = "sha256:09b7e488b8057677b7cdf348d2ba5fdcf0952d2f468e86834631db56e5125058"},
 ]
 types-redis = [
-    {file = "types-redis-3.5.11.tar.gz", hash = "sha256:8abd20051211b8e56b83303f6a0709fb66eb43d618c6afa3d14b5cdada5444b6"},
-    {file = "types_redis-3.5.11-py3-none-any.whl", hash = "sha256:e4e395fbec5a07f8b1cd91ecbaea39d804d074bfac4712b34ad2dafdbd87ed04"},
+    {file = "types-redis-3.5.12.tar.gz", hash = "sha256:7a8b4b35cba1446dc21ae653feb88b0dfce1f0e31e41cab8c4765dcc0099f075"},
+    {file = "types_redis-3.5.12-py3-none-any.whl", hash = "sha256:6a6f2a1a09a91b59f3644a4c0ac0b18809285871fc2029e1306ee39f15a472e4"},
 ]
 types-requests = [
-    {file = "types-requests-2.25.9.tar.gz", hash = "sha256:4ec8b71da73e5344adb9bee725a74ec8598e7286f9bcb17500d627f259fe4fb9"},
-    {file = "types_requests-2.25.9-py3-none-any.whl", hash = "sha256:543ba8b3b23e38ac028da1d163aecbbc27d3cc8f654ae64339da539a191a2b1c"},
+    {file = "types-requests-2.25.10.tar.gz", hash = "sha256:3e121988168cffcfa61effaf48f90ebc5ee023f6cc50d04c0144edd7a2265b65"},
+    {file = "types_requests-2.25.10-py3-none-any.whl", hash = "sha256:bf3681e9258df22b27b623167b132869a26f04d5ca570e6a81a932db2a19ab72"},
 ]
 types-setuptools = [
-    {file = "types-setuptools-57.4.0.tar.gz", hash = "sha256:5034f81b237429c1dc0ad84d3e9015e74730400c4db2b4db40daba216d39289b"},
-    {file = "types_setuptools-57.4.0-py3-none-any.whl", hash = "sha256:986630532705e8c77740b6d3cd86aaafd1e0ba6b04119c73c39dc4a67ceae579"},
+    {file = "types-setuptools-57.4.1.tar.gz", hash = "sha256:ae7bb9a024e69d41256be44042c2727f83ea7919d8775a9087febca8efb11ea5"},
+    {file = "types_setuptools-57.4.1-py3-none-any.whl", hash = "sha256:68c06bc8bb24084240de3625e2333235a16babffdcf53a0a1c8ec16df8571358"},
 ]
 typing-extensions = [
     {file = "typing_extensions-3.10.0.2-py2-none-any.whl", hash = "sha256:d8226d10bc02a29bcc81df19a26e56a9647f8b0a6d4a83924139f4a8b01f17b7"},
