@@ -544,7 +544,13 @@ def attachment_download(thread_id, post_id, attachment_id):
     ):
         raise NotFound()
 
-    response = make_response(attachment.content)
+    # Don't fail too hard when attachment is not available.
+    try:
+        content = attachment.content or ""
+    except AttributeError:
+        return ""
+
+    response = make_response(content)
     response.headers["content-length"] = attachment.content_length
     response.headers["content-type"] = attachment.content_type
     filename = quote(attachment.name.encode("utf8"))
