@@ -1,0 +1,10 @@
+.git
+.gitignore
+.idea
+.pyre
+.vagrant
+.tox
+.nox
+
+front/node_modules
+data
