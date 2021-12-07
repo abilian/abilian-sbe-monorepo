@@ -23,8 +23,8 @@ from .auth import AuthService
 from .conversion import conversion_service, converter
 from .indexing import service as index_service
 from .preferences import preferences as preferences_service
-from .repository import repository as repository_service
-from .repository import session_repository as session_repository_service
+from .blob_store import blob_store as repository_service
+from .blob_store import session_blob_store as session_repository_service
 from .security import security as security_service
 from .settings import SettingsService
 from .vocabularies import vocabularies as vocabularies_service

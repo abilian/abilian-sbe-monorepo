@@ -17,7 +17,7 @@ class SecurityException(Exception):
     pass
 
 
-class Repository:
+class ContentRepository:
     """A simple document repository, implementing the basic functionalities of
     the CMIS model."""
 
@@ -179,4 +179,4 @@ class Repository:
         return True
 
 
-repository = Repository()
+repository = ContentRepository()

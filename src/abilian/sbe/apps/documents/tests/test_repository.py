@@ -7,12 +7,12 @@ from sqlalchemy.orm import Session
 
 from abilian.sbe.app import Application
 from abilian.sbe.apps.documents.models import Document, Folder
-from abilian.sbe.apps.documents.repository import Repository
+from abilian.sbe.apps.documents.repository import ContentRepository
 
 
 @fixture
-def repository(app: Application) -> Repository:
-    repository = Repository()
+def repository(app: Application) -> ContentRepository:
+    repository = ContentRepository()
     repository.init_app(app)
     return repository
 
@@ -44,7 +44,7 @@ def test_create_folder(root: Folder, session: Session) -> None:
     assert not folder.is_root_folder
 
 
-def test_move(root: Folder, repository: Repository) -> None:
+def test_move(root: Folder, repository: ContentRepository) -> None:
     doc = root.create_document("doc")
     folder = root.create_subfolder("folder")
 
@@ -57,7 +57,7 @@ def test_move(root: Folder, repository: Repository) -> None:
     assert doc.path == "/folder/newdoc"
 
 
-def test_copy(root: Folder, repository: Repository) -> None:
+def test_copy(root: Folder, repository: ContentRepository) -> None:
     doc = root.create_document("doc")
     folder = root.create_subfolder("folder")
 
@@ -71,7 +71,7 @@ def test_copy(root: Folder, repository: Repository) -> None:
     assert doc_copy in folder.children
 
 
-def test_copy_nested_folders(root: Folder, repository: Repository) -> None:
+def test_copy_nested_folders(root: Folder, repository: ContentRepository) -> None:
     folder1 = root.create_subfolder("folder1")
     folder2 = root.create_subfolder("folder2")
     subfolder = folder1.create_subfolder("subfolder")
@@ -89,7 +89,7 @@ def test_copy_nested_folders(root: Folder, repository: Repository) -> None:
     assert folder1_copy in folder2.children
 
 
-def test_move_nested_folders(root: Folder, repository: Repository) -> None:
+def test_move_nested_folders(root: Folder, repository: ContentRepository) -> None:
     folder1 = root.create_subfolder("folder1")
     folder2 = root.create_subfolder("folder2")
     subfolder = folder1.create_subfolder("subfolder")  # noqa
@@ -100,7 +100,7 @@ def test_move_nested_folders(root: Folder, repository: Repository) -> None:
     assert len(folder1.children) == 1
 
 
-def test_rename(root: Folder, repository: Repository) -> None:
+def test_rename(root: Folder, repository: ContentRepository) -> None:
     folder = root.create_subfolder("folder")
     doc = folder.create_document("doc")
 
@@ -116,7 +116,7 @@ def test_rename(root: Folder, repository: Repository) -> None:
     assert doc.path == "/folder1/doc1"
 
 
-def test_delete(root: Folder, repository: Repository, session: Session) -> None:
+def test_delete(root: Folder, repository: ContentRepository, session: Session) -> None:
     doc = root.create_document("doc")
     folder = root.create_subfolder("folder")
     session.flush()

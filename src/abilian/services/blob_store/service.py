@@ -32,16 +32,16 @@ def _assert_uuid(uuid: Any):
         raise TypeError("Not an uuid.UUID instance", uuid)
 
 
-class RepositoryServiceState(ServiceState):
+class BlobStoreServiceState(ServiceState):
     #: :class:`Path` path to application repository
     path: Path | None = None
 
 
-class RepositoryService(Service):
+class BlobStoreService(Service):
     """Service for storage of binary objects referenced in database."""
 
-    name = "repository"
-    AppStateClass = RepositoryServiceState
+    name = "blob_store"
+    AppStateClass = BlobStoreServiceState
 
     def init_app(self, app: Application):
         super().init_app(app)
@@ -55,7 +55,7 @@ class RepositoryService(Service):
 
     # data management: paths and accessors
     def rel_path(self, uuid: UUID) -> Path:
-        """Contruct relative path from repository top directory to the file
+        """Contruct relative path from blob store top directory to the file
         named after this uuid.
 
         :param:uuid: :class:`UUID` instance
@@ -80,7 +80,7 @@ class RepositoryService(Service):
 
     def get(self, uuid: UUID, default: Path | None = None) -> Path | None:
         """Return absolute :class:`Path` object for given uuid, if this uuid
-        exists in repository, or `default` if it doesn't.
+        exists in blob store, or `default` if it doesn't.
 
         :param:uuid: :class:`UUID` instance
         """
@@ -148,21 +148,21 @@ class RepositoryService(Service):
         self.delete(uuid)
 
 
-repository = RepositoryService()
+blob_store = BlobStoreService()
 
-_REPOSITORY_TRANSACTION = "abilian_repository_transactions"
+_BLOB_STORE_TRANSACTION = "abilian_blob_store_transactions"
 
 
-class SessionRepositoryState(ServiceState):
+class SessionBlobStoreState(ServiceState):
     path: Path
 
     @property
     def transactions(self) -> dict[int, Any]:
         try:
-            return _lookup_app_object(_REPOSITORY_TRANSACTION)
+            return _lookup_app_object(_BLOB_STORE_TRANSACTION)
         except AttributeError:
             reg: dict[int, Any] = {}
-            setattr(_app_ctx_stack.top, _REPOSITORY_TRANSACTION, reg)
+            setattr(_app_ctx_stack.top, _BLOB_STORE_TRANSACTION, reg)
             return reg
 
     @transactions.setter
@@ -171,12 +171,12 @@ class SessionRepositoryState(ServiceState):
         if top is None:
             raise RuntimeError("working outside of application context")
 
-        setattr(top, _REPOSITORY_TRANSACTION, value)
+        setattr(top, _BLOB_STORE_TRANSACTION, value)
 
     # transaction <-> db session accessors
     def get_transaction(
         self, session: Session | scoped_session
-    ) -> RepositoryTransaction | None:
+    ) -> BlobStoreTransaction | None:
         if isinstance(session, scoped_session):
             session = session()
 
@@ -193,7 +193,7 @@ class SessionRepositoryState(ServiceState):
     def set_transaction(
         self,
         session: Session | scoped_session,
-        transaction: RepositoryTransaction | None,
+        transaction: BlobStoreTransaction | None,
     ):
 
         if isinstance(session, scoped_session):
@@ -202,16 +202,16 @@ class SessionRepositoryState(ServiceState):
         session_id = id(session)
         self.transactions[session_id] = (weakref.ref(session), transaction)
 
-    def create_transaction(self, session: Session, transaction: RepositoryTransaction):
+    def create_transaction(self, session: Session, transaction: BlobStoreTransaction):
         if not self.running:
             return
 
         parent = self.get_transaction(session)
         root_path = self.path
-        transaction = RepositoryTransaction(root_path, parent)
+        transaction = BlobStoreTransaction(root_path, parent)
         self.set_transaction(session, transaction)
 
-    def end_transaction(self, session: Session, transaction: RepositoryTransaction):
+    def end_transaction(self, session: Session, transaction: BlobStoreTransaction):
         if not self.running:
             return
 
@@ -262,15 +262,15 @@ class SessionRepositoryState(ServiceState):
         tr.rollback(session)
 
 
-class SessionRepositoryService(Service):
-    """A repository service that is session aware, i.e content is actually
+class SessionBlobStoreService(Service):
+    """A blob store service that is session aware, i.e content is actually
     written or delete at commit time.
 
-    All content is stored using the main :class:`RepositoryService`.
+    All content is stored using the main :class:`BlobStoreService`.
     """
 
-    name = "session_repository"
-    AppStateClass = SessionRepositoryState
+    name = "session_blob_store"
+    AppStateClass = SessionBlobStoreState
 
     def __init__(self, *args, **kwargs):
         self.__listening = False
@@ -329,7 +329,7 @@ class SessionRepositoryService(Service):
 
         return session
 
-    # Repository interface
+    # Blob store interface
     def get(
         self, session: Session | Blob, uuid: UUID, default: Path | None = None
     ) -> Path | None:
@@ -344,7 +344,7 @@ class SessionRepositoryService(Service):
             return default
 
         if val is _NULL_MARK:
-            val = repository.get(uuid, default)
+            val = blob_store.get(uuid, default)
 
         return val
 
@@ -401,11 +401,11 @@ class SessionRepositoryService(Service):
         return self.app_state.rollback(session)
 
 
-session_repository = SessionRepositoryService()
+session_blob_store = SessionBlobStoreService()
 
 
-class RepositoryTransaction:
-    def __init__(self, root_path: Path, parent: RepositoryTransaction | None = None):
+class BlobStoreTransaction:
+    def __init__(self, root_path: Path, parent: BlobStoreTransaction | None = None):
         self.path = root_path / str(uuid1())
         # if parent is not None and parent.cleared:
         #   parent = None
@@ -457,21 +457,21 @@ class RepositoryTransaction:
             # nested transaction
             self._commit_parent()
         else:
-            self._commit_repository()
+            self._commit_blob_store()
         self._clear()
 
-    def _commit_repository(self):
+    def _commit_blob_store(self):
         assert self._parent is None
 
         for uuid in self._deleted:
             try:
-                repository.delete(uuid)
+                blob_store.delete(uuid)
             except KeyError:
                 pass
 
         for uuid in self._set:
             content = self.path / str(uuid)
-            repository.set(uuid, content.open("rb"))
+            blob_store.set(uuid, content.open("rb"))
 
     def _commit_parent(self):
         p = self._parent

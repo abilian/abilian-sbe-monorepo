@@ -83,7 +83,7 @@ def db(app_context: AppContext) -> Iterator[SQLAlchemy]:
     )
 
     stop_all_services(app_context.app)
-    ensure_services_started(["repository", "session_repository"])
+    ensure_services_started(["blob_store", "session_blob_store"])
 
     cleanup_db(_db)
     _db.create_all()
