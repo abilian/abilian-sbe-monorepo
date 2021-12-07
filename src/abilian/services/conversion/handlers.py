@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any
 from xmlrpc.client import ServerProxy
 
+from devtools import debug
 from flask import Flask
 from magic import Magic
 
@@ -377,8 +378,6 @@ class LibreOfficePdfHandler(Handler):
 
     def init_app(self, app: Flask):
         soffice = app.config.get("SOFFICE_LOCATION")
-        found = False
-        execute_ok = False
 
         if soffice:
             # make absolute path: avoid errors when running with different CWD
@@ -393,9 +392,11 @@ class LibreOfficePdfHandler(Handler):
         elif Path("/usr/bin/soffice").is_file():
             soffice = "/usr/bin/soffice"
 
+        elif Path("/opt/homebrew/bin/soffice").is_file():
+            soffice = "/opt/homebrew/bin/soffice"
+
         if soffice:
-            execute_ok = os.access(soffice, os.X_OK)
-            if not execute_ok:
+            if not os.access(soffice, os.X_OK):
                 self.log.warning(f'Not allowed to execute "{soffice}"')
 
         else:
@@ -446,10 +447,12 @@ class LibreOfficePdfHandler(Handler):
                     raise ConversionError(f"Conversion timeout ({timeout})")
 
                 out_fn = f"{os.path.splitext(in_fn)[0]}.pdf"
+                debug(in_fn, out_fn)
                 converted = open(out_fn, "rb").read()
                 return converted
             finally:
-                del self._process
+                if hasattr(self, "_process"):
+                    del self._process
 
 
 class CloudoooPdfHandler(Handler):
