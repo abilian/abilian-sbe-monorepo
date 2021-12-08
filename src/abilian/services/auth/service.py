@@ -104,6 +104,7 @@ class AuthServiceState(ServiceState):
 class AuthService(Service):
     name = "auth"
     AppStateClass = AuthServiceState
+    login_url_prefix: str
 
     def init_app(self, app: Flask):
         login_manager.init_app(app)

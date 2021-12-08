@@ -16,7 +16,7 @@ from .blob import Blob
 ATTRIBUTE = "__attachments__"
 
 
-class SupportAttachment(metaclass=abc.ABCMeta):
+class SupportsAttachment(abc.ABC):
     pass
 
 
@@ -34,7 +34,7 @@ def register(cls):
     if not issubclass(cls, Entity):
         raise ValueError("Class must be a subclass of abilian.core.entities.Entity")
 
-    SupportAttachment.register(cls)
+    SupportsAttachment.register(cls)
     return cls
 
 
@@ -45,9 +45,9 @@ def supports_attachments(obj):
     :returns: True is obj supports attachments.
     """
     if isinstance(obj, type):
-        return issubclass(obj, SupportAttachment)
+        return issubclass(obj, SupportsAttachment)
 
-    if not isinstance(obj, SupportAttachment):
+    if not isinstance(obj, SupportsAttachment):
         return False
 
     if obj.id is None:
