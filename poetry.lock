@@ -1258,7 +1258,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "pip-api"
-version = "0.0.25"
+version = "0.0.26"
 description = "An unofficial, importable pip API"
 category = "dev"
 optional = false
@@ -1266,7 +1266,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "pip-audit"
-version = "1.1.0"
+version = "1.1.1"
 description = "A tool for scanning Python environments for known vulnerabilities"
 category = "dev"
 optional = false
@@ -1278,7 +1278,7 @@ cyclonedx-python-lib = ">=0.11.1"
 html5lib = ">=1.1"
 lockfile = ">=0.12.2"
 packaging = ">=21.0.0"
-pip-api = ">=0.0.25"
+pip-api = ">=0.0.26"
 progress = ">=1.6"
 resolvelib = ">=0.8.0"
 
@@ -2893,12 +2893,12 @@ pillow = [
     {file = "Pillow-8.4.0.tar.gz", hash = "sha256:b8e2f83c56e141920c39464b852de3719dfbfb6e3c99a2d8da0edf4fb33176ed"},
 ]
 pip-api = [
-    {file = "pip-api-0.0.25.tar.gz", hash = "sha256:f41a337d1a7f81c0712da01da353c016f1f75fc7b1b5bf47af5bfca16b2df5a1"},
-    {file = "pip_api-0.0.25-py3-none-any.whl", hash = "sha256:cd188cbcf20c387b73236e64b0ade5545e6e211ab003be35283aeacf36091f3f"},
+    {file = "pip-api-0.0.26.tar.gz", hash = "sha256:d1266be311f1cd1ddd0d501e99275c7f6ff1fd0ec6db46d521f56e747d9286e5"},
+    {file = "pip_api-0.0.26-py3-none-any.whl", hash = "sha256:b24e94e5d5d3f161a2db49653798e6a4c1f0ed6b379e511b45a8fa57c185d711"},
 ]
 pip-audit = [
-    {file = "pip-audit-1.1.0.tar.gz", hash = "sha256:04af7911f2abc223c0d99669365ef346910beece5b344001b3b571facd959541"},
-    {file = "pip_audit-1.1.0-py3-none-any.whl", hash = "sha256:2762bf73a236a4ad10be27d3dfb4f7845ec22fb113c483aabc3e25d8ecc25a6e"},
+    {file = "pip-audit-1.1.1.tar.gz", hash = "sha256:61d772968b6ef644f43ecceace89665d28d7ea521a9390e59188c4189d580856"},
+    {file = "pip_audit-1.1.1-py3-none-any.whl", hash = "sha256:86aff3427a544757d1d30e8a0ee83eb040c85a94e7b8b6541ed4058493090b44"},
 ]
 platformdirs = [
     {file = "platformdirs-2.4.0-py3-none-any.whl", hash = "sha256:8868bbe3c3c80d42f20156f22e7131d2fb321f5bc86a2a345375c6481a67021d"},

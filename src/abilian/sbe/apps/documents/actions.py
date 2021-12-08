@@ -85,7 +85,8 @@ class FolderAction(BaseFolderAction):
 
     def pre_condition(self, ctx):
         return (
-                super().pre_condition(ctx) and ctx["object"] is not content_repository.root_folder
+            super().pre_condition(ctx)
+            and ctx["object"] is not content_repository.root_folder
         )
 
 

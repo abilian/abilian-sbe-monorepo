@@ -5,6 +5,7 @@ import warnings
 from typing import Iterator
 
 import rich
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug.routing import Rule
 
 from abilian.app import Application
@@ -87,7 +88,7 @@ def test_all_simple_endpoints_with_no_login(client, app: Application):
             raise
 
 
-def test_all_simple_endpoints_as_admin(client, app: Application, db):
+def test_all_simple_endpoints_as_admin(client, app: Application, db: SQLAlchemy):
     # FIXME: not done yet
     warnings.simplefilter("ignore")
     # app.services['security'].start()
@@ -123,11 +124,11 @@ def test_all_simple_endpoints_as_admin(client, app: Application, db):
     print()
 
 
-def test_login_as_admin(client, db):
+def test_login_as_admin(client, db: SQLAlchemy):
     login_as_admin(client, db)
 
 
-def test_failed_login(client, db):
+def test_failed_login(client, db: SQLAlchemy):
     data = {"email": "test@example.com", "password": "admin"}
     r = client.post(url_for("login.login_post"), data=data)
     assert r.status_code == 401
@@ -136,7 +137,7 @@ def test_failed_login(client, db):
 #
 # Util
 #
-def login_as_admin(client, db):
+def login_as_admin(client, db: SQLAlchemy):
     email = "admin@example.com"
     password = "secret"
     user = User(email=email, can_login=True, password=password)

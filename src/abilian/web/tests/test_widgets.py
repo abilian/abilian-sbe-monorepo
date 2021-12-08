@@ -49,7 +49,6 @@ class DummyForm(Form):
 
 
 def test_table_view(app: Flask):
-
     @default_view(app, WidgetTestModel)
     @app.route("/dummy_view/<object_id>")
     def dummy_view(object_id):

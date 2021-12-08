@@ -190,9 +190,9 @@ def check_write_access(obj: BaseContent) -> None:
     if security.has_role(current_user, Admin):
         return
 
-    if content_repository.has_access(current_user, obj) and content_repository.has_permission(
-        current_user, WRITE, obj
-    ):
+    if content_repository.has_access(
+        current_user, obj
+    ) and content_repository.has_permission(current_user, WRITE, obj):
         return
     raise Forbidden()
 
@@ -212,9 +212,9 @@ def check_manage_access(obj) -> None:
         return
     if security.has_role(current_user, Admin):
         return
-    if content_repository.has_access(current_user, obj) and content_repository.has_permission(
-        current_user, MANAGE, obj
-    ):
+    if content_repository.has_access(
+        current_user, obj
+    ) and content_repository.has_permission(current_user, MANAGE, obj):
         return
     raise Forbidden()
 

@@ -184,7 +184,9 @@ def test_binary_upload(client, community):
         )
 
 
-def test_zip_upload_uncompress(community: Community, db: SQLAlchemy, client: FlaskClient):
+def test_zip_upload_uncompress(
+    community: Community, db: SQLAlchemy, client: FlaskClient
+):
     subfolder = Folder(title="folder 1", parent=community.folder)
     db.session.add(subfolder)
     db.session.flush()

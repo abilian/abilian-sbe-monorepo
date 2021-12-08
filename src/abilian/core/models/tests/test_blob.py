@@ -13,8 +13,7 @@ from flask import Flask
 
 from abilian.core.models.blob import Blob
 from abilian.core.sqlalchemy import SQLAlchemy
-from abilian.services import blob_store
-from abilian.services import session_blob_store
+from abilian.services import blob_store, session_blob_store
 
 
 def test_auto_uuid():
