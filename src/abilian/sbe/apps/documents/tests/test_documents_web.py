@@ -171,8 +171,7 @@ def test_image_upload(client: FlaskClient, community: Community) -> None:
         _test_upload(community, client, name, "image/jpeg")
 
 
-@pytest.mark.skip()  # FIXME: magic detection mismatch?
-def test_binary_upload(client, community, req_ctx):
+def test_binary_upload(client, community):
     name = "random.bin"
     user = community.test_user
     with client_login(client, user):
@@ -185,9 +184,7 @@ def test_binary_upload(client, community, req_ctx):
         )
 
 
-def test_zip_upload_uncompress(
-    community: Community, db: SQLAlchemy, client: FlaskClient
-) -> None:
+def test_zip_upload_uncompress(community: Community, db: SQLAlchemy, client: FlaskClient):
     subfolder = Folder(title="folder 1", parent=community.folder)
     db.session.add(subfolder)
     db.session.flush()

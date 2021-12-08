@@ -12,7 +12,7 @@ from abilian.sbe.apps.communities.security import is_manager
 from abilian.services.security import MANAGE, WRITE, security
 from abilian.web.action import Action, FAIcon, ModalActionMixin, actions
 
-from .repository import repository
+from .repository import content_repository
 
 
 def url_for(endpoint, **kw):
@@ -39,7 +39,7 @@ class CmisContentAction(Action):
         return ok
 
     def has_access(self, permission: str, obj: Any) -> bool:
-        return repository.has_permission(current_user, permission, obj)
+        return content_repository.has_permission(current_user, permission, obj)
 
 
 class BaseFolderAction(CmisContentAction):
@@ -85,7 +85,7 @@ class FolderAction(BaseFolderAction):
 
     def pre_condition(self, ctx):
         return (
-            super().pre_condition(ctx) and ctx["object"] is not repository.root_folder
+                super().pre_condition(ctx) and ctx["object"] is not content_repository.root_folder
         )
 
 
@@ -116,7 +116,7 @@ class RootFolderAction(CmisContentAction):
     """Apply only for root folder."""
 
     def pre_condition(self, ctx):
-        return ctx["object"] is repository.root_folder
+        return ctx["object"] is content_repository.root_folder
 
 
 _checkin_template_action = """

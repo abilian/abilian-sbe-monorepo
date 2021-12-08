@@ -31,13 +31,13 @@ def converter() -> Iterator[Iterator | Iterator[Converter]]:
     c.clear()
 
 
-def read_file(fn: str, mode: str = "rb") -> bytes:
-    return (Path(__file__).parent / "dummy_files" / fn).open(mode).read()
+def read_file(fn: str) -> bytes:
+    return (Path(__file__).parent / "dummy_files" / fn).open("rb").read()
 
 
 # To text
 @mark.skipif(not HAS_PDFTOTEXT, reason="requires poppler or poppler-util")
-def test_pdf_to_text(converter):
+def test_pdf_to_text(converter: Converter):
     blob = read_file("onepage.pdf")
     text = converter.to_text("", blob, "application/pdf")
     assert text

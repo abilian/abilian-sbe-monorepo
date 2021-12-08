@@ -70,7 +70,7 @@ def test_public_endpoints_with_no_login(client, app: Application):
         raise AssertionError("Some public web tests failed")
 
 
-def test_all_simple_endpoints_with_no_login(client, app: Application, request_ctx):
+def test_all_simple_endpoints_with_no_login(client, app: Application):
     warnings.simplefilter("ignore")
     security_service.start(ignore_state=True)
 
@@ -87,7 +87,7 @@ def test_all_simple_endpoints_with_no_login(client, app: Application, request_ct
             raise
 
 
-def test_all_simple_endpoints_as_admin(client, app: Application, db, request_ctx):
+def test_all_simple_endpoints_as_admin(client, app: Application, db):
     # FIXME: not done yet
     warnings.simplefilter("ignore")
     # app.services['security'].start()

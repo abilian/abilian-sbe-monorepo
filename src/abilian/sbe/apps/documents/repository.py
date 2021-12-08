@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import sqlalchemy as sa
+import sqlalchemy.orm
 
 from abilian.core.models.subjects import User
 from abilian.services.security import READ, Permission, security
@@ -179,4 +180,4 @@ class ContentRepository:
         return True
 
 
-repository = ContentRepository()
+content_repository = ContentRepository()

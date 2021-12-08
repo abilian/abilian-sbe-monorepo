@@ -13,7 +13,7 @@ from abilian.app import Application as BaseApplication
 from abilian.core.celery import FlaskLoader as CeleryBaseLoader
 from abilian.services import converter
 
-from .apps.documents.repository import repository
+from .apps.documents.repository import content_repository
 from .extension import sbe
 
 # Used for side effects, do not remove
@@ -53,7 +53,7 @@ class Application(BaseApplication):
     def init_extensions(self) -> None:
         super().init_extensions()
         sbe.init_app(self)
-        repository.init_app(self)
+        content_repository.init_app(self)
         converter.init_app(self)
 
 

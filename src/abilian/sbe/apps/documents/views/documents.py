@@ -26,7 +26,7 @@ from abilian.i18n import _, render_template_i18n
 from abilian.sbe.apps.communities.common import object_viewers
 from abilian.sbe.apps.communities.views import default_view_kw
 from abilian.sbe.apps.documents.models import Document
-from abilian.sbe.apps.documents.repository import repository
+from abilian.sbe.apps.documents.repository import content_repository
 from abilian.sbe.apps.documents.tasks import convert_document_content, preview_document
 from abilian.services import audit_service
 from abilian.services.conversion import converter
@@ -151,7 +151,7 @@ def document_delete(doc_id: int) -> Response:
     check_write_access(doc)
 
     parent_folder = doc.parent
-    repository.delete_object(doc)
+    content_repository.delete_object(doc)
     db.session.commit()
 
     flash(_("File successfully deleted."), "success")

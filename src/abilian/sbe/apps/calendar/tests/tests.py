@@ -15,7 +15,7 @@ def test_create_event() -> None:
 
 
 @mark.skip
-def test(community1, client, req_ctx):
+def test(community1, client):
     response = client.get(url_for("calendar.index", community_id=community1.slug))
     assert response.status_code == 200
 

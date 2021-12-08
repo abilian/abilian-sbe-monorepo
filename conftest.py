@@ -28,11 +28,5 @@ def config():
 
 @fixture
 def app(config):
-    """Return an App configured with config=TestConfig."""
+    """Return an App configured with config=NoCsrfTestConfig."""
     return create_app(config=config)
-
-
-@fixture
-def req_ctx(app, request_ctx):
-    """Simple alias (TBR)"""
-    return request_ctx

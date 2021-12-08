@@ -43,7 +43,7 @@ from abilian.core.util import unwrap
 from abilian.i18n import _, _n
 from abilian.sbe.apps.communities.views import default_view_kw
 from abilian.sbe.apps.documents.models import Document, Folder, icon_for, icon_url
-from abilian.sbe.apps.documents.repository import repository
+from abilian.sbe.apps.documents.repository import content_repository
 from abilian.sbe.apps.documents.search import reindex_tree
 from abilian.services import get_service
 from abilian.services.security import READ, WRITE, Role, security
@@ -197,7 +197,7 @@ def permissions(folder_id):
     security._fill_role_cache_batch(principals)
 
     users_and_local_roles = [
-        (user, role, repository.has_access(user, folder))
+        (user, role, content_repository.has_access(user, folder))
         for user, role in local_roles_assignments
         if isinstance(user, User)
     ]
@@ -289,7 +289,7 @@ def permissions(folder_id):
 @route("/folder/<int:folder_id>/permissions", methods=["POST"])
 @csrf.protect
 def permissions_update(folder_id):
-    folder = repository.get_folder_by_id(folder_id)
+    folder = content_repository.get_folder_by_id(folder_id)
     check_manage_access(folder)
     has_permission = security.has_permission
     action = request.form.get("action")
@@ -432,7 +432,7 @@ def permissions_update(folder_id):
 @route("/folder/<int:folder_id>/permissions_export")
 @http.nocache
 def permissions_export(folder_id):
-    folder = repository.get_folder_by_id(folder_id)
+    folder = content_repository.get_folder_by_id(folder_id)
     check_manage_access(folder)
 
     wb = Workbook()
@@ -788,7 +788,7 @@ def delete_multiple(folder):
         activity.send(
             app, actor=current_user, verb="delete", object=obj, target=community
         )
-        repository.delete_object(obj)
+        content_repository.delete_object(obj)
 
     if docs + folders:
         db.session.commit()
@@ -836,7 +836,7 @@ def move_multiple(folder: Folder) -> Response:
         flash(_("Move elements: no destination folder selected. Aborted."), "error")
         return redirect(current_folder_url)
 
-    target_folder = repository.get_folder_by_id(target_folder_id)
+    target_folder = content_repository.get_folder_by_id(target_folder_id)
 
     if folder == target_folder:
         flash(

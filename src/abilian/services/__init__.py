@@ -23,8 +23,8 @@ from .auth import AuthService
 from .conversion import conversion_service, converter
 from .indexing import service as index_service
 from .preferences import preferences as preferences_service
-from .blob_store import blob_store as repository_service
-from .blob_store import session_blob_store as session_repository_service
+from .blob_store import blob_store
+from .blob_store import session_blob_store
 from .security import security as security_service
 from .settings import SettingsService
 from .vocabularies import vocabularies as vocabularies_service
@@ -32,7 +32,6 @@ from .vocabularies import vocabularies as vocabularies_service
 auth_service = AuthService()
 activity_service = ActivityService()
 settings_service = SettingsService()
-
 
 def get_service(service: str) -> Service:
     return current_app.services[service]

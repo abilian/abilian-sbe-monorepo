@@ -7,7 +7,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.exceptions import NotFound, Unauthorized
 
 from abilian.core.extensions import db
-from abilian.sbe.apps.documents.repository import repository
+from abilian.sbe.apps.documents.repository import content_repository
 
 from .parser import Entry
 from .renderer import Feed, to_xml
@@ -109,21 +109,21 @@ def get_options(args):
 
 
 def get_document(id):
-    doc = repository.get_document_by_id(id)
+    doc = content_repository.get_document_by_id(id)
     if not doc:
         raise NotFound
     return doc
 
 
 def get_folder(id):
-    obj = repository.get_folder_by_id(id)
+    obj = content_repository.get_folder_by_id(id)
     if not obj:
         raise NotFound
     return obj
 
 
 def get_object(id):
-    obj = repository.get_object_by_id(id)
+    obj = content_repository.get_object_by_id(id)
     if not obj:
         raise NotFound
     return obj
@@ -169,7 +169,7 @@ def not_found_error_handler(error):
 def getRepositoryInfo():
     log.debug("repositoryInfo called")
 
-    root_folder = repository.root_folder
+    root_folder = content_repository.root_folder
     ctx = {"ROOT": ROOT, "root_folder": root_folder}
 
     result = render_template("cmis/service.xml", **ctx)
@@ -210,9 +210,9 @@ def getObject():
     log.debug(f"Options: {options}")
 
     if id:
-        obj = repository.get_object_by_id(id)
+        obj = content_repository.get_object_by_id(id)
     elif path:
-        obj = repository.get_object_by_path(path)
+        obj = content_repository.get_object_by_path(path)
     else:
         raise NotFound("You must supply either an id or a path.")
     if not obj:

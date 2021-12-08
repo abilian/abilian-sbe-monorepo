@@ -54,9 +54,9 @@ from abilian.services import (
     conversion_service,
     index_service,
     preferences_service,
-    repository_service,
+    blob_store,
     security_service,
-    session_repository_service,
+    session_blob_store,
     settings_service,
     vocabularies_service,
 )
@@ -366,8 +366,8 @@ class Application(
 
         # Abilian Core services
         security_service.init_app(self)
-        repository_service.init_app(self)
-        session_repository_service.init_app(self)
+        blob_store.init_app(self)
+        session_blob_store.init_app(self)
         audit_service.init_app(self)
         index_service.init_app(self)
         activity_service.init_app(self)

@@ -32,7 +32,7 @@ from abilian.core.models.blob import Blob
 from abilian.core.models.subjects import Group, User
 from abilian.i18n import _l
 from abilian.sbe.apps.documents.models import Folder
-from abilian.sbe.apps.documents.repository import repository
+from abilian.sbe.apps.documents.repository import content_repository
 from abilian.services.indexing import indexable_role
 from abilian.services.security import READ, WRITE, Admin
 from abilian.services.security import Manager as MANAGER
@@ -203,7 +203,7 @@ class Community(Entity):
                 # subfolder, we don't want empty names on folders since they must be
                 # unique among siblings
                 name = f"{self.__class__.__name__}_{str(self.id)}-{time.asctime()}"
-            self.folder = repository.root_folder.create_subfolder(name)
+            self.folder = content_repository.root_folder.create_subfolder(name)
             # if not self.group:
             #   self.group = Group(name=self.name)
 

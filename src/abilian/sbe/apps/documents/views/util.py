@@ -11,7 +11,7 @@ from werkzeug.exceptions import Forbidden, InternalServerError, NotFound
 from abilian.core.signals import activity
 from abilian.core.util import unwrap
 from abilian.sbe.apps.documents.models import BaseContent, Document, Folder
-from abilian.sbe.apps.documents.repository import repository
+from abilian.sbe.apps.documents.repository import content_repository
 from abilian.services.security import MANAGE, WRITE, Admin, security
 from abilian.web import url_for
 
@@ -39,7 +39,7 @@ def get_document(id: int) -> Document:
     (404), or the current user doesn't have read access on the document
     (403).
     """
-    doc = repository.get_document_by_id(id)
+    doc = content_repository.get_document_by_id(id)
     check_read_access(doc)
     assert doc
     return doc
@@ -52,7 +52,7 @@ def get_folder(id: int) -> Folder:
     (404), or the current user doesn't have read access on the folder
     (403).
     """
-    folder = repository.get_folder_by_id(id)
+    folder = content_repository.get_folder_by_id(id)
     check_read_access(folder)
     return folder
 
@@ -170,7 +170,7 @@ def check_read_access(obj: BaseContent) -> None:
         return
     if security.has_role(current_user, Admin):
         return
-    if repository.has_access(current_user, obj):
+    if content_repository.has_access(current_user, obj):
         return
     raise Forbidden()
 
@@ -190,7 +190,7 @@ def check_write_access(obj: BaseContent) -> None:
     if security.has_role(current_user, Admin):
         return
 
-    if repository.has_access(current_user, obj) and repository.has_permission(
+    if content_repository.has_access(current_user, obj) and content_repository.has_permission(
         current_user, WRITE, obj
     ):
         return
@@ -212,7 +212,7 @@ def check_manage_access(obj) -> None:
         return
     if security.has_role(current_user, Admin):
         return
-    if repository.has_access(current_user, obj) and repository.has_permission(
+    if content_repository.has_access(current_user, obj) and content_repository.has_permission(
         current_user, MANAGE, obj
     ):
         return

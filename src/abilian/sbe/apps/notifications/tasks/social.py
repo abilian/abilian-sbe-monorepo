@@ -16,7 +16,7 @@ from abilian.core.util import md5
 from abilian.i18n import render_template_i18n
 from abilian.sbe.apps.communities.models import Community
 from abilian.sbe.apps.documents.models import Document
-from abilian.sbe.apps.documents.repository import repository
+from abilian.sbe.apps.documents.repository import content_repository
 from abilian.sbe.apps.forum.models import Post, Thread
 from abilian.sbe.apps.wiki.models import WikiPage
 from abilian.services import get_service
@@ -218,7 +218,7 @@ class CommunityDigest:
 
         self.seen_entities.add(obj.id)
 
-        if isinstance(obj, Document) and repository.has_access(user, obj):
+        if isinstance(obj, Document) and content_repository.has_access(user, obj):
             self.new_documents.append(obj)
         elif isinstance(obj, WikiPage):
             self.new_wiki_pages.append(obj)
@@ -260,5 +260,5 @@ class CommunityDigest:
         self.seen_entities.add(obj.id)
 
         # all objects here need to be accounted only once
-        if isinstance(obj, Document) and repository.has_access(user, obj):
+        if isinstance(obj, Document) and content_repository.has_access(user, obj):
             self.updated_documents.append(obj)

@@ -13,8 +13,8 @@ from flask import Flask
 
 from abilian.core.models.blob import Blob
 from abilian.core.sqlalchemy import SQLAlchemy
-from abilian.services import repository_service as repository
-from abilian.services import session_repository_service as session_repository
+from abilian.services import blob_store
+from abilian.services import session_blob_store
 
 
 def test_auto_uuid():
@@ -96,16 +96,16 @@ def test_value(app: Flask, db: SQLAlchemy):
     session.add(blob)
     tr.commit()
 
-    assert repository.get(blob.uuid) is None
+    assert blob_store.get(blob.uuid) is None
 
-    path = session_repository.get(blob, blob.uuid)
+    path = session_blob_store.get(blob, blob.uuid)
     assert path
     assert isinstance(path, Path)
     assert path.open("rb").read() == content
     assert blob.value == content
 
     session.commit()
-    path = repository.get(blob.uuid)
+    path = blob_store.get(blob.uuid)
     assert path
     assert isinstance(path, Path)
     assert path.open("rb").read() == content
@@ -117,7 +117,7 @@ def test_value(app: Flask, db: SQLAlchemy):
         session.delete(blob)
         # object marked for deletion, but instance attribute should still be
         # readable
-        path = session_repository.get(blob, blob.uuid)
+        path = session_blob_store.get(blob, blob.uuid)
         assert path
         assert isinstance(path, Path)
         fd = path.open("rb")
@@ -125,26 +125,26 @@ def test_value(app: Flask, db: SQLAlchemy):
 
     # commit in transaction: session_repository has no content, 'physical'
     # repository still has content
-    assert session_repository.get(blob, blob.uuid) is None
-    path = repository.get(blob.uuid)
+    assert session_blob_store.get(blob, blob.uuid) is None
+    path = blob_store.get(blob.uuid)
     assert path
     assert isinstance(path, Path)
     assert path.open("rb").read() == content
 
     # rollback: session_repository has content again
     session.rollback()
-    path = session_repository.get(blob, blob.uuid)
+    path = session_blob_store.get(blob, blob.uuid)
     assert path
     assert isinstance(path, Path)
     assert path.open("rb").read() == content
 
     session.delete(blob)
     session.flush()
-    assert session_repository.get(blob, blob.uuid) is None
-    path = repository.get(blob.uuid)
+    assert session_blob_store.get(blob, blob.uuid) is None
+    path = blob_store.get(blob.uuid)
     assert path
     assert isinstance(path, Path)
     assert path.open("rb").read() == content
 
     session.commit()
-    assert repository.get(blob.uuid) is None
+    assert blob_store.get(blob.uuid) is None

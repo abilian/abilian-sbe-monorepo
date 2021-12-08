@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import sqlalchemy as sa
+import sqlalchemy.orm
 
 from abilian.core.entities import Entity
 from abilian.core.extensions import db
