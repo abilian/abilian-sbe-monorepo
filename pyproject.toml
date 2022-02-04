@@ -157,6 +157,7 @@ devtools = "*"
 python-dotenv = "^0.19.0"
 flask-env = "*"
 importlib-resources = "^5.2.2"
+flask-tailwind = "^0.1.4"
 
 
 [tool.poetry.dev-dependencies]
@@ -209,9 +210,17 @@ types-Markdown = "*"
 safety = "*"
 MonkeyType = "*"
 pip-audit = "*"
+pyanalyze = "^0.5.0"
+sqla2uml = "^0.1.1"
 
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    'ignore::DeprecationWarning',
+    'ignore::sqlalchemy.exc.SAWarning'
+]
