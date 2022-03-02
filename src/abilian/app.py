@@ -6,6 +6,7 @@ from __future__ import annotations
 # flake8:noqa
 import werkzeug.datastructures
 import werkzeug.urls
+from flask_tailwind import Tailwind
 
 werkzeug.url_encode = werkzeug.urls.url_encode
 werkzeug.FileStorage = werkzeug.datastructures.FileStorage
@@ -485,6 +486,8 @@ def setup(app: Flask):
     if not app.debug:
         csp = config.get("CONTENT_SECURITY_POLICY", DEFAULT_CSP_POLICY)
         Talisman(app, content_security_policy=csp)
+
+    Tailwind(app)
 
     # Debug Toolbar
     init_debug_toolbar(app)

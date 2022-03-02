@@ -188,7 +188,7 @@ def slugify(value, separator="-"):
     value = value.encode("ascii", "ignore")
     value = value.decode("ascii")
     value = value.strip().lower()
-    value = re.sub(fr"[{separator}_\s]+", separator, value)
+    value = re.sub(rf"[{separator}_\s]+", separator, value)
     return value
 
 
