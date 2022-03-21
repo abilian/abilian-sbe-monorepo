@@ -196,7 +196,7 @@ honcho = "*"
 html5lib = "*"
 
 # Mypy & friends
-mypy = "^0.910"
+mypy = "*"
 types-bleach = "*"
 types-deprecated = "*"
 types-python-dateutil = "*"
