@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from pytest import fixture
 from toolz import first
 
+from abilian.app import Application
 from abilian.core.models.subjects import User
 from abilian.sbe.apps.communities.models import READER, Community
 from abilian.sbe.apps.wiki import views
@@ -78,13 +79,13 @@ def test_wiki_indexed(
     user1,
     user2,
     user3,
-    app: Flask,
+    app: Application,
     db: SQLAlchemy,
     client,
 ):
     SERVICES = ("security", "indexing")
-    for svc in SERVICES:
-        svc = app.services[svc]
+    for _svc in SERVICES:
+        svc = app.services[_svc]
         if not svc.running:
             svc.start()
 

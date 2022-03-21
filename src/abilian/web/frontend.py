@@ -33,7 +33,7 @@ from abilian.app import Application
 from abilian.core.entities import Entity, EntityQuery
 from abilian.core.extensions import db
 from abilian.i18n import _l
-from abilian.services import audit_service, get_service
+from abilian.services import audit_service, get_security_service, get_service
 from abilian.services.security import READ  # noqa
 from abilian.services.vocabularies.models import BaseVocabulary
 
@@ -205,7 +205,7 @@ class BaseEntityView(ModuleView):
         """
         :param view: a :class:`ObjectView` class or instance
         """
-        security = get_service("security")
+        security = get_security_service()
         return security.has_permission(current_user, view.permission, self.obj)
 
     @property

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import base64
 from datetime import datetime
+from typing import cast
 
 from lxml import objectify
 from lxml.objectify import ObjectifiedElement
@@ -38,11 +39,11 @@ class Entry:
 
     @property
     def name(self) -> str:
-        return self.properties["cmis:name"].value
+        return cast(str, self.properties["cmis:name"].value)
 
     @property
     def type(self) -> str:
-        return self.properties["cmis:objectTypeId"].value
+        return cast(str, self.properties["cmis:objectTypeId"].value)
 
 
 class Property:

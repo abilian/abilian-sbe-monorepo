@@ -205,8 +205,10 @@ def test_zip_upload_uncompress(
         response = client.post(url, data=data)
 
     assert response.status_code == 302
+
     expected = {"existing-doc", "folder 1", "existing-doc-1"}
     assert expected == {f.title for f in folder.children}
+
     expected = {"folder 1", "existing-doc-1"}
     assert expected == {f.title for f in folder.subfolders}
 
