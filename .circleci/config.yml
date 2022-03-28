@@ -10,8 +10,8 @@ common: &common
     - run:
         name: install dependencies
         command: |
-            sudo apt install poppler-utils
-            sudo apt install yarnpkg
+            sudo apt-get update
+            sudo apt install poppler-utils yarnpkg
             sudo ln -sf /usr/bin/yarnpkg /usr/bin/yarn
             sudo yarn global add less
             pip install --user poetry tox codecov "coverage<5"
@@ -30,26 +30,32 @@ jobs:
   py38:
     <<: *common
     docker:
-      - image: circleci/python:3.8
+      - image: cimg/python:3.8
         environment:
           TOXENV=py38
   py39:
     <<: *common
     docker:
-      - image: circleci/python:3.9
+      - image: cimg/python:3.9
         environment:
           TOXENV=py39
+  py310:
+    <<: *common
+    docker:
+      - image: cimg/python:3.10
+        environment:
+          TOXENV=py310
   lint:
     <<: *common
     docker:
-      - image: circleci/python:3.8
+      - image: cimg/python:3.9
         environment:
           - TOXENV=lint
           - UPLOAD_COVERAGE=0
   safety:
     <<: *common
     docker:
-      - image: circleci/python:3.9
+      - image: cimg/python:3.9
         environment:
           - TOXENV=safety
 
@@ -59,5 +65,6 @@ workflows:
     jobs:
       - py38
       - py39
+      - py310
       - lint
       - safety
