@@ -26,6 +26,7 @@ Flask-Talisman = ">=0.6"
 
 # Pinned dependencies
 Flask-Babel = ">=0.11,<2"
+jinja2 = "~3.0"
 
 # We're not ready for SQLAlchemy 1.4 yet (due to sqlalchemy_utils).
 sqlalchemy = "~1.3"

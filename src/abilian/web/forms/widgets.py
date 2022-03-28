@@ -1488,7 +1488,7 @@ class ModelListWidget:
         rows = []
         for entry in field.entries:
             row = []
-            for f in filter(lambda f: not f.is_hidden, entry.form):
+            for f in filter(lambda ff: not ff.is_hidden, entry.form):
                 row.append(Markup(f.render_view()))
 
             rows.append(Data(*row))
