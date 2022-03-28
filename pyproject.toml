@@ -221,7 +221,22 @@ build-backend = "poetry.core.masonry.api"
 
 
 [tool.pytest.ini_options]
+minversion = "6.0"
 filterwarnings = [
     'ignore::DeprecationWarning',
     'ignore::sqlalchemy.exc.SAWarning'
 ]
+# addopts = "-ra -q"
+testpaths = [
+    "tests",
+    "src",
+]
+python_files = [
+    "test_*.py",
+    "tests.py",
+    "test.py",
+    "*_tests.py",
+]
+# norecursedirs = .* env* _build *.egg *.egg-info tools deploy etc docs demo bin
+
+
