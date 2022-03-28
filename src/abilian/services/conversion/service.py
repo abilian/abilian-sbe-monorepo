@@ -195,7 +195,7 @@ class Converter:
             with make_temp_file(content) as in_fn:
                 try:
                     output = subprocess.check_output(["pdfinfo", in_fn])
-                except OSError:
+                except OSError:  # pragma: no cover
                     logger.error("Conversion failed, probably pdfinfo is not installed")
                     raise
 

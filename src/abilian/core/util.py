@@ -27,10 +27,6 @@ def unwrap(obj: Any):
     return obj
 
 
-# TODO: remove later
-noproxy = unwrap
-
-
 def fqcn(cls: type) -> str:
     """Fully Qualified Class Name."""
     return str(f"{cls.__module__}.{cls.__name__}")
