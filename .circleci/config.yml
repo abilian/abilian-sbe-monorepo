@@ -67,4 +67,4 @@ workflows:
       - py39
       - py310
       - lint
-      - safety
+      # - safety
