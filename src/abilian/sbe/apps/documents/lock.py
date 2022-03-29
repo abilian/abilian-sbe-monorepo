@@ -21,8 +21,6 @@ class Lock:
         user_id: int,
         user: str,
         date: datetime | str,
-        *args: Any,
-        **kwargs: Any,
     ) -> None:
         self.user_id = user_id
         self.user = user
