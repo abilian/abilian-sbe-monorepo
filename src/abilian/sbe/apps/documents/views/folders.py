@@ -635,7 +635,7 @@ ARCHIVE_IGNORE_FILES.add(re.compile(fnmatch.translate("*/")))
 
 
 def explore_archive(
-    fd: FileStorage, uncompress: bool = False
+    fd: FileStorage | IO[bytes], uncompress: bool = False
 ) -> Iterator[tuple[list[str], IO[bytes]]]:
     """Given an uploaded file descriptor, return it or a list of archive
     content.
