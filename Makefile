@@ -78,7 +78,7 @@ format:
 #
 .PHONY: run
 run:  ## Run dev server
-	poetry run flask run
+	honcho start
 
 
 .PHONY:
