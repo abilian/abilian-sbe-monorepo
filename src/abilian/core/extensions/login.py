@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING
 
 from flask_login import AnonymousUserMixin, LoginManager
 
-
 if TYPE_CHECKING:
     from abilian.core.models.subjects import Group
 

@@ -113,15 +113,6 @@ cssmin = "*"
 closure = "==20161201"
 # closure = "*"
 
-
-
-# Pinned temporarily
-# wtforms = "<2.2"
-# flask-babel = "<2"
-# itsdangerous = "<2"
-# jinja2 = "<3"
-# werkzeug = "<1"
-
 # Email validation (when sending digests)
 validate_email = "*"
 
