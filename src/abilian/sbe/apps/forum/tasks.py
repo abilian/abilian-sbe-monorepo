@@ -273,7 +273,7 @@ def validate_html(payload):
     args = {
         "tags": ALLOWED_TAGS,
         "attributes": ALLOWED_ATTRIBUTES,
-        "css_sanitizer":css_sanitizer,
+        "css_sanitizer": css_sanitizer,
         "strip": True,
     }
     return bleach.clean(payload, **args).strip()
