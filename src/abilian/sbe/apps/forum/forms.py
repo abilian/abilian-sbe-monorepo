@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import bleach
+from bleach.css_sanitizer import CSSSanitizer
 from wtforms import BooleanField, StringField, TextAreaField
 
 from abilian.i18n import _l
@@ -71,11 +72,12 @@ class BasePostForm(Form):
     )
 
     def validate_message(self, field):
+        css_sanitizer = CSSSanitizer(allowed_css_properties=ALLOWED_STYLES)
         field.data = bleach.clean(
             field.data,
             tags=ALLOWED_TAGS,
             attributes=ALLOWED_ATTRIBUTES,
-            styles=ALLOWED_STYLES,
+            css_sanitizer=css_sanitizer,
             strip=True,
         )
 

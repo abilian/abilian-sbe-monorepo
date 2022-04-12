@@ -67,7 +67,7 @@ celery = "~5"
 redis = "~3"
 
 # Security
-bleach = ">=2"
+bleach = { version = "^5", extras = [ "css" ] }
 bcrypt = "*"
 
 # low-level tools

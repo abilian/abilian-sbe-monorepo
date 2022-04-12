@@ -78,7 +78,7 @@ def test_word_to_pdf(converter: Converter):
 
 
 @mark.skipif(
-    sys.platform.startswith("linux"), reason="maybe bug due to ImagMagik settings"
+    sys.platform.startswith("linux"), reason="maybe bug due to ImageMagik settings"
 )
 def test_image_to_pdf(converter: Converter):
     blob = read_file("picture.jpg")

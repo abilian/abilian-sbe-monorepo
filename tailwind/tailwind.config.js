@@ -27,9 +27,60 @@ module.exports = {
      */
     "../src/**/*.py",
   ],
+
+  darkMode: "media", // or 'media' or 'class'
+
+  important: true,
+
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        rose: colors.rose,
+        // a17t colors
+        neutral: colors.slate,
+        positive: colors.green,
+        urge: colors.violet,
+        warning: colors.yellow,
+        info: colors.blue,
+        critical: colors.red,
+      },
+      minHeight: {
+        "24": "6rem",
+      }
+    },
+    fontFamily: {
+      primary:
+          'var(--family-primary, "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji")',
+      secondary:
+          'var(--family-secondary, "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji")',
+      sans: [
+        "Inter",
+        "system-ui",
+        "-apple-system",
+        "BlinkMacSystemFont",
+        '"Segoe UI"',
+        "Roboto",
+        '"Helvetica Neue"',
+        "Arial",
+        '"Noto Sans"',
+        "sans-serif",
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+        '"Noto Color Emoji"',
+      ],
+      serif: ["Georgia", "Cambria", '"Times New Roman"', "Times", "serif"],
+      mono: [
+        "Menlo",
+        "Monaco",
+        "Consolas",
+        '"Liberation Mono"',
+        '"Courier New"',
+        "monospace",
+      ],
+    },
   },
+
   plugins: [
     /**
      * '@tailwindcss/forms' is the forms plugin that provides a minimal styling
@@ -45,6 +96,14 @@ module.exports = {
 
   daisyui: {
     // prefix: "dui-",
+    // daisyUI config (optional)
+    styled: true,
+    base: true,
+    utils: true,
+    logs: true,
+    rtl: false,
+    prefix: "",
+    darkTheme: "dark",
     themes: [
       {
         'abilian': {                          /* your theme name */

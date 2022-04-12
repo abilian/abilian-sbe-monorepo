@@ -1,3 +1,45 @@
+<div class="tw-navbar tw-bg-gray-50">
+  <div class="tw-flex-1">
+    <a class="tw-btn tw-btn-ghost tw-normal-case tw-text-xl">daisyUI</a>
+  </div>
+  <div class="tw-flex-none">
+    <div class="tw-dropdown tw-dropdown-end">
+      <label tabindex="0" class="tw-btn tw-btn-ghost tw-btn-circle">
+        <div class="tw-indicator">
+          <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-5 tw-w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+          <span class="tw-badge tw-badge-sm tw-indicator-item">8</span>
+        </div>
+      </label>
+      <div tabindex="0" class="tw-mt-3 tw-card tw-card-compact tw-dropdown-content tw-w-52 tw-bg-base-100 tw-shadow">
+        <div class="tw-card-body">
+          <span class="tw-font-bold tw-text-lg">8 Items</span>
+          <span class="tw-text-info">Subtotal: $999</span>
+          <div class="tw-card-actions">
+            <button class="tw-btn tw-btn-primary tw-btn-block">View cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tw-dropdown tw-dropdown-end">
+      <label tabindex="0" class="tw-btn tw-btn-ghost tw-btn-circle tw-avatar">
+        <div class="tw-w-10 tw-rounded-full">
+          <img src="https://api.lorem.space/image/face?hash=33791" />
+        </div>
+      </label>
+      <ul tabindex="0" class="tw-menu tw-menu-compact tw-dropdown-content tw-mt-3 tw-p-2 tw-shadow tw-bg-base-100 tw-rounded-box tw-w-52">
+        <li>
+          <a class="tw-justify-between">
+            Profile
+            <span class="tw-badge">New</span>
+          </a>
+        </li>
+        <li><a>Settings</a></li>
+        <li><a>Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     {# Brand and toggle get grouped for better mobile display #}
@@ -8,7 +50,7 @@
         <span class="fa fa-bars"></span>
       </button>
       <a class="navbar-brand" href="{{ request.url_root }}">
-        <img src="{{ app.config['LOGO_URL'] | string }}"/>
+        <img src="{{ app.config['LOGO_URL'] | string }}" alt=""/>
       </a>
     </div>
 

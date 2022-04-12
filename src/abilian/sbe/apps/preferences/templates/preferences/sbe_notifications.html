@@ -13,13 +13,26 @@
         {{ m_field(field) }}
       {% endfor %}
 
-      <button type="submit" class="btn btn-primary" name="_action" value="add">
+      <button type="submit" class="tw-btn tw-btn-primary" name="_action" value="add">
         {{ _("Save") }}
       </button>
-      <button type="submit" class="btn cancel" name="_action" value="cancel">
+      <button type="submit" class="tw-btn tw-btn-warning" name="_action" value="cancel">
         {{ _("Cancel") }}
       </button>
     </form>
+
+    <p class="tw-text-3xl tw-font-bold tw-text-red-500 tw-mt-4 dui-badge">TEST</p>
+
+    <div class="tw-card tw-bg-base-100 tw-shadow">
+      <figure class="tw-w-100"><img class="tw-w-100" src="https://api.lorem.space/image/shoes?w=400&h=225" alt="Shoes"/></figure>
+      <div class="tw-card-body">
+        <h2 class="tw-card-title">Shoes!</h2>
+        <p>If a dog chews shoes whose shoes does he choose?</p>
+        <div class="tw-card-actions tw-justify-end">
+          <button class="tw-btn tw-btn-primary">Buy Now</button>
+        </div>
+      </div>
+    </div>
 
   {% endcall %}
 {% endblock %}

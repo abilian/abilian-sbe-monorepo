@@ -12,6 +12,7 @@ from typing import Any
 import bleach
 import chardet
 import html2text
+from bleach.css_sanitizer import CSSSanitizer
 from celery import shared_task
 from celery.utils.log import get_task_logger
 from flask import current_app, g
@@ -268,10 +269,11 @@ def extract_content(payload, marker):
 
 
 def validate_html(payload):
+    css_sanitizer = CSSSanitizer(allowed_css_properties=ALLOWED_STYLES)
     args = {
         "tags": ALLOWED_TAGS,
         "attributes": ALLOWED_ATTRIBUTES,
-        "styles": ALLOWED_STYLES,
+        "css_sanitizer":css_sanitizer,
         "strip": True,
     }
     return bleach.clean(payload, **args).strip()
