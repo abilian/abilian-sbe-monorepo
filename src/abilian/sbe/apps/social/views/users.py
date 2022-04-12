@@ -126,9 +126,7 @@ def users_dt_json():
             '<a href="{url}"><img src="{src}" width="{size}" height="{size}">'
             "</a>".format(url=user_url, src=mugshot, size=MUGSHOT_SIZE)
         )
-        cell1 = '<div class="info"><a href="{user_url}">{name}</a> ' "</div>".format(
-            **locals()
-        )
+        cell1 = f'<div class="info"><a href="{user_url}">{name}</a> ' f"</div>"
         cell2 = age(user.created_at)
         cell3 = age(user.last_active)
 
