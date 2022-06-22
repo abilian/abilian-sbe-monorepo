@@ -205,6 +205,7 @@ MonkeyType = "*"
 pip-audit = "*"
 pyanalyze = "^0.5.0"
 sqla2uml = "^0.1.1"
+pyupgrade = "^2.34.0"
 
 
 [build-system]
