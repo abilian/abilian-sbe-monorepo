@@ -4,11 +4,12 @@ Add extensions here (for now).
 """
 from __future__ import annotations
 
+from xml.etree.ElementTree import Element
+
 import markdown
 from flask import url_for
 from markdown.core import Markdown
 from markdown.extensions.wikilinks import WikiLinkExtension, WikiLinksInlineProcessor
-from markdown.util import etree
 
 from abilian.sbe.apps.wiki.models import WikiPage
 
@@ -54,7 +55,7 @@ class SBEWikiLinksInlineProcessor(WikiLinksInlineProcessor):
         if label:
             base_url, end_url, html_class = self._getMeta()
             url = self.config["build_url"](label, base_url, end_url)
-            a = etree.Element("a")
+            a = Element("a")
             a.text = label
             a.set("href", url)
             if html_class:
