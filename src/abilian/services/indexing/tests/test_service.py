@@ -1,7 +1,8 @@
 """"""
 from __future__ import annotations
 
-from typing import Iterator, cast
+from typing import cast
+from collections.abc import Iterator
 
 import sqlalchemy as sa
 from pytest import fixture

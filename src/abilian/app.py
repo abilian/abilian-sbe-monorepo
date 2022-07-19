@@ -21,7 +21,8 @@ import warnings
 from functools import partial
 from itertools import chain, count
 from pathlib import Path
-from typing import Any, Callable, Collection
+from typing import Any, Callable
+from collections.abc import Collection
 
 import jinja2
 import sqlalchemy as sa

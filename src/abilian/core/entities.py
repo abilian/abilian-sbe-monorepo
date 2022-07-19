@@ -205,7 +205,7 @@ class EntityMeta(BaseMeta):
             if default_permissions is not None:
                 if isinstance(default_permissions, collections.abc.Mapping):
                     default_permissions = default_permissions.items()
-                elif not isinstance(default_permissions, collections.Set):
+                elif not isinstance(default_permissions, collections.abc.Set):
                     raise TypeError(
                         "__default_permissions__ is neither a dict or set, "
                         "cannot create class {}".format(classname)

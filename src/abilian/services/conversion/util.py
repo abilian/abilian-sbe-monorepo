@@ -5,7 +5,7 @@ import os
 from contextlib import contextmanager
 from pathlib import Path
 from tempfile import mkstemp
-from typing import Iterator
+from collections.abc import Iterator
 
 logger = logging.getLogger(__name__)
 

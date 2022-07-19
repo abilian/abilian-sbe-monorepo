@@ -14,7 +14,8 @@ from __future__ import annotations
 import logging
 from inspect import isclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Collection
+from typing import TYPE_CHECKING, Any
+from collections.abc import Collection
 
 import sqlalchemy as sa
 from celery import shared_task

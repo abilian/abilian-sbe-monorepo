@@ -4,7 +4,8 @@ import csv
 import io
 import json
 from os.path import splitext
-from typing import IO, Any, Sequence
+from typing import IO, Any
+from collections.abc import Sequence
 
 from flask import current_app, flash, g, redirect, render_template, request, url_for
 from validate_email import validate_email

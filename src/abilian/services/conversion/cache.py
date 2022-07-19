@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Tuple
 
-CacheKey = Tuple[str, str]
+CacheKey = tuple[str, str]
 
 
 class Cache:

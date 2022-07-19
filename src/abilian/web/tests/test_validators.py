@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Callable, Iterator
+from typing import Callable
+from collections.abc import Iterator
 
 from pytest import fixture, raises
 from wtforms import Form, StringField

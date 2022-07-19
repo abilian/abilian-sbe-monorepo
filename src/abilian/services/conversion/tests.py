@@ -4,7 +4,7 @@ import os
 import sys
 import tempfile
 from pathlib import Path
-from typing import Iterator
+from collections.abc import Iterator
 from warnings import warn
 
 from magic import Magic

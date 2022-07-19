@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from textwrap import dedent
-from typing import Iterator
+from collections.abc import Iterator
 
 import html5lib
 from flask import Flask

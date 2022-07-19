@@ -14,7 +14,7 @@ packages = [
 
 # Fix Python version (temporarily) to please the python-poetry-buildpack
 # python = "3.9.7"
-python = "^3.8"
+python = "^3.9"
 
 # Flask and friends
 Flask-Assets = ">=0.12"
