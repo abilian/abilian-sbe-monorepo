@@ -48,11 +48,11 @@ import importlib
 import os
 import re
 import unicodedata
+from collections.abc import Iterator
 from datetime import datetime, tzinfo
 from gettext import GNUTranslations
 from pathlib import Path
 from typing import Any
-from collections.abc import Iterator
 
 import flask_babel
 import pytz

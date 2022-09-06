@@ -1,8 +1,8 @@
 """"""
 from __future__ import annotations
 
-from typing import Any
 from collections.abc import Iterator
+from typing import Any
 
 from abilian.core.extensions import db
 from abilian.services import Service

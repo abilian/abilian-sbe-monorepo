@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import datetime
-from textwrap import dedent
 from collections.abc import Iterator
+from textwrap import dedent
 
 import html5lib
 from flask import Flask

@@ -9,9 +9,9 @@ import html
 import logging
 import re
 from collections import namedtuple
+from collections.abc import Sequence
 from datetime import datetime
 from typing import Any
-from collections.abc import Sequence
 from urllib import parse
 
 import bleach

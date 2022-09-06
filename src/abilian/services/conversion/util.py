@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import logging
 import os
+from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
 from tempfile import mkstemp
-from collections.abc import Iterator
 
 logger = logging.getLogger(__name__)
 

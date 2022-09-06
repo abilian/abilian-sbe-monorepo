@@ -9,8 +9,8 @@ import copy
 import logging
 import re
 from collections import OrderedDict
-from typing import Any, Callable
 from collections.abc import Collection
+from typing import Any, Callable
 
 import sqlalchemy as sa
 from flask import (

@@ -6,11 +6,11 @@ import logging
 import os
 import re
 import tempfile
+from collections.abc import Iterator
 from datetime import datetime
 from functools import partial
 from io import StringIO
 from typing import IO, Any
-from collections.abc import Iterator
 from urllib.parse import quote
 from zipfile import ZipFile, is_zipfile
 

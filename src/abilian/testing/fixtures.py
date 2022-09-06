@@ -12,8 +12,8 @@ Replaced the too-complex UnitTest-based testing framework.
 from __future__ import annotations
 
 import typing
-from typing import Any
 from collections.abc import Iterator
+from typing import Any
 
 from flask import Flask
 from flask.ctx import AppContext, RequestContext

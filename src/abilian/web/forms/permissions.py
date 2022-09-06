@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from typing import Any, Callable, cast
 from collections.abc import Collection
+from typing import Any, Callable, cast
 
 from flask_login import current_user
 from wtforms.fields import Field

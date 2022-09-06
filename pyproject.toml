@@ -142,7 +142,7 @@ raven = "*"
 
 
 # Debug tools
-rich = "^10.9.0"
+rich = "^10"
 icecream = "^2.1.1"
 devtools = "*"
 

@@ -3,8 +3,8 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta
 from collections.abc import Iterator
+from datetime import datetime, timedelta
 
 import pytest
 

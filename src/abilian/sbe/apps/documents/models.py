@@ -9,9 +9,9 @@ import logging
 import mimetypes
 import threading
 import uuid
+from collections.abc import Collection, Iterator
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
-from collections.abc import Collection, Iterator
 
 import pkg_resources
 import sqlalchemy as sa
