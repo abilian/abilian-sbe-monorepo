@@ -2299,7 +2299,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "cbb4da7fc6f23baced82f7c1f40a0b7aaa26c029a70d194618b09e7b578aa5cb"
+content-hash = "f697825f7012d374cbbe9001da5d8968c0f142854e12f5ac6e297a5cae246f65"
 
 [metadata.files]
 aenum = [
