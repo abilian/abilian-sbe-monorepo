@@ -104,7 +104,7 @@ python-magic = "*"
 pillow = "*"
 
 # Reporting
-pandas = ">=1.4.4"
+pandas = ">=1.5.0"
 
 #
 # Assets management (might not be necessary if distributing compiled assets)
@@ -150,7 +150,7 @@ devtools = "*"
 # Additional stuff
 python-dotenv = "^0.19.2"
 flask-env = "*"
-importlib-resources = "^5.9.0"
+importlib-resources = "^5.10.0"
 flask-tailwind = "^0.1.7"
 
 
@@ -212,7 +212,8 @@ pyupgrade = "*"
 
 
 [tool.poetry.group.dev.dependencies]
-deptry = "^0.4.6"
+deptry = "^0.4.7"
+poetryup = "^0.12.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -1374,6 +1374,19 @@ docs = ["Sphinx (>=4.0.0)", "sphinx-rtd-theme (>=1.0.0)"]
 ssh = ["paramiko"]
 
 [[package]]
+name = "poetryup"
+version = "0.12.3"
+description = "Update dependencies and bump their version in the pyproject.toml file"
+category = "dev"
+optional = false
+python-versions = ">=3.6,<4.0"
+
+[package.dependencies]
+packaging = ">=21.3,<22.0"
+tomlkit = ">=0.11.0,<0.12.0"
+typer = ">=0.4.1,<0.5.0"
+
+[[package]]
 name = "pre-commit"
 version = "2.20.0"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
@@ -1619,7 +1632,7 @@ python-versions = "*"
 
 [[package]]
 name = "pyupgrade"
-version = "3.0.0"
+version = "3.1.0"
 description = "A tool to automatically upgrade syntax for newer versions."
 category = "dev"
 optional = false
@@ -1945,6 +1958,14 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "tomlkit"
+version = "0.11.5"
+description = "Style preserving TOML library"
+category = "dev"
+optional = false
+python-versions = ">=3.6,<4.0"
+
+[[package]]
 name = "toolz"
 version = "0.12.0"
 description = "List processing tools and functional utilities"
@@ -1976,6 +1997,23 @@ description = "a fork of Python 2 and 3 ast modules with type comment support"
 category = "dev"
 optional = false
 python-versions = ">=3.6"
+
+[[package]]
+name = "typer"
+version = "0.4.2"
+description = "Typer, build great CLIs. Easy to code. Based on Python type hints."
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+click = ">=7.1.1,<9.0.0"
+
+[package.extras]
+all = ["colorama (>=0.4.3,<0.5.0)", "shellingham (>=1.3.0,<2.0.0)"]
+dev = ["autoflake (>=1.3.1,<2.0.0)", "flake8 (>=3.8.3,<4.0.0)", "pre-commit (>=2.17.0,<3.0.0)"]
+doc = ["mdx-include (>=1.4.1,<2.0.0)", "mkdocs (>=1.1.2,<2.0.0)", "mkdocs-material (>=8.1.4,<9.0.0)"]
+test = ["black (>=22.3.0,<23.0.0)", "coverage (>=5.2,<6.0)", "isort (>=5.0.6,<6.0.0)", "mypy (==0.910)", "pytest (>=4.4.0,<5.4.0)", "pytest-cov (>=2.10.0,<3.0.0)", "pytest-sugar (>=0.9.4,<0.10.0)", "pytest-xdist (>=1.32.0,<2.0.0)", "shellingham (>=1.3.0,<2.0.0)"]
 
 [[package]]
 name = "types-bleach"
@@ -2315,7 +2353,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "61ae0fdf259535277aaa6fa6fb45f8f41999a3f771921e2a33e0caaed96d347f"
+content-hash = "4f1f51ee024809e89e67db6538fd6589f5e0fcd07dfd3db757bc0b1a9a5f75e1"
 
 [metadata.files]
 aenum = [
@@ -3205,6 +3243,10 @@ plumbum = [
     {file = "plumbum-1.8.0-py3-none-any.whl", hash = "sha256:0f6b59c8a03bfcdddd1efc04a126062663348e892ce7ddef49ec60e47b9e2c09"},
     {file = "plumbum-1.8.0.tar.gz", hash = "sha256:f1da1f167a2afe731a85de3f56810f424926c0a1a8fd1999ceb2ef20b618246d"},
 ]
+poetryup = [
+    {file = "poetryup-0.12.3-py3-none-any.whl", hash = "sha256:fb8349a18ac6498e65654129a421248e9577f157e89bae592cf7e95dfddd1ba9"},
+    {file = "poetryup-0.12.3.tar.gz", hash = "sha256:772eb5d625193630637f927cd5982b9d1393aecd5ffd7b8b2a3a7b9066160009"},
+]
 pre-commit = [
     {file = "pre_commit-2.20.0-py2.py3-none-any.whl", hash = "sha256:51a5ba7c480ae8072ecdb6933df22d2f812dc897d5fe848778116129a681aac7"},
     {file = "pre_commit-2.20.0.tar.gz", hash = "sha256:a978dac7bc9ec0bcee55c18a277d553b0f419d259dadb4b9418ff2d00eb43959"},
@@ -3346,8 +3388,8 @@ pytz = [
     {file = "pytz-2022.4.tar.gz", hash = "sha256:48ce799d83b6f8aab2020e369b627446696619e79645419610b9facd909b3174"},
 ]
 pyupgrade = [
-    {file = "pyupgrade-3.0.0-py2.py3-none-any.whl", hash = "sha256:f9ba6cb58713e7249f4f0486e425969618e953062a5fc805da9d21602a2d1441"},
-    {file = "pyupgrade-3.0.0.tar.gz", hash = "sha256:6ec1e2762d887cab94a5714b2ea7e944843d8c2de36c449d443e52ffac8ab14f"},
+    {file = "pyupgrade-3.1.0-py2.py3-none-any.whl", hash = "sha256:77c6101a710be3e24804891e43388cedbee617258e93b09c8c5e58de08617758"},
+    {file = "pyupgrade-3.1.0.tar.gz", hash = "sha256:7a8d393d85e15e0e2753e90b7b2e173b9d29dfd71e61f93d93e985b242627ed3"},
 ]
 pywin32 = [
     {file = "pywin32-304-cp310-cp310-win32.whl", hash = "sha256:3c7bacf5e24298c86314f03fa20e16558a4e4138fc34615d7de4070c23e65af3"},
@@ -3578,6 +3620,10 @@ tomli = [
     {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
     {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
 ]
+tomlkit = [
+    {file = "tomlkit-0.11.5-py3-none-any.whl", hash = "sha256:f2ef9da9cef846ee027947dc99a45d6b68a63b0ebc21944649505bf2e8bc5fe7"},
+    {file = "tomlkit-0.11.5.tar.gz", hash = "sha256:571854ebbb5eac89abcb4a2e47d7ea27b89bf29e09c35395da6f03dd4ae23d1c"},
+]
 toolz = [
     {file = "toolz-0.12.0-py3-none-any.whl", hash = "sha256:2059bd4148deb1884bb0eb770a3cde70e7f954cfbbdc2285f1f2de01fd21eb6f"},
     {file = "toolz-0.12.0.tar.gz", hash = "sha256:88c570861c440ee3f2f6037c4654613228ff40c93a6c25e0eba70d17282c6194"},
@@ -3611,6 +3657,10 @@ typed-ast = [
     {file = "typed_ast-1.5.4-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:98f80dee3c03455e92796b58b98ff6ca0b2a6f652120c263efdba4d6c5e58f72"},
     {file = "typed_ast-1.5.4-cp39-cp39-win_amd64.whl", hash = "sha256:0fdbcf2fef0ca421a3f5912555804296f0b0960f0418c440f5d6d3abb549f3e1"},
     {file = "typed_ast-1.5.4.tar.gz", hash = "sha256:39e21ceb7388e4bb37f4c679d72707ed46c2fbf2a5609b8b8ebc4b067d977df2"},
+]
+typer = [
+    {file = "typer-0.4.2-py3-none-any.whl", hash = "sha256:023bae00d1baf358a6cc7cea45851639360bb716de687b42b0a4641cd99173f1"},
+    {file = "typer-0.4.2.tar.gz", hash = "sha256:b8261c6c0152dd73478b5ba96ba677e5d6948c715c310f7c91079f311f62ec03"},
 ]
 types-bleach = [
     {file = "types-bleach-5.0.3.tar.gz", hash = "sha256:f7b3df8278efe176d9670d0f063a66c866c77577f71f54b9c7a320e31b1a7bbd"},
