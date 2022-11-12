@@ -142,8 +142,8 @@ raven = "*"
 
 
 # Debug tools
-rich = "^10.16.2"
-icecream = "^2.1.3"
+rich = "*"
+icecream = "*"
 devtools = "*"
 
 
@@ -154,7 +154,7 @@ importlib-resources = "^5.10.0"
 flask-tailwind = "^0.1.7"
 
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 # Testing
 pytest-cov = "*"
 pytest-flask = "*"
@@ -211,9 +211,8 @@ sqla2uml = "*"
 pyupgrade = "*"
 
 
-[tool.poetry.group.dev.dependencies]
-deptry = "^0.4.7"
-poetryup = "^0.12.3"
+deptry = "*"
+poetryup = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
