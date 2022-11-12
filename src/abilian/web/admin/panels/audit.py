@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from itertools import chain
-from typing import Callable
+from collections.abc import Callable
 
 import pytz
 import sqlalchemy as sa

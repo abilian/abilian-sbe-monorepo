@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from functools import wraps
-from typing import Callable
+from collections.abc import Callable
 
 from flask import Blueprint, current_app, request
 from flask_wtf import Form as FlaskForm

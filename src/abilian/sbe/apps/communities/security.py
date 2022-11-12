@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 from functools import wraps
-from typing import Any, Callable
+from typing import Any
+from collections.abc import Callable
 
 from flask import g
 from flask_login import current_user

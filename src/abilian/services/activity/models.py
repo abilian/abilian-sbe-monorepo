@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime
-from typing import Callable
+from collections.abc import Callable
 
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import Column, ForeignKey

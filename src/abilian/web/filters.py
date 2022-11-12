@@ -5,7 +5,8 @@ import re
 from calendar import timegm
 from datetime import date, datetime
 from functools import wraps
-from typing import Any, Callable
+from typing import Any
+from collections.abc import Callable
 
 import bleach
 import dateutil.parser

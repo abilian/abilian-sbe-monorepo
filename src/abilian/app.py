@@ -22,7 +22,8 @@ from collections.abc import Collection
 from functools import partial
 from itertools import chain, count
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
+from collections.abc import Callable
 
 import jinja2
 import sqlalchemy as sa

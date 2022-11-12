@@ -1,7 +1,8 @@
 """"""
 from __future__ import annotations
 
-from typing import Any, Callable
+from typing import Any
+from collections.abc import Callable
 
 from flask import g, json, jsonify, redirect, render_template_string, request
 from flask.views import MethodView as BaseView
