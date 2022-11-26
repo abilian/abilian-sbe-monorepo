@@ -3,8 +3,8 @@ from __future__ import annotations
 
 import logging
 import re
-from typing import Any
 from collections.abc import Callable
+from typing import Any
 
 from flask import current_app, g
 from flask.app import Flask

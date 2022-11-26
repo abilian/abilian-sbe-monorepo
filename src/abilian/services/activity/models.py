@@ -9,8 +9,8 @@ TODO: Look wether other attributes from the spec need to be implemented.
 from __future__ import annotations
 
 import logging
-from datetime import datetime
 from collections.abc import Callable
+from datetime import datetime
 
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import Column, ForeignKey

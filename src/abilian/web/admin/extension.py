@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 import logging
-from typing import Any
 from collections.abc import Callable
+from typing import Any
 
 from flask import Blueprint, Flask, g
 from flask.scaffold import _endpoint_from_view_func

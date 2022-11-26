@@ -1,9 +1,8 @@
 """"""
 from __future__ import annotations
 
-from collections.abc import Collection
+from collections.abc import Callable, Collection
 from typing import Any, cast
-from collections.abc import Callable
 
 from flask import Blueprint as BaseBlueprint
 

@@ -18,12 +18,11 @@ import logging.config
 import os
 import sys
 import warnings
-from collections.abc import Collection
+from collections.abc import Callable, Collection
 from functools import partial
 from itertools import chain, count
 from pathlib import Path
 from typing import Any
-from collections.abc import Callable
 
 import jinja2
 import sqlalchemy as sa

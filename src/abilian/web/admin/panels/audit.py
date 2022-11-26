@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from datetime import datetime
 from itertools import chain
-from collections.abc import Callable
 
 import pytz
 import sqlalchemy as sa

@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from datetime import timedelta
 from typing import Any
-from collections.abc import Callable
 
 import sqlalchemy as sa
 

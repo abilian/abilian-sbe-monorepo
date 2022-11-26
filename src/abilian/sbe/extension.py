@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import logging
 import uuid
+from collections.abc import Callable
 from pathlib import Path
 from typing import TYPE_CHECKING
-from collections.abc import Callable
 
 import pkg_resources
 

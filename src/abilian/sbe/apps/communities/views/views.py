@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import logging
 from collections import Counter
+from collections.abc import Callable
 from datetime import datetime
 from functools import wraps
 from io import BytesIO
@@ -10,7 +11,6 @@ from operator import attrgetter
 from pathlib import Path
 from time import gmtime, strftime
 from typing import Any
-from collections.abc import Callable
 
 import openpyxl
 import pytz

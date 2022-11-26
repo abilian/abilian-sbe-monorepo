@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import inspect
+from collections.abc import Callable
 from operator import attrgetter, itemgetter
 from typing import TYPE_CHECKING, Any
-from collections.abc import Callable
 
 from flask import Blueprint, url_for
 from flask.blueprints import BlueprintSetupState

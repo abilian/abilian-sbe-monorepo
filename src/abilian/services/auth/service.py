@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import logging
 import typing
+from collections.abc import Callable
 from datetime import datetime, timedelta
 from typing import Any
-from collections.abc import Callable
 
 from flask import Flask, current_app, g, redirect, request, url_for
 from flask_babel import lazy_gettext as _l

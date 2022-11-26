@@ -3,10 +3,10 @@ from __future__ import annotations
 
 import re
 from calendar import timegm
+from collections.abc import Callable
 from datetime import date, datetime
 from functools import wraps
 from typing import Any
-from collections.abc import Callable
 
 import bleach
 import dateutil.parser

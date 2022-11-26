@@ -2,7 +2,7 @@
 """
 
 import warnings
-from typing import Iterator
+from collections.abc import Iterator
 
 import rich
 from flask_sqlalchemy import SQLAlchemy
