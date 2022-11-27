@@ -11,10 +11,10 @@ packages = [
 
 
 [tool.poetry.dependencies]
-
 # Fix Python version (temporarily) to please the python-poetry-buildpack
 # python = "3.9.7"
 python = "^3.9"
+pip = "*"
 
 # Flask and friends
 Flask-Assets = ">=0.12"
@@ -155,32 +155,15 @@ flask-tailwind = "^0.1.7"
 
 
 [tool.poetry.group.dev.dependencies]
+# Generic dev deps
+abilian-devtools = "*"
+
 # Testing
-pytest-cov = "*"
 pytest-flask = "*"
-pytest-xdist = "*"
 # pytest-testmon = "^1.2.0"
-coveralls = "*"
 Flask-LinkTester = "*"
 Flask-DebugToolbar = "*"
-profilehooks = "*"
-pre-commit = "*"
 
-# Linting
-flake8 = "*"
-flake8-bugbear = "*"
-flake8-comprehensions = "*"
-flake8-mutable = "*"
-flake8-super-call = "*"
-flake8-tidy-imports = "*"
-
-# Incompatible w/ recent flake8
-# flake8-pytest = "*"
-# mastool = "*"
-
-# Cleanup / format
-isort = "*"
-black = "*"
 
 # Deploy
 plumbum = "*"
@@ -190,8 +173,7 @@ honcho = "*"
 # Added later...
 html5lib = "*"
 
-# Mypy & friends
-mypy = "*"
+# Typing
 types-bleach = "*"
 types-deprecated = "*"
 types-python-dateutil = "*"
@@ -202,16 +184,14 @@ types-requests = "*"
 types-setuptools = "*"
 types-chardet = "*"
 types-Markdown = "*"
-safety = "*"
-MonkeyType = "*"
-pip-audit = "*"
+
+# Keep for now
 pyanalyze = "^0.5.0"
+
+MonkeyType = "*"
 sqla2uml = "*"
 pyupgrade = "*"
 
-
-deptry = "*"
-poetryup = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -238,3 +218,15 @@ python_files = [
 # norecursedirs = .* env* _build *.egg *.egg-info tools deploy etc docs demo bin
 
 
+[tool.ruff]
+ignore = [
+    "E711",  # comparison to None should be 'if cond is not None:'
+    "E712",  # ...
+    "E501",  # line too long
+    "E999",  # Syntax error, probably because ruff doesn't support the match statement
+    "F401",  # 'module' imported but unused
+    "E402",  # Module level import not at top of file
+    "E741",  # Ambiguous variable name
+    "F841",  # Local variable `cell4` is assigned to but never used
+    "E713",  # Test for membership should be `not in`
+]

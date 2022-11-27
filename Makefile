@@ -57,11 +57,15 @@ lint: lint-py
 
 .PHONY: lint-py
 # lint-py: lint-flake8 lint-mypy
-lint-py: lint-flake8
+lint-py: lint-ruff lint-flake8
 
 .PHONY: lint-flake8
 lint-flake8:
 	poetry run flake8 *.py src tests
+
+.PHONY: lint-ruff
+lint-ruff:
+	poetry run ruff *.py src tests
 
 .PHONY: lint-mypy
 lint-mypy:
