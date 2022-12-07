@@ -61,7 +61,7 @@ lint-py: lint-ruff lint-flake8
 
 .PHONY: lint-flake8
 lint-flake8:
-	poetry run flake8 *.py src tests
+	poetry run flake8 src tests
 
 .PHONY: lint-ruff
 lint-ruff:
