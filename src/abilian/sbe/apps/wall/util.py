@@ -8,7 +8,6 @@ from typing import Any, cast
 import sqlalchemy as sa
 from flask import g
 from flask_login import current_user
-from sqlalchemy import orm
 from werkzeug.exceptions import Forbidden
 
 from abilian.core.extensions import db

@@ -11,7 +11,6 @@ import sqlalchemy as sa
 import yaml
 from flask import Flask, _request_ctx_stack, g, render_template
 from pkg_resources import resource_filename
-from sqlalchemy.orm.attributes import NEVER_SET
 
 from abilian.core import extensions
 

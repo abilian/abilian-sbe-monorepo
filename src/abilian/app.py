@@ -40,7 +40,6 @@ from flask.config import Config, ConfigAttribute
 from flask.helpers import locked_cached_property
 from flask_migrate import Migrate
 from flask_talisman import DEFAULT_CSP_POLICY, Talisman
-from sqlalchemy.orm.attributes import NEVER_SET
 
 import abilian.core.util
 import abilian.i18n

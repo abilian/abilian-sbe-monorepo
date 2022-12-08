@@ -7,7 +7,6 @@ from unittest import mock
 import pytest
 import sqlalchemy as sa
 from pytest import fixture
-from sqlalchemy import orm
 from sqlalchemy.orm import Session
 
 from abilian.core.entities import Entity

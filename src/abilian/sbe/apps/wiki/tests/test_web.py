@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 
-from flask import Flask, g, url_for
+from flask import g, url_for
 from flask_sqlalchemy import SQLAlchemy
 from pytest import fixture
 from toolz import first

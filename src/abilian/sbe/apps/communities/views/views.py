@@ -30,7 +30,6 @@ from flask import (
 from flask.blueprints import BlueprintSetupState
 from flask_login import current_user, login_required
 from openpyxl.cell import WriteOnlyCell
-from sqlalchemy import orm
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 from werkzeug.wrappers.response import Response
 from whoosh.searching import Hit

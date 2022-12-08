@@ -11,7 +11,6 @@ from typing import IO
 
 import sqlalchemy as sa
 from sqlalchemy.event import listens_for
-from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.session import Session
 from sqlalchemy.orm.unitofwork import UOWTransaction
 from sqlalchemy.schema import Column

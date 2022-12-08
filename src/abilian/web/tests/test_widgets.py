@@ -3,7 +3,6 @@ from __future__ import annotations
 import sqlalchemy as sa
 from flask import Flask, g
 from flask.signals import request_started
-from pytest import mark
 from wtforms import Form, IntegerField, StringField
 
 # Import for side-effects (monkey-patch)

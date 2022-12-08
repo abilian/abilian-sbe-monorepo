@@ -6,7 +6,6 @@ from typing import IO
 from zipfile import ZipFile
 
 import flask_mail
-import pytest
 from flask import g, get_flashed_messages
 from flask.testing import FlaskClient
 from pytest import fixture
