@@ -1,6 +1,8 @@
 """"""
 from __future__ import annotations
 
+import contextlib
+
 import pygeoip
 from flask import render_template
 
@@ -19,10 +21,8 @@ class LoginSessionsPanel(AdminPanel):
     def get(self) -> str:
         geoips = []
         for filename in DATA_FILES:
-            try:
+            with contextlib.suppress(pygeoip.GeoIPError, OSError):
                 geoips.append(pygeoip.GeoIP(filename))
-            except (pygeoip.GeoIPError, OSError):
-                pass
 
         sessions = LoginSession.query.order_by(LoginSession.id.desc()).limit(50).all()
         unknown_country = _("Country unknown")

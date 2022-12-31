@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 import glob
 import hashlib
 import logging
@@ -193,8 +194,9 @@ class AbiwordPDFHandler(Handler):
             except Exception as e:
                 raise ConversionError("abiword failed") from e
 
-            converted = open(out_fn).read()
-            return converted
+            with open(out_fn, "rb") as f:
+                converted = f.read()
+                return converted
 
 
 class ImageMagickHandler(Handler):
@@ -233,10 +235,8 @@ class PdfToPpmHandler(Handler):
                 raise ConversionError("pdftoppm failed") from e
             finally:
                 for fn in file_list:
-                    try:
+                    with contextlib.suppress(OSError):
                         os.remove(fn)
-                    except OSError:
-                        pass
 
 
 class UnoconvPdfHandler(Handler):

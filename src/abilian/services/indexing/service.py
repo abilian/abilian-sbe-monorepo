@@ -11,6 +11,7 @@ Based on Flask-whooshalchemy by Karl Gyllstrom.
 """
 from __future__ import annotations
 
+import contextlib
 import logging
 from collections.abc import Collection
 from inspect import isclass
@@ -559,13 +560,12 @@ def index_update(index: str, items: list[list[dict | int | str]]):
 
     session.close()
     writer.commit()
-    try:
+
+    # Exception may happen when actual writer was already available:
+    # asyncwriter didn't need to start a thread
+    with contextlib.suppress(RuntimeError):
         # async thread: wait for its termination
         writer.join()
-    except RuntimeError:
-        # happens when actual writer was already available: asyncwriter didn't need
-        # to start a thread
-        pass
 
 
 class TestingStorage(RamStorage):

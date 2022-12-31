@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 import shutil
 import typing
 import weakref
@@ -464,10 +465,8 @@ class BlobStoreTransaction:
         assert self._parent is None
 
         for uuid in self._deleted:
-            try:
+            with contextlib.suppress(KeyError):
                 blob_store.delete(uuid)
-            except KeyError:
-                pass
 
         for uuid in self._set:
             content = self.path / str(uuid)
@@ -494,10 +493,8 @@ class BlobStoreTransaction:
         """Add `item` to `dest` set, ensuring `item` is not present in `other`
         set."""
         _assert_uuid(uuid)
-        try:
+        with contextlib.suppress(KeyError):
             other.remove(uuid)
-        except KeyError:
-            pass
         dest.add(uuid)
 
     def delete(self, uuid: UUID):

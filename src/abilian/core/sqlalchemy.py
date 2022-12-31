@@ -1,6 +1,7 @@
 """Additional data types for sqlalchemy."""
 from __future__ import annotations
 
+import contextlib
 import json
 import logging
 import sys
@@ -316,11 +317,9 @@ def JSONList(*args, **kwargs):
     list values are made unique and sorted.
     """
     type_ = JSON
-    try:
+    with contextlib.suppress(KeyError):
         if kwargs.pop("unique_sorted"):
             type_ = JSONUniqueListType
-    except KeyError:
-        pass
 
     return MutationList.as_mutable(type_(*args, **kwargs))
 

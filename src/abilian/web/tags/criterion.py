@@ -1,6 +1,8 @@
 """"""
 from __future__ import annotations
 
+import contextlib
+
 import sqlalchemy as sa
 
 from abilian.core.models.tag import Tag, entity_tag_tbl
@@ -41,10 +43,8 @@ class TagCriterion(BaseCriterion):
         tag_ids = []
 
         for val in request.values.getlist(self.name):
-            try:
+            with contextlib.suppress(ValueError):
                 tag_ids.append(int(val))
-            except ValueError:
-                pass
 
         valid_tags = set(self.valid_tags)
         tags = []

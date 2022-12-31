@@ -1,6 +1,7 @@
 """Elements to build test cases for an :class:`abilian.app.Application`"""
 from __future__ import annotations
 
+import contextlib
 from typing import ContextManager
 
 from flask.testing import FlaskClient
@@ -88,10 +89,8 @@ def cleanup_db(db: SQLAlchemy):
 
 def _delete_tables(db: SQLAlchemy):
     for table in reversed(db.metadata.sorted_tables):
-        try:
+        with contextlib.suppress(DatabaseError):
             db.session.execute(table.delete())
-        except DatabaseError:
-            pass
 
 
 def ensure_services_started(services: list[str]):

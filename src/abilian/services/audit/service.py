@@ -7,6 +7,7 @@ TODO: In the future, we may decide to:
 """
 from __future__ import annotations
 
+import contextlib
 import logging
 from datetime import datetime
 from inspect import isclass
@@ -338,12 +339,9 @@ audit_service = AuditService()
 
 
 def format_large_value(value: Any) -> Any:
-    try:
+    with contextlib.suppress(TypeError):
         if len(value) > 1000:
             return "<<large value>>"
-    except TypeError:
-        # object of type '...' has no len()
-        pass
     return value
 
 

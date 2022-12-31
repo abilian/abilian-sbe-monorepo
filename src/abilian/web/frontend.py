@@ -5,6 +5,7 @@ application.
 """
 from __future__ import annotations
 
+import contextlib
 import copy
 import logging
 import re
@@ -729,20 +730,17 @@ class Module(metaclass=ModuleMeta):
                 # clauses
                 if engine.name != "sqlite":
                     nullsorder = nullslast if sort_dir == "desc" else nullsfirst
-                    try:
+                    # FIXME: should not raise an exception
+                    with contextlib.suppress(Exception):
                         sort_col = nullsorder(sort_col)
-                    except Exception:
-                        # FIXME
-                        pass
 
                 sort_cols.append(sort_col)
 
         if sort_cols:
-            try:
+            # FIXME
+            with contextlib.suppress(Exception):
                 query = query.order_by(*sort_cols)
-            except Exception:
-                # FIXME
-                pass
+
         query.reset_joinpoint()
         return query
 

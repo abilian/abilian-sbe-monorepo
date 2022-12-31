@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 import logging
 import os
 from collections.abc import Iterator
@@ -44,7 +45,5 @@ def make_temp_file(
 
     yield filename
 
-    try:
+    with contextlib.suppress(OSError):
         os.remove(filename)
-    except OSError:
-        pass

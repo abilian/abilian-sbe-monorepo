@@ -1,6 +1,7 @@
 """"""
 from __future__ import annotations
 
+import contextlib
 from typing import Any
 
 from flask import Flask
@@ -132,10 +133,8 @@ class TagsExtension:
             tag = self.get(ns, label)
 
         tags = self.entity_tags(entity)
-        try:
+        with contextlib.suppress(KeyError):
             tags.remove(tag)
-        except KeyError:
-            pass
 
     def get_form_context(self, obj, ns=None):
         """Return a dict: form instance, action button, submit url...

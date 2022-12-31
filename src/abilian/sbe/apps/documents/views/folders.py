@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 import fnmatch
 import itertools
 import logging
@@ -974,10 +975,8 @@ def check_valid_name():
     existing = {e.title for e in parent.children}
 
     if action in ("folder-edit", "document-edit"):
-        try:
+        with contextlib.suppress(KeyError):
             existing.remove(obj.title)
-        except KeyError:
-            pass
 
     result = {}
     valid = result["valid"] = title not in existing

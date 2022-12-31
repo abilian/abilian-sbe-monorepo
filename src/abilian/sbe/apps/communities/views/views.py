@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import logging
 from collections import Counter
@@ -127,10 +128,8 @@ def default_view_kw(
             elif is_community:
                 community_id = obj.slug
             elif community_id is None and hasattr(obj, "community"):
-                try:
+                with contextlib.suppress(AttributeError):
                     community_id = obj.community.slug
-                except AttributeError:
-                    pass
 
     if community_id is not None:
         kw["community_id"] = community_id
@@ -472,10 +471,8 @@ def members_excel_export():
         cells = []
         for col, getter in enumerate(attributes):
             value = None
-            try:
+            with contextlib.suppress(AttributeError):
                 value = getter(membership_info)
-            except AttributeError:
-                pass
 
             if isinstance(value, (BaseModel, Role)):
                 value = str(value)

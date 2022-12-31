@@ -1,6 +1,7 @@
 """"""
 from __future__ import annotations
 
+import contextlib
 import time
 from collections import deque
 
@@ -65,15 +66,11 @@ class Reindexer:
         for cls in sorted(indexed_classes, key=lambda c: c.__name__):
             self.reindex_class(cls)
 
-        try:
+        with contextlib.suppress(StopIteration):
             self.strategy.send(STOP)
-        except StopIteration:
-            pass
 
-        try:
+        with contextlib.suppress(StopIteration):
             self.strategy.close()
-        except StopIteration:
-            pass
 
     def reindex_class(self, cls: Entity):
         current_object_type = cls._object_type()

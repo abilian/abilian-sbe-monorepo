@@ -1,6 +1,7 @@
 """Class based views."""
 from __future__ import annotations
 
+import contextlib
 import logging
 
 import sqlalchemy as sa
@@ -461,11 +462,9 @@ class ObjectCreate(ObjectEdit):
         with session.no_autoflush:
             args, kwargs = super().prepare_args(args, kwargs)
 
-        try:
+        # obj may not be in session
+        with contextlib.suppress(sa.exc.InvalidRequestError):
             session.expunge(self.obj)
-        except sa.exc.InvalidRequestError:
-            # obj is not in session
-            pass
 
         return args, kwargs
 
