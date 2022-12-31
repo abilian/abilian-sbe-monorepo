@@ -72,9 +72,7 @@ class FormContext:
             if self.user is None:
                 self.user = self.__existing.user
 
-            if self.obj is None:
-                self.obj = self.__existing.obj
-            elif not isinstance(self.obj, Entity):
+            if self.obj is None or not isinstance(self.obj, Entity):
                 self.obj = self.__existing.obj
 
         if self.user is None:

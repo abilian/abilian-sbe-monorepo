@@ -100,9 +100,8 @@ class Blob(Model):
     def md5(self) -> str:
         """Return md5 from meta, or compute it if absent."""
         md5 = self.meta.get("md5")
-        if md5 is None:
-            if self.value:
-                md5 = str(hashlib.md5(self.value).hexdigest())
+        if md5 is None and self.value:
+            md5 = str(hashlib.md5(self.value).hexdigest())
 
         return md5
 

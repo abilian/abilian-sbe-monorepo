@@ -388,9 +388,7 @@ class Locale(sa.types.TypeDecorator):
             value = babel.Locale.parse(value)
 
         code = str(value.language)
-        if value.territory:
-            code += f"_{str(value.territory)}"
-        elif value.script:
+        if value.territory or value.script:
             code += f"_{str(value.territory)}"
 
         return code
