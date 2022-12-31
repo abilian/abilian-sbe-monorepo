@@ -5,7 +5,7 @@ from __future__ import annotations
 from abilian.sbe.app import Application
 
 # Constants
-TOKEN_SERIALIZER_NAME = "unsubscribe_sbe"
+TOKEN_SERIALIZER_NAME = "unsubscribe_sbe"  # noqa: S105
 
 
 def register_plugin(app: Application) -> None:

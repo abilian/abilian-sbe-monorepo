@@ -48,7 +48,7 @@ def test_get_with_some_content(session: Session):
 def test_get_with_non_existing_content(session: Session):
     # non-existent
     u = uuid.UUID("bcdc32ac-498d-4544-9e7f-fb2c75097011")
-    default_path = Path("/tmp/default-path")
+    default_path = Path("/xxx/default-path")
     assert blob_store.get(u) is None
     assert blob_store.get(u, default=default_path) is default_path
 

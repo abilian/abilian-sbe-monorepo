@@ -5,6 +5,7 @@ Notes:
 """
 from __future__ import annotations
 
+import contextlib
 import random
 import string
 from datetime import datetime
@@ -394,14 +395,13 @@ def check_for_redirect(target: str) -> str:
     target = urljoin(request.url_root, target)
     url = urlparse(target)
     reqctx = _request_ctx_stack.top
-    try:
+
+    # exceptions may happen if route is not found for example
+    with contextlib.suppress(Exception):
         endpoint, ignored = reqctx.url_adapter.match(url.path, "GET")
         if "." in endpoint and endpoint.rsplit(".", 1)[0] == "login":
             # don't redirect to any login view after successful login
             return ""
-    except Exception:
-        # exceptions may happen if route is not found for example
-        pass
 
     return target
 

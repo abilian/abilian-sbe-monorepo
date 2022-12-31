@@ -40,9 +40,9 @@ def test_transaction_lifetime(session: Session):
 
 
 def test_accessors_non_existent_entry(session: Session):
-    # non-existent
+    # non existent
     u = uuid.uuid4()
-    default = Path("/tmp/dont-care")
+    default = Path("/xxx/dont-care")
     assert session_blob_store.get(session, u) is None
     assert session_blob_store.get(session, u, default=default) is default
 

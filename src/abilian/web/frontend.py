@@ -719,12 +719,10 @@ class Module(metaclass=ModuleMeta):
                 sort_col = func.lower(sort_col)
 
             if sort_col is not None:
-                try:
+                # FIXME
+                with contextlib.suppress(Exception):
                     direction = desc if sort_dir == "desc" else asc
                     sort_col = direction(sort_col)
-                except Exception:
-                    # FIXME
-                    pass
 
                 # sqlite does not support 'NULLS FIRST|LAST' in ORDER BY
                 # clauses

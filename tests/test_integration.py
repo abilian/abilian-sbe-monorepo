@@ -139,7 +139,7 @@ def test_failed_login(client, db: SQLAlchemy):
 #
 def login_as_admin(client, db: SQLAlchemy):
     email = "admin@example.com"
-    password = "secret"
+    password = "secret"  # noqa: S105
     user = User(email=email, can_login=True, password=password)
 
     # Needed for grant_role to not raise an exception

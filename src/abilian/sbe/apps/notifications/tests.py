@@ -16,7 +16,7 @@ from abilian.web import url_for
 
 
 def test_unsubscribe(app: Application, client: Client, db: SQLAlchemy, app_context):
-    user = User(email="user_1@example.com", password="abc", can_login=True)
+    user = User(email="user_1@example.com", password="abc", can_login=True)  # noqa: S106
     db.session.add(user)
     db.session.commit()
 
@@ -25,7 +25,7 @@ def test_unsubscribe(app: Application, client: Client, db: SQLAlchemy, app_conte
     token = generate_unsubscribe_token(user)
     url = url_for("notifications.unsubscribe_sbe", token=token)
 
-    # Not need to login, since we're using the unsubscribe token
+    # Not need to login, since we're using the "unsubscribe" token
 
     response = client.get(url)
     assert response.status_code == 200

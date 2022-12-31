@@ -29,7 +29,7 @@ if typing.TYPE_CHECKING:
 class TestConfig:
     TESTING = True
     DEBUG = True
-    SECRET_KEY = "SECRET"
+    SECRET_KEY = "SECRET"  # noqa: S105
     SERVER_NAME = "localhost.localdomain"
     CELERY_ALWAYS_EAGER = True  # run tasks locally, no async
     CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
