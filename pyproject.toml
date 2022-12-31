@@ -126,7 +126,7 @@ markdown = "^3"
 
 # needed by folder: export to xls
 xlwt = "*"
-openpyxl = "^2.6.4"
+openpyxl = "*"
 
 # Better FP library than itertools IMHO.
 toolz = "*"
