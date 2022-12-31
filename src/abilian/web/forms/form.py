@@ -159,7 +159,8 @@ class Form(BaseForm):
                 fields = field_names
                 break
         else:
-            raise ValueError("Group %s not found", repr(group))
+            msg = "Group %s not found" % repr(group)
+            raise ValueError(msg)
         return fields
 
     def _has_required(self, group=None, fields=()):

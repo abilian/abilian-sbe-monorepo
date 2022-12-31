@@ -732,13 +732,13 @@ class JsonSelect2Field(SelectFieldBase):
                 valuelist = valuelist[0]
             self._formdata = valuelist
 
-    def populate_obj(self, obj, name):
+    def populate_obj(self, obj, name) -> None:
         data = self.data
 
         try:
             state = sa.inspect(obj)
         except sa.exc.NoInspectionAvailable:
-            return super().populate_obj(obj, name)
+            super().populate_obj(obj, name)
 
         relations = state.mapper.relationships
 

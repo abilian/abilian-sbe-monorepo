@@ -5,7 +5,7 @@ import os
 
 import click
 import toml
-from flask import Blueprint, abort, current_app, g, redirect, request
+from flask import Blueprint, Response, abort, current_app, g, redirect, request
 from flask.cli import AppGroup, FlaskGroup
 from flask_login import current_user
 
@@ -125,25 +125,25 @@ def home():
     return redirect(url_for("social.home"))
 
 
-def login_required():
+def login_required() -> Response | None:
     """
     Before request handler to ensure login is required on any view
     """
     if current_app.config.get("NO_LOGIN"):
-        return
+        return None
 
     if request.path.startswith(current_app.static_url_path):
-        return
+        return None
 
     if request.url_rule and request.url_rule.endpoint == "geodata.static":
         # geodata blueprint assets
-        return
+        return None
 
     if request.blueprint in ("login", "first_login", "projects", "notifications"):
-        return
+        return None
 
     if request.blueprint == "_debug_toolbar" and current_app.debug:
-        return
+        return None
 
     if not current_user.is_authenticated:
         return redirect(url_for("login.login_form", next=request.url))

@@ -219,14 +219,49 @@ python_files = [
 
 
 [tool.ruff]
+#extend-select = [
+#    "F",
+#    "E",
+#    "W",
+#    "C90",
+#    "I",
+#    # "D",
+#    "UP",
+#    # "N",
+#    "YTT",
+#    # "ANN",
+#    # "S",
+#    "BLE",
+#    "FBT",
+#    "B",
+#    # "A",
+#    "C4",
+#    "T10",
+#    "EM",
+#    "ISC",
+#    "ICN",
+#    "T20",
+#    "Q",
+#    "RET",
+#    "SIM",
+#    "TID",
+#    # "ARG",
+#    "DTZ",
+#    # "ERA",
+#    "PD",
+#    "PGH",
+#    "RUF",
+#]
 ignore = [
     "E711",  # comparison to None should be 'if cond is not None:'
     "E712",  # ...
     "E501",  # line too long
-    "E999",  # Syntax error, probably because ruff doesn't support the match statement
     "F401",  # 'module' imported but unused
     "E402",  # Module level import not at top of file
     "E741",  # Ambiguous variable name
     "F841",  # Local variable `cell4` is assigned to but never used
     "E713",  # Test for membership should be `not in`
 ]
+
+[tool.ruff.mccabe]
+max-complexity = 10
