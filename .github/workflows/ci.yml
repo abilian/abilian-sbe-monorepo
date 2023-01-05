@@ -50,6 +50,7 @@ jobs:
 
       - if: ${{ matrix.os == 'ubuntu' && matrix.python-version == '3.9' }}
         run: |
+          poetry install
+          make test-with-coverage
           pip install codecov
-          # doit coverage
           codecov

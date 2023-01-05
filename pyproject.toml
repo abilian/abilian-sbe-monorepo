@@ -191,6 +191,7 @@ pyanalyze = "^0.5.0"
 MonkeyType = "*"
 sqla2uml = "*"
 pyupgrade = "*"
+codecov = "^2.1.12"
 
 
 [build-system]

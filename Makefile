@@ -1,7 +1,5 @@
 .PHONY: test unit full-test pep8 clean setup
 
-PKG=extranet
-
 default: test lint
 all: default
 
@@ -28,9 +26,8 @@ test:  ## Run tests
 	poetry run pytest --ff -x
 
 test-with-coverage:
-	poetry run pytest --durations=10			\
-		--cov $(PKG)			\
-		--cov-config coverage.rc	\
+	poetry run pytest \
+		--cov extranet --cov abilian \
 	  	--cov-report term-missing
 
 test-with-validator:
