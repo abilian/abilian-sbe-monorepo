@@ -356,9 +356,9 @@ class DateTimeField(Field):
 
                 # convert to UTC
                 self.data = utc_dt(self.data)
-            except ValueError:
+            except ValueError as e:
                 self.data = None
-                raise ValueError(self.gettext("Not a valid datetime value"))
+                raise ValueError(self.gettext("Not a valid datetime value")) from e
 
     def populate_obj(self, obj: Any, name: str):
         dt = self.data
@@ -403,9 +403,9 @@ class DateField(Field):
             try:
                 strptime = datetime.strptime
                 self.data = strptime(date_str, date_fmt).date()
-            except (ValueError, TypeError):
+            except (ValueError, TypeError) as e:
                 self.data = None
-                raise ValueError(self.gettext("Not a valid datetime value"))
+                raise ValueError(self.gettext("Not a valid datetime value")) from e
         else:
             self.data = None
 
@@ -766,7 +766,7 @@ class LocaleSelectField(SelectField):
         super().__init__(*args, **kwargs)
 
     @staticmethod
-    def coerce(value: Locale) -> Locale:
+    def coerce(value: Locale | None) -> Locale | None:
         if isinstance(value, babel.Locale):
             return value
         elif isinstance(value, str):

@@ -119,7 +119,7 @@ def user(db: SQLAlchemy) -> User:
         first_name="Joe",
         last_name="Test",
         email="test@example.com",
-        password="test",
+        password="test",  # noqa: S106
         can_login=True,
     )
     db.session.add(user)
@@ -135,7 +135,7 @@ def admin_user(db: SQLAlchemy) -> User:
         first_name="Jim",
         last_name="Admin",
         email="admin@example.com",
-        password="admin",
+        password="admin",  # noqa: S106
         can_login=True,
     )
     user.is_admin = True

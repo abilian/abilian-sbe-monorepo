@@ -232,4 +232,4 @@ def md5(data: str | bytes | None):
     # flask-security is not needed anywhere else and as of 1.7.5 has
     # strong dependency requirements that prevent us from upgrading a
     # few packages (flask-login 0.4).
-    return hashlib.md5(encode_string(data or "")).hexdigest()
+    return hashlib.md5(encode_string(data or "")).hexdigest()  # noqa: S324

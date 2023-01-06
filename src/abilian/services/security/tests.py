@@ -80,7 +80,7 @@ def test_anonymous_user(app: Application, session: Session):
 
 def test_has_role_authenticated(app: Application, session: Session):
     anon = app.login_manager.anonymous_user()
-    user = User(email="john@example.com", password="x")
+    user = User(email="john@example.com", password="x")  # noqa: S106
     session.add(user)
     session.flush()
     assert not security.has_role(anon, Authenticated)
@@ -103,7 +103,7 @@ def test_root_user(session: Session):
 
 
 def test_grant_basic_roles(session: Session):
-    user = User(email="john@example.com", password="x")
+    user = User(email="john@example.com", password="x")  # noqa: S106
     session.add(user)
     session.flush()
 
@@ -134,7 +134,7 @@ def test_grant_basic_roles(session: Session):
 
 
 def test_grant_basic_roles_on_groups(session: Session):
-    user = User(email="john@example.com", password="x")
+    user = User(email="john@example.com", password="x")  # noqa: S106
     group = Group(name="Test Group")
     user.groups.add(group)
     session.add(user)
@@ -163,8 +163,8 @@ def test_grant_basic_roles_on_groups(session: Session):
 
 
 def test_grant_roles_on_objects(session: Session):
-    user = User(email="john@example.com", password="x")
-    user2 = User(email="papa@example.com", password="p")
+    user = User(email="john@example.com", password="x")  # noqa: S106
+    user2 = User(email="papa@example.com", password="p")  # noqa: S106
     group = Group(name="Test Group")
     user.groups.add(group)
     obj = DummyModel()
@@ -247,7 +247,7 @@ def test_grant_roles_on_objects(session: Session):
 
 
 def test_grant_roles_unique(session: Session):
-    user = User(email="john@example.com", password="x")
+    user = User(email="john@example.com", password="x")  # noqa: S106
     obj = DummyModel()
     session.add_all([user, obj])
     session.flush()
@@ -313,7 +313,7 @@ def test_add_list_delete_permissions(session: Session):
 
 def test_has_permission_on_objects(session: Session):
     has_permission = security.has_permission
-    user = User(email="john@example.com", password="x")
+    user = User(email="john@example.com", password="x")  # noqa: S106
     group = Group(name="Test Group")
     user.groups.add(group)
     obj = DummyModel(creator=user, owner=user)
@@ -363,7 +363,7 @@ def test_has_permission_on_objects(session: Session):
 
 
 def test_has_permission_custom_roles(session: Session):
-    user = User(email="john@example.com", password="x")
+    user = User(email="john@example.com", password="x")  # noqa: S106
     session.add(user)
     session.flush()
 
@@ -397,7 +397,7 @@ def test_has_permission_custom_roles(session: Session):
 @mark.skip
 def test_query_entity_with_permission(session):
     get_filter = security.query_entity_with_permission
-    user = User(email="john@example.com", password="x")
+    user = User(email="john@example.com", password="x")  # noqa: S106
     session.add(user)
 
     obj_reader = DummyModel(name="reader")

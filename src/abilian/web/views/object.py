@@ -218,7 +218,7 @@ class ObjectEdit(ObjectView):
         *args,
         **kwargs,
     ):
-        super().__init__(Model, pk, Form, template=template, *args, **kwargs)
+        super().__init__(Model, pk, Form, *args, template=template, **kwargs)
         if view_endpoint is not None:
             self.view_endpoint = view_endpoint
 

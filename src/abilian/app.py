@@ -278,7 +278,7 @@ class Application(
         if not self.config.get("FAVICO_URL"):
             self.config["FAVICO_URL"] = self.config.get("LOGO_URL")
 
-        if not self.debug and self.config["SECRET_KEY"] == "CHANGEME":
+        if not self.debug and self.config["SECRET_KEY"] == "CHANGEME":  # noqa: S105
             logger.error("You must change the default secret config ('SECRET_KEY')")
             sys.exit()
 
@@ -394,7 +394,7 @@ class Application(
             celery_app = self.extensions["celery"] = self.celery_app_cls()
             # force reading celery conf now - default celery app will
             # also update our config with default settings
-            celery_app.conf  # noqa
+            assert celery_app.conf
             celery_app.set_default()
 
         # dev helper

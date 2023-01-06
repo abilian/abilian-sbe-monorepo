@@ -5,12 +5,10 @@ from typing import Any
 
 import whoosh.fields as wf
 import whoosh.query as wq
-from flask import g
+from flask import Flask, g
 from flask_login import current_user
 from whoosh.query.compound import Or
 from whoosh.query.terms import Term
-
-from abilian.sbe.app import Application
 
 from .models import Membership
 
@@ -31,7 +29,7 @@ _FIELDS = [
 ]
 
 
-def init_app(app: Application) -> None:
+def init_app(app: Flask) -> None:
     """Add community fields to indexing service schema."""
     indexing = app.services["indexing"]
     indexing.register_search_filter(filter_user_communities)

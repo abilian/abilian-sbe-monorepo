@@ -39,6 +39,7 @@ from abilian.web.action import Endpoint, actions
 from abilian.web.nav import BreadcrumbItem
 from abilian.web.util import url_for
 from abilian.web.views import ObjectCreate, ObjectEdit, ObjectView, default_view
+from abilian.web.views.base import Redirect
 
 from .forms import WikiPageForm
 from .models import WikiPage, WikiPageAttachment, WikiPageRevision
@@ -151,7 +152,7 @@ class PageView(BasePageView, ObjectView):
                 self.obj = create_home_page()
             else:
                 url = url_for(".page_edit", title=title, community_id=g.community.slug)
-                return redirect(url)
+                raise Redirect(url)
 
         actions.context["object"] = self.obj
         viewtracker.record_hit(entity=self.obj, user=current_user)
@@ -390,8 +391,8 @@ def attachment_download() -> Response:
     attachment_id = int(request.args["attachment"])
     try:
         page = get_page_by_title(title)
-    except NoResultFound:
-        raise NotFound()
+    except NoResultFound as e:
+        raise NotFound() from e
 
     attachment = WikiPageAttachment.query.get(attachment_id)
     assert attachment is not None
@@ -412,8 +413,8 @@ def attachment_upload() -> Response:
     title = request.args["title"].strip()
     try:
         page = get_page_by_title(title)
-    except NoResultFound:
-        raise NotFound()
+    except NoResultFound as e:
+        raise NotFound() from e
 
     files = request.files.getlist("attachments")
     saved_count = 0
@@ -457,8 +458,8 @@ def attachment_delete():
     attachment_id = int(request.args["attachment"])
     try:
         page = get_page_by_title(title)
-    except NoResultFound:
-        raise NotFound()
+    except NoResultFound as e:
+        raise NotFound() from e
 
     attachment = WikiPageAttachment.query.get(attachment_id)
     assert attachment is not None

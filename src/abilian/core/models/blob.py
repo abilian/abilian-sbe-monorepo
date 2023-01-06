@@ -77,7 +77,7 @@ class Blob(Model):
 
         blob_store.set(self, self.uuid, value)
         if self.value:
-            self.meta["md5"] = str(hashlib.md5(self.value).hexdigest())
+            self.meta["md5"] = str(hashlib.md5(self.value).hexdigest())  # noqa: S324
 
         filename = getattr(value, "filename", None)
         if filename:
@@ -101,7 +101,7 @@ class Blob(Model):
         """Return md5 from meta, or compute it if absent."""
         md5 = self.meta.get("md5")
         if md5 is None and self.value:
-            md5 = str(hashlib.md5(self.value).hexdigest())
+            md5 = str(hashlib.md5(self.value).hexdigest())  # noqa: S324
 
         return md5
 

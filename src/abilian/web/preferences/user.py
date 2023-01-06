@@ -76,8 +76,8 @@ class UserPreferencesForm(Form):
             # check this is actually an image file
             im = PIL.Image.open(data)
             im.load()
-        except Exception:
-            raise ValidationError(_("Could not decode image file"))
+        except Exception as e:
+            raise ValidationError(_("Could not decode image file")) from e
 
         # convert to jpeg
         # FIXME: better do this at model level?

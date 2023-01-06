@@ -5,9 +5,8 @@ from flask import Flask
 
 
 def register_plugin(app: Flask) -> None:
-    # Used for side-effect
-    from . import events  # noqa
-    from . import search
+    # Used for side effects
+    from . import events, search
     from .views import communities
 
     app.register_blueprint(communities)

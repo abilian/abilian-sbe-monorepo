@@ -16,12 +16,12 @@ def test_user() -> None:
         first_name="John",
         last_name="Test User",
         email="test@example.com",
-        password="toto",
+        password="toto",  # noqa: S106
     )
     check_editable(user)
 
-    assert "John Test User" == user.name
-    assert "John Test User" == str(user)
+    assert user.name == "John Test User"
+    assert str(user) == "John Test User"
     # self.assertEquals(len(user.messages), 0)
 
 
@@ -33,14 +33,14 @@ def test_user_follow() -> None:
         first_name="John",
         last_name="Test User 1",
         email="test1@example.com",
-        password="toto",
+        password="toto",  # noqa: S106
     )
     user2 = User(
         id=2,
         first_name="Joe",
         last_name="Test User 2",
         email="test2@example.com",
-        password="toto",
+        password="toto",  # noqa: S106
     )
 
     assert len(user1.followers) == 0
@@ -72,7 +72,7 @@ def test_group() -> None:
         first_name="John",
         last_name="Test User",
         email="test@example.com",
-        password="toto",
+        password="toto",  # noqa: S106
     )
     group = Group(name="Group 1")
 

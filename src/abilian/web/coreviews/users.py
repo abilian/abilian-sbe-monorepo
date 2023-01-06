@@ -41,7 +41,7 @@ def photo(user):
         # photo is immediatly reloaded from server.
         #
         # FIXME: there should be a photo_digest field on user object
-        acc = hashlib.md5(data)
+        acc = hashlib.md5(data)  # noqa: S324
         etag = acc.hexdigest()
 
         if request.if_none_match and etag in request.if_none_match:

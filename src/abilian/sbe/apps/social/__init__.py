@@ -7,8 +7,8 @@ from abilian.sbe.app import Application
 
 
 def register_plugin(app: Application) -> None:
-    from .views import groups, sidebars, users  # noqa
-    from .views.social import social  # noqa
+    from .views import groups, sidebars, users
+    from .views.social import social
 
     app.register_blueprint(social)
 

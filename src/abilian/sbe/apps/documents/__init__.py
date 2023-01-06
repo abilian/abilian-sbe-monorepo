@@ -8,8 +8,7 @@ if typing.TYPE_CHECKING:
 
 
 def register_plugin(app: Application) -> None:
-    from . import signals  # noqa
-    from . import lock
+    from . import lock, signals
     from .cli import antivirus
     from .models import setup_listener
     from .views import blueprint

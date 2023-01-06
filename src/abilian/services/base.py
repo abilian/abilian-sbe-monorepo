@@ -78,8 +78,8 @@ class Service:
         """
         try:
             return current_app.extensions[self.name]
-        except KeyError:
-            raise ServiceNotRegistered(self.name)
+        except KeyError as e:
+            raise ServiceNotRegistered(self.name) from e
 
     @property
     def running(self) -> bool:

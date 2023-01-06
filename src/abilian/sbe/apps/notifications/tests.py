@@ -16,7 +16,9 @@ from abilian.web import url_for
 
 
 def test_unsubscribe(app: Application, client: Client, db: SQLAlchemy, app_context):
-    user = User(email="user_1@example.com", password="abc", can_login=True)  # noqa: S106
+    user = User(
+        email="user_1@example.com", password="abc", can_login=True  # noqa: S106
+    )
     db.session.add(user)
     db.session.commit()
 

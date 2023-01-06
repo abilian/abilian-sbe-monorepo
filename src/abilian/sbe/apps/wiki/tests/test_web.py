@@ -17,21 +17,27 @@ from abilian.testing.util import client_login
 
 @fixture
 def user1(db):
-    user = User(email="user_1@example.com", password="azerty", can_login=True)  # noqa: S106
+    user = User(
+        email="user_1@example.com", password="azerty", can_login=True  # noqa: S106
+    )
     db.session.add(user)
     return user
 
 
 @fixture
 def user2(db):
-    user = User(email="user_2@example.com", password="azerty", can_login=True)  # noqa: S106
+    user = User(
+        email="user_2@example.com", password="azerty", can_login=True  # noqa: S106
+    )
     db.session.add(user)
     return user
 
 
 @fixture
 def user3(db):
-    user = User(email="user_3@example.com", password="azerty", can_login=True)  # noqa: S106
+    user = User(
+        email="user_3@example.com", password="azerty", can_login=True  # noqa: S106
+    )
     db.session.add(user)
     return user
 

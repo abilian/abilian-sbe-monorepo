@@ -75,8 +75,8 @@ class Registry:
             blueprint_name = object_type.rsplit(".")[-1].lower()
             endpoint = f"{blueprint_name}.view"
             return url_for(endpoint, object_id=object_id, **kwargs)
-        except Exception:
-            raise KeyError(object_type)
+        except Exception as e:
+            raise KeyError(object_type) from e
 
 
 class default_view:

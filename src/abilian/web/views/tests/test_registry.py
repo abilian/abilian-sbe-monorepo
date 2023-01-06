@@ -11,7 +11,7 @@ from abilian.core.entities import Entity
 # needed if running only this test, else SA won't have registered this mapping
 # required by Entity.owner_id, etc
 # noinspection PyUnresolvedReferences
-from abilian.core.models.subjects import User  # noqa
+from abilian.core.models.subjects import User
 from abilian.web.views import default_view
 from abilian.web.views.registry import Registry
 

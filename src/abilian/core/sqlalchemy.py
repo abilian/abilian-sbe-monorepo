@@ -42,14 +42,14 @@ def ping_connection(dbapi_connection: Connection, connection_record, connection_
     cursor = dbapi_connection.cursor()
     try:
         cursor.execute("SELECT 1")
-    except Exception:
+    except Exception as e:
         # optional - dispose the whole pool
         # instead of invalidating one at a time
         # connection_proxy._pool.dispose()
 
         # raise DisconnectionError - pool will try
         # connecting again up to three times before raising.
-        raise sa.exc.DisconnectionError()
+        raise sa.exc.DisconnectionError() from e
     cursor.close()
 
 

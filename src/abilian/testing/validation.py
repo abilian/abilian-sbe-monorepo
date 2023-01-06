@@ -63,7 +63,7 @@ def assert_html_valid_using_htmlhint(response: Response):
             print("htmllhint output:")
             print(e.output)
             msg = f"HTML was not valid for URL: {request.url}"
-            raise ValidationError(msg)
+            raise ValidationError(msg) from e
 
 
 def assert_html_valid_using_external_service(response: Response):
@@ -93,6 +93,6 @@ def assert_html_valid_using_external_service(response: Response):
 def assert_json_valid(response: Response):
     try:
         json.loads(response.data)
-    except Exception:
+    except Exception as e:
         msg = f"JSON was not valid for URL: {request.url}"
-        raise ValidationError(msg)
+        raise ValidationError(msg) from e

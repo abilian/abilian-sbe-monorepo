@@ -6,8 +6,7 @@ from flask.signals import request_started
 from wtforms import Form, IntegerField, StringField
 
 # Import for side-effects (monkey-patch)
-# noinspection PyUnresolvedReferences
-import abilian.web.forms  # noqa
+import abilian.web.forms
 from abilian.core.entities import Entity
 from abilian.web.forms.widgets import (
     EmailWidget,
@@ -19,6 +18,9 @@ from abilian.web.forms.widgets import (
     text2html,
 )
 from abilian.web.views import default_view
+
+# Dpnt' remove
+assert abilian.web.forms
 
 
 class WidgetTestModel(Entity):

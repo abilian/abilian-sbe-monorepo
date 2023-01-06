@@ -40,12 +40,12 @@ def invite_post():
     emails = [email.strip() for email in emails]
 
     # FIXME: what do we do with this ?
-    message = request.form.get("message", "")  # noqa
+    message = request.form.get("message", "")
 
     with mail.connect() as conn:
         for email in emails:
             # FIXME: what do we do with this ?
-            invite = Invite(sender=current_user, email=email)  # noqa
+            invite = Invite(sender=current_user, email=email)
 
             # subject = _(u"%s would like to invite you to the %s community")
             # % (current_user.name, "Yaka")

@@ -63,7 +63,7 @@ def test_slugify_non_ascii():
     slug = slugify("a_b\u205fc")  # U+205F: MEDIUM MATHEMATICAL SPACE
     assert slug == "a-b-c"
 
-    # with non-ascii translatable chars, like EN DASH U+2013 (–) and EM DASH
-    # U+2014 (—).
+    # with non-ascii translatable chars, like EN DASH U+2013 and EM DASH
+    # U+2014.
     # this test fails if regexp subst is done after Unicode normalization
     assert slugify("a\u2013b\u2014c") == "a-b-c"

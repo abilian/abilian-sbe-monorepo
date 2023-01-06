@@ -293,7 +293,9 @@ add_url(
 
 # Community Image
 _DEFAULT_IMAGE = Path(__file__).parent / "data" / "community.png"
-_DEFAULT_IMAGE_MD5 = hashlib.md5(_DEFAULT_IMAGE.open("rb").read()).hexdigest()
+_DEFAULT_IMAGE_MD5 = hashlib.md5(  # noqa: S324
+    _DEFAULT_IMAGE.open("rb").read()
+).hexdigest()
 route("/_default_image")(
     image_views.StaticImageView.as_view(
         "community_default_image", set_expire=True, image=_DEFAULT_IMAGE

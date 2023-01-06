@@ -131,8 +131,8 @@ class CommunityForm(Form):
             # check this is actually an image file
             im = Image.open(data)
             im.load()
-        except BaseException:
-            raise ValidationError(_("Could not decode image file"))
+        except BaseException as e:
+            raise ValidationError(_("Could not decode image file")) from e
 
         data.seek(0)
         field.data = data

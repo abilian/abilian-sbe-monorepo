@@ -328,7 +328,7 @@ class UnoconvPdfHandler(Handler):
                     )
                     self._process.communicate()
                 except Exception as e:
-                    logger.error("run_uno error: %s", bytes(e), exc_info=True)
+                    logger.error("run_uno error: %s", e, exc_info=True)
                     raise ConversionError("unoconv failed") from e
 
             run_thread = threading.Thread(target=run_uno)
@@ -496,7 +496,7 @@ class CloudoooPdfHandler(Handler):
             data = proxy.convertFile(data, pivot_format, "pdf")
 
         converted = b64decode(data)
-        new_key = hashlib.md5(converted).hexdigest()
+        new_key = hashlib.md5(converted).hexdigest()  # noqa: S324
         with open(f"data/{new_key}.blob", "wb") as fd:
             fd.write(converted)
         return new_key

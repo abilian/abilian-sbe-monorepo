@@ -36,7 +36,7 @@ from abilian.core.entities import Entity, EntityQuery
 from abilian.core.extensions import db
 from abilian.i18n import _l
 from abilian.services import audit_service, get_security_service, get_service
-from abilian.services.security import READ  # noqa
+from abilian.services.security import READ
 from abilian.services.vocabularies.models import BaseVocabulary
 
 from . import search

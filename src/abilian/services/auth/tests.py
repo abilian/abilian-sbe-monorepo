@@ -58,7 +58,7 @@ def test_login_post(session: Session, client: FlaskClient):
 
     # wrong password
     d = dict(kwargs)
-    d["password"] = "wrong one"
+    d["password"] = "wrong one"  # noqa: S105
     response = client.post("/user/login", data=d)
     assert response.status_code == 401
 

@@ -119,7 +119,7 @@ def test_audit(app, session):
     assert entry.changes.columns == {"birthday": (None, datetime.date(2012, 12, 25))}
 
     # content hiding
-    account.password = "new super secret password"
+    account.password = "new super secret password"  # noqa: S105
     assert account.__changes__.columns == {"password": ("******", "******")}
     session.commit()
 

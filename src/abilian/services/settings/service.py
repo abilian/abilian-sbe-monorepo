@@ -100,9 +100,11 @@ class SettingsService(Service):
     def set(self, key: str, value: Any, type_: str | None = None):
         try:
             s = self._get_setting(key)
-        except KeyError:
+        except KeyError as e:
             if not type_:
-                raise ValueError("tried to set a new key without specifiying its type")
+                raise ValueError(
+                    "tried to set a new key without specifiying its type"
+                ) from e
             s = Setting(key=key, type=type_)
 
         # Always add to session. This covers the case delete(key);set(key).

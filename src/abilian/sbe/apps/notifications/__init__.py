@@ -14,7 +14,7 @@ def register_plugin(app: Application) -> None:
 
     # TODO: Slightly confusing. Reorg?
     from .tasks.social import DEFAULT_DIGEST_SCHEDULE, DIGEST_TASK_NAME
-    from .views import notifications, social  # noqa
+    from .views import notifications, social
 
     CELERYBEAT_SCHEDULE = app.config.setdefault("CELERYBEAT_SCHEDULE", {})
 

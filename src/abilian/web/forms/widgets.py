@@ -1308,7 +1308,7 @@ class MoneyWidget(TextInput):
         # units, which we don't want
         #
         # \u00A0: non-breakable whitespace
-        return f"{format_number(val)} {unit}"
+        return f"{format_number(val)}\u00A0{unit}"
 
 
 class EmailWidget(TextInput):

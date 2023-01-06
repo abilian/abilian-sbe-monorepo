@@ -67,14 +67,14 @@ def test_wordx_to_text(converter: Converter):
 def test_odt_to_pdf(converter: Converter):
     blob = read_file("test.odt")
     pdf = converter.to_pdf("", blob, "application/vnd.oasis.opendocument.text")
-    assert "application/pdf" == mime_sniffer.from_buffer(pdf)
+    assert mime_sniffer.from_buffer(pdf) == "application/pdf"
 
 
 @mark.skipif(not HAS_LIBREOFFICE, reason="requires libreoffice")
 def test_word_to_pdf(converter: Converter):
     blob = read_file("test.doc")
     pdf = converter.to_pdf("", blob, "application/msword")
-    assert "application/pdf" == mime_sniffer.from_buffer(pdf)
+    assert mime_sniffer.from_buffer(pdf) == "application/pdf"
 
 
 @mark.skipif(
@@ -83,7 +83,7 @@ def test_word_to_pdf(converter: Converter):
 def test_image_to_pdf(converter: Converter):
     blob = read_file("picture.jpg")
     pdf = converter.to_pdf("", blob, "image/jpeg")
-    assert "application/pdf" == mime_sniffer.from_buffer(pdf)
+    assert mime_sniffer.from_buffer(pdf) == "application/pdf"
 
 
 # To images
@@ -94,7 +94,7 @@ def test_pdf_to_images(converter: Converter):
         return
     blob = read_file("onepage.pdf")
     image = converter.to_image("", blob, "application/pdf", 0)
-    assert "image/jpeg" == mime_sniffer.from_buffer(image)
+    assert mime_sniffer.from_buffer(image) == "image/jpeg"
 
 
 @mark.skipif(
@@ -103,4 +103,4 @@ def test_pdf_to_images(converter: Converter):
 def test_word_to_images(converter: Converter):
     blob = read_file("test.doc")
     image = converter.to_image("", blob, "application/msword", 0)
-    assert "image/jpeg" == mime_sniffer.from_buffer(image)
+    assert mime_sniffer.from_buffer(image) == "image/jpeg"

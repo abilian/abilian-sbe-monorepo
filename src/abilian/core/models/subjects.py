@@ -222,7 +222,7 @@ class User(Principal, UserMixin, db.Model):
             self._password = password
 
     def authenticate(self, password: str) -> bool:
-        if self.password and self.password != "*":
+        if self.password and self.password != "*":  # noqa: S105
             return self.__password_strategy__.authenticate(self, password)
         else:
             return False

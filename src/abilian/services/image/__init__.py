@@ -61,7 +61,7 @@ def resize(orig: Any, width: int, height: int, mode: str = FIT) -> bytes:
     if isinstance(orig, bytes):
         orig = BytesIO(orig)
 
-    digest = hashlib.md5(orig.read()).digest()
+    digest = hashlib.md5(orig.read()).digest()  # noqa: S324
     cache_key = (digest, mode, width, height)
     if cache_key in cache:
         return cache[cache_key]

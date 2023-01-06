@@ -49,18 +49,18 @@ def test_filesize():
 
 def test_roughsize():
     roughsize = filters.roughsize
-    assert "6" == roughsize(6)
-    assert "15" == roughsize(15)
-    assert "130+" == roughsize(134)
-    assert "10+" == roughsize(15, above=10)
-    assert "55+" == roughsize(57, mod=5)
+    assert roughsize(6) == "6"
+    assert roughsize(15) == "15"
+    assert roughsize(134) == "130+"
+    assert roughsize(15, above=10) == "10+"
+    assert roughsize(57, mod=5) == "55+"
 
 
 def test_abbrev():
     abbrev = filters.abbrev
-    assert "test" == abbrev("test", 20)
-    assert "Longer test...e truncated" == abbrev(
-        "Longer test. it should be truncated", 25
+    assert abbrev("test", 20) == "test"
+    assert (
+        abbrev("Longer test. it should be truncated", 25) == "Longer test...e truncated"
     )
 
 

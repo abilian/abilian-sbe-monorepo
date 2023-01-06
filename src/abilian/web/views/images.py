@@ -25,7 +25,9 @@ route = blueprint.route
 DEFAULT_AVATAR = Path(
     pkg_resources.resource_filename("abilian.web", "resources/img/avatar-default.png")
 )
-DEFAULT_AVATAR_MD5 = hashlib.md5(DEFAULT_AVATAR.open("rb").read()).hexdigest()
+DEFAULT_AVATAR_MD5 = hashlib.md5(  # noqa: S324
+    DEFAULT_AVATAR.open("rb").read()
+).hexdigest()
 
 
 class BaseImageView(BaseFileDownload):
@@ -43,8 +45,8 @@ class BaseImageView(BaseFileDownload):
         size = request.args.get("s", 0)
         try:
             size = int(size)
-        except ValueError:
-            raise BadRequest(f'Invalid value for "s": {size:d}. Not an integer.')
+        except ValueError as e:
+            raise BadRequest(f'Invalid value for "s": {size:d}. Not an integer.') from e
 
         if self.max_size is not None and size > self.max_size:
             raise BadRequest(f"Size too large: {size:d} (max: {self.max_size:d})")
@@ -67,9 +69,9 @@ class BaseImageView(BaseFileDownload):
         """
         try:
             fmt = get_format(image)
-        except OSError:
+        except OSError as e:
             # not a known image file
-            raise NotFound()
+            raise NotFound() from e
 
         self.content_type = "image/png" if fmt == "PNG" else "image/jpeg"
         ext = f".{str(fmt.lower())}"
@@ -139,8 +141,8 @@ class BlobView(BaseImageView):
         blob_id = kwargs.get(self.id_arg)
         try:
             blob_id = int(blob_id)
-        except ValueError:
-            raise BadRequest(f"Invalid blob id: {repr(blob_id)}")
+        except ValueError as e:
+            raise BadRequest(f"Invalid blob id: {repr(blob_id)}") from e
 
         blob = Blob.query.get(blob_id)
         if not blob:
@@ -217,7 +219,7 @@ def user_url_args(user: User, size: int) -> tuple[str, dict[str, Any]]:
         endpoint = "images.user_photo"
         kwargs["user_id"] = user.id
         content = user.photo if user.photo else (user.name + user.email).encode("utf-8")
-        kwargs["md5"] = hashlib.md5(content).hexdigest()
+        kwargs["md5"] = hashlib.md5(content).hexdigest()  # noqa: S324
 
     return endpoint, kwargs
 
