@@ -101,7 +101,7 @@ clean:  ## Clean up directory
 
 .PHONY: tidy
 tidy: clean  ## Make super-clean
-	rm -rf .tox
+	rm -rf .tox .nox
 
 .PHONY:
 update-pot: update-pot

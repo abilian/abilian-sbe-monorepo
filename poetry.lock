@@ -1649,14 +1649,14 @@ SQLAlchemy = ">=0.7"
 
 [[package]]
 name = "flask-tailwind"
-version = "0.1.9"
+version = "0.2.1"
 description = "Flask+Tailwind integration."
 category = "main"
 optional = false
-python-versions = ">=3.8,<4"
+python-versions = ">=3.9,<4"
 files = [
-    {file = "flask_tailwind-0.1.9-py3-none-any.whl", hash = "sha256:95eadb96b01534635b4f5e8685ab86004735def4613384af02abd31245c3eac1"},
-    {file = "flask_tailwind-0.1.9.tar.gz", hash = "sha256:69ff2103366a3710b27b72d708c32d742f57ecdd408ddd7b8c5e6b87c243b327"},
+    {file = "flask_tailwind-0.2.1-py3-none-any.whl", hash = "sha256:5e6393caaa9eb48351ba94335243646647d91133fc26268a18c2b4a0af48f1cf"},
+    {file = "flask_tailwind-0.2.1.tar.gz", hash = "sha256:c9330395605570f91dd318a17ea408667edd1a39ae64cd95641105b2df0d9d1b"},
 ]
 
 [package.dependencies]
@@ -3233,14 +3233,14 @@ chardet = "*"
 
 [[package]]
 name = "python-dotenv"
-version = "0.19.2"
+version = "0.21.0"
 description = "Read key-value pairs from a .env file and set them as environment variables"
 category = "main"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.7"
 files = [
-    {file = "python-dotenv-0.19.2.tar.gz", hash = "sha256:a5de49a31e953b45ff2d2fd434bbc2670e8db5273606c1e737cc6b93eff3655f"},
-    {file = "python_dotenv-0.19.2-py2.py3-none-any.whl", hash = "sha256:32b2bdc1873fd3a3c346da1c6db83d0053c3c62f28f1f38516070c4c8971b1d3"},
+    {file = "python-dotenv-0.21.0.tar.gz", hash = "sha256:b77d08274639e3d34145dfa6c7008e66df0f04b7be7a75fd0d5292c191d79045"},
+    {file = "python_dotenv-0.21.0-py3-none-any.whl", hash = "sha256:1684eb44636dd462b66c3ee016599815514527ad99965de77f43e0944634a7e5"},
 ]
 
 [package.extras]
@@ -4575,4 +4575,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "72a459a4747a6fc4e42f131aad1fb391c4f97f2a8ec8edc320a087a136e1f3e7"
+content-hash = "2b491f818332aea74d8d64c535edaf6a426e3c6b25818fdeb30a3f0ed446c302"
