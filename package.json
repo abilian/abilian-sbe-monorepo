@@ -1,0 +1,12 @@
+{
+  "name": "extranet-cnll-front",
+  "private": true,
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "devDependencies": {
+    "htmlhint": "^1.1.4",
+    "less": "^4.1.3"
+  }
+}
