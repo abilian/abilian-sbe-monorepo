@@ -77,6 +77,7 @@ def assert_html_valid_using_external_service(response: Response):
         f"{validator_url}?out=json",
         response.data,
         headers={"Content-Type": response.mimetype},
+        timeout=60,
     )
 
     body = validator_response.json()
