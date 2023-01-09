@@ -195,7 +195,7 @@ types-chardet = "*"
 types-Markdown = "*"
 
 # Keep for now
-pyanalyze = "^0.5.0"
+pyanalyze = "*"
 
 MonkeyType = "*"
 sqla2uml = "*"
@@ -319,3 +319,87 @@ exclude = [
     'tests',
     'noxfile.py',
 ]
+
+
+# -----------------------------------------------------------------------------
+
+[tool.pyanalyze]
+paths = ["src/"]
+import_paths = ["."]
+
+# Enable or disable some checks
+add_import = true
+already_declared = true
+bad_async_yield = true
+bad_evaluator = true
+bad_except_handler = true
+bad_exception = true
+bad_format_string = true
+bad_global = true
+bad_match = true
+bad_nonlocal = true
+
+attribute_is_never_set = false
+
+bad_star_import = true
+bad_super_call = true
+bad_unpack = false
+bad_yield_from = false
+bare_ignore = false
+cant_import = false
+class_variable_redefinition = false
+condition_always_true = false
+duplicate_dict_key = false
+duplicate_enum_member = false
+duplicate_yield = false
+implicit_any = false
+implicit_non_ascii_string = false
+implicit_reexport = false
+import_failed = false
+impossible_pattern = false
+impure_async_call = false
+incompatible_argument = false
+incompatible_assignment = false
+incompatible_call = false
+incompatible_default = false
+incompatible_override = false
+incompatible_return_value = false
+incompatible_yield = false
+inference_failure = false
+internal_error = false
+invalid_annotated_assignment = false
+invalid_annotation = false
+invalid_context_manager = false
+invalid_method_return_type = false
+invalid_typeddict_key = false
+method_first_arg = false
+missing_asynq = false
+missing_await = false
+missing_f = false
+missing_parameter_annotation = false
+missing_return = false
+missing_return_annotation = false
+mixing_bytes_and_text = false
+no_return_may_return = false
+non_boolean_in_boolean_context = false
+not_callable = false
+possibly_undefined_name = false
+suggested_parameter_type = false
+suggested_return_type = false
+task_needs_yield = false
+type_always_true = false
+type_does_not_support_bool = false
+undefined_attribute = false
+undefined_name = false
+unexpected_node = false
+unhashable_key = false
+unnecessary_yield = false
+unsupported_operation = false
+unused_assignment = false
+unused_ignore = false
+unused_variable = false
+use_floor_div = false
+use_fstrings = false
+value_always_true = false
+yield_in_comprehension = false
+yield_without_value = false

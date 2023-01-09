@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import abc
 from functools import total_ordering
+from typing import Any, Optional, Protocol
 
 import sqlalchemy as sa
 import sqlalchemy.orm
@@ -16,7 +17,7 @@ TAGS_ATTR = "__tags__"
 
 
 class SupportTagging(metaclass=abc.ABCMeta):
-    pass
+    id: Any | None
 
 
 def register(cls):
@@ -37,7 +38,7 @@ def register(cls):
     return cls
 
 
-def supports_tagging(obj):
+def supports_tagging(obj) -> bool:
     """
     :param obj: a class or instance
     """

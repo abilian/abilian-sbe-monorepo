@@ -405,10 +405,10 @@ class ModuleComponent:
 
 
 class Module(metaclass=ModuleMeta):
-    id: str = None
-    endpoint: str = None
-    label: str = None
-    managed_class: type = None
+    id: str = ""
+    endpoint: str = ""
+    label: str = ""
+    managed_class: type | None = None
     list_view = None
     list_view_columns: list[dict[str, Any]] = []
     single_view = None
@@ -444,21 +444,21 @@ class Module(metaclass=ModuleMeta):
     _urls: list[tuple] = []
 
     def __init__(self):
+        if self.id is None:
+            self.id = self.managed_class.__name__.lower()
+
         # If endpoint name is not provided, get it from the class name
-        if self.endpoint is None:
+        if self.endpoint == "":
             class_name = self.__class__.__name__
             if class_name.endswith("Module"):
                 class_name = class_name[0 : -len("Module")]
             self.endpoint = class_name.lower()
 
-        if self.label is None:
+        if self.label == "":
             self.label = labelize(self.endpoint)
 
-        if self.id is None:
-            self.id = self.managed_class.__name__.lower()
-
         # If name is not provided, use capitalized endpoint name
-        if self.name is None:
+        if self.name == "":
             self.name = self._prettify_name(self.__class__.__name__)
 
         if self.view_options is None:

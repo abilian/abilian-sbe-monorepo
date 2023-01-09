@@ -43,6 +43,7 @@ test-assets:
 	else echo "Success"; exit 0; \
 	fi)
 
+
 #
 # Linting
 #
@@ -53,26 +54,27 @@ check: lint  ## Statically check code
 lint: lint-py
 
 .PHONY: lint-py
-# lint-py: lint-flake8 lint-mypy
-lint-py: lint-ruff lint-flake8
-
-.PHONY: lint-flake8
-lint-flake8:
-	poetry run flake8 src tests
-
-.PHONY: lint-ruff
-lint-ruff:
-	poetry run ruff *.py src tests
+lint-py:
+	ruff src tests
+	flake8 src tests
+	python -m pyanalyze --config-file pyproject.toml
+	# mypy --show-error-codes src tests
+	# pyright src tests
 
 .PHONY: lint-mypy
 lint-mypy:
-	poetry run mypy --show-error-codes src tests
+	mypy --show-error-codes src tests
+
+.PHONY: lint-pyright
+lint-pyright:
+	pyright src tests
 
 
 .PHONY: format
-format: 
-	poetry run black src tests *.py
-	poetry run isort src tests *.py
+format:
+	black src tests *.py
+	isort src tests *.py
+
 
 #
 # Everything else

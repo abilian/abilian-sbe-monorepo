@@ -7,6 +7,7 @@ import logging
 import mimetypes
 import os
 import re
+import shutil
 import subprocess
 import threading
 import traceback
@@ -30,25 +31,11 @@ logger = logging.getLogger(__name__)
 
 # Quick check for tests
 def has_pdftotext() -> bool:
-    dev_null = open("/dev/null", "wb")
-    try:
-        subprocess.call("pdftotext", stderr=dev_null)
-        return True
-    except FileNotFoundError:
-        return False
-    finally:
-        dev_null.close()
+    return shutil.which("pdftotext") is not None
 
 
 def has_libreoffice() -> bool:
-    dev_null = open("/dev/null", "wb")
-    try:
-        subprocess.call(["soffice", "--help"], stdout=dev_null, stderr=dev_null)
-        return True
-    except FileNotFoundError:
-        return False
-    finally:
-        dev_null.close()
+    return shutil.which("soffice") is not None
 
 
 HAS_PDFTOTEXT = has_pdftotext()

@@ -148,6 +148,8 @@ def login_required() -> Response | None:
     if not current_user.is_authenticated:
         return redirect(url_for("login.login_form", next=request.url))
 
+    return None
+
 
 def on_home_blueprint(endpoint, values):
     """

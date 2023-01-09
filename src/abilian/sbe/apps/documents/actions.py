@@ -96,9 +96,7 @@ class FolderPermisionsAction(BaseFolderAction):
     sbe_type = "cmis:folder"
 
     def pre_condition(self, ctx):
-        return (
-            super(BaseFolderAction, self).pre_condition(ctx) and ctx["object"].depth > 1
-        )
+        return super().pre_condition(ctx) and ctx["object"].depth > 1
 
 
 class FolderModalAction(ModalActionMixin, FolderAction):

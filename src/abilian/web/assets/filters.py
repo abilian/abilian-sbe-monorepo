@@ -5,11 +5,13 @@ import json
 import logging
 import os
 import re
+import shutil
 from functools import partial
 from io import StringIO
 from os.path import isabs
 from pathlib import Path
 
+from flask import current_app
 from webassets.filter import ExternalTool, Filter, get_filter, register_filter
 from webassets.filter.closure import ClosureJS as BaseClosureJS
 from webassets.utils import working_directory
@@ -230,7 +232,16 @@ class Less(ExternalTool):
 
     def _apply_less(self, in_, out, output_path, output, **kw):
         # Set working directory to the source file so that includes are found
-        args = [self.less or "lessc"]
+
+        if self.less and shutil.which(self.less) is not None:
+            lessc = self.less
+        else:
+            root = Path(current_app.root_path) / ".." / ".."
+            lessc = str(root / "node_modules" / ".bin" / "lessc")
+
+        assert Path(lessc).is_file(), f"lessc not found at {lessc}"
+        args = [lessc]
+
         if self.line_numbers:
             args.append(f"--line-numbers={self.line_numbers}")
 
