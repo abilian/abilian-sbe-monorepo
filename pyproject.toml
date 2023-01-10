@@ -166,6 +166,8 @@ flask-tailwind = "^0.2"
 [tool.poetry.group.dev.dependencies]
 # Generic dev deps
 abilian-devtools = "*"
+# Pinned because bug in 0.991
+mypy = "=0.982"
 
 # Testing
 pytest-flask = "*"
