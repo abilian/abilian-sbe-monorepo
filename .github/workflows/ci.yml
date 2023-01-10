@@ -21,12 +21,10 @@ jobs:
       - if: ${{ matrix.os == 'ubuntu' }}
         run: |
           sudo apt-get install strace poppler-utils
-          sudo yarn global add less
 
       - if: ${{ matrix.os == 'macos' }}
         run: |
           brew install libmagic poppler
-          yarn global add less
 
       - uses: actions/checkout@v2
 
@@ -34,7 +32,10 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - run: pip install -U pip setuptools wheel tox tox-gh-actions poetry
+      - id: pre-install
+        run: |
+          pip install -U pip setuptools wheel tox tox-gh-actions poetry
+          yarn install
 
       - id: pip-cache
         run: echo "::set-output name=dir::$(pip cache dir)"
