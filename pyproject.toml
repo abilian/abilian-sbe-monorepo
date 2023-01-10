@@ -33,7 +33,7 @@ pytest = "*"
 pytz = "*"
 requests = "*"
 
-# Pinned dependencies
+# Pinned dependencies must be pinned for now
 Flask = "~2.0.3"
 Flask-Babel = "~1.0.0"
 jinja2 = "~3.0"
@@ -312,14 +312,34 @@ ignore_misplaced_dev = [
 
 # -----------------------------------------------------------------------------
 
-
 [tool.pyright]
 exclude = [
     '.nox',
     'tests',
     'noxfile.py',
 ]
+include = ["src"]
+# strict = ["src"]
 
+# False positives
+reportPrivateImportUsage = false
+
+# -----------------------------------------------------------------------------
+
+[tool.mypy]
+python_version = "3.10"
+
+ignore_missing_imports = true
+#warn_redundant_casts = true
+#warn_no_return = true
+#warn_return_any = true
+#strict_optional = true
+#warn_unused_ignores = true
+
+# exclude = [
+#     '^file1\.py$',  # TOML literal string (single-quotes, no escaping necessary)
+#     "^file2\\.py$",  # TOML basic string (double-quotes, backslash and other characters need escaping)
+# ]
 
 # -----------------------------------------------------------------------------
 
