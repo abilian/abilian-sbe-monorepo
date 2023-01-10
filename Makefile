@@ -22,22 +22,22 @@ push: clean  ## Push code to production
 # testing
 #
 test:  ## Run tests
-	# poetry run pytest --ff -x -n auto
-	poetry run pytest --ff -x
+	# pytest --ff -x -n auto
+	pytest --ff -x
 
 test-with-coverage:
-	poetry run pytest \
+	pytest \
 		--cov extranet --cov abilian \
 	  	--cov-report term-missing
 
 test-with-validator:
-	VALIDATOR_URL=http://html5.validator.nu/ poetry run pytest
+	VALIDATOR_URL=http://html5.validator.nu/ pytest
 
 test-long:
 	RUN_SLOW_TESTS=True pytest -x
 
 test-assets:
-	@(if poetry run flask assets -v --parse-templates build 2>&1 \
+	@(if flask assets -v --parse-templates build 2>&1 \
 	   | grep --silent "Failed, error was: ExternalTool: subprocess returned a non-success result code"; \
 	then echo "Failed"; exit 1; \
 	else echo "Success"; exit 0; \
