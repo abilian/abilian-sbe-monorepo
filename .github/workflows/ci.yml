@@ -15,7 +15,7 @@ jobs:
       matrix:
         # os: [ubuntu, windows, macos]
         os: [ubuntu, macos]
-        python-version: ['3.9', '3.10', "3.11-dev"]
+        python-version: ['3.9', '3.10', "3.11"]
 
     steps:
       - if: ${{ matrix.os == 'ubuntu' }}
@@ -52,6 +52,6 @@ jobs:
       - if: ${{ matrix.os == 'ubuntu' && matrix.python-version == '3.9' }}
         run: |
           poetry install
-          make test-with-coverage
+          poetry run make test-with-coverage
           pip install codecov
           codecov
