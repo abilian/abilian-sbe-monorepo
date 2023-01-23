@@ -16,20 +16,21 @@ poetry_task:
         image: python:slim
     setup_script:
         - apt-get update -y
-        - apt-get install -y --no-install-recommends strace poppler-utils
+        - apt-get install -y --no-install-recommends strace poppler-utils software-properties-common build-essential make gcc g++ libmagic-dev nodejs npm
         - pip install -U pip setuptools wheel tox tox-gh-actions poetry
     install_script:
         - poetry install
+        - npm install
     test_script:
         - poetry run make lint
         - poetry run make test
 
-tox_task:
-    container:
-        image: python:slim
-    setup_script:
-        - apt-get update -y
-        - apt-get install -y --no-install-recommends strace poppler-utils
-        - pip install -U pip setuptools wheel tox tox-gh-actions poetry
-    test_script:
-        - tox
+#tox_task:
+#    container:
+#        image: python:slim
+#    setup_script:
+#        - apt-get update -y
+#        - apt-get install -y --no-install-recommends strace poppler-utils software-properties-common build-essential make gcc g++ libmagic-dev
+#        - pip install -U pip setuptools wheel tox tox-gh-actions poetry
+#    test_script:
+#        - tox
