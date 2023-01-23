@@ -1,4 +1,4 @@
-task:
+qodana_task:
   name: Qodana
   container:
     image: jetbrains/qodana:latest
@@ -11,16 +11,25 @@ task:
       path: "report/results/result-allProblems.json"
       format: qodana
 
-container:
-  image: python:slim
+poetry_task:
+    container:
+        image: python:slim
+    setup_script:
+        - apt-get update -y
+        - apt-get install -y --no-install-recommends strace poppler-utils
+        - pip install -U pip setuptools wheel tox tox-gh-actions poetry
+    install_script:
+        - poetry install
+    test_script:
+        - poetry run make lint
+        - poetry run make test
 
-test_task:
-  setup_script:
-      - apt-get update -y
-      - apt-get install -y --no-install-recommends strace poppler-utils
-      - pip install -U pip setuptools wheel tox tox-gh-actions poetry
-  install_script:
-    - poetry install
-  test_script:
-    - poetry run make lint
-    - poetry run make test
+tox_task:
+    container:
+        image: python:slim
+    setup_script:
+        - apt-get update -y
+        - apt-get install -y --no-install-recommends strace poppler-utils
+        - pip install -U pip setuptools wheel tox tox-gh-actions poetry
+    test_script:
+        - tox
