@@ -260,7 +260,7 @@ extend-ignore = [
     "E711",  # comparison to None should be 'if cond is not None:'
     "E712",  # ...
     "E713",  # Test for membership should be `not in`
-    #
+    # Fix these
     "A003",  # Class attribute ... is shadowing a python builtin
     "B024",  # `...` is an abstract base class, but it has no abstract methods
     "B027",  # `...` is an empty method in an abstract base class, but has no abstract decorator
@@ -273,6 +273,9 @@ extend-ignore = [
     "I001",  # Import block is un-sorted or un-formatted
     "S101",  # use of assert
     "S104",  # Possible binding to all interfaces
+    "PLR2004",  # Magic value used
+    "RUF005",
+    "S701", # By default, jinja2 sets `autoescape` to `False`
 ]
 
 [tool.ruff.mccabe]

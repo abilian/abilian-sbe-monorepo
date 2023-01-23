@@ -1,0 +1,22 @@
+task:
+  name: Qodana
+  container:
+    image: jetbrains/qodana:latest
+  env:
+    CIRRUS_WORKING_DIR: /data/project
+  generate_report_script:
+    - /opt/idea/bin/entrypoint --save-report --report-dir=report
+  always:
+    results_artifacts:
+      path: "report/results/result-allProblems.json"
+      format: qodana
+
+container:
+  image: python:slim
+
+test_task:
+  install_script:
+    - poetry install
+  test_script:
+    - poetry run make lint
+    - poetry run make test

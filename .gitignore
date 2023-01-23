@@ -16,6 +16,9 @@
 *.mo
 *,cover
 /.eggs/
+coverage.xml
+package-lock.json
+yarn.lock
 
 # Secret
 config
@@ -48,4 +51,3 @@ src/abilian/static/misc*
 src/abilian/static/.webassets-cache
 src/abilian/static/gen
 src/abilian/static/placeholders
-
