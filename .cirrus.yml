@@ -16,6 +16,7 @@ container:
 
 test_task:
   setup_script:
+      - apt-get update
       - apt-get install strace poppler-utils
       - pip install -U pip setuptools wheel tox tox-gh-actions poetry
   install_script:
