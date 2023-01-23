@@ -16,7 +16,7 @@ poetry_task:
         image: python:slim
     setup_script:
         - apt-get update -y
-        - apt-get install -y --no-install-recommends strace poppler-utils software-properties-common build-essential make gcc g++
+        - apt-get install -y --no-install-recommends strace poppler-utils software-properties-common build-essential make gcc g++ libmagic-dev
         - pip install -U pip setuptools wheel tox tox-gh-actions poetry
     install_script:
         - poetry install
@@ -29,7 +29,7 @@ tox_task:
         image: python:slim
     setup_script:
         - apt-get update -y
-        - apt-get install -y --no-install-recommends strace poppler-utils software-properties-common build-essential make gcc g++
+        - apt-get install -y --no-install-recommends strace poppler-utils software-properties-common build-essential make gcc g++ libmagic-dev
         - pip install -U pip setuptools wheel tox tox-gh-actions poetry
     test_script:
         - tox
