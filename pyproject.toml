@@ -245,7 +245,7 @@ extend-select = [
     "Q",
     "S",
     "RUF",
-    "PLC", "PLE", "PLR", "PLW",
+    # "PLC", "PLE", "PLR", "PLW",
     # Ignore for now
     # "A",
     # "BLE",
@@ -276,6 +276,7 @@ extend-ignore = [
     "PLR2004",  # Magic value used
     "RUF005",
     "S701", # By default, jinja2 sets `autoescape` to `False`
+    "S110", # `try`-`except`-`pass` detected, consider logging the exception
 ]
 
 [tool.ruff.mccabe]
