@@ -202,7 +202,7 @@ pyanalyze = "*"
 MonkeyType = "*"
 sqla2uml = "*"
 pyupgrade = "*"
-codecov = "^2.1.12"
+pytest = "^7.2.2"
 
 
 [build-system]
