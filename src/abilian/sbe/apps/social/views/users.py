@@ -180,7 +180,6 @@ def can_edit(user: User) -> bool:
 
 
 class UserProfileEdit(ObjectEdit):
-
     Model = User
     Form = UserProfileForm
     pk = "user_id"

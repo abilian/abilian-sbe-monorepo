@@ -16,7 +16,6 @@ from abilian.web.admin import AdminPanel
 
 
 class Key:
-
     template = Template(
         '<input type="text" class="form-control" '
         'name="{{ key.id }}" value="{{ config[key.id] }}" />'
@@ -42,7 +41,6 @@ class Key:
 
 
 class SessionLifeTimeKey(Key):
-
     template = "admin/settings_session_lifetime.html"
 
     def __init__(self):

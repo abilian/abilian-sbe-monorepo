@@ -297,7 +297,6 @@ class UnoconvPdfHandler(Handler):
         with make_temp_file(blob) as in_fn, make_temp_file(
             prefix="tmp-unoconv-", suffix=".pdf"
         ) as out_fn:
-
             args = ["-f", "pdf", "-o", out_fn, in_fn]
             # Hack for my Mac, FIXME later
             if Path("/Applications/LibreOffice.app/Contents/program/python").exists():
@@ -396,7 +395,6 @@ class LibreOfficePdfHandler(Handler):
         """Convert using soffice converter."""
         timeout = self.run_timeout
         with make_temp_file(blob) as in_fn:
-
             cmd = [self.soffice, "--headless", "--convert-to", "pdf", in_fn]
 
             # # TODO: fix this if needed, or remove if not needed
@@ -494,7 +492,6 @@ class WvwareTextHandler(Handler):
     produces_mime_types = ["text/plain"]
 
     def convert(self, blob, **kw):
-
         with make_temp_file(blob) as in_fn, make_temp_file() as out_fn:
             try:
                 subprocess.check_call(["wvText", in_fn, out_fn])

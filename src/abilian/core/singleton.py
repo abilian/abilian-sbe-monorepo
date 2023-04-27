@@ -15,7 +15,6 @@ class ValueSingletonMeta(type):
         bases: tuple[type],
         dct: dict[str, Any],
     ) -> ValueSingletonMeta:
-
         dct["__instances__"] = {}
         dct.setdefault("__slots__", ())
         new_type = type.__new__(mcs, name, bases, dct)

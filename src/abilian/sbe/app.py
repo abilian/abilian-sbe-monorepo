@@ -30,7 +30,6 @@ class CeleryLoader(CeleryBaseLoader):
 
 
 class Application(BaseApplication):
-
     APP_PLUGINS = BaseApplication.APP_PLUGINS + [
         "abilian.sbe.apps.main",
         "abilian.sbe.apps.notifications",

@@ -89,7 +89,6 @@ class FormContext:
 
 
 class Form(BaseForm):
-
     _groups: dict[str, list[Field]] = OrderedDict()
 
     #: :class:`FormPermissions` instance

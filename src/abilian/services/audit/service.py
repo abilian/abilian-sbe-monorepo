@@ -51,7 +51,6 @@ class AuditableMeta:
 
 
 class AuditServiceState(ServiceState):
-
     all_model_classes: set[type]
     model_class_names: dict[str, type]
 
@@ -193,7 +192,6 @@ class AuditService(Service):
     def set_attribute(
         self, entity: Model, new_value: Any, old_value: Any, initiator: Any
     ):
-
         attr_name = initiator.key
         if old_value == new_value:
             return

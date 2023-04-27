@@ -196,7 +196,6 @@ class SessionBlobStoreState(ServiceState):
         session: Session | scoped_session,
         transaction: BlobStoreTransaction | None,
     ):
-
         if isinstance(session, scoped_session):
             session = session()
 

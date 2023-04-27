@@ -482,7 +482,6 @@ class QuerySelect2Field(SelectFieldBase):
         collection_class=list,
         **kwargs,
     ):
-
         if widget is None:
             widget = Select2(multiple=multiple)
 
@@ -658,7 +657,6 @@ class JsonSelect2Field(SelectFieldBase):
         multiple=False,
         **kwargs,
     ):
-
         self.multiple = multiple
 
         if widget is None:

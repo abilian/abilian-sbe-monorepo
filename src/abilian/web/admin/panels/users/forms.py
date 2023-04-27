@@ -15,7 +15,6 @@ from abilian.web.forms.validators import optional, required
 
 
 class BaseUserAdminForm(Form):
-
     email = StringField(
         _l("Email"),
         description=_l("Users log in with their email address."),
@@ -68,7 +67,6 @@ class BaseUserAdminForm(Form):
 
 
 class UserAdminForm(BaseUserAdminForm):
-
     confirm_password = StringField(
         _l("Confirm new password"), widget=widgets.PasswordInput(autocomplete="off")
     )
@@ -87,7 +85,6 @@ class UserAdminForm(BaseUserAdminForm):
 
 
 class UserCreateForm(BaseUserAdminForm):
-
     password = StringField(
         _l("Password"),
         description=_l("If empty a random password will be generated."),

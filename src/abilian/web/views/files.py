@@ -12,7 +12,6 @@ from .base import View
 
 
 class BaseFileDownload(View):
-
     set_expire = False
     expire_offset = timedelta(days=365)
     as_attachment = False

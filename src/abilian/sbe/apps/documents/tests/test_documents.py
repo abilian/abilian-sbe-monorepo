@@ -104,7 +104,6 @@ def test_antivirus_properties(app: Application, session: Session) -> None:
 def test_folder_indexed(
     app: Application, session: Session, community1: Community, community2: Community
 ) -> None:
-
     index_service.start()
     security_service.start()
 

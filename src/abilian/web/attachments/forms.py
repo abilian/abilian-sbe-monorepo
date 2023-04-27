@@ -12,7 +12,6 @@ from abilian.web.forms.validators import required
 
 
 class AttachmentForm(Form):
-
     blob = FileField(
         _l("file"), validators=[required()], filters=[strip], multiple=False
     )

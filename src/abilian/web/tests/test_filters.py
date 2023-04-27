@@ -13,6 +13,8 @@ from pytz import timezone, utc
 
 from .. import filters
 
+NNSP = "\u202f"  # narrow no-break space
+
 env = Environment()
 filters.init_filters(env)
 
@@ -36,15 +38,15 @@ def test_labelize():
 
 def test_filesize():
     filesize = filters.filesize
-    assert str(filesize("100")) == "100&nbsp;B"
-    assert str(filesize(100)) == "100&nbsp;B"
-    assert str(filesize(1000)) == "1.0&nbsp;kB"
-    assert str(filesize(1100)) == "1.1&nbsp;kB"
-    assert str(filesize(10000)) == "10&nbsp;kB"
-    assert str(filesize(1100100)) == "1.1&nbsp;MB"
-    assert str(filesize(10000000)) == "10&nbsp;MB"
-    assert str(filesize(1100100000)) == "1.1&nbsp;GB"
-    assert str(filesize(100000000000)) == "100&nbsp;GB"
+    assert str(filesize("100")) == f"100{NNSP}B"
+    assert str(filesize(100)) == f"100{NNSP}B"
+    assert str(filesize(1000)) == f"1.0{NNSP}kB"
+    assert str(filesize(1100)) == f"1.1{NNSP}kB"
+    assert str(filesize(10000)) == f"10{NNSP}kB"
+    assert str(filesize(1100100)) == f"1.1{NNSP}MB"
+    assert str(filesize(10000000)) == f"10{NNSP}MB"
+    assert str(filesize(1100100000)) == f"1.1{NNSP}GB"
+    assert str(filesize(100000000000)) == f"100{NNSP}GB"
 
 
 def test_roughsize():
@@ -170,10 +172,11 @@ def test_age(app: Flask):
 
     # with date_threshold
     assert age(d1m, now, date_threshold="day") == "1 minute ago"
+
     # same year: 2012 not shown
-    assert age(d3w, now, date_threshold="day") == "May 18, 4:00 PM"
+    assert age(d3w, now, date_threshold="day") == f"May 18, 4:00{NNSP}PM"
     # different year: 2011 shown
-    assert age(d2011, now, date_threshold="day") == "September 4, 2011, 8:12 PM"
+    assert age(d2011, now, date_threshold="day") == f"September 4, 2011, 8:12{NNSP}PM"
 
     # using default parameter now=None
     # dt_patcher = mock.patch.object(

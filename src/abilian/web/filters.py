@@ -24,6 +24,9 @@ from abilian.core.util import local_dt, slugify, utc_dt
 from .util import url_for
 
 
+NNSP = "\u202f"  # narrow no-break space
+
+
 def autoescape(filter_func: Callable) -> Callable:
     """Decorator to autoescape result from filters."""
 
@@ -67,23 +70,23 @@ def filesize(d: int | str) -> Markup:
         d = int(d)
 
     if d < 1000:
-        s = f"{d:d}&nbsp;B"
+        s = f"{d:d}{NNSP}B"
 
     elif d < int(1e4):
-        s = f"{d / 1000.0:.1f}&nbsp;kB"
+        s = f"{d / 1000.0:.1f}{NNSP}kB"
     elif d < int(1e6):
-        s = f"{d / 1000.0:.0f}&nbsp;kB"
+        s = f"{d / 1000.0:.0f}{NNSP}kB"
 
     elif d < int(1e7):
-        s = f"{d / 1000000.0:.1f}&nbsp;MB"
+        s = f"{d / 1000000.0:.1f}{NNSP}MB"
     elif d < int(1e9):
-        s = f"{d / 1000000.0:.0f}&nbsp;MB"
+        s = f"{d / 1000000.0:.0f}{NNSP}MB"
 
     elif d < int(1e10):
-        s = f"{d / 1000000000.0:.1f}&nbsp;GB"
+        s = f"{d / 1000000000.0:.1f}{NNSP}GB"
 
     else:
-        s = f"{d / 1000000000.0:.0f}&nbsp;GB"
+        s = f"{d / 1000000000.0:.0f}{NNSP}GB"
 
     return Markup(s)
 

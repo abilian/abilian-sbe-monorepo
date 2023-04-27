@@ -12,7 +12,6 @@ from abilian.web.forms.widgets import TextArea
 
 
 class CommentForm(Form):
-
     body = TextAreaField(
         label=_l("Comment"),
         validators=[required()],

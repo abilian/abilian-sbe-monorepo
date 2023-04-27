@@ -378,7 +378,6 @@ class ThreadPostCreate(ThreadCreate):
 
 
 class ThreadViewers(ThreadView):
-
     template = "forum/thread_viewers.html"
 
 

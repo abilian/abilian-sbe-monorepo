@@ -163,7 +163,6 @@ route("/page/")(PageView.as_view("page"))
 
 
 class PageViewers(PageView):
-
     template = "wiki/page_readers.html"
 
 

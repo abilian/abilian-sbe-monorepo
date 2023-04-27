@@ -97,7 +97,6 @@ def get_extension(name: str):
 
 
 def _install_get_display_value(cls: Any):
-
     _MARK = object()
 
     def display_value(self, field_name, value=_MARK):

@@ -856,7 +856,6 @@ class DefaultRelatedView(RelatedView):
 
 # TODO: rename to CRMApp ?
 class CRUDApp:
-
     modules: Collection[Module]
 
     def __init__(self, app: Application, modules: None = None, name: None = None):

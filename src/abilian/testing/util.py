@@ -31,7 +31,6 @@ def path_from_url(url):
 
 
 def client_login(client: FlaskClient, user: User) -> ContextManager:
-
     data = {"email": user.email, "password": user._password}
     response = client.post(url_for("login.login_post"), data=data)
     assert response.status_code == 302

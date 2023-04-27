@@ -154,7 +154,6 @@ class TextSearchCriterion(BaseCriterion):
         *args,
         **kwargs,
     ) -> EntityQuery:
-
         if not searched_text:
             return query
 

@@ -6,7 +6,6 @@ CacheKey = tuple[str, str]
 
 
 class Cache:
-
     cache_dir: Path
 
     def _path(self, key: CacheKey) -> Path:

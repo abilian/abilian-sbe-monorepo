@@ -112,7 +112,6 @@ class NSView(View):
             self.get(self.ns)
 
     def _get_selected_tags(self) -> list[Tag]:
-
         if self.__selected_tags is None:
             tag_ids = request.form.getlist("selected", type=int)
             if not tag_ids:

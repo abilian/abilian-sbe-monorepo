@@ -213,7 +213,6 @@ class StaticIcon(DynamicIcon):
 
 
 class Endpoint:
-
     # FIXME: *args doesn't seem to be relevant.
     def __init__(self, name: str, *args: Any, **kwargs: Any):
         self.name = name

@@ -108,7 +108,6 @@ bp.route("/<int:entity_id>/<int:object_id>/edit")(edit_view)
 
 
 class AttachmentCreateView(BaseAttachmentView, ObjectCreate):
-
     _message_success = _l("Attachment added")
 
     def init_object(self, args, kwargs):

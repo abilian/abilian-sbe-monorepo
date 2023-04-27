@@ -31,7 +31,6 @@ def make_temp_file(
     suffix: str = "",
     tmp_dir: Path | None = None,
 ) -> Iterator[str]:
-
     if tmp_dir is None:
         tmp_dir = get_tmp_dir()
 

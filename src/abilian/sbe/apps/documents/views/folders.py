@@ -375,7 +375,6 @@ def permissions_update(folder_id):
                 and role == "manager"
                 and not has_permission(current_user, "manage", folder, inherit=True)
             ):
-
                 transaction.rollback()
                 flash(
                     _(

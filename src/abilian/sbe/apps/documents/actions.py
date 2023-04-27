@@ -49,7 +49,6 @@ class BaseFolderAction(CmisContentAction):
 
 
 class FolderButtonAction(BaseFolderAction):
-
     _std_template_string = (
         '<button class="btn {{ action.css_class }}" name="action" '
         'value="{{ action.name }}" title="{{ action.title }}">'

@@ -80,7 +80,6 @@ class PrivateMessage(Entity):
 
 
 class Like(Entity):
-
     __tablename__ = "like"
     __indexable__ = False
     __editable__ = ["content", "message_id"]

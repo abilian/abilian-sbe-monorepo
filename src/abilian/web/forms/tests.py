@@ -13,6 +13,8 @@ from abilian.services.security import READ, WRITE, Anonymous, Owner, Role
 
 from . import FormPermissions, fields, filters
 
+NNSP = "\u202f"  # narrow no-break space
+
 
 def user_tz() -> str:
     # This one is GMT+8 and has no DST (tests should pass any time in year)
@@ -205,7 +207,7 @@ def test_datetime_field_force_4digit_year(app: Application):
     with app.test_request_context(headers=headers):
         field = fields.DateTimeField().bind(Form(), "dt")
         field.data = datetime.datetime(2011, 1, 23, 10, 42, tzinfo=pytz.utc)
-        assert field._value() == "1/23/2011, 6:42 PM"
+        assert field._value() == f"1/23/2011, 6:42{NNSP}PM"
 
 
 def test_date_field(app: Application):

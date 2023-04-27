@@ -25,7 +25,6 @@ def get_recent_entries(
     user: User | None = None,
     community: CommunityPresenter | None = None,
 ) -> list[Any]:
-
     AE = ActivityEntry
 
     # Check just in case

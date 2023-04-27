@@ -20,7 +20,6 @@ from abilian.web.forms.fields import FileField
 
 
 class UserPreferencesForm(Form):
-
     password = StringField(
         _l("New Password"), widget=widgets.PasswordInput(autocomplete="off")
     )

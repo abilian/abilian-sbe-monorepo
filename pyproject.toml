@@ -203,6 +203,7 @@ MonkeyType = "*"
 sqla2uml = "*"
 pyupgrade = "*"
 pytest = "^7.2.2"
+tox = "^4.5.1"
 
 
 [build-system]
@@ -219,8 +220,8 @@ filterwarnings = [
 ]
 # addopts = "-ra -q"
 testpaths = [
-    "tests",
     "src",
+    "tests",
 ]
 python_files = [
     "test_*.py",
@@ -276,7 +277,7 @@ extend-ignore = [
     "PLR2004",  # Magic value used
     "RUF005",
     "S701", # By default, jinja2 sets `autoescape` to `False`
-    "S110", # `try`-`except`-`pass` detected, consider logging the exception
+#    "S110", # `try`-`except`-`pass` detected, consider logging the exception
 ]
 
 [tool.ruff.mccabe]

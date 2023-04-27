@@ -253,7 +253,6 @@ class AuditPanel(AdminPanel):
 #  Presenters for audit entries listing
 #
 class BaseEntryPresenter:
-
     _USER_FMT = (
         '<a href="{{ url_for("social.user", user_id=user.id) }}">' "{{ user.name }}</a>"
     )

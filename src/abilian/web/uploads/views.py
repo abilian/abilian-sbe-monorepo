@@ -24,7 +24,6 @@ bp = Blueprint("uploads", __name__, url_prefix="/upload")
 
 
 class UploadForm(Form):
-
     file = FileField(validators=(file_required(),))
 
 
