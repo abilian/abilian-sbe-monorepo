@@ -23,7 +23,6 @@ from abilian.core.util import local_dt, slugify, utc_dt
 
 from .util import url_for
 
-
 NNSP = "\u202f"  # narrow no-break space
 
 

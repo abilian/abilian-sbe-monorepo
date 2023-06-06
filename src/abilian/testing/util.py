@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import contextlib
-from typing import ContextManager
+from contextlib import AbstractContextManager
 
 from flask.testing import FlaskClient
 from flask_login import login_user, logout_user
@@ -30,7 +30,7 @@ def path_from_url(url):
     return f"/{'/'.join(URL.from_text(url).path)}"
 
 
-def client_login(client: FlaskClient, user: User) -> ContextManager:
+def client_login(client: FlaskClient, user: User) -> AbstractContextManager:
     data = {"email": user.email, "password": user._password}
     response = client.post(url_for("login.login_post"), data=data)
     assert response.status_code == 302

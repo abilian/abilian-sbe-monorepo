@@ -278,6 +278,7 @@ extend-ignore = [
     "RUF005",
     "S701", # By default, jinja2 sets `autoescape` to `False`
 #    "S110", # `try`-`except`-`pass` detected, consider logging the exception
+    "UP038",  # Use `X | Y` in `isinstance` call instead of `(X, Y)`
 ]
 
 [tool.ruff.mccabe]
@@ -430,3 +431,8 @@ use_fstrings = false
 value_always_true = false
 yield_in_comprehension = false
 yield_without_value = false
+
+# -----------------------------------------------------------------------------
+
+[tool.bandit]
+# nothing
