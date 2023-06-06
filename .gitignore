@@ -25,6 +25,7 @@ config
 .env
 ssl
 sandbox
+.envrc
 
 
 # More
@@ -47,7 +48,18 @@ docs/_build
 htmlcov
 
 # Generated
-src/abilian/static/misc*
-src/abilian/static/.webassets-cache
-src/abilian/static/gen
-src/abilian/static/placeholders
+/src/abilian/static/misc*
+/src/abilian/static/.webassets-cache
+/src/abilian/static/gen
+/src/abilian/static/placeholders
+
+# Local development
+/dev-scripts/
+/front/
+/script/
+/scripts/
+/sync.py
+
+# Cruft
+/src/abilian/sbe/apps/documents/tests/data/dummy_files/existing-doc/
+/src/abilian/sbe/apps/documents/tests/data/dummy_files/folder 1/
