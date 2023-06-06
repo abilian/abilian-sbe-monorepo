@@ -92,7 +92,7 @@ class JSONView(View):
     def prepare_args(
         self, args: tuple, kwargs: dict[Any, Any]
     ) -> tuple[tuple, dict[Any, Any]]:
-        kwargs.update({k: v for k, v in request.args.items()})
+        kwargs.update(dict(request.args.items()))
         return args, kwargs
 
     def data(self, *args, **kwargs) -> dict:

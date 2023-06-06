@@ -22,7 +22,7 @@ class ErrorManagerMixin(Flask):
     def setup_logging(self):
         # Force flask to create application logger before logging
         # configuration; else, flask will overwrite our settings
-        self.logger
+        assert self.logger
 
         log_level = self.config.get("LOG_LEVEL")
         if log_level:
