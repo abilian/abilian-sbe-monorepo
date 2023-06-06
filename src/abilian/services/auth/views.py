@@ -6,7 +6,7 @@ Notes:
 from __future__ import annotations
 
 import contextlib
-import random
+import secrets
 import string
 from datetime import datetime
 from typing import Any
@@ -268,7 +268,7 @@ def reset_password_post(token: str) -> Response:
 def random_password():
     pw = []
     for _i in range(0, 10):
-        pw.append(random.choice(string.ascii_letters + string.digits))
+        pw.append(secrets.choice(string.ascii_letters + string.digits))
     return pw
 
 

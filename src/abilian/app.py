@@ -24,6 +24,7 @@ from itertools import chain, count
 from pathlib import Path
 from typing import Any
 
+import defusedxml
 import jinja2
 import sqlalchemy as sa
 import sqlalchemy.exc
@@ -74,6 +75,8 @@ from abilian.web.jinja import JinjaManagerMixin
 from abilian.web.nav import BreadcrumbItem
 from abilian.web.util import send_file_from_directory
 from abilian.web.views import Registry as ViewRegistry
+
+defusedxml.defuse_stdlib()
 
 logger = logging.getLogger(__name__)
 db = extensions.db

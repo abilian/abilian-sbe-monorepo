@@ -161,6 +161,7 @@ python-dotenv = "^0.21"
 flask-env = "*"
 importlib-resources = "^5.10.0"
 flask-tailwind = "^0.2"
+defusedxml = "^0.7.1"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -261,6 +262,7 @@ extend-ignore = [
     "E711",  # comparison to None should be 'if cond is not None:'
     "E712",  # ...
     "E713",  # Test for membership should be `not in`
+    "S320",  # OK, we're using defusedxml
     # Fix these
     "A003",  # Class attribute ... is shadowing a python builtin
     "B024",  # `...` is an abstract base class, but it has no abstract methods
@@ -276,7 +278,9 @@ extend-ignore = [
     "RUF005",
     "S101",  # use of assert
     "S104",  # Possible binding to all interfaces
+    "S301",
     "S603",
+    "S605",
     "S607",
     "S701", # By default, jinja2 sets `autoescape` to `False`
     "UP038",  # Use `X | Y` in `isinstance` call instead of `(X, Y)`
