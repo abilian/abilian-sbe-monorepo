@@ -389,7 +389,7 @@ class Locale(sa.types.TypeDecorator):
 
         code = str(value.language)
         if value.territory or value.script:
-            code += f"_{str(value.territory)}"
+            code += f"_{value.territory!s}"
 
         return code
 
@@ -412,7 +412,7 @@ class Timezone(sa.types.TypeDecorator):
 
         if not isinstance(value, pytz.tzfile.DstTzInfo):
             if not isinstance(value, str):
-                raise ValueError(f"Unknown timezone value: {repr(value)}")
+                raise ValueError(f"Unknown timezone value: {value!r}")
             if not value.strip():
                 return None
             value = babel.dates.get_timezone(value)

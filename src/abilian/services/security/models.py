@@ -64,7 +64,7 @@ class Permission(UniqueName):
     ):
         super().__init__(name)
         if label is None:
-            label = f"permission_{str(name)}"
+            label = f"permission_{name!s}"
         if isinstance(label, str):
             label = _l(label)
         self.label = label
@@ -101,7 +101,7 @@ class Role(UniqueName):
     ):
         super().__init__(name)
         if label is None:
-            label = f"role_{str(name)}"
+            label = f"role_{name!s}"
         if isinstance(label, str):
             label = _l(label)
         self.label = label

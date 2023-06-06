@@ -441,7 +441,7 @@ class Application(
 
         if endpoint:
             if not isinstance(name, str):
-                msg = f"{repr(name)} is not a valid endpoint name"
+                msg = f"{name!r} is not a valid endpoint name"
                 raise ValueError(msg)
 
             auth_state.add_endpoint_access_controller(name, func)

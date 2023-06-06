@@ -418,7 +418,7 @@ def members_post() -> Response:
         return redirect(url_for(".members", community_id=community.slug))
 
     else:
-        raise BadRequest(f"Unknown action: {repr(action)}")
+        raise BadRequest(f"Unknown action: {action!r}")
 
 
 MEMBERS_EXPORT_HEADERS = [

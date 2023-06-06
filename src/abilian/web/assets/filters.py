@@ -353,7 +353,7 @@ class ClosureJS(BaseClosureJS):
             return
 
         name = smap_path.name
-        out.write(f"//# sourceMappingURL={str(name)}")
+        out.write(f"//# sourceMappingURL={name!s}")
         self.fix_source_map_urls(str(smap_path))
 
     def fix_url(self, cur_path, src_path):

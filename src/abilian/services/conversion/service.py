@@ -185,7 +185,7 @@ class Converter:
                 return {}
             for tag, value in info.items():
                 decoded = TAGS.get(tag, tag)
-                ret[f"EXIF:{str(decoded)}"] = value
+                ret[f"EXIF:{decoded!s}"] = value
             return ret
 
         else:

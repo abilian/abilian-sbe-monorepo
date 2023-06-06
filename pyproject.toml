@@ -272,13 +272,15 @@ extend-ignore = [
     "F401",  # 'module' imported but unused
     "F841",  # Local variable `...` is assigned to but never used
     "I001",  # Import block is un-sorted or un-formatted
-    "S101",  # use of assert
-    "S104",  # Possible binding to all interfaces
     "PLR2004",  # Magic value used
     "RUF005",
+    "S101",  # use of assert
+    "S104",  # Possible binding to all interfaces
+    "S603",
+    "S607",
     "S701", # By default, jinja2 sets `autoescape` to `False`
-#    "S110", # `try`-`except`-`pass` detected, consider logging the exception
     "UP038",  # Use `X | Y` in `isinstance` call instead of `(X, Y)`
+#    "S110", # `try`-`except`-`pass` detected, consider logging the exception
 ]
 
 [tool.ruff.mccabe]
