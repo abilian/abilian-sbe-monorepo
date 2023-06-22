@@ -33,7 +33,7 @@ JS = (
 class AbilianSBE:
     """Base extension required by abilian.sbe.apps."""
 
-    def __init__(self, app: Application = None) -> None:
+    def __init__(self, app: Application | None = None) -> None:
         if app is not None:
             self.init_app(app)
 

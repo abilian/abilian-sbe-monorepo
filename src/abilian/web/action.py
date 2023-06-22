@@ -452,7 +452,7 @@ class Action:
         params["url"] = self.url(params)
         return params
 
-    def url(self, context: dict[str, Any] = None) -> str:
+    def url(self, context: dict[str, Any] | None = None) -> str:
         if callable(self._url):
             return self._url(context)
 

@@ -276,7 +276,6 @@ extend-ignore = [
     "F841",  # Local variable `...` is assigned to but never used
     "I001",  # Import block is un-sorted or un-formatted
     "PLR2004",  # Magic value used
-    "RUF005",
     "S101",  # use of assert
     "S104",  # Possible binding to all interfaces
     "S301",
@@ -287,6 +286,8 @@ extend-ignore = [
     "S701", # By default, jinja2 sets `autoescape` to `False`
     "UP038",  # Use `X | Y` in `isinstance` call instead of `(X, Y)`
 #    "S110", # `try`-`except`-`pass` detected, consider logging the exception
+    "RUF005",
+    "RUF012",
 ]
 
 [tool.ruff.mccabe]

@@ -28,7 +28,7 @@ class CommunityEndpoint(Endpoint):
 class CommunityTabAction(Action):
     Endpoint = CommunityEndpoint
 
-    def url(self, context: dict[str, Any] = None) -> CommunityEndpoint | str:
+    def url(self, context: dict[str, Any] | None = None) -> CommunityEndpoint | str:
         if self._url:
             return super().url()
 

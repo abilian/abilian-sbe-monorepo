@@ -30,7 +30,7 @@ def object_viewers(entity: Document | WikiPage) -> list:
     return []
 
 
-def activity_time_format(time: datetime, now: datetime = None) -> str:
+def activity_time_format(time: datetime, now: datetime | None = None) -> str:
     if not time:
         return ""
 
@@ -60,4 +60,4 @@ def activity_time_format(time: datetime, now: datetime = None) -> str:
     if time.year == now.year:
         return f"{month_abbreviation} {time.day}"
 
-    return f"{month_abbreviation} {str(time.year)}"
+    return f"{month_abbreviation} {time.year!s}"

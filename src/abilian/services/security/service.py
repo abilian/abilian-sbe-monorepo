@@ -178,7 +178,7 @@ class SecurityService(Service):
     def clear(self):
         pass
 
-    def _current_user_manager(self, session: Session = None) -> User:
+    def _current_user_manager(self, session: Session | None = None) -> User:
         """Return the current user, or SYSTEM user."""
         if session is None:
             session = db.session()
@@ -501,7 +501,7 @@ class SecurityService(Service):
 
         if object:
             assert isinstance(object, Entity)
-            object_key = f"{object.object_type}:{str(object.id)}"
+            object_key = f"{object.object_type}:{object.id!s}"
             if Creator in role:
                 if object.creator == principal:
                     return True

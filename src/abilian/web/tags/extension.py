@@ -115,7 +115,7 @@ class TagsExtension:
         return query.all()
 
     def add(
-        self, entity: Entity, tag: Tag = None, ns: Any = None, label: Any = None
+        self, entity: Entity, tag: Tag | None = None, ns: Any = None, label: Any = None
     ) -> Tag:
         if tag is None:
             assert None not in (ns, label)

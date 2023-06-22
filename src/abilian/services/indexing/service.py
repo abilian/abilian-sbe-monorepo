@@ -367,7 +367,7 @@ class WhooshIndexService(Service):
             if cls not in state.indexed_classes:
                 self.register_class(cls, app_state=state)
 
-    def register_class(self, cls: type, app_state: IndexServiceState = None):
+    def register_class(self, cls: type, app_state: IndexServiceState | None = None):
         """Register a model class."""
         state = app_state if app_state is not None else self.app_state
 
@@ -440,7 +440,7 @@ class WhooshIndexService(Service):
 
         self.clear_update_queue()
 
-    def get_document(self, obj: Entity, adapter: SAAdapter = None) -> dict[str, Any]:
+    def get_document(self, obj: Entity, adapter: SAAdapter | None = None) -> dict[str, Any]:
         if adapter is None:
             class_name = fqcn(obj.__class__)
             adapter = self.adapted.get(class_name)
@@ -578,5 +578,5 @@ class TestingStorage(RamStorage):
     tests are ran in parallel, including different abilian-based packages.
     """
 
-    def temp_storage(self, name: str = None) -> TestingStorage:
+    def temp_storage(self, name: str | None = None) -> TestingStorage:
         return TestingStorage()

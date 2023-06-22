@@ -15,7 +15,7 @@ CMIS_NS = "http://docs.oasis-open.org/ns/cmis/core/200908/"
 
 
 class Entry:
-    def __init__(self, xml: bytes = None) -> None:
+    def __init__(self, xml: bytes | None = None) -> None:
         self.properties: dict[str, Property] = {}
         self.links: list[str] = []
         self.content_type = ""
@@ -68,7 +68,7 @@ class Property:
     value(s) held by the property. CMIS specifies the following property-types.
     """
 
-    def __init__(self, element: ObjectifiedElement = None) -> None:
+    def __init__(self, element: ObjectifiedElement | None = None) -> None:
         if element is not None:
             self.parse(element)
 
