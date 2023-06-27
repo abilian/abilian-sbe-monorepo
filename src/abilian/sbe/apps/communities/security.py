@@ -58,7 +58,9 @@ def check_access(
         raise Forbidden()
 
 
-def has_access(community: CommunityPresenter | None = None, user: User | None = None) -> bool:
+def has_access(
+    community: CommunityPresenter | None = None, user: User | None = None
+) -> bool:
     if not user:
         user = current_user
     if user.is_anonymous:

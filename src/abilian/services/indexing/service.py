@@ -440,7 +440,9 @@ class WhooshIndexService(Service):
 
         self.clear_update_queue()
 
-    def get_document(self, obj: Entity, adapter: SAAdapter | None = None) -> dict[str, Any]:
+    def get_document(
+        self, obj: Entity, adapter: SAAdapter | None = None
+    ) -> dict[str, Any]:
         if adapter is None:
             class_name = fqcn(obj.__class__)
             adapter = self.adapted.get(class_name)
