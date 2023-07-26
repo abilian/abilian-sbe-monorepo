@@ -117,7 +117,7 @@ class AuditPanel(AdminPanel):
         filter_types = set(request.args.getlist("types")) & all_types
         if filter_types:
             if len(filter_types) == 1:
-                t = list(filter_types)[0]
+                t = next(iter(filter_types))
                 audit_expr = AuditEntry.entity_type == t
                 sec_expr = sa.sql.or_(
                     SecurityAudit.object == None, Entity._entity_type == t
@@ -234,7 +234,7 @@ class AuditPanel(AdminPanel):
         if filter_user:
             url_params["user"] = filter_user.id
         if filter_types:
-            url_params["types"] = list(filter_types)[0]
+            url_params["types"] = next(iter(filter_types))
 
         ctx = {
             "entries": entries,

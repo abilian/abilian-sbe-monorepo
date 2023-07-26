@@ -121,7 +121,7 @@ def test_members(
         response = client.post(url, data=data, follow_redirects=True)
         assert response.status_code == 200
 
-        membership = [m for m in community1.memberships if m.user == user2][0]
+        membership = next(m for m in community1.memberships if m.user == user2)
         assert membership.role == "member"
 
         data["action"] = "set-user-role"
@@ -141,7 +141,7 @@ def test_members(
         data = {
             "action": "delete",
             "user": user2.id,
-            "membership": [m.id for m in community1.memberships if m.user == user2][0],
+            "membership": next(m.id for m in community1.memberships if m.user == user2),
         }
         response = client.post(url, data=data, follow_redirects=True)
         assert response.status_code == 200

@@ -281,7 +281,7 @@ class Application(
         if not self.config.get("FAVICO_URL"):
             self.config["FAVICO_URL"] = self.config.get("LOGO_URL")
 
-        if not self.debug and self.config["SECRET_KEY"] == "CHANGEME":  # noqa: S105
+        if not self.debug and self.config["SECRET_KEY"] == "CHANGEME":
             logger.error("You must change the default secret config ('SECRET_KEY')")
             sys.exit()
 
