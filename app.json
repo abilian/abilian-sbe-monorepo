@@ -15,7 +15,7 @@
       "description": "Secret key (some random string)",
       "required": true
     },
-    "PYTHONPATH" {
+    "PYTHONPATH": {
       "value": "src"
     }
   },
