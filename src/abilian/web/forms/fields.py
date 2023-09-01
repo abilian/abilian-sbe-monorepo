@@ -175,9 +175,7 @@ class FileField(BaseFileField):
             ):
                 raise ValueError(
                     "Field validators are conflicting with `allow_delete`,"
-                    "validators={!r}, allow_delete={!r}".format(
-                        validators, allow_delete
-                    )
+                    f"validators={validators!r}, allow_delete={allow_delete!r}"
                 )
             if not allow_delete:
                 validators.append(DataRequired())

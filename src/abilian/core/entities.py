@@ -208,7 +208,7 @@ class EntityMeta(BaseMeta):
                 elif not isinstance(default_permissions, collections.abc.Set):
                     raise TypeError(
                         "__default_permissions__ is neither a dict or set, "
-                        "cannot create class {}".format(classname)
+                        f"cannot create class {classname}"
                     )
 
                 # also ensure that `roles` set is immutable, too
