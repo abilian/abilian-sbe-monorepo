@@ -58,6 +58,7 @@ Now, create a virtualenv and install the app and its dependencies:
 ```bash
 poetry shell
 poetry install
+npm install # or npm i
 ```
 
 Set up the following environment variables (you may put these in a `.env` or `.envs` file and use an environment variable manager like [direnv](https://direnv.net/).
