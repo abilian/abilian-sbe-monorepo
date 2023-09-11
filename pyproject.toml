@@ -6,7 +6,7 @@ authors = ["Abilian SAS <contact@abilian.com>"]
 
 packages = [
   { include = "extranet", from = "src" },
-  { include = "a    bilian", from = "src" },
+  { include = "abilian", from = "src" },
 ]
 
 
