@@ -12,6 +12,9 @@ logger = logging.getLogger(__name__)
 
 # Hack for Mac OS + homebrew
 os.environ["PATH"] += ":/usr/local/bin"
+# Used on SlapOS
+if os.environ.get("LIBREOFFICEPATH"):
+    os.environ["PATH"] += ":" + os.environ["LIBREOFFICEPATH"]
 
 TMP_DIR = "tmp"
 CACHE_DIR = "cache"
