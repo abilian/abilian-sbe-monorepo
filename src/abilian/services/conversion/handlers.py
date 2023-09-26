@@ -31,11 +31,19 @@ logger = logging.getLogger(__name__)
 
 # Quick check for tests
 def has_pdftotext() -> bool:
-    return shutil.which("pdftotext") is not None
+    result = shutil.which("pdftotext") is not None
+    if not result:
+        logger.warning(f"has_pdftotext(): {result}")
+        logger.warning(f"has_pdftotext() PATH: {os.environ['PATH']}")
+    return result
 
 
 def has_libreoffice() -> bool:
-    return shutil.which("soffice") is not None
+    result = shutil.which("soffice") is not None
+    if not result:
+        logger.warning(f"has_libreoffice(): {result}")
+        logger.warning(f"has_libreoffice() PATH: {os.environ['PATH']}")
+    return result
 
 
 HAS_PDFTOTEXT = has_pdftotext()
