@@ -3,13 +3,26 @@ applications."""
 from __future__ import annotations
 
 # Temps monkey patches
-# flake8:noqa
-import werkzeug.datastructures
-import werkzeug.urls
-from flask_tailwind import Tailwind
+import json
+import urllib.parse
 
-werkzeug.url_encode = werkzeug.urls.url_encode
+import flask.json
+import jinja2
+import werkzeug.datastructures
+import werkzeug.security
+import werkzeug.urls
+from markupsafe import Markup, escape
+
+from .backports import safe_str_cmp
+
+werkzeug.url_encode = urllib.parse.urlencode
+werkzeug.urls.url_encode = urllib.parse.urlencode
+werkzeug.urls.url_decode = urllib.parse.parse_qs
 werkzeug.FileStorage = werkzeug.datastructures.FileStorage
+werkzeug.security.safe_str_cmp = safe_str_cmp
+jinja2.Markup = Markup
+jinja2.escape = escape
+flask.json.JSONEncoder = json.JSONEncoder
 
 # Rest of the imports
 import errno
@@ -40,6 +53,7 @@ from flask import (
 from flask.config import Config, ConfigAttribute
 from flask.helpers import locked_cached_property
 from flask_migrate import Migrate
+from flask_tailwind import Tailwind
 from flask_talisman import DEFAULT_CSP_POLICY, Talisman
 
 import abilian.core.util
@@ -281,7 +295,7 @@ class Application(
         if not self.config.get("FAVICO_URL"):
             self.config["FAVICO_URL"] = self.config.get("LOGO_URL")
 
-        if not self.debug and self.config["SECRET_KEY"] == "CHANGEME":
+        if not self.debug and self.config["SECRET_KEY"] == "CHANGEME":  # noqa: S105
             logger.error("You must change the default secret config ('SECRET_KEY')")
             sys.exit()
 
