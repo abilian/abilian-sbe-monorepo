@@ -7,15 +7,15 @@
     "digital workplace"
   ],
   "addons": [
-    "heroku-postgresql:hobby-dev",
-    "heroku-redis:premium-0"
+    "heroku-postgresql:mini",
+    "heroku-redis:mini"
   ],
   "env": {
     "FLASK_SECRET_KEY": {
       "description": "Secret key (some random string)",
       "required": true
     },
-    "PYTHONPATH" {
+    "PYTHONPATH": {
       "value": "src"
     }
   },
