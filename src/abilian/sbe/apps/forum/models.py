@@ -29,8 +29,8 @@ from abilian.services.indexing.adapter import SAAdapter
 class ThreadClosedError(RuntimeError):
     def __init__(self, thread):
         super().__init__(
-            "The thread {!r} is closed. No modification allowed on its posts: "
-            "creation, edition, deletion".format(thread)
+            f"The thread {thread!r} is closed. No modification allowed on its posts: "
+            "creation, edition, deletion"
         )
         self.thread = thread
 

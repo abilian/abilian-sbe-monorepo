@@ -334,10 +334,10 @@ class PermissionAssignment(db.Model):
         class_ = self.__class__
         classname = class_.__name__
         return (
-            "<{cls} instance at 0x{id:x} "
-            "permission={self.permission.name!r} "
-            "role={self.role.name!r} object={self.object!r}>"
-            "".format(cls=classname, id=id(self), self=self)
+            f"<{classname} instance at 0x{id(self):x} "
+            f"permission={self.permission.name!r} "
+            f"role={self.role.name!r} object={self.object!r}>"
+            ""
         )
 
 
@@ -379,14 +379,14 @@ class SecurityAudit(db.Model):
         # constraint: either a inherit/no_inherit op on an object AND no user no group
         #             either a grant/revoke on a user XOR a group.
         CheckConstraint(
-            "(op IN ('{grant}', '{revoke}') "
+            f"(op IN ('{SET_INHERIT}', '{UNSET_INHERIT}') "
             " AND object_id IS NOT NULL"
             " AND user_id IS NULL "
             " AND group_id IS NULL "
             " AND (CAST(anonymous AS INTEGER) = 0)"
             ")"
             " OR "
-            "(op NOT IN ('{grant}', '{revoke}')"
+            f"(op NOT IN ('{SET_INHERIT}', '{UNSET_INHERIT}')"
             " AND "
             " (((CAST(anonymous AS INTEGER) = 1) "
             "   AND user_id IS NULL AND group_id IS NULL)"
@@ -395,7 +395,7 @@ class SecurityAudit(db.Model):
             "   AND ((user_id IS NOT NULL AND group_id IS NULL)"
             "  OR "
             "  (user_id IS NULL AND group_id IS NOT NULL)))"
-            "))".format(grant=SET_INHERIT, revoke=UNSET_INHERIT),
+            "))",
             name="securityaudit_ck_user_xor_group",
         ),
     )

@@ -1135,11 +1135,9 @@ class DateTimeInput:
         return (
             Markup(
                 '<div class="form-inline">\n'
-                '<input class="datetimepicker" type="hidden" id="{id}" '
-                'name="{name}" value="{date} | {time}" />\n'
-                "".format(
-                    id=field_id, name=field_name, date=date_value, time=time_value
-                )
+                f'<input class="datetimepicker" type="hidden" id="{field_id}" '
+                f'name="{field_name}" value="{date_value} | {time_value}" />\n'
+                ""
             )
             + self.date(
                 field,
