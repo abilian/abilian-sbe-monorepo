@@ -7,6 +7,7 @@ from __future__ import annotations
 import itertools
 import logging
 import mimetypes
+import os
 import threading
 import uuid
 from collections.abc import Collection, Iterator
@@ -771,7 +772,8 @@ def _trigger_conversion_tasks(session: Session) -> None:
     while document_queue:
         doc, task_id = document_queue.pop()
         if doc.id:
-            tasks.process_document.apply_async((doc.id,), task_id=task_id)
+            if not os.environ.get("NO_PROCESS_DOCUMENT"):
+                tasks.process_document.apply_async((doc.id,), task_id=task_id)
 
 
 def setup_listener() -> None:

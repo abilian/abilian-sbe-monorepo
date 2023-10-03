@@ -24,6 +24,6 @@ class Redis:
                 "in application configuration"
             )
             return
-
+        app.logger.info(f"connection to REDIS_URI {uri}")
         self.client = redis.from_url(uri)
         app.extensions["redis"] = self

@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import contextlib
 import logging
+import os
 from collections.abc import Collection
 from inspect import isclass
 from pathlib import Path
@@ -436,7 +437,10 @@ class WhooshIndexService(Service):
                 items.append((op, model_name, getattr(obj, primary_field), {}))
 
         if items:
-            index_update.apply_async(kwargs={"index": "default", "items": items})
+            # logger.info("after_commit()")
+            # logger.info(f"items: {items}")
+            if not os.environ.get("NO_INDEX_UPDATE"):
+                index_update.apply_async(kwargs={"index": "default", "items": items})
 
         self.clear_update_queue()
 
