@@ -34,7 +34,7 @@ pytz = "*"
 requests = "*"
 
 # Pinned dependencies must be pinned for now
-Flask = "~2.0.3"
+Flask = "~2.1"
 Flask-Babel = "~1.0.0"
 jinja2 = "~3.0"
 # Pinned because wtforms is pinned too.
@@ -153,10 +153,9 @@ rich = "*"
 icecream = "*"
 devtools = "*"
 
-
 # Additional stuff
-python-dotenv = "^0.21"
-flask-env = "*"
+python-dotenv = "^1.0.0"
+#flask-env = "*"
 importlib-resources = "^5.10.0"
 flask-tailwind = "^0.2"
 defusedxml = "^0.7.1"

@@ -1,15 +1,13 @@
 from __future__ import annotations
 
-from flask_env import MetaFlaskEnv
 
-
-class Config(metaclass=MetaFlaskEnv):
-    ENV_PREFIX = "FLASK_"
-
+class BaseConfig:
     MAIL_ASCII_ATTACHMENTS = True
+
     # False: it's ok if antivirus task was run but service
     # couldn't get a result
     ANTIVIRUS_CHECK_REQUIRED = True
+
     BABEL_ACCEPT_LANGUAGES = ("fr", "en")
 
     CONTENT_SECURITY_POLICY = {
@@ -33,6 +31,3 @@ class Config(metaclass=MetaFlaskEnv):
         ],
         "worker-src": "'self' blob:",
     }
-
-    DEBUG = False
-    PRODUCTION = True

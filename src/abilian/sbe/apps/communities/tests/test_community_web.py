@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from urllib.parse import urlparse
+
+from devtools import debug
 from flask import url_for
 from flask.testing import FlaskClient
 
@@ -37,7 +40,8 @@ def test_community_home(
         expected_url = url_for(
             "wall.index", community_id=community1.slug, _external=True
         )
-        assert response.location == expected_url
+        assert urlparse(response.location).path == urlparse(expected_url).path
+        # assert response.location == expected_url
 
     user2 = community2.test_user
     with client_login(client, user2):

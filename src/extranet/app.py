@@ -5,6 +5,7 @@ import os
 
 import click
 import toml
+from dotenv import load_dotenv
 from flask import Blueprint, Response, abort, current_app, g, redirect, request
 from flask.cli import AppGroup, FlaskGroup
 from flask_login import current_user
@@ -19,7 +20,7 @@ from abilian.web.action import actions
 from abilian.web.nav import NavItem
 from abilian.web.util import url_for
 
-from .config import Config
+from .config import BaseConfig
 
 __all__ = ["create_app"]
 
@@ -48,14 +49,11 @@ class Application(BaseApplication):
 
 def create_app(config=None, **kw):
     app = Application(__name__, **kw)
-    app.config.from_object(Config)
+    app.config.from_object(BaseConfig)
 
     if not config:
         read_config(app)
-
-    for k in os.environ:
-        if k.startswith("FLASK_"):
-            app.config[k[len("FLASK_") :]] = os.environ[k]
+        app.config.from_prefixed_env()
 
     if "DATABASE_URL" in os.environ:
         app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
@@ -80,11 +78,16 @@ def create_app(config=None, **kw):
 
 
 def read_config(app):
+    load_dotenv()
+
+    env = os.environ.get("FLASK_CONFIG", "development")
+
     read_toml_config(app, "base.toml")
-    if app.config["ENV"] == "development":
+    if env == "development":
         read_toml_config(app, "development.toml")
     else:
         read_toml_config(app, "production.toml")
+
     read_toml_config(app, "secrets.toml")
 
 
