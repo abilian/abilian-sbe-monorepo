@@ -1747,6 +1747,25 @@ Werkzeug = "*"
 WTForms = "*"
 
 [[package]]
+name = "git-cliff"
+version = "1.3.1"
+description = "A highly customizable changelog generator ⛰️"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "git_cliff-1.3.1-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:dd9bd3b8bcdee55fce29d16aef1c0a6b9b99156f8b4ae83c587debc7a7af7188"},
+    {file = "git_cliff-1.3.1-py3-none-macosx_11_0_arm64.whl", hash = "sha256:4483dee827f4f4d8fd09b90be0909990ac1b08329fcb242f48ca2a6430ea09a7"},
+    {file = "git_cliff-1.3.1-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:51fdd9d226f3011a78aad02a60e2ee4a1f767130e470c6d3503185cf1f12c78c"},
+    {file = "git_cliff-1.3.1-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:0ff8c4abcfb88e631c2c1a2db77e54d0f11d106d5b767e15ceafa41f4c062169"},
+    {file = "git_cliff-1.3.1-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:36894bd4367d205c1fd04b64cbed9e39bcb16108e17b5f0fa8491f33212d3731"},
+    {file = "git_cliff-1.3.1-py3-none-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:8fd0bb9eab009cd10144600bdadc9da1c2ed4cf089f139dd048e34b2925c5308"},
+    {file = "git_cliff-1.3.1-py3-none-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:d4da76485cd0e3c49df373e3aee99b4ab4a2f489b3759b05d64ca25a35315e5f"},
+    {file = "git_cliff-1.3.1-py3-none-win32.whl", hash = "sha256:9ff5f8dfc3f88440ee3cddad82b1efadf85df600033354cd53d2e80f6de177a9"},
+    {file = "git_cliff-1.3.1-py3-none-win_amd64.whl", hash = "sha256:10cfc6f69d36e70557c8a7799a665ded1a2b653a65f90278bebe763d8ca8b1ce"},
+    {file = "git_cliff-1.3.1.tar.gz", hash = "sha256:d1d5f4b13b621d0dc12bbbea74542dcc4d4b50f6c689b1d822be621339d11ed3"},
+]
+
+[[package]]
 name = "gitdb"
 version = "4.0.10"
 description = "Git Object Database"
@@ -4577,4 +4596,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9,<3.13"
-content-hash = "4039a73dab617f43241a7cc2b032c97aa8c5bb6831c356e96bcf6a106839e36c"
+content-hash = "89714b612c13225452bb7d7b751c6462e0f65629f7d84bef4104aa71758c798a"
