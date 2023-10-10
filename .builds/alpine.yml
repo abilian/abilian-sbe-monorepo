@@ -1,31 +1,34 @@
 image: alpine/edge
 
 packages:
-  - curl
+  # Dev
   - gcc
+  # Libraries
+  - musl-dev
   - libffi-dev
   - libjpeg-turbo-dev
   - libxslt-dev
-  - musl-dev
-  - nodejs-dev
-  - npm
-  - poppler-utils
   - postgresql-dev
+  # Python dev
   - python3-dev
   - py3-tox
   - py3-pip
   - poetry
-
-sources:
-  - https://github.com/abilian/abilian-sbe-monorepo
+  # Node
+  - nodejs-dev
+  - npm
+  # Other deps
+  - curl
+  - poppler-utils
 
 tasks:
   - lint: |
       # pip install --user poetry
-      cd abilian-sbe-monorepo
+      cd abilian-sbe
       tox -e lint
+
   - test-py310: |
       # pip install --user poetry
       sudo npm install -g less
-      cd abilian-sbe-monorepo
+      cd abilian-sbe
       tox -e py310

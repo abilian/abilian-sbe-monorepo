@@ -33,14 +33,11 @@ packages:
   - default-jdk-headless
   - curl
 
-sources:
-  - https://github.com/abilian/abilian-sbe-monorepo
-
 tasks:
   - setup: |
       sudo npm install -g less
       sudo pip install -U pip setuptools wheel tox poetry
-      cd abilian-sbe-monorepo
+      cd abilian-sbe
       npm install
 
   - lint-tox: |
