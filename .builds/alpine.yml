@@ -23,12 +23,10 @@ packages:
 
 tasks:
   - lint: |
-      # pip install --user poetry
       cd abilian-sbe
       tox -e lint
 
   - test-py310: |
-      # pip install --user poetry
-      sudo npm install -g less
       cd abilian-sbe
+      npm i
       tox -e py310
