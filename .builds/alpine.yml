@@ -3,6 +3,7 @@ image: alpine/edge
 packages:
   # Dev
   - gcc
+  - rust
   # Libraries
   - musl-dev
   - libffi-dev
