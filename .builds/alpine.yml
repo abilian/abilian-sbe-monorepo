@@ -4,6 +4,7 @@ packages:
   # Dev
   - gcc
   - rust
+  - cargo
   # Libraries
   - musl-dev
   - libffi-dev
