@@ -41,15 +41,19 @@ tasks:
       npm install
 
   - lint-tox: |
+      cd abilian-sbe
       tox -e lint
 
   - test-tox: |
+      cd abilian-sbe
       tox -e py310
 
   - lint-nox: |
+      cd abilian-sbe
       nox -e lint
 
   - test-nox: |
+      cd abilian-sbe
       nox -e pytest
 
 triggers:
