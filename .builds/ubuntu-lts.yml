@@ -51,3 +51,8 @@ tasks:
 
   - test-nox: |
       nox -e pytest
+
+triggers:
+  - action: email
+    condition: failure
+    to: builds@fermigier.com
