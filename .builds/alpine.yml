@@ -13,6 +13,7 @@ packages:
   - python3-dev
   - py3-tox
   - py3-pip
+  - pipx
   # - poetry
   # Node
   - nodejs-dev
