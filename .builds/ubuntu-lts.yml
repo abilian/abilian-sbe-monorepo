@@ -1,31 +1,54 @@
 image: ubuntu/lts
 
 packages:
-  - curl
+  # Build tools
+  - software-properties-common
+  - build-essential
+  - make
   - gcc
-  - libffi-dev
-  - libjpeg-turbo8-dev
-  - libxslt-dev
-  - libnode-dev
-  - npm
-  - poppler-utils
-  - postgresql-server-dev-all
-  - tox
+  - g++
+  # Python
   - python3-dev
   - python3-pip
   - python3-wheel
+  - tox
+  # Node
+  - nodejs
+  - npm
+  # Libraries
+  - libpq-dev
+  - libxslt-dev
+  - libxslt1-dev
+  - libjpeg-dev
+  - libffi-dev
+  - libsqlite3-dev
+  - libbz2-dev
+  - libmagic-dev
+  - libjpeg-turbo8-dev
+  - libnode-dev
+  # Other deps
+  - strace
+  - poppler-utils
+  - libreoffice
+  - default-jdk-headless
+  - curl
 
 sources:
   - https://github.com/abilian/abilian-sbe-monorepo
 
 tasks:
+  - setup: |
+      sudo npm install -g less
+      # Hack
+      env
+      echo $PATH
+      sudo ln -sf /usr/local/bin/lessc /usr/bin/lessc
+      sudo pip install -U pip setuptools wheel tox poetry
+
   - lint: |
-      sudo pip install -U poetry pip wheel
       cd abilian-sbe-monorepo
       tox -e lint
-  - test-py38: |
-      sudo npm install -g less
-      sudo pip install -U poetry pip wheel
-      # pip install --user poetry
+
+  - test-py310: |
       cd abilian-sbe-monorepo
-      tox -e py38
+      tox -e py310

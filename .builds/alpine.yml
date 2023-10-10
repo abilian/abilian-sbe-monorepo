@@ -24,8 +24,8 @@ tasks:
       # pip install --user poetry
       cd abilian-sbe-monorepo
       tox -e lint
-  - test-py39: |
+  - test-py310: |
       # pip install --user poetry
       sudo npm install -g less
       cd abilian-sbe-monorepo
-      tox -e py39
+      tox -e py310
