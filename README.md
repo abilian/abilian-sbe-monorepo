@@ -1,4 +1,4 @@
-# About Abilian SBS
+# About Abilian SBE
 
 ## Features
 
@@ -25,7 +25,7 @@ You will need:
 - LibreOffice (for document conversion)
 - Java (what?!? - yes, for Closure)
 - Node + npm
-- Some libraries: libpq (for Postgres), libjpeg, libxslt, libxml2, libffi, libssl, libmagic, libsqlite3, libbz2...  
+- Some libraries: libpq (for Postgres), libjpeg, libxslt, libxml2, libffi, libssl, libmagic, libsqlite3, libbz2...
 
 On Debian/Ubuntu, the following packages is a good starting point (TODO: check what is missing, what is not really needed):
 
@@ -90,7 +90,7 @@ flask run
 ## Production
 
 In production, you will need additionally:
- 
+
 - An email server (running locally on the server, e.g. like postfix, that's probably overridable)
 
 ```bash
