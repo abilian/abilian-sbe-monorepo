@@ -39,16 +39,18 @@ sources:
 tasks:
   - setup: |
       sudo npm install -g less
-      # Hack
-      env
-      echo $PATH
-      sudo ln -sf /usr/local/bin/lessc /usr/bin/lessc
       sudo pip install -U pip setuptools wheel tox poetry
-
-  - lint: |
       cd abilian-sbe-monorepo
+      npm install
+
+  - lint-tox: |
       tox -e lint
 
-  - test-py310: |
-      cd abilian-sbe-monorepo
+  - test-tox: |
       tox -e py310
+
+  - lint-nox: |
+      nox -e lint
+
+  - test-nox: |
+      nox -e pytest
