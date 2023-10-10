@@ -35,7 +35,6 @@ packages:
 
 tasks:
   - setup: |
-      sudo npm install -g less
       sudo pip install -U pip setuptools wheel tox poetry
       cd abilian-sbe
       npm install

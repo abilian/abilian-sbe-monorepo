@@ -22,6 +22,9 @@ packages:
   - poppler-utils
 
 tasks:
+  - setup: |
+      sudo poetry self update
+
   - lint: |
       cd abilian-sbe
       tox -e lint
@@ -29,4 +32,4 @@ tasks:
   - test-py310: |
       cd abilian-sbe
       npm i
-      tox -e py310
+      tox -e py311
