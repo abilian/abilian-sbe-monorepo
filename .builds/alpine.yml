@@ -13,7 +13,7 @@ packages:
   - python3-dev
   - py3-tox
   - py3-pip
-  - poetry
+  # - poetry
   # Node
   - nodejs-dev
   - npm
@@ -23,13 +23,25 @@ packages:
 
 tasks:
   - setup: |
-      sudo poetry self update
+      # Workaround to install poetry on Alpine
+      # (was: sudo poetry self update)
+      pipx install poetry
+      sudo ln -sf ~/.local/bin/poetry /usr/local/bin/
+      cd abilian-sbe
+      npm i
 
   - lint: |
       cd abilian-sbe
       tox -e lint
 
-  - test-py310: |
+  - test: |
       cd abilian-sbe
-      npm i
       tox -e py311
+
+  - nox-lint: |
+      cd abilian-sbe
+      nox -e lint
+
+  - nox-test: |
+      cd abilian-sbe
+      nox -e pytest
