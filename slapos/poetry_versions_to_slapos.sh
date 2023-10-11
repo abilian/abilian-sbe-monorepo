@@ -18,4 +18,4 @@ poetry_reqs () {
 }
 
 echo "[versions]"
-poetry_reqs | sed 's/ *;.*//' | sed 's/\(.*\)==\(.*\)/\1 = \2:whl/'
+poetry_reqs | sed 's/\([^][]\)\(\[.*\]\)\{0,1\} *== *\([^ ;]*\).*$/\1 = \3:whl/'
