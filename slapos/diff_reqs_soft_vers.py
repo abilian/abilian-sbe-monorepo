@@ -65,24 +65,27 @@ def show_not_in_versions(reqs, versions):
         if key not in reqs:
             not_in_reqs.append(f"{key} = {versions_val}")
     print("=========================================================")
-    print("Not in software versions:")
+    print("Not in SlapOS versions.cfg:")
     print()
     print("\n".join(not_in_versions))
     print()
-    print("Not in requirements:")
+    print("Not in pip requirements:")
     print()
     print("\n".join(not_in_reqs))
     print()
-    print("Different versions (reqs // versions):")
+    print("Different versions (pip // versions.cfg):")
     print()
     print("\n".join(diff_in_versions))
     print()
 
 
 def main():
-    path_reqs = Path(sys.argv[-2])
-    path_software_cfg = Path(sys.argv[-1])
-    diff(path_reqs, path_software_cfg)
+    try:
+        path_reqs = Path(sys.argv[-2])
+        path_software_cfg = Path(sys.argv[-1])
+        diff(path_reqs, path_software_cfg)
+    except Exception:
+        print("Usage:\ndiff_requirements path_to_pip_reqs path_to_slapos_reqs")
 
 
 if __name__ == "__main__":

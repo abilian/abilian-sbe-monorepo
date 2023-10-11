@@ -1,0 +1,53 @@
+diff -x .* -Naur sendmail-8.17.2/devtools/M4/UNIX/library.m4 sendmail-8.17.2_milter/devtools/M4/UNIX/library.m4
+--- sendmail-8.17.2/devtools/M4/UNIX/library.m4	2023-02-09 19:24:38
++++ sendmail-8.17.2_milter/devtools/M4/UNIX/library.m4	2023-10-09 14:12:00
+@@ -28,7 +28,7 @@
+ 
+ install-`'bldCURRENT_PRODUCT: bldCURRENT_PRODUCT.a
+ ifdef(`bldINSTALLABLE', `	ifdef(`confMKDIR', `if [ ! -d ${DESTDIR}${bldINSTALL_DIR`'LIBDIR} ]; then confMKDIR -p ${DESTDIR}${bldINSTALL_DIR`'LIBDIR}; else :; fi ')
+-	${INSTALL} -c -o ${LIBOWN} -g ${LIBGRP} -m ${LIBMODE} bldCURRENT_PRODUCT.a ${DESTDIR}${LIBDIR}')
++	${INSTALL} -c bldCURRENT_PRODUCT.a ${DESTDIR}${LIBDIR}')
+ 
+ bldCURRENT_PRODUCT-clean:
+ 	rm -f ${OBJS} bldCURRENT_PRODUCT.a ${MANPAGES}
+diff -x .* -Naur sendmail-8.17.2/libmilter/Makefile.m4 sendmail-8.17.2_milter/libmilter/Makefile.m4
+--- sendmail-8.17.2/libmilter/Makefile.m4	2023-02-09 19:24:38
++++ sendmail-8.17.2_milter/libmilter/Makefile.m4	2023-10-09 14:40:30
+@@ -28,13 +28,35 @@
+ 
+ 
+ divert(bldTARGETS_SECTION)
++sm_libmilter_version = 1.0.1
++
++libmilter.a: libmilter.so.${sm_libmilter_version}
++libmilter.so.${sm_libmilter_version}: ${BEFORE} ${libmilterOBJS}
++	${CC} -shared -pthread \
++		-o libmilter.so.${sm_libmilter_version} \
++		-fPIC ${CFLAGS} \
++		-Wl,-soname,libmilter.so.${sm_libmilter_version} \
++		$(filter-out -fpie,${LDFLAGS}) \
++		${libmilterOBJS}
++	${LN} ${LNOPTS} libmilter.so.${sm_libmilter_version} libmilter.so
++
++install-libmilter: install-libmilter-shared
++install-libmilter-shared: libmilter.so.${sm_libmilter_version}
++	${INSTALL} -d ${DESTDIR}${LIBDIR}
++	${INSTALL} -c libmilter.so.${sm_libmilter_version} ${DESTDIR}${LIBDIR}
++	${LN} ${LNOPTS} libmilter.so.${sm_libmilter_version} ${DESTDIR}${LIBDIR}/libmilter.so
++
++libmilter-clean: libmilter-clean-shared
++libmilter-clean-shared:
++	rm -f libmilter.so libmilter.so.${sm_libmilter_version}
++
+ # Install the API header files
+ MFAPI=	${SRCDIR}/inc`'lude/libmilter/mfapi.h
+ MFDEF=	${SRCDIR}/inc`'lude/libmilter/mfdef.h
+ install-mfapi: ${MFAPI}
+ 	if [ ! -d ${DESTDIR}${INCLUDEDIR}/libmilter ]; then mkdir -p ${DESTDIR}${INCLUDEDIR}/libmilter; else :; fi
+-	${INSTALL} -c -o ${INCOWN} -g ${INCGRP} -m ${INCMODE} ${MFAPI} ${DESTDIR}${INCLUDEDIR}/libmilter/mfapi.h
+-	${INSTALL} -c -o ${INCOWN} -g ${INCGRP} -m ${INCMODE} ${MFDEF} ${DESTDIR}${INCLUDEDIR}/libmilter/mfdef.h
++	${INSTALL} -c ${MFAPI} ${DESTDIR}${INCLUDEDIR}/libmilter/mfapi.h
++	${INSTALL} -c ${MFDEF} ${DESTDIR}${INCLUDEDIR}/libmilter/mfdef.h
+ divert(0)
+ 
+ bldFINISH

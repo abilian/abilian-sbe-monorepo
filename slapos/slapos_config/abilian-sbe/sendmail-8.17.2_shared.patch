@@ -1,0 +1,48 @@
+diff -x .* -Naur sendmail-8.17.2/devtools/M4/UNIX/sharedlib.m4 sendmail-8.17.2_shared/devtools/M4/UNIX/sharedlib.m4
+--- sendmail-8.17.2/devtools/M4/UNIX/sharedlib.m4	2023-02-09 19:24:38
++++ sendmail-8.17.2_shared/devtools/M4/UNIX/sharedlib.m4	2023-10-06 15:53:01
+@@ -28,7 +28,7 @@
+ include(confBUILDTOOLSDIR`/M4/'bldM4_TYPE_DIR`/links.m4')dnl
+ bldLIST_PUSH_ITEM(`bldC_PRODUCTS', bldCURRENT_PRODUCT)dnl
+ bldPUSH_TARGET(${SHAREDLIB})dnl
+-bldPUSH_TARGET(bldCURRENT_PRODUCT`.a')dnl
++bldPUSH_TARGET(bldCURRENT_PRODUCT.so.confSOVER.confSOPLVL)dnl
+ bldPUSH_INSTALL_TARGET(`install-'bldCURRENT_PRODUCT)dnl
+ bldPUSH_CLEAN_TARGET(bldCURRENT_PRODUCT`-clean')dnl
+ 
+@@ -46,9 +46,8 @@
+ 	${CP} bldCURRENT_PRODUCT.a ${SHAREDLIB}',`rm -f bldCURRENT_PRODUCT${SHAREDLIB_EXT}
+ 	${LN} ${SHAREDLIB} bldCURRENT_PRODUCT${SHAREDLIB_EXT}')
+ 
+-bldCURRENT_PRODUCT.a: ${BEFORE} ${bldCURRENT_PRODUCT`OBJS'}
+-	${AR} ${AROPTS} bldCURRENT_PRODUCT.a ${bldCURRENT_PRODUCT`OBJS'}
+-	${RANLIB} ${RANLIBOPTS} bldCURRENT_PRODUCT.a
++bldCURRENT_PRODUCT.so.confSOVER.confSOPLVL: ${BEFORE} ${bldCURRENT_PRODUCT`OBJS'}
++	${CC} ${CFLAGS} ${LDOPTS_SO} -o bldCURRENT_PRODUCT.so.confSOVER.confSOPLVL `-Wl,'confSONAME`,'bldCURRENT_PRODUCT`.so.'confSOVER ${bldCURRENT_PRODUCT`OBJS'}
+ 
+ ifdef(`bldLINK_SOURCES', `bldMAKE_SOURCE_LINKS(bldLINK_SOURCES)')
+ 
+@@ -59,6 +58,6 @@
+ 	${LN} ${LNOPTS} ${DESTDIR}${SHAREDLIBDIR}${SHAREDLIB} ${DESTDIR}${SHAREDLIBDIR}${SHAREDLIB_LINK}')
+ 
+ bldCURRENT_PRODUCT-clean:
+-	rm -f ${OBJS} ${SHAREDLIB} bldCURRENT_PRODUCT.a ${MANPAGES} ifelse(bldOS, `AIX', `shr.o', `bldCURRENT_PRODUCT${SHAREDLIB_EXT}')
++	rm -f ${OBJS} ${SHAREDLIB} bldCURRENT_PRODUCT.so* ${MANPAGES} ifelse(bldOS, `AIX', `shr.o', `bldCURRENT_PRODUCT${SHAREDLIB_EXT}')
+ 
+ divert(0)
+diff -x .* -Naur sendmail-8.17.2/libmilter/Makefile.m4 sendmail-8.17.2_shared/libmilter/Makefile.m4
+--- sendmail-8.17.2/libmilter/Makefile.m4	2023-02-09 19:24:38
++++ sendmail-8.17.2_shared/libmilter/Makefile.m4	2023-10-06 15:58:10
+@@ -9,7 +9,11 @@
+ SMSRCDIR=ifdef(`confSMSRCDIR', `confSMSRCDIR', `${SRCDIR}/sendmail')
+ PREPENDDEF(`confINCDIRS', `-I${SMSRCDIR} ')
+ 
+-bldPRODUCT_START(`library', `libmilter')
++APPENDDEF(`confOPTIMIZE', `-fno-pie -fPIC')
++define(`runCtest', `esyscmd(`echo -e "#include <stdio.h>\n#include \"../include/libmilter/mfapi.h\"\nint main(){'$1`;return 0;}" | gcc -x c -I../include -o ctest - && ./ctest && rm -f ctest')')dnl
++define(`confSOVER', runCtest(`printf(\"%d.%d\", SM_LM_VRS_MAJOR(SMFI_VERSION), SM_LM_VRS_MINOR(SMFI_VERSION))'))dnl
++define(`confSOPLVL', runCtest(`printf(\"%d\", SM_LM_VRS_PLVL(SMFI_VERSION))'))dnl
++bldPRODUCT_START(`sharedlibrary', `libmilter')
+ define(`bldINSTALLABLE', `true')
+ define(`LIBMILTER_EXTRAS', `errstring.c strl.c')
+ APPENDDEF(`confENVDEF', `-DNOT_SENDMAIL -Dsm_snprintf=snprintf')
