@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "abilian-sbe-next"
-version = "1.0.2"
+version = "1.0.17"
 description = ""
 authors = ["Abilian SAS <contact@abilian.com>"]
 
 packages = [
   { include = "extranet", from = "src" },
-  { include = "abilian", from = "src" },
+  { include = "a    bilian", from = "src" },
 ]
 
 
