@@ -13,7 +13,7 @@ from ..base import Service
 logger = logging.getLogger(__name__)
 
 try:
-    from clamd import ClamdUnixSocket
+    from clamd import ClamdUnixSocket, ClamdError
 
     clamd = ClamdUnixSocket()
 except ImportError:
@@ -112,7 +112,7 @@ class AntiVirusService(Service):
         scan = clamd.instream
         try:
             res = scan(content)
-        except clamd.ClamdError as e:
+        except ClamdError as e:
             self.logger.warning("Error during content scan: %s", repr(e))
             return None
 
