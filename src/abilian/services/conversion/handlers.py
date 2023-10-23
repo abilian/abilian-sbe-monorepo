@@ -413,39 +413,60 @@ class LibreOfficePdfHandler(Handler):
             #         '/usr/local/bin/unoconv', '-f', 'pdf', '-o', out_fn, in_fn
             #     ]
 
-            def run_soffice():
-                try:
-                    self._process = subprocess.Popen(
-                        cmd, close_fds=True, cwd=bytes(self.tmp_dir)
-                    )
-                    self._process.communicate()
-                except Exception as e:
-                    logger.error("soffice error: %s", e, exc_info=True)
-                    raise ConversionError("soffice conversion failed") from e
+            # def run_soffice():
+            #     try:
+            #         self._process = subprocess.Popen(
+            #             cmd, close_fds=True, cwd=bytes(self.tmp_dir)
+            #         )
+            #         self._process.communicate()
+            #     except Exception as e:
+            #         logger.error("soffice error: %s", e, exc_info=True)
+            #         raise ConversionError("soffice conversion failed") from e
 
-            run_thread = threading.Thread(target=run_soffice)
-            run_thread.start()
-            run_thread.join(timeout)
+            # run_thread = threading.Thread(target=run_soffice)
+            # run_thread.start()
+            # run_thread.join(timeout)
+
+            # logger.warning("convert cmd: %s", cmd)
+            # logger.warning("tmp_dir: %s", self.tmp_dir)
 
             try:
-                if run_thread.is_alive():
-                    # timeout reached
-                    self._process.terminate()
-                    if self._process.poll() is not None:
-                        try:
-                            self._process.kill()
-                        except OSError:
-                            logger.warning("Failed to kill process %s", self._process)
+                completed = subprocess.run(
+                    cmd,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    cwd=self.tmp_dir,
+                    timeout=timeout,
+                    check=True,
+                )
+            except subprocess.CalledProcessError as e:
+                logger.error("CalledProcessError")
+                logger.error(f"returncode:{e.returncode}")
+                logger.error(f"stdout:{e.stdout}")
+                raise ConversionError() from e
+            except Exception as e:
+                # logger.error("soffice error: %s", e, exc_info=True)
+                raise ConversionError() from e
 
-                    raise ConversionError(f"Conversion timeout ({timeout})")
+            # try:
+            #     if run_thread.is_alive():
+            #         # timeout reached
+            #         self._process.terminate()
+            #         if self._process.poll() is not None:
+            #             try:
+            #                 self._process.kill()
+            #             except OSError:
+            #                 logger.warning("Failed to kill process %s", self._process)
 
-                out_fn = f"{os.path.splitext(in_fn)[0]}.pdf"
-                debug(in_fn, out_fn)
-                converted = open(out_fn, "rb").read()
-                return converted
-            finally:
-                if hasattr(self, "_process"):
-                    del self._process
+            #         raise ConversionError(f"Conversion timeout ({timeout})")
+
+            #     out_fn = f"{os.path.splitext(in_fn)[0]}.pdf"
+            #     debug(in_fn, out_fn)
+            #     converted = open(out_fn, "rb").read()
+            #     return converted
+            # finally:
+            #     if hasattr(self, "_process"):
+            #         del self._process
 
 
 class CloudoooPdfHandler(Handler):
