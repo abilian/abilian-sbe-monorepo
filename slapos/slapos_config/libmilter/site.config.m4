@@ -7,6 +7,7 @@ APPENDDEF(`confLIBS', `-lresolv')
 
 dnl ### Changes to disable the default NIS support
 APPENDDEF(`confENVDEF', `-UNIS')
+APPENDDEF(`confENVDEF', `-fPIC')
 dnl APPENDDEF(`confENVDEF', `-DDNSMAP=0')
 dnl APPENDDEF(`confENVDEF', `-DNAMED_BIND=0')
 

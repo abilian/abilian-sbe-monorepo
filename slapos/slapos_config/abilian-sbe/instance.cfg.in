@@ -12,6 +12,7 @@ recipe = slapos.cookbook:switch-softwaretype
 default  = dynamic-template-sbe:output
 RootSoftwareInstance = ${:default}
 
+
 [slap-configuration]
 recipe = slapos.cookbook:slapconfiguration.serialised
 computer = ${slap-connection:computer-id}
@@ -19,6 +20,7 @@ partition = ${slap-connection:partition-id}
 url = ${slap-connection:server-url}
 key = ${slap-connection:key-file}
 cert = ${slap-connection:cert-file}
+
 
 [jinja2-template-base]
 recipe = slapos.recipe.template:jinja2
@@ -36,6 +38,7 @@ context =
   key computer_id slap-configuration:computer
   raw template_monitor {{ template_monitor_cfg }}
   raw logrotate_cfg {{ logrotate_cfg }}
+  raw openssl_location {{ openssl_location }}
   ${:extra-context}
 
 
@@ -50,8 +53,11 @@ postgresql_location = {{ postgresql_location }}
 imagemagick = {{ imagemagick }}
 poppler = {{ poppler }}
 curl = {{ curl }}
-jdk = {{ jdk }}
 libreoffice_bin = {{ libreoffice_bin }}
+template_clamd_conf = {{ template_clamd_conf }}
+template_freshclam_conf = {{ template_freshclam_conf }}
+clamd_bin = {{ clamd_bin }}
+freshclam_bin = {{ freshclam_bin }}
 
 
 [dynamic-template-sbe]
