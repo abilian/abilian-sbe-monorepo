@@ -60,12 +60,14 @@ def process_document(document_id: int) -> None:
 
 def _run_antivirus(document: Document) -> bool | None:
     antivirus = get_service("antivirus")
+    logger.debug(f"_run_antivirus: {antivirus.running=}")
+    is_clean = None
     if antivirus and antivirus.running:
         is_clean = antivirus.scan(document.content_blob)
         if "antivirus_task" in document.content_blob.meta:
             del document.content_blob.meta["antivirus_task"]
-        return is_clean
-    return None
+    logger.debug(f"_run_antivirus: {is_clean=}")
+    return is_clean
 
 
 @shared_task

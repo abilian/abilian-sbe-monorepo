@@ -5,6 +5,7 @@ import io
 import logging
 import os
 from pathlib import Path
+import re
 
 from abilian.core.models.blob import Blob
 
@@ -19,6 +20,7 @@ try:
 except ImportError:
     found_clamd = False
 
+DEBUG = True
 CLAMD_CONF = {}
 CLAMD_CONF_DEFAULT = {
     "StreamMaxLength": 26214400,
@@ -55,17 +57,23 @@ def _update_clamd_conf():
     if not found_clamd:
         return
     conf_path = Path(os.environ.get("CLAMD_CONF_PATH") or "/etc/clamav/clamd.conf")
+    if DEBUG:
+        logger.warning(
+            f"AntiVirusService: CLAMD_CONF_PATH {os.environ.get('CLAMD_CONF_PATH')}"
+        )
+        logger.warning(f"AntiVirusService: {conf_path=}")
     if not conf_path.exists():
         return
     conf_lines = [line.strip() for line in conf_path.open("rt").readlines()]
-    parsed_config = dict(
-        line.split(" ", 1) for line in conf_lines if not line.startswith("#")
-    )
+    conf_lines = [line for line in conf_lines if line and not line.startswith("#")]
+    parsed_config = dict(re.split(r"\s+", line, 1) for line in conf_lines)
     for key in ("StreamMaxLength", "MaxFileSize"):
         if key not in parsed_config:
             continue
         parsed_config[key] = _size_to_int(parsed_config[key])
     CLAMD_CONF.update(parsed_config)
+    if DEBUG:
+        logger.warning(f"AntiVirusService: updated {CLAMD_CONF=}")
 
 
 class AntiVirusService(Service):
@@ -83,6 +91,9 @@ class AntiVirusService(Service):
         If `file_or_stream` is a Blob, scan result is stored in
         Blob.meta['antivirus'].
         """
+        if DEBUG:
+            self.logger.warning(f"AntiVirusService: {found_clamd=}")
+            self.logger.warning(f"AntiVirusService: {CLAMD_CONF=}")
         if not found_clamd:
             return None
 
@@ -124,7 +135,14 @@ class AntiVirusService(Service):
 
         # use stream scan. When using scan by filename, clamd runnnig user must have
         # access to file, which we cannot guarantee
-        scan_socket = ClamdUnixSocket(config["LocalSocket"], timeout=60)
+        socket_file = config["LocalSocket"]
+        if DEBUG:
+            self.logger.warning(f"AntiVirusService: {config=}")
+            self.logger.warning(f"AntiVirusService: {socket_file=}")
+            self.logger.warning(
+                f"AntiVirusService: socket file exists: {Path(socket_file).exists()}"
+            )
+        scan_socket = ClamdUnixSocket(socket_file, timeout=60)
         scan = scan_socket.instream
         try:
             res = scan(content)
