@@ -29,7 +29,8 @@ def test_fit(orig_image: bytes):
     # image already fits in desired dimension
     image = resize(orig_image, 1000, 1000)
     x, y = get_size(image)
-    assert x == 725 and y == 518
+    assert x == 725
+    assert y == 518
 
 
 def test_scale(orig_image: bytes):

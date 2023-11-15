@@ -26,7 +26,7 @@ OBJ = [1, 2, "été", {"1": "1", "2": "2"}]
 
 
 @pytest.mark.parametrize(
-    "type_,value",
+    ("type_", "value"),
     [
         ("int", 42),
         ("bool", True),

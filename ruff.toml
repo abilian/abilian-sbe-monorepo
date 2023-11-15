@@ -160,11 +160,9 @@ extend-ignore = [
     "PLW1514", # `open` in text mode without explicit `encoding` argument
     "PLW2901", # `for` loop variable overwritten by assignment target
     "PLW3201", # Bad or misspelled dunder method name. (bad-dunder-name)
-    "PT006", # Wrong name(s) type in `@pytest.mark.parametrize`, expected `tuple`
     "PT011", # `pytest.raises(ValueError)` is too broad, set the `match` parameter or use a more specific exception
     "PT012", # `pytest.raises()` block should contain a single simple statement
     "PT013", # Found incorrect import of pytest, use simple `import pytest` instead
-    "PT018", # Assertion should be broken down into multiple parts
     "PTH100", # `os.path.abspath()` should be replaced by `Path.resolve()`
     "PTH107", # `os.remove()` should be replaced by `Path.unlink()`
     "PTH109", # `os.getcwd()` should be replaced by `Path.cwd()`
