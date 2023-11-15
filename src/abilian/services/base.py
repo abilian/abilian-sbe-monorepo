@@ -103,7 +103,7 @@ class Service:
         @wraps(meth)
         def check_running(self: Any, *args: Any, **kwargs: Any) -> Any | None:
             if not self.running:
-                return
+                return None
             return meth(self, *args, **kwargs)
 
         return check_running

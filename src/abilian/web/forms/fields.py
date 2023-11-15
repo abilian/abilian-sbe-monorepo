@@ -249,7 +249,7 @@ class FileField(BaseFileField):
 
         if not self.has_file() and not delete_value:
             # nothing uploaded, and nothing to delete
-            return
+            return None
 
         state = sa.inspect(obj)
         mapper = state.mapper
@@ -263,7 +263,7 @@ class FileField(BaseFileField):
 
         if delete_value:
             setattr(obj, name, None)
-            return
+            return None
 
         #  FIXME: propose option to always create a new blob
         cls = rel.mapper.class_

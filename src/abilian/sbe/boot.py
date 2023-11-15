@@ -92,7 +92,7 @@ def setup_sbe_app():
 
     # patch server used to launch browser here immediately after socket opened
     BaseWSGIServer.server_activate = _on_http_server_activate
-    return
+    return None
     # return command_manager.handle("abilian_sbe", ["run", "--hide-config"])
 
 

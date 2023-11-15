@@ -89,12 +89,12 @@ def batch_send_post_to_users(post_id, members_id, failed_ids=None):
     (geometric series is: 5min * (1-2**10) / 1-2) = 5115 mins).
     """
     if not members_id:
-        return
+        return None
 
     post = Post.query.get(post_id)
     if post is None:
         # deleted after task queued, but before task run
-        return
+        return None
 
     failed = set()
     successfully_sent = []

@@ -71,7 +71,7 @@ def get_nb_viewers(entities):
 
 def get_viewed_posts(entities):
     if not entities:
-        return
+        return None
 
     views = viewtracker.get_views(entities=entities, user=current_user)
     all_hits = viewtracker.get_hits(views=views)

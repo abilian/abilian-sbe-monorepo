@@ -61,12 +61,12 @@ class AbilianCsrf:
         view = current_app.view_functions[rule.endpoint]
         if getattr(view, "csrf_support_graceful_failure", False):
             # view can handle it nicely for the user
-            return None
+            return
 
         if hasattr(view, "view_class") and getattr(
             view.view_class, "csrf_support_graceful_failure", False
         ):
-            return None
+            return
 
         raise BadRequest(failed)
 

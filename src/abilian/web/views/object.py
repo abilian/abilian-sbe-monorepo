@@ -72,7 +72,7 @@ class BaseObjectView(View):
         This method may return a list of BreadcrumbItem instances.
         Return `None` if nothing.
         """
-        return None
+        return
 
     def init_object(self, args, kwargs):
         """This method is reponsible for setting :attr:`obj`.
@@ -332,7 +332,7 @@ class ObjectEdit(ObjectView):
         :returns: * a valid :class:`Response` if exception is handled.
                   * `None` if exception is not handled. Default handling happens.
         """
-        return None
+        return
 
     def commit_success(self):
         """Called after object has been successfully saved to database."""
@@ -398,7 +398,7 @@ class ObjectEdit(ObjectView):
         This method is useful for detecting edition conflict using hidden fields
         and show a specific screen to help resolve the conflict.
         """
-        return None
+        return
 
     def form_csrf_invalid(self):
         """Called when a form doesn't validate *only* because of csrf token
@@ -425,7 +425,7 @@ class ObjectEdit(ObjectView):
     @property
     def activity_target(self):
         """Return `target` to use when creating activity."""
-        return None
+        return
 
 
 CREATE_BUTTON = ButtonAction("form", "create", btn_class="primary", title=_l("Create"))

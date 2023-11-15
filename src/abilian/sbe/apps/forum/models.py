@@ -201,7 +201,7 @@ def _guard_closed_thread_collection(thread, value, *args):
     if isinstance(thread, Post):
         thread = thread.thread
         if thread is None:
-            return
+            return None
 
     if thread.closed:
         raise ThreadClosedError(thread)

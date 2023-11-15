@@ -73,7 +73,7 @@ def antivirus_scan(document_id):
     """Return antivirus.scan() result."""
     with get_document(document_id) as (session, document):
         if document is None:
-            return
+            return None
         return _run_antivirus(document)
 
 
