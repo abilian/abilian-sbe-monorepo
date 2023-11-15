@@ -59,7 +59,7 @@ class UniqueName(metaclass=ValueSingletonMeta):
     def __str__(self) -> str:
         return self.name
 
-    def __eq__(self, other: Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if isinstance(other, self.__class__):
             return self._hash == other._hash
         return self.__name == str(other)

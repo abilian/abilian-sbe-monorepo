@@ -30,8 +30,8 @@ def error_message(validator: Callable, form: DummyForm, field: DummyField) -> st
 
 
 @fixture()
-def validator() -> Iterator[Callable]:
-    yield siret_validator()
+def validator() -> Callable:
+    return siret_validator()
 
 
 def test_siret_validator_valid_1(validator: Callable):

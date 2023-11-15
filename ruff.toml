@@ -147,8 +147,7 @@ extend-ignore = [
     "PERF203", # `try`-`except` within a loop incurs performance overhead
     "PERF401", # Use a list comprehension to create a transformed list
     "PERF403", # Use a dictionary comprehension instead of a for-loop
-    "PIE810", # Call `endswith` once with a `tuple`
-    "PIE810", # Call `startswith` once with a `tuple`
+    "PIE810", # Call `startswith` / `endswith` once with a `tuple`
     "PLC1901", # `x == ""` can be simplified to `not x` as an empty string is falsey
     "PLR0904", # Too many public methods (22 > 20)
     "PLR0911", # Too many return statements
@@ -197,10 +196,6 @@ extend-ignore = [
     "TRY004", # Prefer `TypeError` exception for invalid type
     "TRY300", # Consider moving this statement to an `else` block
     "TRY400", # Use `logging.exception` instead of `logging.error`
-    # Fixable
-    "PT022", # [*] No teardown in fixture `validator`, use `return` instead of `yield`
-    "PYI032", # [*] Prefer `object` to `Any` for the second parameter to `__eq__`
-    "PIE808", # [*] Unnecessary `start` argument in `range`
 ]
 
 [mccabe]

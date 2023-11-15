@@ -151,7 +151,7 @@ class Converter:
         for handler in self.handlers:
             if handler.accept(mime_type, "image/jpeg"):
                 converted_images = handler.convert(blob, size=size)
-                for i in range(0, len(converted_images)):
+                for i in range(len(converted_images)):
                     converted = converted_images[i]
                     cache_key = (f"img:{i}:{size}", digest)
                     self.cache[cache_key] = converted
@@ -162,7 +162,7 @@ class Converter:
         for handler in self.handlers:
             if handler.accept("application/pdf", "image/jpeg"):
                 converted_images = handler.convert(pdf, size=size)
-                for i in range(0, len(converted_images)):
+                for i in range(len(converted_images)):
                     converted = converted_images[i]
                     cache_key = (f"img:{i}:{size}", digest)
                     self.cache[cache_key] = converted
