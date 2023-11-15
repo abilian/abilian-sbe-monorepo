@@ -463,7 +463,7 @@ def permissions_export(folder_id):
     ws.horz_split_pos = 1
 
     header_style = easyxf(
-        "font: bold true;" "alignment: horizontal center, vertical center;"
+        "font: bold true;alignment: horizontal center, vertical center;"
     )
     for c, val in enumerate(c[0] for c in cols):
         ws.write(0, c, val, header_style)
@@ -795,7 +795,7 @@ def delete_multiple(folder):
         db.session.commit()
         if docs and folders:
             msg = _(
-                "%(file_num)d files and %(folder_num)d folders sucessfully " "deleted.",
+                "%(file_num)d files and %(folder_num)d folders sucessfully deleted.",
                 file_num=len(docs),
                 folder_num=len(folders),
             )

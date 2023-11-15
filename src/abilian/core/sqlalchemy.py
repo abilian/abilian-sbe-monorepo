@@ -85,7 +85,7 @@ def _calling_context(app_path: str) -> str:
     entered_sa_code = exited_sa_code = False
     sa_caller = "<unknown>"
     format_name = (
-        "{frm.f_code.co_filename}:{frm.f_lineno} " "({frm.f_code.co_name})".format
+        "{frm.f_code.co_filename}:{frm.f_lineno} ({frm.f_code.co_name})".format
     )
 
     while frm.f_back is not None:

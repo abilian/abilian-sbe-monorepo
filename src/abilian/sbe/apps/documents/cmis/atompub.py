@@ -192,7 +192,7 @@ def getTypeChildren():
 @route("/types", methods=["POST"])
 def createType():
     log.debug("createType called")
-    raise NotImplementedError()
+    raise NotImplementedError
 
 
 #
@@ -339,19 +339,19 @@ def getTypeDefinition():
     elif type_id == "cmis:policy":
         result = render_template("cmis/type-policy.xml", ROOT=ROOT)
     else:
-        raise NotImplementedError()
+        raise NotImplementedError
 
     return Response(result, mimetype=MIME_TYPE_ATOM_ENTRY)
 
 
 @route("/type", methods=["POST"])
 def updateType():
-    raise NotImplementedError()
+    raise NotImplementedError
 
 
 @route("/type", methods=["DELETE"])
 def deleteType():
-    raise NotImplementedError()
+    raise NotImplementedError
     # return ("", 204, {})
 
 
@@ -442,7 +442,7 @@ def getObjectParents():
 @route("/changes")
 def getContentChanges():
     log.debug("getContentChanges called")
-    raise NotImplementedError()
+    raise NotImplementedError
 
 
 # Folder Descendants Feed (GET, DELETE)
@@ -450,7 +450,7 @@ def getContentChanges():
 def getDescendants():
     id = request.args.get("id")
     log.debug(f"getObjectParents called on {id}")
-    raise NotImplementedError()
+    raise NotImplementedError
 
 
 @route("/descendants", methods=["DELETE"])
@@ -471,7 +471,7 @@ def deleteTree():
 def getFolderTree():
     id = request.args.get("id")
     log.debug(f"getFolderTree called on {id}")
-    raise NotImplementedError()
+    raise NotImplementedError
 
 
 # All Versions Feed (GET)
@@ -497,4 +497,4 @@ def getTypeDescendants():
 def query():
     q = request.form.get("q")
     log.debug(f"query called: {q}")
-    raise NotImplementedError()
+    raise NotImplementedError

@@ -130,7 +130,7 @@ class NSView(View):
         if not confirm:
             flash(_("Please fix the error(s) below"), "error")
             self.form_errors["confirm_delete"] = _(
-                "Must be checked to ensure you " "intent to delete these tags"
+                "Must be checked to ensure you intent to delete these tags"
             )
             return self.get(self.ns)
 

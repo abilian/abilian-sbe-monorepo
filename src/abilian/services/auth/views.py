@@ -89,7 +89,7 @@ def do_login(form: dict[str, Any] | ImmutableMultiDict) -> dict[str, Any]:
     except NoResultFound:
         auth_failed.send(unwrap(current_app), email=email)
         res["error"] = _(
-            "Sorry, we couldn't find an account for " "email '{email}'."
+            "Sorry, we couldn't find an account for email '{email}'."
         ).format(email=email)
         res["code"] = 401
         return res
@@ -181,7 +181,7 @@ def forgotten_pw(new_user: bool = False) -> str | Response | tuple[str, int]:
         ).one()
     except NoResultFound:
         flash(
-            _("Sorry, we couldn't find an account for " "email '{email}'.").format(
+            _("Sorry, we couldn't find an account for email '{email}'.").format(
                 email=email
             ),
             "error",
@@ -242,7 +242,7 @@ def reset_password_post(token: str) -> Response:
 
     if password.lower() == password:
         flash(
-            _("Your new password must contain upper case and lower case " "letters"),
+            _("Your new password must contain upper case and lower case letters"),
             "error",
         )
         return redirect(url_for("login.reset_password_post", token=token))

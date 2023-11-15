@@ -67,7 +67,7 @@ class BaseMixin(IdMixin, TimestampedMixin, OwnedMixin):
         elif hasattr(self, "name"):
             return self.name
         else:
-            raise NotImplementedError()
+            raise NotImplementedError
 
     def __str__(self):
         return self.name or ""

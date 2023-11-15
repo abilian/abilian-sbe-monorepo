@@ -357,7 +357,7 @@ class ensure_request_context:
             ctx = self._rq_ctx = current_app.test_request_context()
             ctx.__enter__()
 
-    def __exit__(self, *args: Any):
+    def __exit__(self, *args: object):
         ctx = self._rq_ctx
         self._rq_ctx = None
 

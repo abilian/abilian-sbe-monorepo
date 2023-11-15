@@ -106,7 +106,7 @@ def create_document(folder: Folder, fs: FileStorage) -> Document:
     if original_name != name:
         # set message after document has been successfully created!
         flash(
-            _('"{original}" already present in folder, ' 'renamed "{name}"').format(
+            _('"{original}" already present in folder, renamed "{name}"').format(
                 original=original_name, name=name
             ),
             "info",

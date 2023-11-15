@@ -98,7 +98,7 @@ class Admin:
     def register_panel(self, panel: Any):
         if self.app:
             raise ValueError(
-                "Extension already initialized for app, cannot add more" " panel"
+                "Extension already initialized for app, cannot add more panel"
             )
 
         self.panels.append(panel)

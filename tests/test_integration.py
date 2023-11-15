@@ -156,4 +156,4 @@ def login_as_admin(client, db: SQLAlchemy):
 
 
 def logout(client):
-    raise NotImplementedError()
+    raise NotImplementedError

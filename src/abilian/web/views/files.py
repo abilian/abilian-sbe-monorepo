@@ -66,13 +66,13 @@ class BaseFileDownload(View):
     def make_response(self, *args, **kwargs):
         # for example: return flask.make_response(...)
         # or: return flask.send_file(...)
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def get_filename(self, *args, **kwargs):
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def get_content_type(self, *args, **kwargs):
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def get(self, attach: bool, *args, **kwargs):
         """
@@ -101,7 +101,7 @@ class BaseFileDownload(View):
 
 class BaseBlobDownload(BaseFileDownload):
     def get_blob(self, *args, **kwargs):
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def prepare_args(self, args, kwargs):
         args, kwargs = super().prepare_args(args, kwargs)
