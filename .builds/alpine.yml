@@ -1,10 +1,11 @@
 image: alpine/edge
 
 packages:
-  # Dev
+  # Build
   - gcc
   - rust
   - cargo
+  - maturin
   # Libraries
   - musl-dev
   - libffi-dev
