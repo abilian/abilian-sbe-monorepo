@@ -1,14 +1,14 @@
 from __future__ import annotations
 
+import pytest
 from flask.ctx import AppContext
-from pytest import fixture
 from sqlalchemy.orm import Session
 
 from abilian.sbe.app import Application, create_app
 from abilian.sbe.apps.documents.models import Document, Folder, icon_for
 
 
-@fixture()
+@pytest.fixture()
 def app(config: type) -> Application:
     return create_app(config=config)
 

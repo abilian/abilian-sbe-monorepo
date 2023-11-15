@@ -70,6 +70,7 @@ extend-ignore = [
     "E713", # Test for membership should be `not in`
     "S320", # OK, we're using defusedxml
     "E203", # whitespace before ':'
+    "S101", # Use of `assert` detected
     # Fix these
     "A001", # Variable `...` is shadowing a python builtin
     "A002", # Argument `...` is shadowing a python builtin
@@ -97,8 +98,6 @@ extend-ignore = [
     "RUF005",
     "RUF012",
     "RUF100", # Unused `noqa` directive
-    "S101", # use of assert
-    "S101", # Use of `assert` detected
     "S104", # Possible binding to all interfaces
     "S105", # Possible hardcoded password assigned"
     "S301",

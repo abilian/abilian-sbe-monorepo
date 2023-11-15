@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta
 
+import pytest
 from flask import Flask
-from pytest import raises
 
 from abilian.core.entities import Entity
 from abilian.core.models.comment import Comment, is_commentable, register
@@ -31,7 +31,7 @@ def test_cannot_register_non_entities():
     class Dummy:
         pass
 
-    with raises(ValueError):
+    with pytest.raises(ValueError):
         register(Dummy)
 
 
