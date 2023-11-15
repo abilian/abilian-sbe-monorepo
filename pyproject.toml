@@ -11,9 +11,8 @@ packages = [
 
 
 [tool.poetry.dependencies]
-# Fix Python version (temporarily) to please the python-poetry-buildpack
-# python = "3.9.7"
-python = "^3.9,<3.13"
+# Doesn't work currently w/ Python 3.12
+python = "^3.9,<3.12"
 
 # Flask (and dependencies), pinned because it's hard to upgrade
 Flask = "~2.1"

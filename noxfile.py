@@ -1,5 +1,6 @@
 import nox
 
+# FIXME: the app doesn't work under Python 3.12
 PYTHON_VERSIONS = ["3.9", "3.10", "3.11"]
 
 nox.options.reuse_existing_virtualenvs = True
@@ -8,7 +9,7 @@ nox.options.reuse_existing_virtualenvs = True
 @nox.session
 def lint(session: nox.Session) -> None:
     session.install("-e", ".")
-    session.install("ruff", "flake8", "pyanalyze")
+    session.install("ruff", "flake8", "pyanalyze", "deptry", "mypy", "black", "isort")
     session.run("pip", "check")
     session.run("make", "lint", external=True)
 
