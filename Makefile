@@ -5,23 +5,11 @@ all: default
 
 
 #
-# Deployment
-#
-deploy: push  ## Deploy to production
-	./script/deploy
-
-push: clean  ## Push code to production
-	rsync -e ssh -avz \
-		--exclude node_modules --exclude instance \
-		--exclude .tox --exclude .idea --exclude .git \
-		--exclude .venv --exclude .vscode \
-		./ cnll@trunks:/home/cnll/extranet/src/
-
-
-#
 # testing
 #
-test:  ## Run tests
+
+## Run tests
+test:
 	# pytest --ff -x -n auto
 	pytest --ff -x
 
@@ -48,7 +36,8 @@ test-assets:
 # Linting
 #
 .PHONY: check
-check: lint  ## Statically check code
+## Statically check code, dependencies, etc.
+check: lint
 
 .PHONY: lint
 lint: lint-py
@@ -81,9 +70,9 @@ format:
 # Everything else
 #
 .PHONY: run
-run:  ## Run dev server
+## Run dev server
+run:
 	honcho start
-
 
 .PHONY:
 run-ssl: run-ssl
@@ -91,7 +80,8 @@ run-ssl: run-ssl
 		--bind "0.0.0.0:5443" --pid run/gunicorn.pid wsgi:app
 
 .PHONY: clean
-clean:  ## Clean up directory
+## Clean up directory
+clean:
 	find . -name "*.pyc" -print0 | xargs -0 rm -f
 	find . -depth -type d -name __pycache__ -exec rm -rf {} \;
 	rm -rf build dist tmp __pycache__
@@ -103,7 +93,8 @@ clean:  ## Clean up directory
 	rm -rf .mypy_cache .pytest_cache
 
 .PHONY: tidy
-tidy: clean  ## Make super-clean
+## Make super-clean
+tidy: clean
 	rm -rf .tox .nox
 
 .PHONY:
@@ -112,13 +103,14 @@ update-pot: update-pot
 
 
 .PHONY: install
-install:  ## Install dependencies
+## Install dependencies
+install:
 	@echo "--> Installing / updating python dependencies for development"
-	pip install -qU pip setuptools wheel
-	pip uninstall -y abilian-core abilian-sbe
+	@echo "Make sure that you have Poetry installed (https://python-poetry.org/)"
 	poetry install
 	@echo "--> Activating pre-commit hook"
 	pre-commit install
+	@echo "Remember to run `poetry shell` to activate the virtualenv"
 	yarn
 
 
@@ -130,7 +122,13 @@ update-deps:  ## Update dependencies
 
 
 .PHONY: help
-help: Makefile
-	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) \
-		| awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' \
-		| sed -e 's/\[32m##/[33m/'
+help:
+	adt help-make
+
+
+.PHONY: help
+## Publish to PyPI
+publish: clean
+	git push --tags
+	poetry build
+	twine upload dist/*
