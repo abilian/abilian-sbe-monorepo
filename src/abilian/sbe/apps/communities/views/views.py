@@ -58,7 +58,7 @@ from abilian.web.action import Endpoint
 from abilian.web.nav import BreadcrumbItem
 from abilian.web.views import images as image_views
 
-__all__ = ["communities", "route", "tab"]
+__all__ = ["communities", "route", "tab", "BaseCommunityView", "default_view_kw"]
 
 logger = logging.getLogger(__name__)
 
@@ -528,6 +528,7 @@ def doc(doc_id):
         if parent.is_root_folder:
             break
         folder = parent
+
     target_community = Community.query.filter(Community.folder_id == folder.id).one()
     location = url_for(
         "documents.document_view", community_id=target_community.slug, doc_id=doc.id

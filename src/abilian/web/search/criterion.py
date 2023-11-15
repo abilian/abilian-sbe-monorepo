@@ -24,13 +24,13 @@ _UNDEFINED = UNDEFINED()
 
 
 class BaseCriterion:
-    form_default_value: Any = _UNDEFINED
     """
     Values to set by default when adding a filter. The provided value(s) must be
     the ones used in html, not in python.
 
     Subclasses can also define property.
     """
+    form_default_value: Any = _UNDEFINED
 
     def __init__(
         self, name: str, label: str = "", form_default_value: Any = _UNDEFINED
