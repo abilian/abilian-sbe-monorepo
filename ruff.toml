@@ -125,6 +125,7 @@ extend-ignore = [
     "FLY002", # Consider `f"..."` instead of string join
     "FURB101", # `open` and `read` should be replaced by `Path(out_fn).read_bytes()`
     "FURB113", # Use `x.extend(...)` instead of repeatedly calling `x.append()`
+    "FURB132",
     "FURB148", # `enumerate` index is unused, use `for x in y` instead
     "G001", # Logging statement uses `str.format`
     "G004", # Logging statement uses f-string
@@ -200,9 +201,6 @@ extend-ignore = [
     "TRY300", # Consider moving this statement to an `else` block
     "TRY400", # Use `logging.exception` instead of `logging.error`
     # Temp
-    "FURB105",
-    "FURB171",
-    "FURB132",
     "PYI055",
     "SIM208",
     "SIM201",

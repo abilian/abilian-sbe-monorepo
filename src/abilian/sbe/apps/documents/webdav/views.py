@@ -52,7 +52,7 @@ log = Logger()
 def log_request():
     litmus_msg = request.headers.get("X-Litmus")
     if litmus_msg:
-        print("")
+        print()
         print(78 * "#")
         print(litmus_msg)
         print(f"{request.method} on {request.path}")

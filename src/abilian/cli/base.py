@@ -66,7 +66,7 @@ def createuser(email, password, role=None, name=None, first_name=None):
     )
     db.session.add(user)
 
-    if role in ("admin",):
+    if role == "admin":
         # FIXME: add other valid roles
         security = get_service("security")
         security.grant_role(user, role)
