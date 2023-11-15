@@ -15,7 +15,7 @@ from abilian.sbe.apps.wiki.models import WikiPage
 from abilian.testing.util import client_login
 
 
-@fixture
+@fixture()
 def user1(db):
     user = User(
         email="user_1@example.com", password="azerty", can_login=True  # noqa: S106
@@ -24,7 +24,7 @@ def user1(db):
     return user
 
 
-@fixture
+@fixture()
 def user2(db):
     user = User(
         email="user_2@example.com", password="azerty", can_login=True  # noqa: S106
@@ -33,7 +33,7 @@ def user2(db):
     return user
 
 
-@fixture
+@fixture()
 def user3(db):
     user = User(
         email="user_3@example.com", password="azerty", can_login=True  # noqa: S106
@@ -42,7 +42,7 @@ def user3(db):
     return user
 
 
-@fixture
+@fixture()
 def community1(db, user1):
     community = Community(name="Community 1")
     community.set_membership(user1, READER)
@@ -50,7 +50,7 @@ def community1(db, user1):
     return community
 
 
-@fixture
+@fixture()
 def community2(db, user2):
     community = Community(name="Community 2")
     community.set_membership(user2, READER)

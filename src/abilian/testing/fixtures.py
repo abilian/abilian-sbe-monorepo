@@ -40,12 +40,12 @@ class TestConfig:
     BABEL_ACCEPT_LANGUAGES = ["en", "fr"]
 
 
-@fixture
+@fixture()
 def config() -> type:
     return TestConfig
 
 
-@fixture
+@fixture()
 def app(config: Any) -> Flask:
     # We currently return a fresh app for each test.
     # Using session-scoped app doesn't currently work.
@@ -55,13 +55,13 @@ def app(config: Any) -> Flask:
     return create_app(config=config)
 
 
-@fixture
+@fixture()
 def app_context(app: Flask) -> Iterator[AppContext]:
     with app.app_context() as ctx:
         yield ctx
 
 
-@fixture
+@fixture()
 def test_request_context(app: Flask) -> Iterator[RequestContext]:
     with app.test_request_context() as ctx:
         yield ctx
@@ -73,7 +73,7 @@ def test_request_context(app: Flask) -> Iterator[RequestContext]:
 #         yield _req_ctx
 
 
-@fixture
+@fixture()
 def db(app_context: AppContext) -> Iterator[SQLAlchemy]:
     """Return a fresh db for each test."""
     from abilian.core.extensions import db as _db
@@ -95,12 +95,12 @@ def db(app_context: AppContext) -> Iterator[SQLAlchemy]:
     stop_all_services(app_context.app)
 
 
-@fixture
+@fixture()
 def session(db: SQLAlchemy) -> Session:
     return db.session
 
 
-@fixture
+@fixture()
 def db_session(db: SQLAlchemy) -> Session:
     return db.session
 
@@ -111,7 +111,7 @@ def db_session(db: SQLAlchemy) -> Session:
 #     return app.test_client()
 
 
-@fixture
+@fixture()
 def user(db: SQLAlchemy) -> User:
     from abilian.core.models.subjects import User
 
@@ -127,7 +127,7 @@ def user(db: SQLAlchemy) -> User:
     return user
 
 
-@fixture
+@fixture()
 def admin_user(db: SQLAlchemy) -> User:
     from abilian.core.models.subjects import User
 
@@ -144,7 +144,7 @@ def admin_user(db: SQLAlchemy) -> User:
     return user
 
 
-@fixture
+@fixture()
 def login_user(user: User, client: FlaskClient) -> User:
     with client.session_transaction() as session:
         session["_user_id"] = user.id
@@ -152,7 +152,7 @@ def login_user(user: User, client: FlaskClient) -> User:
     return user
 
 
-@fixture
+@fixture()
 def login_admin(admin_user: User, client: FlaskClient) -> User:
     with client.session_transaction() as session:
         session["_user_id"] = admin_user.id

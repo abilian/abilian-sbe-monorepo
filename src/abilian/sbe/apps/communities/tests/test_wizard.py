@@ -15,7 +15,7 @@ from abilian.sbe.apps.communities.views.wizard import (
 )
 
 
-@pytest.fixture
+@pytest.fixture()
 def csv_file() -> IO[str]:
     # create a tmp csv file
     csv = NamedTemporaryFile("w+", suffix=".csv", prefix="tmp_", delete=False)

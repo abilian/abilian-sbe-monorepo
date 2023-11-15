@@ -24,7 +24,7 @@ class NonEntity:
     pass
 
 
-@fixture
+@fixture()
 def registry(app: Application) -> Registry:
     app.default_view = Registry()
     return app.default_view

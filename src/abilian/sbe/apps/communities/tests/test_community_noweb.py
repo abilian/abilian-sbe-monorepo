@@ -21,7 +21,7 @@ from .. import signals, views
 from ..models import MEMBER, READER, Community, CommunityIdColumn, community_content
 
 
-@fixture
+@fixture()
 def community(db_session: Session) -> Community:
     community = Community(name="My Community")
     db_session.add(community)

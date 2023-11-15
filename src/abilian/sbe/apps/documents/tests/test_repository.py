@@ -10,14 +10,14 @@ from abilian.sbe.apps.documents.models import Document, Folder
 from abilian.sbe.apps.documents.repository import ContentRepository
 
 
-@fixture
+@fixture()
 def repository(app: Application) -> ContentRepository:
     repository = ContentRepository()
     repository.init_app(app)
     return repository
 
 
-@fixture
+@fixture()
 def root(session: Session) -> Folder:
     root = Folder(title="")
     session.add(root)

@@ -19,7 +19,7 @@ encoding_sniffer = Magic(mime_encoding=True)
 # FIXME: tests that rely on OOo are disabled until we fix stability issues.
 
 
-@fixture
+@fixture()
 def converter() -> Iterator[Iterator | Iterator[Converter]]:
     from abilian.services.conversion import converter as c
 

@@ -13,7 +13,7 @@ class Message1(Entity):
     pass
 
 
-@fixture
+@fixture()
 def activity_service(app, db):
     service = ActivityService()
     service.start()

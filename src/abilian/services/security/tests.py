@@ -53,7 +53,7 @@ def test_enumerate_assignables(db):
     assert Role.assignable_roles() == [Admin]
 
 
-@fixture
+@fixture()
 def session(app: Application, db: SQLAlchemy) -> Iterator[Session]:
     security.start()
     create_root_user()

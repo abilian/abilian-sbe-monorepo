@@ -47,7 +47,7 @@ class Application(BaseApplication):
         prefs.register_panel(AdminPanel(), self)
 
 
-@fixture
+@fixture()
 def app(config: type) -> Application:
     app = Application()
     app.setup(config)

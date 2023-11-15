@@ -14,7 +14,7 @@ from abilian.sbe.app import Application, create_app
 from abilian.sbe.apps.communities.common import activity_time_format
 
 
-@pytest.fixture
+@pytest.fixture()
 def app(config: type) -> Iterator[Iterator | Iterator[Application]]:
     app = create_app(config)
 

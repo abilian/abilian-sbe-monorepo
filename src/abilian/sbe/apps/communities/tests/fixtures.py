@@ -7,7 +7,7 @@ from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.sbe.apps.communities.models import READER, Community
 
 
-@fixture
+@fixture()
 def community(db):
     community = Community(name="My Community")
     db.session.add(community)
@@ -15,7 +15,7 @@ def community(db):
     return community
 
 
-@fixture
+@fixture()
 def community1(db: SQLAlchemy) -> Community:
     community = Community(name="My Community")
     db.session.add(community)
@@ -31,7 +31,7 @@ def community1(db: SQLAlchemy) -> Community:
     return community
 
 
-@fixture
+@fixture()
 def community2(db: SQLAlchemy) -> Community:
     community = Community(name="Another Community")
     db.session.add(community)

@@ -8,7 +8,7 @@ from abilian.sbe.app import Application, create_app
 from abilian.sbe.apps.documents.models import Document, Folder, icon_for
 
 
-@fixture
+@fixture()
 def app(config: type) -> Application:
     return create_app(config=config)
 
