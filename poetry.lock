@@ -254,9 +254,6 @@ files = [
     {file = "Babel-2.13.1.tar.gz", hash = "sha256:33e0952d7dd6374af8dbf6768cc4ddf3ccfefc244f9986d4074704f2fbd18900"},
 ]
 
-[package.dependencies]
-setuptools = {version = "*", markers = "python_version >= \"3.12\""}
-
 [package.extras]
 dev = ["freezegun (>=1.0,<2.0)", "pytest (>=6.0)", "pytest-cov"]
 
@@ -1111,21 +1108,19 @@ tomli = {version = ">=2.0.1,<3.0.0", markers = "python_version < \"3.11\""}
 
 [[package]]
 name = "devtools"
-version = "0.8.0"
-description = "Python's missing debug print command and other development tools."
+version = "0.12.2"
+description = "Python's missing debug print command, and more."
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "devtools-0.8.0-py3-none-any.whl", hash = "sha256:00717ef184223cf36c65bbd17c6eb412f8a7564f47957f9e8b2b7610661b17fb"},
-    {file = "devtools-0.8.0.tar.gz", hash = "sha256:6162a2f61c70242479dff3163e7837e6a9bf32451661af1347bfa3115602af16"},
+    {file = "devtools-0.12.2-py3-none-any.whl", hash = "sha256:c366e3de1df4cdd635f1ad8cbcd3af01a384d7abda71900e68d43b04eb6aaca7"},
+    {file = "devtools-0.12.2.tar.gz", hash = "sha256:efceab184cb35e3a11fa8e602cc4fadacaa2e859e920fc6f87bf130b69885507"},
 ]
 
 [package.dependencies]
 asttokens = ">=2.0.0,<3.0.0"
-executing = ">=0.8.0,<1.0.0"
-
-[package.extras]
-pygments = ["Pygments (>=2.2.0)"]
+executing = ">=1.1.1"
+pygments = ">=2.15.0"
 
 [[package]]
 name = "distlib"
@@ -1231,14 +1226,17 @@ testing = ["hatch", "pre-commit", "pytest", "tox"]
 
 [[package]]
 name = "executing"
-version = "0.10.0"
+version = "2.0.1"
 description = "Get the currently executing AST node of a frame, and other information"
 optional = false
-python-versions = "*"
+python-versions = ">=3.5"
 files = [
-    {file = "executing-0.10.0-py2.py3-none-any.whl", hash = "sha256:9c745f80cda11eb22b62cbecf21156491a794eb56ab06f9d286a44e62822b24e"},
-    {file = "executing-0.10.0.tar.gz", hash = "sha256:d1cd87c2e371e9966261410c5b3769d6df2f9e4a79a83eebd2662dd3388f9833"},
+    {file = "executing-2.0.1-py2.py3-none-any.whl", hash = "sha256:eac49ca94516ccc753f9fb5ce82603156e590b27525a8bc32cce8ae302eb61bc"},
+    {file = "executing-2.0.1.tar.gz", hash = "sha256:35afe2ce3affba8ee97f2d69927fa823b08b472b7b994e36a52a964b93d16147"},
 ]
+
+[package.extras]
+tests = ["asttokens (>=2.1.0)", "coverage", "coverage-enable-subprocess", "ipython", "littleutils", "pytest", "rich"]
 
 [[package]]
 name = "fawltydeps"
@@ -2716,7 +2714,6 @@ files = [
 numpy = [
     {version = ">=1.22.4,<2", markers = "python_version < \"3.11\""},
     {version = ">=1.23.2,<2", markers = "python_version == \"3.11\""},
-    {version = ">=1.26.0,<2", markers = "python_version >= \"3.12\""},
 ]
 python-dateutil = ">=2.8.2"
 pytz = ">=2020.1"
@@ -3823,21 +3820,6 @@ files = [
 ]
 
 [[package]]
-name = "sqla2uml"
-version = "0.1.2"
-description = "Convert your SQLAlchemy models to UML diagrams (via PlantUML)"
-optional = false
-python-versions = ">=3.8,<4"
-files = [
-    {file = "sqla2uml-0.1.2-py3-none-any.whl", hash = "sha256:7f1a48a70f099257db4f328429f6a2e2774102612dccfb4e795c9c6466a10a3f"},
-    {file = "sqla2uml-0.1.2.tar.gz", hash = "sha256:18c9084e21234da22dd533c7b1c834fa42bbe3e4945ffb0d06c74b729f286df3"},
-]
-
-[package.dependencies]
-devtools = ">=0.8.0,<0.9.0"
-SQLAlchemy = ">=1.3"
-
-[[package]]
 name = "sqlalchemy"
 version = "1.3.24"
 description = "Database Abstraction Library"
@@ -4630,5 +4612,5 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.9,<3.13"
-content-hash = "1e749cc20563595cf0b5fcdabc47345cfce001451f1775f06a9a4cbff8ff5682"
+python-versions = "^3.9,<3.12"
+content-hash = "09814e1115d0c09782597ac58b6d4a9b0567c08b0e8f4585d21f573a1e25f026"

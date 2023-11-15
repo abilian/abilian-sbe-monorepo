@@ -189,7 +189,6 @@ types-Markdown = "*"
 pyanalyze = "*"
 
 # Tools
-sqla2uml = "*"
 pyupgrade = "*"
 pytest = "^7.2.2"
 tox = "^4.5.1"
