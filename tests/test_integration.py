@@ -60,7 +60,7 @@ def test_public_endpoints_with_no_login(client, app: Application):
         try:
             url = url_for(endpoint)
             r = client.get(url)
-            assert r.status_code in [200, 302]
+            assert r.status_code in {200, 302}
         except Exception as e:
             errors.append(f"Failed: {endpoint} :\n{e}\n")
 
@@ -81,7 +81,7 @@ def test_all_simple_endpoints_with_no_login(client, app: Application):
         url = url_for(rule.endpoint)
         try:
             r = client.get(url)
-            assert r.status_code in [200, 302, 403]
+            assert r.status_code in {200, 302, 403}
         except Exception as e:
             print("Failed:", rule.endpoint, ":", str(e))
             raise
@@ -101,7 +101,7 @@ def test_all_simple_endpoints_as_admin(client, app: Application, db: SQLAlchemy)
         if endpoint in ENDPOINTS_TO_IGNORE:
             continue
 
-        if endpoint.endswith(".list_json2") or endpoint.endswith(".export_xls"):
+        if endpoint.endswith((".list_json2", ".export_xls")):
             continue
 
         url = url_for(endpoint)
