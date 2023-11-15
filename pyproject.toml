@@ -223,67 +223,6 @@ python_files = [
 
 # -----------------------------------------------------------------------------
 
-[tool.ruff]
-extend-select = [
-    "F",
-    "E",
-    "I",
-    "UP",
-    "YTT",
-    "B",
-    "C4",
-    "ICN",
-    "Q",
-    "S",
-    "RUF",
-    # "PLC", "PLE", "PLR", "PLW",
-    # Ignore for now
-    # "A",
-    # "BLE",
-    # "C90",
-    # "RET",
-    # "TID",
-    # "N",
-    # "SIM",
-]
-extend-ignore = [
-    # False positive
-    "E711",  # comparison to None should be 'if cond is not None:'
-    "E712",  # ...
-    "E713",  # Test for membership should be `not in`
-    "S320",  # OK, we're using defusedxml
-    # Fix these
-    "A003",  # Class attribute ... is shadowing a python builtin
-    "B024",  # `...` is an abstract base class, but it has no abstract methods
-    "B027",  # `...` is an empty method in an abstract base class, but has no abstract decorator
-    "B028",  # No explicit `stacklevel` keyword argument found
-    "B905",  # `zip()` without an explicit `strict=` parameter
-    "E402",  # Module level import not at top of file
-    "E501",  # line too long
-    "E741",  # Ambiguous variable name
-    "F401",  # 'module' imported but unused
-    "F841",  # Local variable `...` is assigned to but never used
-    "I001",  # Import block is un-sorted or un-formatted
-    "PLR2004",  # Magic value used
-    "S101",  # use of assert
-    "S104",  # Possible binding to all interfaces
-    "S301",
-    "S603",
-    "S605",
-    "S606",
-    "S607",
-    "S701", # By default, jinja2 sets `autoescape` to `False`
-    "UP038",  # Use `X | Y` in `isinstance` call instead of `(X, Y)`
-#    "S110", # `try`-`except`-`pass` detected, consider logging the exception
-    "RUF005",
-    "RUF012",
-]
-
-[tool.ruff.mccabe]
-max-complexity = 10
-
-# -----------------------------------------------------------------------------
-
 [tool.deptry.per_rule_ignores]
 # X defined as a dependency but not used in the codebase
 DEP002 = [
