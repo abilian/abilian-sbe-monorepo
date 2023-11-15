@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "abilian-sbe-next"
-version = "1.0.3"
+version = "1.0.4"
 description = ""
 authors = ["Abilian SAS <contact@abilian.com>"]
 
