@@ -4,7 +4,6 @@
 import warnings
 from collections.abc import Iterator
 
-import rich
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.routing import Rule
 
@@ -67,7 +66,7 @@ def test_public_endpoints_with_no_login(client, app: Application):
 
     security_service.stop()
     if errors:
-        rich.print(errors)
+        print(errors)
         raise AssertionError("Some public web tests failed")
 
 

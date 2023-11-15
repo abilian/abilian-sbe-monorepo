@@ -57,6 +57,7 @@ lint: lint-py
 lint-py:
 	ruff src tests
 	flake8 src tests
+	deptry src
 	python -m pyanalyze --config-file pyproject.toml
 	# mypy --show-error-codes src tests
 	# pyright src tests
