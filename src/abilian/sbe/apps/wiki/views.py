@@ -251,7 +251,7 @@ class PageEdit(BasePageView, ObjectEdit):
                         self.last_revision.body_src.splitlines(True),
                         edited_src.splitlines(True),
                     )
-                    if not l[0] == "?"
+                    if l[0] != "?"
                 ]
                 current_diff = [
                     l
@@ -259,7 +259,7 @@ class PageEdit(BasePageView, ObjectEdit):
                         self.last_revision.body_src.splitlines(True),
                         current.body_src.splitlines(True),
                     )
-                    if not l[0] == "?"
+                    if l[0] != "?"
                 ]
                 ctx = {
                     "current": current,

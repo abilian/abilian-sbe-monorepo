@@ -17,7 +17,7 @@ class CalendarAction(Action):
 class EventAction(CalendarAction):
     def pre_condition(self, context):
         event = context.get("object")
-        return not not event
+        return bool(event)
 
     def url(self, context=None):
         event = context.get("object")

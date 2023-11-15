@@ -147,7 +147,6 @@ extend-ignore = [
     "PERF203", # `try`-`except` within a loop incurs performance overhead
     "PERF401", # Use a list comprehension to create a transformed list
     "PERF403", # Use a dictionary comprehension instead of a for-loop
-    "PIE808", # [*] Unnecessary `start` argument in `range`
     "PIE810", # Call `endswith` once with a `tuple`
     "PIE810", # Call `startswith` once with a `tuple`
     "PLC1901", # `x == ""` can be simplified to `not x` as an empty string is falsey
@@ -168,7 +167,6 @@ extend-ignore = [
     "PT012", # `pytest.raises()` block should contain a single simple statement
     "PT013", # Found incorrect import of pytest, use simple `import pytest` instead
     "PT018", # Assertion should be broken down into multiple parts
-    "PT022", # [*] No teardown in fixture `validator`, use `return` instead of `yield`
     "PTH100", # `os.path.abspath()` should be replaced by `Path.resolve()`
     "PTH107", # `os.remove()` should be replaced by `Path.unlink()`
     "PTH109", # `os.getcwd()` should be replaced by `Path.cwd()`
@@ -183,7 +181,6 @@ extend-ignore = [
     "PTH202", # `os.path.getsize` should be replaced by `Path.stat().st_size`
     "PTH207", # Replace `glob` with `Path.glob` or `Path.rglob`
     "PYI024", # Use `typing.NamedTuple` instead of `collections.namedtuple`
-    "PYI032", # [*] Prefer `object` to `Any` for the second parameter to `__eq__`
     "PYI034", # `__enter__` methods in classes like `FormContext` usually return `self` at runtime
     "PYI036", # The first argument in `__exit__` should be annotated with `object` or `type[BaseException] | None`
     "RET503", # Missing explicit `return` at the end of function able to return non-`None` value
@@ -200,12 +197,10 @@ extend-ignore = [
     "TRY004", # Prefer `TypeError` exception for invalid type
     "TRY300", # Consider moving this statement to an `else` block
     "TRY400", # Use `logging.exception` instead of `logging.error`
-    # Temp
-    "PYI055",
-    "SIM208",
-    "SIM201",
-    "TCH005",
-
+    # Fixable
+    "PT022", # [*] No teardown in fixture `validator`, use `return` instead of `yield`
+    "PYI032", # [*] Prefer `object` to `Any` for the second parameter to `__eq__`
+    "PIE808", # [*] Unnecessary `start` argument in `range`
 ]
 
 [mccabe]

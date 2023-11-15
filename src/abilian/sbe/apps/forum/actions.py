@@ -39,7 +39,7 @@ class ForumAction(Action):
 class ThreadAction(ForumAction):
     def pre_condition(self, context):
         thread = actions.context.get("object")
-        return not not thread
+        return bool(thread)
 
 
 def is_admin(context):
