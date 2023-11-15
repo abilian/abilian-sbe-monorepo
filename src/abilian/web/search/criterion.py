@@ -30,6 +30,7 @@ class BaseCriterion:
 
     Subclasses can also define property.
     """
+
     form_default_value: Any = _UNDEFINED
 
     def __init__(

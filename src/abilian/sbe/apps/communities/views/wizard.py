@@ -56,12 +56,13 @@ def wizard_extract_data(
 
     accounts_list = []
     for user in existing_accounts_objects:
-        account = {}
-        account["email"] = user.email
-        account["first_name"] = user.first_name
-        account["last_name"] = user.last_name
-        account["role"] = existing_account_csv_roles[user.email] if is_csv else "member"
-        account["status"] = "existing"
+        account = {
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "role": existing_account_csv_roles[user.email] if is_csv else "member",
+            "status": "existing",
+        }
         accounts_list.append(account)
 
     if is_csv:
