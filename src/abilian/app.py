@@ -15,10 +15,14 @@ from markupsafe import Markup, escape
 
 from .backports import safe_str_cmp
 
+# Monkey patching werkzeug, jinja2 and flask to keep working with old version
+# of some libraries.
 werkzeug.url_encode = urllib.parse.urlencode
+werkzeug.FileStorage = werkzeug.datastructures.FileStorage
+
+# Is this still needed? Tests seem to pass without them:
 werkzeug.urls.url_encode = urllib.parse.urlencode
 werkzeug.urls.url_decode = urllib.parse.parse_qs
-werkzeug.FileStorage = werkzeug.datastructures.FileStorage
 werkzeug.security.safe_str_cmp = safe_str_cmp
 jinja2.Markup = Markup
 jinja2.escape = escape
