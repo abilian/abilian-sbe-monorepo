@@ -316,13 +316,13 @@ typecheck = ["mypy"]
 
 [[package]]
 name = "billiard"
-version = "3.6.4.0"
+version = "4.2.0"
 description = "Python multiprocessing fork with improvements and bugfixes"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7"
 files = [
-    {file = "billiard-3.6.4.0-py3-none-any.whl", hash = "sha256:87103ea78fa6ab4d5c751c4909bcff74617d985de7fa8b672cf8618afd5a875b"},
-    {file = "billiard-3.6.4.0.tar.gz", hash = "sha256:299de5a8da28a783d51b197d496bef4f1595dd023a93a4f59dde1886ae905547"},
+    {file = "billiard-4.2.0-py3-none-any.whl", hash = "sha256:07aa978b308f334ff8282bd4a746e681b3513db5c9a514cbdd810cbbdc19714d"},
+    {file = "billiard-4.2.0.tar.gz", hash = "sha256:9a3c3184cb275aa17a732f93f65b20c525d3d9f253722d26a82194803ade5a2c"},
 ]
 
 [[package]]
@@ -457,57 +457,58 @@ files = [
 
 [[package]]
 name = "celery"
-version = "5.2.7"
+version = "5.3.5"
 description = "Distributed Task Queue."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "celery-5.2.7-py3-none-any.whl", hash = "sha256:138420c020cd58d6707e6257b6beda91fd39af7afde5d36c6334d175302c0e14"},
-    {file = "celery-5.2.7.tar.gz", hash = "sha256:fafbd82934d30f8a004f81e8f7a062e31413a23d444be8ee3326553915958c6d"},
+    {file = "celery-5.3.5-py3-none-any.whl", hash = "sha256:30b75ac60fb081c2d9f8881382c148ed7c9052031a75a1e8743ff4b4b071f184"},
+    {file = "celery-5.3.5.tar.gz", hash = "sha256:6b65d8dd5db499dd6190c45aa6398e171b99592f2af62c312f7391587feb5458"},
 ]
 
 [package.dependencies]
-billiard = ">=3.6.4.0,<4.0"
-click = ">=8.0.3,<9.0"
-click-didyoumean = ">=0.0.3"
+billiard = ">=4.2.0,<5.0"
+click = ">=8.1.2,<9.0"
+click-didyoumean = ">=0.3.0"
 click-plugins = ">=1.1.1"
 click-repl = ">=0.2.0"
-kombu = ">=5.2.3,<6.0"
-pytz = ">=2021.3"
-vine = ">=5.0.0,<6.0"
+kombu = ">=5.3.3,<6.0"
+python-dateutil = ">=2.8.2"
+tzdata = ">=2022.7"
+vine = ">=5.1.0,<6.0"
 
 [package.extras]
-arangodb = ["pyArango (>=1.3.2)"]
-auth = ["cryptography"]
-azureblockblob = ["azure-storage-blob (==12.9.0)"]
+arangodb = ["pyArango (>=2.0.2)"]
+auth = ["cryptography (==41.0.5)"]
+azureblockblob = ["azure-storage-blob (>=12.15.0)"]
 brotli = ["brotli (>=1.0.0)", "brotlipy (>=0.7.0)"]
-cassandra = ["cassandra-driver (<3.21.0)"]
-consul = ["python-consul2"]
-cosmosdbsql = ["pydocumentdb (==2.3.2)"]
+cassandra = ["cassandra-driver (>=3.25.0,<4)"]
+consul = ["python-consul2 (==0.1.5)"]
+cosmosdbsql = ["pydocumentdb (==2.3.5)"]
 couchbase = ["couchbase (>=3.0.0)"]
-couchdb = ["pycouchdb"]
-django = ["Django (>=1.11)"]
-dynamodb = ["boto3 (>=1.9.178)"]
-elasticsearch = ["elasticsearch"]
+couchdb = ["pycouchdb (==1.14.2)"]
+django = ["Django (>=2.2.28)"]
+dynamodb = ["boto3 (>=1.26.143)"]
+elasticsearch = ["elastic-transport (<=8.10.0)", "elasticsearch (<=8.10.1)"]
 eventlet = ["eventlet (>=0.32.0)"]
 gevent = ["gevent (>=1.5.0)"]
-librabbitmq = ["librabbitmq (>=1.5.0)"]
-memcache = ["pylibmc"]
-mongodb = ["pymongo[srv] (>=3.11.1)"]
-msgpack = ["msgpack"]
-pymemcache = ["python-memcached"]
-pyro = ["pyro4"]
-pytest = ["pytest-celery"]
-redis = ["redis (>=3.4.1,!=4.0.0,!=4.0.1)"]
-s3 = ["boto3 (>=1.9.125)"]
+librabbitmq = ["librabbitmq (>=2.0.0)"]
+memcache = ["pylibmc (==1.6.3)"]
+mongodb = ["pymongo[srv] (>=4.0.2)"]
+msgpack = ["msgpack (==1.0.7)"]
+pymemcache = ["python-memcached (==1.59)"]
+pyro = ["pyro4 (==4.82)"]
+pytest = ["pytest-celery (==0.0.0)"]
+redis = ["redis (>=4.5.2,!=4.5.5,<6.0.0)"]
+s3 = ["boto3 (>=1.26.143)"]
 slmq = ["softlayer-messaging (>=1.0.3)"]
-solar = ["ephem"]
-sqlalchemy = ["sqlalchemy"]
-sqs = ["kombu[sqs]"]
+solar = ["ephem (==4.1.5)"]
+sqlalchemy = ["sqlalchemy (>=1.4.48,<2.1)"]
+sqs = ["boto3 (>=1.26.143)", "kombu[sqs] (>=5.3.0)", "pycurl (>=7.43.0.5)", "urllib3 (>=1.26.16)"]
 tblib = ["tblib (>=1.3.0)", "tblib (>=1.5.0)"]
 yaml = ["PyYAML (>=3.10)"]
 zookeeper = ["kazoo (>=1.3.1)"]
-zstd = ["zstandard"]
+zstd = ["zstandard (==0.22.0)"]
 
 [[package]]
 name = "certifi"
@@ -2333,16 +2334,6 @@ files = [
     {file = "MarkupSafe-2.1.3-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:5bbe06f8eeafd38e5d0a4894ffec89378b6c6a625ff57e3028921f8ff59318ac"},
     {file = "MarkupSafe-2.1.3-cp311-cp311-win32.whl", hash = "sha256:dd15ff04ffd7e05ffcb7fe79f1b98041b8ea30ae9234aed2a9168b5797c3effb"},
     {file = "MarkupSafe-2.1.3-cp311-cp311-win_amd64.whl", hash = "sha256:134da1eca9ec0ae528110ccc9e48041e0828d79f24121a1a146161103c76e686"},
-    {file = "MarkupSafe-2.1.3-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:f698de3fd0c4e6972b92290a45bd9b1536bffe8c6759c62471efaa8acb4c37bc"},
-    {file = "MarkupSafe-2.1.3-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:aa57bd9cf8ae831a362185ee444e15a93ecb2e344c8e52e4d721ea3ab6ef1823"},
-    {file = "MarkupSafe-2.1.3-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ffcc3f7c66b5f5b7931a5aa68fc9cecc51e685ef90282f4a82f0f5e9b704ad11"},
-    {file = "MarkupSafe-2.1.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:47d4f1c5f80fc62fdd7777d0d40a2e9dda0a05883ab11374334f6c4de38adffd"},
-    {file = "MarkupSafe-2.1.3-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:1f67c7038d560d92149c060157d623c542173016c4babc0c1913cca0564b9939"},
-    {file = "MarkupSafe-2.1.3-cp312-cp312-musllinux_1_1_aarch64.whl", hash = "sha256:9aad3c1755095ce347e26488214ef77e0485a3c34a50c5a5e2471dff60b9dd9c"},
-    {file = "MarkupSafe-2.1.3-cp312-cp312-musllinux_1_1_i686.whl", hash = "sha256:14ff806850827afd6b07a5f32bd917fb7f45b046ba40c57abdb636674a8b559c"},
-    {file = "MarkupSafe-2.1.3-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:8f9293864fe09b8149f0cc42ce56e3f0e54de883a9de90cd427f191c346eb2e1"},
-    {file = "MarkupSafe-2.1.3-cp312-cp312-win32.whl", hash = "sha256:715d3562f79d540f251b99ebd6d8baa547118974341db04f5ad06d5ea3eb8007"},
-    {file = "MarkupSafe-2.1.3-cp312-cp312-win_amd64.whl", hash = "sha256:1b8dd8c3fd14349433c79fa8abeb573a55fc0fdd769133baac1f5e07abf54aeb"},
     {file = "MarkupSafe-2.1.3-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:8e254ae696c88d98da6555f5ace2279cf7cd5b3f52be2b5cf97feafe883b58d2"},
     {file = "MarkupSafe-2.1.3-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:cb0932dc158471523c9637e807d9bfb93e06a95cbf010f1a38b98623b929ef2b"},
     {file = "MarkupSafe-2.1.3-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9402b03f1a1b4dc4c19845e5c749e3ab82d5078d16a2a4c2cd2df62d57bb0707"},
@@ -4598,4 +4589,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9,<3.12"
-content-hash = "e39b4d9909c61f9e363055f8d0caaaf32bd672483977c85a58131e6c14e1439f"
+content-hash = "004c587430029512f3250c77f1a6bbe21c634ad0d2d20d12c63d25d075f672ef"
