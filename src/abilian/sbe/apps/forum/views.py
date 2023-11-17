@@ -405,9 +405,7 @@ class ThreadCloseView(BaseThreadView, views.object.BaseObjectView):
     methods = ["POST"]
     _VALID_ACTIONS = {"close", "reopen"}
     CLOSED_MSG = _l("The thread is now closed for edition and new contributions.")
-    REOPENED_MSG = _l(
-        "The thread is now re-opened for edition and new contributions."
-    )
+    REOPENED_MSG = _l("The thread is now re-opened for edition and new contributions.")
 
     def prepare_args(self, args, kwargs):
         args, kwargs = super().prepare_args(args, kwargs)
