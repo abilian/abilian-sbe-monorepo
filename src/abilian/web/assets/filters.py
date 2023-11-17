@@ -6,11 +6,13 @@ import logging
 import os
 import re
 import shutil
+import sys
 from functools import partial
 from io import StringIO
 from os.path import isabs
 from pathlib import Path
 
+from devtools import debug
 from flask import current_app
 from webassets.filter import ExternalTool, Filter, get_filter, register_filter
 from webassets.filter.closure import ClosureJS as BaseClosureJS
@@ -233,8 +235,19 @@ class Less(ExternalTool):
     def _apply_less(self, in_, out, output_path, output, **kw):
         # Set working directory to the source file so that includes are found
 
+        print("===================================================")
+        print("===================================================")
+        print("===================================================")
+        print("===================================================")
+        debug(self.less)
+        print("===================================================")
+        print("===================================================")
+        print("===================================================")
+
         if self.less and shutil.which(self.less) is not None:
-            lessc = self.less
+            lessc = shutil.which(self.less)
+        elif shutil.which("lessc") is not None:
+            lessc = shutil.which("lessc")
         else:
             root = Path(current_app.root_path) / ".." / ".."
             lessc = str(root / "node_modules" / ".bin" / "lessc")
