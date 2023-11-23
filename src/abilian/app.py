@@ -284,6 +284,8 @@ class Application(
     def configure(self, config: type | None):
         if config:
             self.config.from_object(config)
+        else:
+            self.config.from_prefixed_env()
 
         # Setup babel config
         languages = self.config["BABEL_ACCEPT_LANGUAGES"]
