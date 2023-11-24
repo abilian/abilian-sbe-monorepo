@@ -856,8 +856,8 @@ class SecurityService(Service):
             pa = pa.filter(PermissionAssignment.permission == permission)
 
         results: dict[permission, set[Role]] = {}
-        for permission, role in pa.yield_per(1000):
-            results.setdefault(permission, set()).add(role)
+        for perm, role in pa.yield_per(1000):
+            results.setdefault(perm, set()).add(role)
 
         return results
 
