@@ -68,7 +68,7 @@ python-dateutil = "^2.8.2"
 Whoosh = "^2.7.4"
 
 # Task queue
-celery = "==5.3.5"
+celery = "^5.3.5"
 redis = "~3.5.3"
 
 # Security
