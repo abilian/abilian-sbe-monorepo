@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import pytest
 from flask import Flask
 from flask.ctx import AppContext
 from markupsafe import Markup
@@ -30,7 +31,13 @@ OTHER_CAT = Action(
 ALL_ACTIONS = (BASIC, CONDITIONAL, OTHER_CAT)
 
 
-def setup_actions(app: Application):
+@pytest.fixture(autouse=True)
+def ctx(app: Flask, app_context: AppContext):
+    setup_actions(app)
+    return app_context
+
+
+def setup_actions(app: Flask):
     actions.init_app(app)
     for a in ALL_ACTIONS:
         a.enabled = True
@@ -39,15 +46,13 @@ def setup_actions(app: Application):
     actions.context["show_all"] = True
 
 
-def test_installed(app_context: AppContext):
+def test_installed(app: Flask):
     assert actions.installed()  # test current_app (==self.app)
-    assert actions.installed(app_context.app)
+    assert actions.installed(app)
     assert not actions.installed(Flask("dummyapp"))
 
 
-def test_actions(app_context: AppContext):
-    setup_actions(app_context.app)
-
+def test_actions(app: Flask):
     all_actions = actions.actions()
     assert "cat_1" in all_actions
     assert "cat_2:sub" in all_actions
@@ -55,9 +60,7 @@ def test_actions(app_context: AppContext):
     assert all_actions["cat_2:sub"] == [OTHER_CAT]
 
 
-def test_for_category(app_context: AppContext):
-    setup_actions(app_context.app)
-
+def test_for_category(app: Flask):
     cat_1 = actions.for_category("cat_1")
     assert cat_1 == [BASIC, CONDITIONAL]
 
@@ -65,16 +68,12 @@ def test_for_category(app_context: AppContext):
     assert cat_2 == [OTHER_CAT]
 
 
-def test_conditional(app_context: AppContext):
-    setup_actions(app_context.app)
-
+def test_conditional(app: Flask, app_context: AppContext):
     actions.context["show_all"] = False
     assert actions.for_category("cat_1") == [BASIC]
 
 
-def test_enabled(app_context: AppContext):
-    setup_actions(app_context.app)
-
+def test_enabled(app: Flask):
     assert CONDITIONAL.enabled
     assert actions.for_category("cat_1") == [BASIC, CONDITIONAL]
 
@@ -89,9 +88,7 @@ def test_action_url_from_context():
     assert OTHER_CAT.url({}) == "http://count?0"
 
 
-def test_render(app: Application):
-    setup_actions(app)
-
+def test_render(app: Flask):
     assert BASIC.render() == Markup(
         '<a class="action action-cat_1 action-cat_1-basic" '
         'href="http://some.where">'
