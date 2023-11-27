@@ -120,8 +120,9 @@ def add_to_recent_items(entity, type="ignored"):
 def expose(url: str = "/", methods: tuple[str] = ("GET",)) -> Callable:
     """Use this decorator to expose views in your view classes.
 
-    `url`   Relative URL for the view `methods`   Allowed HTTP methods.
-    By default only GET is allowed.
+    `url`   Relative URL for the view
+
+    `methods` Allowed HTTP methods. By default, only GET is allowed.
     """
 
     def wrap(f):
@@ -133,7 +134,7 @@ def expose(url: str = "/", methods: tuple[str] = ("GET",)) -> Callable:
     return wrap
 
 
-def labelize(s: str) -> str:
+def make_label(s: str) -> str:
     return " ".join(w.capitalize() for w in s.split("_"))
 
 
@@ -455,7 +456,7 @@ class Module(metaclass=ModuleMeta):
             self.endpoint = class_name.lower()
 
         if self.label == "":
-            self.label = labelize(self.endpoint)
+            self.label = make_label(self.endpoint)
 
         # If name is not provided, use capitalized endpoint name
         if self.name == "":

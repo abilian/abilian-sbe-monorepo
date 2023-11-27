@@ -141,7 +141,6 @@ gunicorn = "*"
 # raven = "*"
 
 # Debug tools
-icecream = "*"
 devtools = "*"
 
 # Additional stuff
@@ -154,7 +153,6 @@ defusedxml = "^0.7.1"
 [tool.poetry.group.dev.dependencies]
 # Generic dev deps
 abilian-devtools = "*"
-# Pinned because bug in 0.991
 mypy = "^1.5.1"
 
 # Testing
