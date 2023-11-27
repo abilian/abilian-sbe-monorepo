@@ -146,7 +146,6 @@ devtools = "*"
 # Additional stuff
 python-dotenv = "^1.0.0"
 #flask-env = "*"
-importlib-resources = "^5.10.0"
 defusedxml = "^0.7.1"
 
 
@@ -233,10 +232,6 @@ DEP002 = [
     'psycopg2',
     # Web
     'gunicorn',
-    # Debug
-    'icecream',
-    # Misc
-    'importlib-resources',
 ]
 
 # X imported but missing from the dependency definitions

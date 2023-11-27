@@ -5,7 +5,6 @@ from flask import Flask
 from flask.ctx import AppContext
 from markupsafe import Markup
 
-from abilian.app import Application
 from abilian.web.action import Action, Glyphicon, StaticIcon, actions
 
 BASIC = Action("cat_1", "basic", "Basic Action", url="http://some.where", icon="ok")
