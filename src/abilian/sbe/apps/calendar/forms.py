@@ -11,7 +11,7 @@ from abilian.web.forms.filters import strip
 from abilian.web.forms.validators import required
 from abilian.web.forms.widgets import RichTextWidget
 
-ALLOWED_TAGS = [
+ALLOWED_TAGS = {
     "a",
     "abbr",
     "acronym",
@@ -34,7 +34,7 @@ ALLOWED_TAGS = [
     "p",
     "u",
     "img",
-]
+}
 
 ALLOWED_ATTRIBUTES = {
     "*": ["title"],

@@ -10,7 +10,7 @@ from abilian.web.forms.fields import FileField
 from abilian.web.forms.filters import strip
 from abilian.web.forms.validators import Length, optional, required
 
-ALLOWED_TAGS = [
+ALLOWED_TAGS = {
     "a",
     "abbr",
     "acronym",
@@ -33,7 +33,7 @@ ALLOWED_TAGS = [
     "p",
     "u",
     "img",
-]
+}
 
 ALLOWED_ATTRIBUTES = {
     "*": ["title"],

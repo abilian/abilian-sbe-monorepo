@@ -162,7 +162,7 @@ def get_body(object):
 
 @get_body.register(Thread)
 def get_body_thread(object: Thread) -> Markup:
-    body = bleach.clean(object.posts[0].body_html, tags=[], strip=True)
+    body = bleach.clean(object.posts[0].body_html, tags=set(), strip=True)
     body = Markup(body).unescape()
     if len(body) > 400:
         body = f"{body[0:400]}…"
@@ -174,7 +174,7 @@ def get_body_thread(object: Thread) -> Markup:
 
 @get_body.register(Post)
 def get_body_post(object: Post) -> Markup:
-    body = bleach.clean(object.body_html, tags=[], strip=True)
+    body = bleach.clean(object.body_html, tags=set(), strip=True)
     body = Markup(body).unescape()
     if len(body) > 400:
         body = f"{body[0:400]}…"
@@ -186,7 +186,7 @@ def get_body_post(object: Post) -> Markup:
 
 @get_body.register(Document)
 def get_body_document(object: Document) -> Markup:
-    body = bleach.clean(object.body_html, tags=[], strip=True)
+    body = bleach.clean(object.body_html, tags=set(), strip=True)
     body = Markup(body).unescape()
     if len(body) > 400:
         body = f"{body[0:400]}…"
