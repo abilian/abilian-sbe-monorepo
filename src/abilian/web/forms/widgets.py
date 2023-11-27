@@ -125,7 +125,7 @@ def text2html(text: str) -> Markup | str:
     lines = text.split("\n")
     lines = [line for line in lines if line]
     paragraphs = [f"<p>{line}</p>" for line in lines]
-    return Markup(bleach.clean("\n".join(paragraphs), tags=["p"]))
+    return Markup(bleach.clean("\n".join(paragraphs), tags={"p"}))
 
 
 class Column:

@@ -72,7 +72,7 @@ celery = "^5.3.5"
 redis = "~5.0.1"
 
 # Security
-bleach = { version = "^5.0.1", extras = [ "css" ] }
+bleach = { version = "^6.1.0", extras = [ "css" ] }
 bcrypt = "*"
 
 # low-level tools
@@ -146,7 +146,6 @@ devtools = "*"
 # Additional stuff
 python-dotenv = "^1.0.0"
 #flask-env = "*"
-importlib-resources = "^5.10.0"
 defusedxml = "^0.7.1"
 
 
@@ -165,7 +164,6 @@ sqlparse = "^0.4.4"
 
 # Deploy
 plumbum = "*"
-watchgod = "*"
 honcho = "*"
 
 # Added later...
@@ -191,7 +189,9 @@ pyupgrade = "*"
 pytest = "^7.2.2"
 tox = "^4.5.1"
 deptry = "^0.12.0"
-fawltydeps = "^0.13.2"
+
+# Replaces watchgod. Not sure it's needed.
+# watchfiles = "^0.21.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -233,10 +233,6 @@ DEP002 = [
     'psycopg2',
     # Web
     'gunicorn',
-    # Debug
-    'icecream',
-    # Misc
-    'importlib-resources',
 ]
 
 # X imported but missing from the dependency definitions

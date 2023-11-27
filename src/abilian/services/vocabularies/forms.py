@@ -10,7 +10,7 @@ from abilian.web.forms import ModelForm
 from abilian.web.forms.filters import strip
 from abilian.web.forms.validators import required
 
-ALLOWED_TAGS = ["b", "i", "del", "s", "u", "small", "strong", "em"]
+ALLOWED_TAGS = {"b", "i", "del", "s", "u", "small", "strong", "em"}
 ALLOWED_ATTRIBUTES: dict[str, list[str]] = {}
 
 
