@@ -89,7 +89,8 @@ class Tag(IdMixin, Model):
         backref=sa.orm.backref(TAGS_ATTR, collection_class=set),
     )
 
-    __mapper_args__ = {"order_by": label}
+    # FIXME: works with SQLA 1.3, fails with 1.4
+    # __mapper_args__ = {"order_by": label}
 
     __table_args__ = (
         sa.UniqueConstraint(ns, label),

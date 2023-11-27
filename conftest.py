@@ -17,12 +17,12 @@ class NoCsrfTestConfig(TestConfig):
     WTF_CSRF_ENABLED = False
 
 
-@fixture()
+@fixture(scope="session")
 def config():
     return NoCsrfTestConfig
 
 
-@fixture()
+@fixture(scope="session")
 def app(config):
     """Return an App configured with config=NoCsrfTestConfig."""
     return create_app(config=config)
