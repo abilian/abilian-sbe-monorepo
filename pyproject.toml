@@ -164,7 +164,6 @@ sqlparse = "^0.4.4"
 
 # Deploy
 plumbum = "*"
-watchgod = "*"
 honcho = "*"
 
 # Added later...
@@ -190,6 +189,9 @@ pyupgrade = "*"
 pytest = "^7.2.2"
 tox = "^4.5.1"
 deptry = "^0.12.0"
+
+# Replaces watchgod. Not sure it's needed.
+# watchfiles = "^0.21.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
