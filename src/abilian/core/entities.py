@@ -522,9 +522,9 @@ def polymorphic_update_timestamp(
 def all_entity_classes():
     """Return the list of all concrete persistent classes that are subclasses
     of Entity."""
-    persistent_classes = Entity._decl_class_registry.values()
-    # with sqlalchemy 0.8 _decl_class_registry holds object that are not
-    # classes
+    persistent_classes = Entity.registry._class_registry.values()
+    # This fails:
+    # assert all(isclass(cls) for cls in persistent_classes)
     return [
         cls for cls in persistent_classes if isclass(cls) and issubclass(cls, Entity)
     ]

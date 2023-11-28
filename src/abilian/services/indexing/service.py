@@ -358,9 +358,10 @@ class WhooshIndexService(Service):
 
     def register_classes(self):
         state = self.app_state
+        all_classes = db.Model.registry._class_registry.values()
         classes = (
             cls
-            for cls in db.Model._decl_class_registry.values()
+            for cls in all_classes
             if isclass(cls) and issubclass(cls, Indexable) and cls.__indexable__
         )
         for cls in classes:
