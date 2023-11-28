@@ -13,7 +13,7 @@ import werkzeug.security
 import werkzeug.urls
 from markupsafe import Markup, escape
 
-from .backports import safe_str_cmp
+from abilian.backports import safe_str_cmp
 
 # Monkey patching werkzeug, jinja2 and flask to keep working with old version
 # of some libraries.
@@ -29,57 +29,28 @@ jinja2.escape = escape
 flask.json.JSONEncoder = json.JSONEncoder
 
 # Rest of the imports
-import errno
-import importlib
 import logging.config
-import os
-import sys
 import warnings
 from collections.abc import Callable, Collection
 from functools import partial
-from itertools import chain, count
+from itertools import count
 from pathlib import Path
 from typing import Any
 
 import defusedxml
-import jinja2
 import sqlalchemy as sa
 import sqlalchemy.exc
-from flask import (
-    Blueprint,
-    Flask,
-    abort,
-    appcontext_pushed,
-    g,
-    request,
-    request_started,
-)
-from flask.config import Config, ConfigAttribute
+from flask import Blueprint, Flask, abort, g
+from flask.config import ConfigAttribute
 from flask.helpers import locked_cached_property
 from flask_migrate import Migrate
-from flask_tailwind import Tailwind
-from flask_talisman import DEFAULT_CSP_POLICY, Talisman
 
 import abilian.core.util
 import abilian.i18n
 from abilian.config import default_config
-from abilian.core import extensions, signals
+from abilian.core import extensions
 from abilian.core.celery import FlaskCelery
-from abilian.services import (
-    Service,
-    activity_service,
-    antivirus,
-    audit_service,
-    auth_service,
-    blob_store,
-    conversion_service,
-    index_service,
-    preferences_service,
-    security_service,
-    session_blob_store,
-    settings_service,
-    vocabularies_service,
-)
+from abilian.services import auth_service
 from abilian.services.security import Anonymous
 from abilian.services.security.models import Role
 from abilian.web import csrf
@@ -88,11 +59,13 @@ from abilian.web.admin import Admin
 from abilian.web.assets import AssetManagerMixin
 from abilian.web.blueprints import allow_access_for_roles
 from abilian.web.errors import ErrorManagerMixin
-from abilian.web.hooks import init_hooks
 from abilian.web.jinja import JinjaManagerMixin
-from abilian.web.nav import BreadcrumbItem
 from abilian.web.util import send_file_from_directory
 from abilian.web.views import Registry as ViewRegistry
+
+from .mixins import PluginManager, ServiceManager
+from .setup.main import setup_app
+from .setup.services import init_services
 
 defusedxml.defuse_stdlib()
 
@@ -102,53 +75,6 @@ __all__ = ["create_app", "Application", "ServiceManager"]
 
 # Silence those warnings for now.
 warnings.simplefilter("ignore", category=sa.exc.SAWarning)
-
-
-class ServiceManager:
-    """Mixin that provides lifecycle (register/start/stop) support for
-    services."""
-
-    services: dict[str, Service]
-
-    def __init__(self):
-        self.services = {}
-
-    def start_services(self):
-        for svc in self.services.values():
-            svc.start()
-
-    def stop_services(self):
-        for svc in self.services.values():
-            svc.stop()
-
-
-class PluginManager:
-    """Mixin that provides support for loading plugins."""
-
-    config: Config
-
-    #: Custom apps may want to always load some plugins: list them here.
-    APP_PLUGINS = [
-        "abilian.web.search",
-        "abilian.web.tags",
-        "abilian.web.comments",
-        "abilian.web.uploads",
-        "abilian.web.attachments",
-    ]
-
-    def register_plugin(self, name: str):
-        """Load and register a plugin given its package name."""
-        logger.info(f"Registering plugin: {name}")
-        module = importlib.import_module(name)
-        module.register_plugin(self)  # type: ignore
-
-    def register_plugins(self):
-        """Load plugins listed in config variable 'PLUGINS'."""
-        registered = set()
-        for plugin_fqdn in chain(self.APP_PLUGINS, self.config["PLUGINS"]):
-            if plugin_fqdn not in registered:
-                self.register_plugin(plugin_fqdn)
-                registered.add(plugin_fqdn)
 
 
 class Application(
@@ -191,148 +117,9 @@ class Application(
         self.default_view = ViewRegistry()
         self.js_api = {}
 
-    def setup(self, config: type | None):
-        self.configure(config)
-
-        # At this point we have loaded all external config files:
-        # SQLALCHEMY_DATABASE_URI is definitively fixed (it cannot be defined in
-        # database AFAICT), and LOGGING_FILE cannot be set in DB settings.
-        self.setup_logging()
-
-        appcontext_pushed.connect(self.install_id_generator)
-
-        if not self.testing:
-            self.init_sentry()
-
-        # time to load config bits from database: 'settings'
-        # First init required stuff: db to make queries, and settings service
-        extensions.db.init_app(self)
-        settings_service.init_app(self)
-
-        self.register_jinja_loaders(jinja2.PackageLoader("abilian.web"))
-        self.init_assets()
-        self.install_default_handlers()
-
-        with self.app_context():
-            self.init_extensions()
-            self.register_plugins()
-            self.add_access_controller(
-                "static", allow_access_for_roles(Anonymous), endpoint=True
-            )
-            # debugtoolbar: this is needed to have it when not authenticated
-            # on a private site. We cannot do this in init_debug_toolbar,
-            # since auth service is not yet installed.
-            self.add_access_controller(
-                "debugtoolbar", allow_access_for_roles(Anonymous)
-            )
-            self.add_access_controller(
-                "_debug_toolbar.static",
-                allow_access_for_roles(Anonymous),
-                endpoint=True,
-            )
-
-        # TODO: maybe reenable later
-        # self.maybe_register_setup_wizard()
-
-        self._finalize_assets_setup()
-
-        # At this point all models should have been imported: time to configure
-        # mappers. Normally Sqlalchemy does it when needed but mappers may be
-        # configured inside sa.orm.class_mapper() which hides a
-        # misconfiguration: if a mapper is misconfigured its exception is
-        # swallowed by class_mapper(model) results in this laconic
-        # (and misleading) message: "model is not mapped"
-        sa.orm.configure_mappers()
-
-        signals.components_registered.send(self)
-
-        request_started.connect(self.setup_nav_and_breadcrumbs)
-        init_hooks(self)
-
-        # Initialize Abilian core services.
-        # Must come after all entity classes have been declared.
-        # Inherited from ServiceManager. Will need some configuration love
-        # later.
-        if not self.testing:
-            with self.app_context():
-                self.start_services()
-
-        setup(self)
-
-    def setup_nav_and_breadcrumbs(self, app: Flask):
-        """Listener for `request_started` event.
-
-        If you want to customize first items of breadcrumbs, override
-        :meth:`init_breadcrumbs`
-        """
-        g.nav = {"active": None}  # active section
-        g.breadcrumb = []
-        self.init_breadcrumbs()
-
-    def init_breadcrumbs(self):
-        """Insert the first element in breadcrumbs.
-
-        This happens during `request_started` event, which is triggered
-        before any url_value_preprocessor and `before_request` handlers.
-        """
-        g.breadcrumb.append(BreadcrumbItem(icon="home", url=f"/{request.script_root}"))
-
     # TODO: remove
     def install_id_generator(self, sender: Flask, **kwargs: Any):
         g.id_generator = count(start=1)
-
-    def configure(self, config: type | None):
-        if config:
-            self.config.from_object(config)
-        else:
-            self.config.from_prefixed_env()
-
-        # Setup babel config
-        languages = self.config["BABEL_ACCEPT_LANGUAGES"]
-        languages = tuple(
-            lang for lang in languages if lang in abilian.i18n.VALID_LANGUAGES_CODE
-        )
-        self.config["BABEL_ACCEPT_LANGUAGES"] = languages
-
-        # This needs to be done dynamically
-        if not self.config.get("SESSION_COOKIE_NAME"):
-            self.config["SESSION_COOKIE_NAME"] = f"{self.name}-session"
-
-        if not self.config.get("FAVICO_URL"):
-            self.config["FAVICO_URL"] = self.config.get("LOGO_URL")
-
-        if not self.debug and self.config["SECRET_KEY"] == "CHANGEME":  # noqa: S105
-            logger.error("You must change the default secret config ('SECRET_KEY')")
-            sys.exit()
-
-    def check_instance_folder(self, create=False):
-        """Verify instance folder exists, is a directory, and has necessary
-        permissions.
-
-        :param:create: if `True`, creates directory hierarchy
-
-        :raises: OSError with relevant errno if something is wrong.
-        """
-        path = Path(self.instance_path)
-        err = None
-        eno = 0
-
-        if not path.exists():
-            if create:
-                logger.info("Create instance folder: %s", path)
-                path.mkdir(0o775, parents=True)
-            else:
-                err = "Instance folder does not exists"
-                eno = errno.ENOENT
-        elif not path.is_dir():
-            err = "Instance folder is not a directory"
-            eno = errno.ENOTDIR
-        elif not os.access(str(path), os.R_OK | os.W_OK | os.X_OK):
-            err = 'Require "rwx" access rights, please verify permissions'
-            eno = errno.EPERM
-
-        if err:
-            raise OSError(eno, err, str(path))
 
     @locked_cached_property
     def data_dir(self) -> Path:
@@ -388,21 +175,7 @@ class Application(
 
         self.register_blueprint(images_bp)
 
-        # Abilian Core services
-        security_service.init_app(self)
-        blob_store.init_app(self)
-        session_blob_store.init_app(self)
-        audit_service.init_app(self)
-        index_service.init_app(self)
-        activity_service.init_app(self)
-        preferences_service.init_app(self)
-        conversion_service.init_app(self)
-        vocabularies_service.init_app(self)
-        antivirus.init_app(self)
-
-        from .web.preferences.user import UserPreferencesPanel
-
-        preferences_service.register_panel(UserPreferencesPanel(), self)
+        init_services(self)
 
         from .web.coreviews import users
 
@@ -502,50 +275,9 @@ class Application(
         )
 
 
-def setup(app: Flask):
-    config = app.config
-
-    # CSP
-    if not app.debug:
-        csp = config.get("CONTENT_SECURITY_POLICY", DEFAULT_CSP_POLICY)
-        Talisman(app, content_security_policy=csp)
-
-    Tailwind(app)
-
-    # Debug Toolbar
-    init_debug_toolbar(app)
-
-
-def init_debug_toolbar(app: Flask):
-    if not app.debug or app.testing:
-        return
-
-    try:
-        from flask_debugtoolbar import DebugToolbarExtension
-    except ImportError:
-        logger.warning("Running in debug mode but flask_debugtoolbar is not installed.")
-        return
-
-    dbt = DebugToolbarExtension()
-    default_config = dbt._default_config(app)
-    init_dbt = dbt.init_app
-
-    if "DEBUG_TB_PANELS" not in app.config:
-        # add our panels to default ones
-        app.config["DEBUG_TB_PANELS"] = list(default_config["DEBUG_TB_PANELS"])
-    init_dbt(app)
-    for view_name in app.view_functions:
-        if view_name.startswith("debugtoolbar."):
-            extensions.csrf.exempt(app.view_functions[view_name])
-
-
 def create_app(
     config: type | None = None, app_class: type = Application, **kw: Any
 ) -> Application:
     app = app_class(**kw)
-    app.setup(config=config)
-
-    # This is currently called from app.setup()
-    # setup(app)
-
+    setup_app(app, config)
     return app

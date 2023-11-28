@@ -16,6 +16,7 @@ from abilian.core.extensions import csrf
 from abilian.i18n import _l
 from abilian.sbe.apps.social.views.social import social
 from abilian.sbe.extension import sbe
+from abilian.setup.main import setup_app
 from abilian.web.action import actions
 from abilian.web.nav import NavItem
 from abilian.web.util import url_for
@@ -63,7 +64,7 @@ def create_app(config=None, **kw):
     # We must register this before blueprint is registered
     social.url_value_preprocessor(on_home_blueprint)
 
-    app.setup(config)
+    setup_app(app, config)
 
     with app.app_context():
         actions.register(HOME_ACTION)

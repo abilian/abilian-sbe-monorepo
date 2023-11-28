@@ -16,10 +16,9 @@ from abilian.services import converter
 from .apps.documents.repository import content_repository
 from .extension import sbe
 
-# Used for side effects, do not remove
-
-
 __all__ = ["create_app", "Application"]
+
+from ..setup.main import setup_app
 
 logger = logging.getLogger(__name__)
 
@@ -45,12 +44,12 @@ class Application(BaseApplication):
     ]
 
     def setup(self, config: type | None) -> None:
-        super().setup(config)
         loader = jinja2.PackageLoader("abilian.sbe")
         self.register_jinja_loaders(loader)
 
     def init_extensions(self) -> None:
         super().init_extensions()
+
         sbe.init_app(self)
         content_repository.init_app(self)
         converter.init_app(self)
@@ -58,5 +57,10 @@ class Application(BaseApplication):
 
 def create_app(config: type | None = None, **kw) -> Application:
     app = Application(**kw)
-    app.setup(config)
+    setup_app(app, config)
+
+    # additional setup
+    loader = jinja2.PackageLoader("abilian.sbe")
+    app.register_jinja_loaders(loader)
+
     return app

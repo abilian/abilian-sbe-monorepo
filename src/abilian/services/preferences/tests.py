@@ -12,6 +12,7 @@ from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.services import get_service, security_service
 from abilian.services.security import SecurityService
 
+from ...setup.main import setup_app
 from .models import UserPreference
 from .panel import PreferencePanel
 from .service import PreferenceService
@@ -50,7 +51,7 @@ class Application(BaseApplication):
 @fixture()
 def app(config: type) -> Application:
     app = Application()
-    app.setup(config)
+    setup_app(app, config)
     return app
 
 
