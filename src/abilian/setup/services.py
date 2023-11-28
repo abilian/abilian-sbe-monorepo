@@ -34,6 +34,7 @@ def init_services(app: Flask) -> None:
     vocabularies_service.init_app(app)
     antivirus.init_app(app)
 
+    # Not sure why this is needed here...
     from abilian.web.preferences.user import UserPreferencesPanel
 
     preferences_service.register_panel(UserPreferencesPanel(), app)

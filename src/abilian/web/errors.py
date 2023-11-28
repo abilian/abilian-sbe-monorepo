@@ -1,5 +1,5 @@
-"""Base Flask application class, used by tests or to be extended in real
-applications."""
+"""Error logging."""
+
 from __future__ import annotations
 
 import logging

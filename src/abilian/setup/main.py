@@ -87,6 +87,7 @@ def setup_app(app: Application, config: type | None):
         app.add_access_controller(
             "static", allow_access_for_roles(Anonymous), endpoint=True
         )
+
         # debugtoolbar: this is needed to have it when not authenticated
         # on a private site. We cannot do this in init_debug_toolbar,
         # since auth service is not yet installed.
@@ -96,9 +97,6 @@ def setup_app(app: Application, config: type | None):
             allow_access_for_roles(Anonymous),
             endpoint=True,
         )
-
-    # TODO: maybe reenable later
-    # self.maybe_register_setup_wizard()
 
     app._finalize_assets_setup()
 
@@ -123,10 +121,11 @@ def setup_app(app: Application, config: type | None):
         with app.app_context():
             app.start_services()
 
-    setup(app)
+    extra_setup(app)
 
 
-def setup(app: Flask):
+def extra_setup(app: Flask):
+    # TODO: rename to something more explicit / group with other similar setup code
     config = app.config
 
     # CSP

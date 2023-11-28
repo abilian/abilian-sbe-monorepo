@@ -1,4 +1,5 @@
-""""""
+"""Base classes for Abilian models (persistent classes based on SQLAlchemy ORM)."""
+
 from __future__ import annotations
 
 import json

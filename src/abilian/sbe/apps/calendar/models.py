@@ -4,7 +4,8 @@ from sqlalchemy import Column, DateTime, Unicode
 from sqlalchemy.event import listens_for
 from sqlalchemy.orm import backref, relationship
 
-from abilian.core.entities import SEARCHABLE, Entity
+from abilian.core.entities import Entity
+from abilian.core.models import SEARCHABLE
 from abilian.sbe.apps.communities.models import (
     Community,
     CommunityIdColumn,
