@@ -14,10 +14,10 @@ if typing.TYPE_CHECKING:
     from abilian.app import Application
 
 
-def _vocabularies():
+def _vocabularies() -> set[type[BaseVocabulary]]:
     return {
         cls
-        for cls in BaseVocabulary._decl_class_registry.values()
+        for cls in BaseVocabulary.registry._class_registry.values().values()
         if isclass(cls) and issubclass(cls, BaseVocabulary)
     }
 
@@ -29,7 +29,7 @@ def _grouped_vocabularies():
     return by_group
 
 
-def get_vocabulary(name: str, group: str = ""):
+def get_vocabulary(name: str, group: str = "") -> type[BaseVocabulary] | None:
     name = name.lower()
     vocs = _grouped_vocabularies()
     for voc in vocs.get(group, ()):
@@ -48,7 +48,7 @@ class VocabularyService(Service):
         app.register_jinja_loaders(loader)
 
     @property
-    def vocabularies(self):
+    def vocabularies(self) -> set[type[BaseVocabulary]]:
         return _vocabularies()
 
     @property
