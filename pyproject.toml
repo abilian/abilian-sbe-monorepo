@@ -69,6 +69,7 @@ Whoosh = "^2.7.4"
 
 # Task queue
 celery = "^5.3.5"
+dramatiq = "^1.15.0"
 redis = "~5.0.1"
 
 # Security

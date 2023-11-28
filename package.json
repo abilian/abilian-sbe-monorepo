@@ -8,5 +8,8 @@
   "devDependencies": {
     "htmlhint": "^1.1.4",
     "less": "^4.2.0"
+  },
+  "dependencies": {
+    "lessc": "^1.0.2"
   }
 }

@@ -19,7 +19,7 @@ from abilian.sbe.extension import sbe
 from abilian.web.action import actions
 from abilian.web.nav import NavItem
 from abilian.web.util import url_for
-
+from abilian.sbe.dramatiq.setup import init_dramatiq
 from .config import BaseConfig
 
 __all__ = ["create_app"]
@@ -64,6 +64,8 @@ def create_app(config=None, **kw):
     social.url_value_preprocessor(on_home_blueprint)
 
     app.setup(config)
+
+    init_dramatiq(app)
 
     with app.app_context():
         actions.register(HOME_ACTION)
