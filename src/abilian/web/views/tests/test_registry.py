@@ -2,10 +2,9 @@
 from __future__ import annotations
 
 import sqlalchemy as sa
-from flask import Blueprint
+from flask import Blueprint, Flask
 from pytest import fixture, raises
 
-from abilian.app import Application
 from abilian.core.entities import Entity
 
 # needed if running only this test, else SA won't have registered this mapping
@@ -25,23 +24,23 @@ class NonEntity:
 
 
 @fixture()
-def registry(app: Application) -> Registry:
+def registry(app: Flask) -> Registry:
     app.default_view = Registry()
     return app.default_view
 
 
-def test_register_class(app: Application, registry: Registry):
+def test_register_class(app: Flask, registry: Registry):
     registry.register(RegEntity, lambda ignored: "")
     assert RegEntity.entity_type in registry._map
 
 
-def test_register_instance(app: Application, registry: Registry):
+def test_register_instance(app: Flask, registry: Registry):
     obj = RegEntity()
     registry.register(obj, lambda ignored: "")
     assert RegEntity.entity_type in registry._map
 
 
-def test_custom_url_func(app: Application, registry: Registry):
+def test_custom_url_func(app: Flask, registry: Registry):
     name = "obj"
     obj = RegEntity(id=1, name=name)
 
@@ -58,7 +57,7 @@ def test_custom_url_func(app: Application, registry: Registry):
     assert registry.url_for(obj) == "test_registry.RegEntity:1"
 
 
-def test_default_url_func(app: Application, registry: Registry):
+def test_default_url_func(app: Flask, registry: Registry):
     obj = RegEntity(id=1)
 
     @app.route("/regentities_path/<int:object_id>/view", endpoint="regentity.view")
@@ -72,7 +71,7 @@ def test_default_url_func(app: Application, registry: Registry):
     )
 
 
-def test_default_view_decorator(app: Application, registry: Registry):
+def test_default_view_decorator(app: Flask, registry: Registry):
     bp = Blueprint("registry", __name__, url_prefix="/blueprint")
 
     @default_view(bp, RegEntity)
