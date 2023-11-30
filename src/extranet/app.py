@@ -9,7 +9,8 @@ from flask import Blueprint, Response, abort, current_app, g, redirect, request
 from flask.cli import AppGroup, FlaskGroup
 from flask_login import current_user
 from pprint import pformat
-
+from loguru import logger
+from abilian.logutils.configure import connect_logger
 import abilian.cli
 from abilian.app import Application as BaseApplication
 from abilian.core.extensions import csrf
@@ -23,8 +24,6 @@ from abilian.sbe.dramatiq.setup import init_dramatiq
 from .config import BaseConfig
 
 __all__ = ["create_app"]
-
-logger = logging.getLogger(__name__)
 
 HOME_ACTION = NavItem("section", "home", title=_l("Home"), endpoint="social.home")
 
@@ -59,25 +58,8 @@ def create_app(config=None, **kw):
         app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
 
     # Setup stuff
-
-    print("/////////////////////////////////////")
-    print(pformat(dict(sorted(app.config.items()))))
-    print("/////////////////////////////////////")
-
-    if app.config.get("APP_LOG_FILE"):
-        handler = logging.FileHandler(app.config["APP_LOG_FILE"], encoding="utf8")
-        handler.setLevel(logging.DEBUG)
-        # handler.setFormatter(
-        #     logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-        # )
-        root_log = logging.getLogger()
-        for logh in root_log.handlers[:]:
-            root_log.removeHandler(logh)
-        root_log.addHandler(handler)  # set the new handler
-
-        print("::::::::::::::::::::::::::::")
-        root_log.warning("start app lo2")
-        print("::::::::::::::::::::::::::::")
+    connect_logger(logger)
+    logger.info(pformat(dict(sorted(app.config.items()))))
 
     # We must register this before blueprint is registered
     social.url_value_preprocessor(on_home_blueprint)
@@ -146,7 +128,6 @@ def home():
     Home page. Actually there is no home page, so we redirect to the most
     appropriate place.
     """
-    logger.info("main!")
     return redirect(url_for("social.home"))
 
 

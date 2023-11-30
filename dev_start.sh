@@ -58,6 +58,7 @@ echo
 mkdir -p ${ME}/src/instance
 sudo /etc/init.d/clamav-freshclam start
 sudo /etc/init.d/clamav-daemon start
+sbe_log_server start
 echo "-----------------------------------------------------"
 celery_pid_file="${ME}/src/instance/celery.pid"
 [ -f "${celery_pid_file}" ] && {

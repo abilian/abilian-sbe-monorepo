@@ -1,24 +1,23 @@
 from __future__ import annotations
 
-import logging
-
+from loguru import logger
+from abilian.logutils.configure import connect_logger
 import dramatiq
 from dramatiq.brokers.redis import RedisBroker
 
 # from .job import register_regular_jobs
 from .middleware import AppContextMiddleware
 
+connect_logger(logger)
+
+
 # from .scheduler import register_cron_jobs
 
 # use redis DB /1 for // execution with Celery:
 DEFAULT_REDIS_URL = "redis://localhost:6379/1"
 
-logger = logging.getLogger(__package__)
-
 
 def init_dramatiq(app):
-    logger.info("Setting up Dramatiq")
-
     redis_url = app.config.get("DRAMATIC_REDIS_URL")
     if not redis_url:
         redis_url = app.config.get("REDIS_URL")

@@ -9,6 +9,8 @@ packages = [
   { include = "abilian", from = "src" },
 ]
 
+[tool.poetry.scripts]
+sbe_log_server = "abilian.logutils.log_server:log_server"
 
 [tool.poetry.dependencies]
 # Doesn't work currently w/ Python 3.12
@@ -67,10 +69,14 @@ python-dateutil = "^2.8.2"
 # Indexing
 Whoosh = "^2.7.4"
 
+# logs
+loguru = "^0.7.2"
+
 # Task queue
 celery = "^5.3.5"
 dramatiq = "^1.15.0"
 redis = "~5.0.1"
+pyzmq = "~25.1.1"
 
 # Security
 bleach = { version = "^6.1.0", extras = [ "css" ] }
