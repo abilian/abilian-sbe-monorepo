@@ -46,6 +46,7 @@ export FLASK_CELERY_RESULT_BACKEND="${REDIS_URI}"
 export CELERY_RESULT_BACKEND="${REDIS_URI}"
 
 export FLASK_DRAMATIC_REDIS_URL="${REDIS_URI}1"
+export FLASK_APP_LOG_FILE="${ME}/src/instance/app.log"
 
 export CLAMD_CONF_PATH=""
 
