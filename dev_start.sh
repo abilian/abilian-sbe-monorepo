@@ -81,4 +81,6 @@ gu_pid_file="${ME}/src/instance/gunicorn.pid"
         # rm "${gu_pid_file}"
 }
 gunicorn extranet.wsgi:app -b :8000 --workers 2 --log-level debug --pid "${gu_pid_file}"
+
+dramatiq extranet.wsgi:app -p 4 --log-file=${ME}/src/instance/dramatiq.log
 echo "==========================================="
