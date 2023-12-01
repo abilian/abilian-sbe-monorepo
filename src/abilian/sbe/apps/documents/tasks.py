@@ -14,6 +14,7 @@ from sqlalchemy.orm import Session
 from abilian.core.extensions import db
 from abilian.services import converter, get_service
 from abilian.services.conversion import ConversionError, HandlerNotFound
+from .drama_tasks import log_document_id
 
 if TYPE_CHECKING:
     from .models import Document
@@ -53,6 +54,9 @@ def process_document(document_id: int) -> None:
     """Run document processing chain."""
     connect_logger(logger)
     logger.debug(f"in process_document() {document_id=}")
+
+    log_document_id.send(document_id)
+
     with get_document(document_id) as (session, document):
         if document is None:
             return

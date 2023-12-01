@@ -1,6 +1,8 @@
 """Dramatiq tasks related to dicuments."""
 import dramatiq
-import logging
+from loguru import logger
+from abilian.logutils.configure import connect_logger
+
 from collections.abc import Iterator
 from contextlib import contextmanager
 from typing import TYPE_CHECKING
@@ -14,7 +16,7 @@ from abilian.services.conversion import ConversionError, HandlerNotFound
 if TYPE_CHECKING:
     from .models import Document
 
-logger = logging.getLogger(__package__)
+connect_logger(logger)
 
 
 @dramatiq.actor
