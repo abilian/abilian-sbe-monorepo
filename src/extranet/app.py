@@ -82,6 +82,7 @@ def create_app(config=None, **kw):
     register_cli(app)
 
     broker.init_app(app)
+    broker.set_default()
 
     # Done
     return app
