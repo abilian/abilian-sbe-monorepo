@@ -38,7 +38,7 @@ from abilian.core.util import md5
 from abilian.services.conversion import converter
 from abilian.services.indexing import indexable_role
 from abilian.services.security import Admin, Anonymous, InheritSecurity, security
-
+from . import drama_tasks
 from . import tasks
 from .lock import Lock
 
@@ -576,6 +576,8 @@ class Document(BaseContent, PathAndSecurityIndexable):
             return True
 
         task_id = self.content_blob.meta.get("antivirus_task_id")
+        if task_id is not None:
+            res = drama_tasks.log_document_id.send(task_id)
         if task_id is not None:
             res = tasks.process_document.AsyncResult(task_id)
             if not res.failed():

@@ -57,8 +57,6 @@ def process_document(document_id: int) -> None:
     connect_logger(logger)
     logger.debug(f"in process_document() {document_id=}")
 
-    log_document_id.send(document_id)
-
     with get_document(document_id) as (session, document):
         if document is None:
             return
