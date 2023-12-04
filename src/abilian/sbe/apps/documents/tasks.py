@@ -1,19 +1,21 @@
 """Celery tasks related to document transformation and preview."""
 from __future__ import annotations
-from loguru import logger
 
-# import logging
-from abilian.logutils.configure import connect_logger
 from collections.abc import Iterator
 from contextlib import contextmanager
 from typing import TYPE_CHECKING
 
 from celery import shared_task
+from loguru import logger
 from sqlalchemy.orm import Session
 
 from abilian.core.extensions import db
+
+# import logging
+from abilian.logutils.configure import connect_logger
 from abilian.services import converter, get_service
 from abilian.services.conversion import ConversionError, HandlerNotFound
+
 from .drama_tasks import log_document_id
 
 if TYPE_CHECKING:

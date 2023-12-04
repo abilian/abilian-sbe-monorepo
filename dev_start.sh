@@ -45,7 +45,9 @@ export CELERY_BROKER_URL="${REDIS_URI}"
 export FLASK_CELERY_RESULT_BACKEND="${REDIS_URI}"
 export CELERY_RESULT_BACKEND="${REDIS_URI}"
 
-export FLASK_DRAMATIC_REDIS_URL="${REDIS_URI}1"
+export FLASK_DRAMATIQ_BROKER_URL="${REDIS_URI}1"
+# DRAMATIQ_BROKER_CONFIRM_DELIVERY = True
+# export FLASK_DRAMATIC_REDIS_URL="${REDIS_URI}1"
 export FLASK_APP_LOG_FILE="${ME}/src/instance/app.log"
 
 export CLAMD_CONF_PATH=""
@@ -74,13 +76,14 @@ flask assets build
 flask initdb
 flask createuser --role admin --name admin ${ADMIN_MAIL} ${ADMIN_PASSWORD}
 
-echo "==========================================="
+echo "= dramatiq ==============================="
+dramatiq extranet.wsgi:broker -p2 --log-file=${ME}/src/instance/dramatiq.log &
+
+
+echo "= gunicorn ==============================="
 gu_pid_file="${ME}/src/instance/gunicorn.pid"
 [ -f "${gu_pid_file}" ] && {
         kill $(cat "${gu_pid_file}")
         # rm "${gu_pid_file}"
 }
-gunicorn extranet.wsgi:app -b :8000 --workers 2 --log-level debug --pid "${gu_pid_file}"
-
-dramatiq extranet.wsgi:app -p 4 --log-file=${ME}/src/instance/dramatiq.log
-echo "==========================================="
+gunicorn extranet.wsgi:app -b :8000  --workers 2 --log-level debug --pid "${gu_pid_file}"

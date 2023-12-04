@@ -15,7 +15,7 @@ werkzeug.FileStorage = werkzeug.datastructures.FileStorage
 # Normal bootstrap
 from flask.cli import load_dotenv
 
-from .app import create_app
+from .app import broker, create_app
 
 load_dotenv()
 

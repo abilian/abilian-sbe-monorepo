@@ -3,6 +3,7 @@
 main function: log_server
 """
 from __future__ import annotations
+
 import sys
 from os import chdir, nice
 from pathlib import Path

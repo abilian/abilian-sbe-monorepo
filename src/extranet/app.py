@@ -2,30 +2,37 @@ from __future__ import annotations
 
 import logging
 import os
+from pprint import pformat
+
 import click
+import dramatiq
 import toml
 from dotenv import load_dotenv
 from flask import Blueprint, Response, abort, current_app, g, redirect, request
 from flask.cli import AppGroup, FlaskGroup
 from flask_login import current_user
-from pprint import pformat
+from flask_melodramatiq import RedisBroker
 from loguru import logger
-from abilian.logutils.configure import connect_logger
+
 import abilian.cli
 from abilian.app import Application as BaseApplication
 from abilian.core.extensions import csrf
 from abilian.i18n import _l
+from abilian.logutils.configure import connect_logger
 from abilian.sbe.apps.social.views.social import social
 from abilian.sbe.extension import sbe
 from abilian.web.action import actions
 from abilian.web.nav import NavItem
 from abilian.web.util import url_for
-from abilian.sbe.dramatiq.setup import init_dramatiq
+
 from .config import BaseConfig
 
 __all__ = ["create_app"]
 
 HOME_ACTION = NavItem("section", "home", title=_l("Home"), endpoint="social.home")
+
+broker = RedisBroker()
+dramatiq.set_broker(broker)
 
 
 class Application(BaseApplication):
@@ -66,8 +73,6 @@ def create_app(config=None, **kw):
 
     app.setup(config)
 
-    init_dramatiq(app)
-
     with app.app_context():
         actions.register(HOME_ACTION)
 
@@ -75,6 +80,8 @@ def create_app(config=None, **kw):
     app.before_request(login_required)
 
     register_cli(app)
+
+    broker.init_app(app)
 
     # Done
     return app
