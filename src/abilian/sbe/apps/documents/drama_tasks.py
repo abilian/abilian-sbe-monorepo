@@ -27,6 +27,8 @@ def log_document_id(document_id: int) -> None:
     connect_logger(logger)
 
     msg = f"drama log doc id : {document_id}"
+    print(msg)
+    raise ValueError(msg)
     logger.info(msg)
 
 
