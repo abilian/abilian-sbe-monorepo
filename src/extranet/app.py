@@ -102,7 +102,7 @@ def create_app(config=None, **kw):
     broker.set_default()
 
     # load actors
-    declare_actor(dramas.log_document_id)
+    # declare_actor(dramas.log_document_id)
 
     # debug
     logger.info(f"broker {broker}")

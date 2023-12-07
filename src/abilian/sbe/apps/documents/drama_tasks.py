@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 connect_logger(logger)
 
 
-# @dramatiq.actor
+@dramatiq.actor
 def log_document_id(document_id: int) -> None:
     """Test for dramatiq tasks
 
@@ -30,7 +30,7 @@ def log_document_id(document_id: int) -> None:
     """
     connect_logger(logger)
 
-    msg = f"drama log doc id : {document_id}"
+    msg = f"dramatiq actor - log doc id : {document_id}"
 
     path = Path("/var/tmp/test.txt")
     path.write_text(msg)
