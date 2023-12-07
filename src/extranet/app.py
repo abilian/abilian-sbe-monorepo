@@ -68,7 +68,7 @@ def declare_actor(callable) -> None:
 
 
 def create_app(config=None, **kw):
-    global broker
+    # global broker
 
     app = Application(__name__, **kw)
     app.config.from_object(BaseConfig)
@@ -97,16 +97,18 @@ def create_app(config=None, **kw):
 
     register_cli(app)
 
-    broker.init_app(app)
-    broker.url = os.environ["REDIS_URI"]
-    broker.set_default()
+    broker2 = RedisBroker(url=os.environ["REDIS_URI"])
+    dramatiq.set_broker(broker2)
+
+    broker2.init_app(app)
+    # broker.url = os.environ["REDIS_URI"]
+    broker2.set_default()
 
     # load actors
     # declare_actor(dramas.log_document_id)
 
     # debug
     logger.info(f"broker {broker}")
-    # broker.declare_queue(os.environ["REDIS_URI"])
     logger.info(f"get_declared_queues {broker.get_declared_queues()}")
     logger.info(f"get_declared_actors {broker.get_declared_actors()}")
 
