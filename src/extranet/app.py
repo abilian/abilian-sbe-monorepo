@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from flask import Blueprint, Response, abort, current_app, g, redirect, request
 from flask.cli import AppGroup, FlaskGroup
 from flask_login import current_user
-from flask_melodramatiq import RedisBroker
+from flask_melodramatiq import Broker, RedisBroker
 from loguru import logger
 
 import abilian.cli
@@ -33,8 +33,8 @@ __all__ = ["create_app"]
 
 HOME_ACTION = NavItem("section", "home", title=_l("Home"), endpoint="social.home")
 
-broker = None
-# dramatiq.set_broker(broker)
+broker = Broker()
+dramatiq.set_broker(broker)
 
 
 class Application(BaseApplication):
@@ -68,7 +68,7 @@ def declare_actor(callable) -> None:
 
 
 def create_app(config=None, **kw):
-    global broker
+    # global broker
 
     app = Application(__name__, **kw)
     app.config.from_object(BaseConfig)
@@ -97,12 +97,12 @@ def create_app(config=None, **kw):
 
     register_cli(app)
 
-    broker = RedisBroker(url=os.environ["REDIS_URI"])
+    # broker = RedisBroker(url=os.environ["REDIS_URI"])
+    broker.init_app(app)
+    broker.set_default()
     dramatiq.set_broker(broker)
 
-    broker.init_app(app)
     # broker.url = os.environ["REDIS_URI"]
-    broker.set_default()
 
     # load actors
     # declare_actor(dramas.log_document_id)
