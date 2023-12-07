@@ -20,3 +20,8 @@ from .app import broker, create_app
 load_dotenv()
 
 app = create_app()
+
+print("broker in wsgi:")
+print(f"{broker=}")
+print("broker.get_declared_queues()", broker.get_declared_queues())
+print("broker.get_declared_actors()", broker.get_declared_actors())

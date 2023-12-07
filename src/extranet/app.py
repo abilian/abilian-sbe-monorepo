@@ -25,6 +25,8 @@ from abilian.web.action import actions
 from abilian.web.nav import NavItem
 from abilian.web.util import url_for
 
+import abilian.sbe.apps.documents.drama_tasks as dramas
+
 from .config import BaseConfig
 
 __all__ = ["create_app"]
@@ -53,7 +55,21 @@ class Application(BaseApplication):
         sbe.init_app(self)
 
 
+def declare_actor(callable) -> None:
+    actor_name = callable.__name__
+    dramatiq.Actor(
+        callable,
+        actor_name=actor_name,
+        queue_name="default",
+        priority=0,
+        broker=broker,
+        options={},
+    )
+
+
 def create_app(config=None, **kw):
+    global broker
+
     app = Application(__name__, **kw)
     app.config.from_object(BaseConfig)
 
@@ -82,10 +98,15 @@ def create_app(config=None, **kw):
     register_cli(app)
 
     broker.init_app(app)
+    broker.url = os.environ["REDIS_URI"]
     broker.set_default()
+
+    # load actors
+    declare_actor(dramas.log_document_id)
 
     # debug
     logger.info(f"broker {broker}")
+    # broker.declare_queue(os.environ["REDIS_URI"])
     logger.info(f"get_declared_queues {broker.get_declared_queues()}")
     logger.info(f"get_declared_actors {broker.get_declared_actors()}")
 

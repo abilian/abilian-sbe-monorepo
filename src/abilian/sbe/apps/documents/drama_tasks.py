@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 connect_logger(logger)
 
 
-@dramatiq.actor
+# @dramatiq.actor
 def log_document_id(document_id: int) -> None:
     """Test for dramatiq tasks
 
