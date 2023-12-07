@@ -85,7 +85,7 @@ def create_app(config=None, **kw):
     broker.set_default()
 
     # debug
-    logger.info(f"broker {broker.get_default()}")
+    logger.info(f"broker {broker}")
     logger.info(f"get_declared_queues {broker.get_declared_queues()}")
     logger.info(f"get_declared_actors {broker.get_declared_actors()}")
 
