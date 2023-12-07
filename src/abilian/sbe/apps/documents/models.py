@@ -785,7 +785,8 @@ def _trigger_conversion_tasks(session: Session) -> None:
         if doc.id:
             logger.warning(f"_trigger_conversion_tasks() {doc.id=}")
             # tasks.process_document.apply_async((doc.id,), task_id=task_id)
-            drama_tasks.log_document_id.send((doc.id)
+            drama_tasks.log_document_id.send(doc.id)
+            logger.warning(f"_trigger_conversion_tasks() {doc.id=} sent")
 
 
 def setup_listener() -> None:
