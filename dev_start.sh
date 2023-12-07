@@ -78,7 +78,7 @@ flask createuser --role admin --name admin ${ADMIN_MAIL} ${ADMIN_PASSWORD}
 
 echo "= dramatiq ==============================="
 # dramatiq extranet.wsgi:broker -p2 --log-file=${ME}/src/instance/dramatiq.log &
-dramatiq extranet.wsgi:broker actors -p1 --skip-logging --log-file=${ME}/src/instance/dramatiq.log &
+dramatiq extranet.wsgi:broker -p1 --skip-logging --log-file=${ME}/src/instance/dramatiq.log &
 
 
 echo "= gunicorn ==============================="
