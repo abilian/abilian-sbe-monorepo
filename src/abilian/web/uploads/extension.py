@@ -10,7 +10,7 @@ from pathlib import PosixPath
 from typing import Any
 from uuid import UUID, uuid1
 
-from celery import shared_task
+# from celery import shared_task
 from flask import current_app
 
 from abilian.app import Application
@@ -193,7 +193,7 @@ class FileUploadsExtension:
 
 
 # Task scheduled to run every hour: make it expire after 50min.
-@shared_task(expires=3000)
+# @shared_task(expires=3000)
 def periodic_clean_upload_directory():
     """This task should be run periodically.
 

@@ -124,7 +124,7 @@ class ErrorManagerMixin(Flask):
             )
             return
 
-        from sentry_sdk.integrations.celery import CeleryIntegration
+        # from sentry_sdk.integrations.celery import CeleryIntegration
         from sentry_sdk.integrations.flask import FlaskIntegration
         from sentry_sdk.integrations.redis import RedisIntegration
         from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
@@ -133,7 +133,7 @@ class ErrorManagerMixin(Flask):
             dsn=dsn,
             integrations=[
                 FlaskIntegration(),
-                CeleryIntegration(),
+                # CeleryIntegration(),
                 SqlalchemyIntegration(),
                 RedisIntegration(),
             ],

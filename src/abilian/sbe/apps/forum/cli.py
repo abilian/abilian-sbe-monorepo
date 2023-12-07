@@ -8,7 +8,7 @@ from email.parser import FeedParser
 import click
 from flask.cli import with_appcontext
 
-from .tasks import check_maildir, process_email
+# from .tasks import check_maildir, process_email
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +45,8 @@ def _inject_email(filename="-"):
     if message:
         # make sure no email.errors are present
         if not message.defects:
-            process_email.delay(message)
+            # process_email.delay(message)
+            pass
         else:
             logger.error(
                 "email has defects, message content:\n"
@@ -65,4 +66,4 @@ def check_email():
     """Read one email from current user Maildir, parse it, forward it in a
     celery task to be persisted."""
 
-    check_maildir()
+    # check_maildir()

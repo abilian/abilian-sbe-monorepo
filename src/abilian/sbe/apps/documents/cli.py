@@ -26,7 +26,7 @@ def antivirus():
         total += 1
         meta = d.content_blob.meta
         if "antivirus" not in meta and "antivirus_task" not in meta:
-            tasks.antivirus_scan.delay(d.id)
+            # tasks.antivirus_scan.delay(d.id)
             count += 1
 
     print(f"{count}/{total} documents scheduled")

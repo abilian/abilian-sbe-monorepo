@@ -40,12 +40,12 @@ export LESS_BIN="${ME}/node_modules/.bin/lessc"
 
 export FLASK_REDIS_URI="${REDIS_URI}"
 export FLASK_BROKER_URL="${REDIS_URI}"
-export FLASK_CELERY_BROKER_URL="${REDIS_URI}"
-export CELERY_BROKER_URL="${REDIS_URI}"
-export FLASK_CELERY_RESULT_BACKEND="${REDIS_URI}"
-export CELERY_RESULT_BACKEND="${REDIS_URI}"
+# export FLASK_CELERY_BROKER_URL="${REDIS_URI}"
+# export CELERY_BROKER_URL="${REDIS_URI}"
+# export FLASK_CELERY_RESULT_BACKEND="${REDIS_URI}"
+# export CELERY_RESULT_BACKEND="${REDIS_URI}"
 
-export FLASK_DRAMATIQ_BROKER_URL="${REDIS_URI}1"
+export FLASK_DRAMATIQ_BROKER_URL="${REDIS_URI}"
 # DRAMATIQ_BROKER_CONFIRM_DELIVERY = True
 # export FLASK_DRAMATIC_REDIS_URL="${REDIS_URI}1"
 export FLASK_APP_LOG_FILE="${ME}/src/instance/app.log"
@@ -61,14 +61,14 @@ mkdir -p ${ME}/src/instance
 sudo /etc/init.d/clamav-freshclam start
 sudo /etc/init.d/clamav-daemon start
 sbe_log_server start
-echo "-----------------------------------------------------"
-celery_pid_file="${ME}/src/instance/celery.pid"
-[ -f "${celery_pid_file}" ] && {
-        kill $(cat "${celery_pid_file}")
-        rm "${celery_pid_file}"
-}
-celery -A extranet.celery_app worker -l INFO  --logfile=${ME}/src/instance/celery.log --pidfile="${celery_pid_file}" --detach
-echo "Celery pid file: ${celery_pid_file}"
+# echo "-----------------------------------------------------"
+# celery_pid_file="${ME}/src/instance/celery.pid"
+# [ -f "${celery_pid_file}" ] && {
+#         kill $(cat "${celery_pid_file}")
+#         rm "${celery_pid_file}"
+# }
+# celery -A extranet.celery_app worker -l INFO  --logfile=${ME}/src/instance/celery.log --pidfile="${celery_pid_file}" --detach
+# echo "Celery pid file: ${celery_pid_file}"
 echo "-----------------------------------------------------"
 bash -c 'while :; do pg_isready -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -d ${POSTGRES_DB} -t 10 && break; sleep 5; done'
 date

@@ -27,7 +27,8 @@ from ..communities.common import activity_time_format, object_viewers
 from ..communities.views import default_view_kw
 from .forms import PostEditForm, PostForm, ThreadForm
 from .models import Post, PostAttachment, Thread
-from .tasks import send_post_by_email
+
+# from .tasks import send_post_by_email
 
 # TODO: move to config
 MAX_THREADS = 30
@@ -331,15 +332,16 @@ class ThreadCreate(BaseThreadView, views.ObjectCreate):
             session.add(attachment)
 
     def commit_success(self):
-        if self.send_by_email:
-            task = send_post_by_email.delay(self.post.id)
+        pass
+        # if self.send_by_email:
+        #     task = send_post_by_email.delay(self.post.id)
 
-            # task = send_post_by_email.delay(self.post.id)
-            meta = self.post.meta.setdefault("abilian.sbe.forum", {})
-            meta["send_post_by_email_task"] = task.id
-            self.post.meta.changed()
-            session = sa.orm.object_session(self.post)
-            session.commit()
+        #     # task = send_post_by_email.delay(self.post.id)
+        #     meta = self.post.meta.setdefault("abilian.sbe.forum", {})
+        #     meta["send_post_by_email_task"] = task.id
+        #     self.post.meta.changed()
+        #     session = sa.orm.object_session(self.post)
+        #     session.commit()
 
     @property
     def activity_target(self):

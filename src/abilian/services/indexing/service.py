@@ -19,7 +19,8 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
-from celery import shared_task
+
+# from celery import shared_task
 from flask import Flask, _app_ctx_stack, appcontext_pushed, current_app, g
 from flask.globals import _lookup_app_object
 from flask_login import current_user
@@ -31,9 +32,9 @@ from whoosh.filedb.filestore import FileStorage, RamStorage
 from whoosh.index import FileIndex, Index
 from whoosh.qparser import DisMaxParser
 from whoosh.writing import CLEAR, AsyncWriter
-
 from abilian.core import signals
-from abilian.core.celery import safe_session
+
+# from abilian.core.celery import safe_session
 from abilian.core.entities import Entity, Indexable
 from abilian.core.extensions import db
 from abilian.core.models import Model
@@ -435,8 +436,8 @@ class WhooshIndexService(Service):
             if sa.orm.object_session(obj) is not None:
                 items.append((op, model_name, getattr(obj, primary_field), {}))
 
-        if items:
-            index_update.apply_async(kwargs={"index": "default", "items": items})
+        # if items:
+        #     index_update.apply_async(kwargs={"index": "default", "items": items})
 
         self.clear_update_queue()
 
@@ -504,7 +505,7 @@ class WhooshIndexService(Service):
 service = WhooshIndexService()
 
 
-@shared_task
+# @shared_task
 def index_update(index: str, items: list[list[dict | int | str]]):
     """
     :param:index: index name
@@ -514,7 +515,8 @@ def index_update(index: str, items: list[list[dict | int | str]]):
     index = service.app_state.indexes[index_name]
     adapted = service.adapted
 
-    session = safe_session()
+    # session = safe_session()
+    session = None
     updated = set()
     writer = AsyncWriter(index)
     try:

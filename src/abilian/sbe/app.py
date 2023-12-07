@@ -10,7 +10,8 @@ import logging
 import jinja2
 
 from abilian.app import Application as BaseApplication
-from abilian.core.celery import FlaskLoader as CeleryBaseLoader
+
+# from abilian.core.celery import FlaskLoader as CeleryBaseLoader
 from abilian.services import converter
 
 from .apps.documents.repository import content_repository
@@ -25,8 +26,8 @@ logger = logging.getLogger(__name__)
 
 
 # loader to be used by celery workers
-class CeleryLoader(CeleryBaseLoader):
-    flask_app_factory = "abilian.sbe.app.create_app"
+# class CeleryLoader(CeleryBaseLoader):
+#     flask_app_factory = "abilian.sbe.app.create_app"
 
 
 class Application(BaseApplication):

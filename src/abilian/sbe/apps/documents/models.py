@@ -772,8 +772,8 @@ def _trigger_conversion_tasks(session: Session) -> None:
     document_queue = _get_documents_queue()
     while document_queue:
         doc, task_id = document_queue.pop()
-        if doc.id:
-            tasks.process_document.apply_async((doc.id,), task_id=task_id)
+        # if doc.id:
+        #     tasks.process_document.apply_async((doc.id,), task_id=task_id)
 
 
 def setup_listener() -> None:

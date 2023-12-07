@@ -64,7 +64,8 @@ import abilian.core.util
 import abilian.i18n
 from abilian.config import default_config
 from abilian.core import extensions, signals
-from abilian.core.celery import FlaskCelery
+
+# from abilian.core.celery import FlaskCelery
 from abilian.services import (
     Service,
     activity_service,
@@ -177,7 +178,7 @@ class Application(
     js_api: dict[str, Any]
 
     #: celery app class
-    celery_app_cls = FlaskCelery
+    # celery_app_cls = FlaskCelery
 
     def __init__(self, name: Any | None = None, *args: Any, **kwargs: Any):
         name = name or __name__
@@ -413,12 +414,12 @@ class Application(
 
         # Celery async service
         # this allows all shared tasks to use this celery app
-        if getattr(self, "celery_app_cls", None):
-            celery_app = self.extensions["celery"] = self.celery_app_cls()
-            # force reading celery conf now - default celery app will
-            # also update our config with default settings
-            assert celery_app.conf
-            celery_app.set_default()
+        # if getattr(self, "celery_app_cls", None):
+        #     celery_app = self.extensions["celery"] = self.celery_app_cls()
+        #     # force reading celery conf now - default celery app will
+        #     # also update our config with default settings
+        #     assert celery_app.conf
+        #     celery_app.set_default()
 
         # dev helper
         if self.debug:

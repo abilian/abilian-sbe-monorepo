@@ -3,8 +3,9 @@ from __future__ import annotations
 from datetime import datetime, timedelta
 
 import html2text
-from celery import shared_task
-from celery.schedules import crontab
+
+# from celery import shared_task
+# from celery.schedules import crontab
 from flask import current_app
 from flask_mail import Message
 from sqlalchemy import and_, or_
@@ -27,14 +28,15 @@ from abilian.web import url_for
 from .. import TOKEN_SERIALIZER_NAME
 
 DIGEST_TASK_NAME = f"{__name__}.send_daily_social_digest_task"
-DEFAULT_DIGEST_SCHEDULE = {
-    "task": DIGEST_TASK_NAME,
-    "schedule": crontab(hour=10, minute=0),
-}
+# DEFAULT_DIGEST_SCHEDULE = {
+#     "task": DIGEST_TASK_NAME,
+#     "schedule": crontab(hour=10, minute=0),
+# }
+DEFAULT_DIGEST_SCHEDULE = {}
 
 
 # expires after 1 day - 10 minutes
-@shared_task(expires=85800)
+# @shared_task(expires=85800)
 def send_daily_social_digest_task():
     # a request_context is required when rendering templates
     with current_app.test_request_context("/tasks/send_daily_social_updates"):

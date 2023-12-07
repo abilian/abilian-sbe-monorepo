@@ -298,7 +298,7 @@ def refresh_preview(doc_id):
         db.session.commit()
 
     check_manage_access(doc)
-    convert_document_content.apply([doc_id])
+    # convert_document_content.apply([doc_id])
     preview_document.apply([doc_id])
     return redirect(url_for(doc))
 
