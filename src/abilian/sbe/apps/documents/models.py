@@ -5,7 +5,10 @@ TODO: move to an independent service / app.
 from __future__ import annotations
 
 import itertools
-import logging
+
+# import logging
+from loguru import logger
+
 import mimetypes
 import threading
 import uuid
@@ -35,6 +38,7 @@ from abilian.core.models import NOT_AUDITABLE, SEARCHABLE
 from abilian.core.models.blob import Blob
 from abilian.core.models.subjects import Group, User
 from abilian.core.util import md5
+from abilian.logutils.configure import connect_logger
 from abilian.services.conversion import converter
 from abilian.services.indexing import indexable_role
 from abilian.services.security import Admin, Anonymous, InheritSecurity, security
@@ -45,7 +49,8 @@ from .lock import Lock
 if TYPE_CHECKING:
     from abilian.sbe.apps.communities.models import Community
 
-logger = logging.getLogger(__package__)
+connect_logger(logger)
+# logger = logging.getLogger(__package__)
 
 __all__ = (
     "CmisObject",
@@ -571,18 +576,18 @@ class Document(BaseContent, PathAndSecurityIndexable):
         if not self.antivirus_required:
             return True
 
-        if current_app.config.get("CELERY_ALWAYS_EAGER", False):
-            async_conversion(self)
-            return True
+        # if current_app.config.get("CELERY_ALWAYS_EAGER", False):
+        #     async_conversion(self)
+        #     return True
 
         task_id = self.content_blob.meta.get("antivirus_task_id")
         if task_id is not None:
             res = drama_tasks.log_document_id.send(task_id)
-        if task_id is not None:
-            res = tasks.process_document.AsyncResult(task_id)
-            if not res.failed():
-                # success, or pending or running
-                return True
+        # if task_id is not None:
+        #     res = tasks.process_document.AsyncResult(task_id)
+        #     if not res.failed():
+        #         # success, or pending or running
+        #         return True
 
         # schedule a new task
         self.content_blob.meta["antivirus_task_id"] = str(uuid.uuid4())
@@ -761,6 +766,7 @@ def async_conversion(document: Document) -> None:
 
 
 def _trigger_conversion_tasks(session: Session) -> None:
+    logger.warning("in _trigger_conversion_tasks()")
     if (
         # this commit is not from the application session
         session is not db.session()
