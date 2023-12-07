@@ -33,8 +33,8 @@ __all__ = ["create_app"]
 
 HOME_ACTION = NavItem("section", "home", title=_l("Home"), endpoint="social.home")
 
-broker = RedisBroker()
-dramatiq.set_broker(broker)
+broker = None
+# dramatiq.set_broker(broker)
 
 
 class Application(BaseApplication):
@@ -68,7 +68,7 @@ def declare_actor(callable) -> None:
 
 
 def create_app(config=None, **kw):
-    # global broker
+    global broker
 
     app = Application(__name__, **kw)
     app.config.from_object(BaseConfig)
@@ -97,12 +97,12 @@ def create_app(config=None, **kw):
 
     register_cli(app)
 
-    broker2 = RedisBroker(url=os.environ["REDIS_URI"])
-    dramatiq.set_broker(broker2)
+    broker = RedisBroker(url=os.environ["REDIS_URI"])
+    dramatiq.set_broker(broker)
 
-    broker2.init_app(app)
+    broker.init_app(app)
     # broker.url = os.environ["REDIS_URI"]
-    broker2.set_default()
+    broker.set_default()
 
     # load actors
     # declare_actor(dramas.log_document_id)
