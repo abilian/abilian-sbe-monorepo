@@ -148,6 +148,7 @@ extend-ignore = [
     "PLR0912", # Too many branches
     "PLR0913", # Too many arguments in function definition
     "PLR0915", # Too many statements
+    "PLR0917", # Too many positional arguments
     "PLR1706", # Consider using if-else expression
     "PLR5501", # Use `elif` instead of `else` then `if`, to reduce indentation
     "PLR6201", # Use a `set` literal when testing for membership
