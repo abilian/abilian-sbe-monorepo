@@ -16,10 +16,10 @@ from loguru import logger
 
 import abilian.cli
 from abilian.app import Application as BaseApplication
+from abilian.core.dramatiq_singleton import dramatiq
 from abilian.core.extensions import csrf
 from abilian.i18n import _l
 from abilian.logutils.configure import connect_logger
-from abilian.sbe.apps.documents.drama_tasks import dramatiq
 from abilian.sbe.apps.social.views.social import social
 from abilian.sbe.extension import sbe
 from abilian.web.action import actions

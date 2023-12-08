@@ -16,8 +16,6 @@ from abilian.logutils.configure import connect_logger
 from abilian.services import converter, get_service
 from abilian.services.conversion import ConversionError, HandlerNotFound
 
-from .drama_tasks import log_document_id
-
 if TYPE_CHECKING:
     from .models import Document
 

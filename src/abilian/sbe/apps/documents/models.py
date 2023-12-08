@@ -582,8 +582,8 @@ class Document(BaseContent, PathAndSecurityIndexable):
         #     return True
 
         task_id = self.content_blob.meta.get("antivirus_task_id")
-        if task_id is not None:
-            res = drama_tasks.log_document_id.send(task_id)
+        # if task_id is not None:
+        #     res = drama_tasks.log_document_id.send(task_id)
         # if task_id is not None:
         #     res = tasks.process_document.AsyncResult(task_id)
         #     if not res.failed():
@@ -767,34 +767,26 @@ def async_conversion(document: Document) -> None:
 
 
 def _trigger_conversion_tasks(session: Session) -> None:
-    logger.warning("in _trigger_conversion_tasks()")
+    logger.debug("in _trigger_conversion_tasks()")
     if (
         # this commit is not from the application session
         session is not db.session()
         # inside a sub-transaction: not yet written in DB
         or session.transaction.nested
     ):
-        logger.warning("_trigger_conversion_tasks() early return")
+        logger.debug("_trigger_conversion_tasks() early return")
         return
 
     document_queue = _get_documents_queue()
-    logger.warning(f"_trigger_conversion_tasks() {document_queue=}")
+    logger.debug(f"_trigger_conversion_tasks() {document_queue=}")
     while document_queue:
         doc, task_id = document_queue.pop()
-        logger.warning(f"_trigger_conversion_tasks() {doc=} {task_id=}")
-        # if doc.id:
-        #     tasks.process_document.apply_async((doc.id,), task_id=task_id)
+        logger.debug(f"_trigger_conversion_tasks() {doc=} {task_id=}")
         if doc.id:
-            logger.warning(f"_trigger_conversion_tasks() {doc.id=}")
-            # tasks.process_document.apply_async((doc.id,), task_id=task_id)
-            # test_broker = dramatiq.broker.get_broker()
-            # logger.info(f"broker {test_broker}")
-            # logger.info(f"test get_declared_queues {test_broker.get_declared_queues()}")
-            # logger.info(f"test get_declared_actors {test_broker.get_declared_actors()}")
-
-            drama_tasks.log_document_id.send(doc.id)
-            logger.warning(f"_trigger_conversion_tasks() {doc.id=} sent")
-    logger.warning(f"_trigger_conversion_tasks() exit")
+            logger.debug(f"_trigger_conversion_tasks() {doc.id=}")
+            drama_tasks.process_document.send(doc.id)
+            logger.debug(f"_trigger_conversion_tasks() {doc.id=} sent")
+    logger.debug(f"_trigger_conversion_tasks() exit")
 
 
 def setup_listener() -> None:
