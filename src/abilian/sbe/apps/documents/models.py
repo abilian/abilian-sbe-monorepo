@@ -778,6 +778,7 @@ def _trigger_conversion_tasks(session: Session) -> None:
         return
 
     document_queue = _get_documents_queue()
+    logger.warning(f"_trigger_conversion_tasks() {document_queue=}")
     while document_queue:
         doc, task_id = document_queue.pop()
         logger.warning(f"_trigger_conversion_tasks() {doc=} {task_id=}")
@@ -793,6 +794,7 @@ def _trigger_conversion_tasks(session: Session) -> None:
 
             drama_tasks.log_document_id.send(doc.id)
             logger.warning(f"_trigger_conversion_tasks() {doc.id=} sent")
+    logger.warning(f"_trigger_conversion_tasks() exit")
 
 
 def setup_listener() -> None:

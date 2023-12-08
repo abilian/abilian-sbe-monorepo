@@ -11,6 +11,7 @@ from flask import Blueprint, Response, abort, current_app, g, redirect, request
 from flask.cli import AppGroup, FlaskGroup
 from flask_dramatiq import Dramatiq
 from flask_login import current_user
+from icecream import ic
 from loguru import logger
 
 import abilian.cli
@@ -18,21 +19,18 @@ from abilian.app import Application as BaseApplication
 from abilian.core.extensions import csrf
 from abilian.i18n import _l
 from abilian.logutils.configure import connect_logger
+from abilian.sbe.apps.documents.drama_tasks import dramatiq
 from abilian.sbe.apps.social.views.social import social
 from abilian.sbe.extension import sbe
 from abilian.web.action import actions
 from abilian.web.nav import NavItem
 from abilian.web.util import url_for
 
-import abilian.sbe.apps.documents.drama_tasks as dramas
-
 from .config import BaseConfig
 
 __all__ = ["create_app"]
 
 HOME_ACTION = NavItem("section", "home", title=_l("Home"), endpoint="social.home")
-
-dramatiq = Dramatiq()
 
 
 class Application(BaseApplication):
@@ -68,6 +66,8 @@ def create_app(config=None, **kw):
 
     # Setup stuff
     connect_logger(logger)
+
+    # show all app config
     logger.info(pformat(dict(sorted(app.config.items()))))
 
     # We must register this before blueprint is registered
@@ -85,6 +85,7 @@ def create_app(config=None, **kw):
 
     dramatiq.init_app(app)
 
+    # show broker configuration
     broker = dramatiq.broker
     print("broker in create_app:")
     print(f"{broker=}")

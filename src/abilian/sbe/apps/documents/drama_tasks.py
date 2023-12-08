@@ -1,20 +1,19 @@
 """Dramatiq tasks related to dicuments."""
 from collections.abc import Iterator
 from contextlib import contextmanager
+from pathlib import Path
 from typing import TYPE_CHECKING
 
-from sqlalchemy.sql.functions import mode
-
+from flask import current_app
 from flask_dramatiq import Dramatiq
 from loguru import logger
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.functions import mode
 
 from abilian.core.extensions import db
 from abilian.logutils.configure import connect_logger
 from abilian.services import converter, get_service
 from abilian.services.conversion import ConversionError, HandlerNotFound
-
-from pathlib import Path
 
 if TYPE_CHECKING:
     from .models import Document
