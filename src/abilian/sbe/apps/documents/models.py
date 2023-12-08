@@ -16,8 +16,6 @@ from collections.abc import Collection, Iterator
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
-import dramatiq
-
 import pkg_resources
 import sqlalchemy as sa
 import whoosh.fields as wf
@@ -45,7 +43,8 @@ from abilian.services.conversion import converter
 from abilian.services.indexing import indexable_role
 from abilian.services.security import Admin, Anonymous, InheritSecurity, security
 from . import drama_tasks
-from . import tasks
+
+# from . import tasks
 from .lock import Lock
 
 if TYPE_CHECKING:
@@ -787,10 +786,10 @@ def _trigger_conversion_tasks(session: Session) -> None:
         if doc.id:
             logger.warning(f"_trigger_conversion_tasks() {doc.id=}")
             # tasks.process_document.apply_async((doc.id,), task_id=task_id)
-            test_broker = dramatiq.broker.get_broker()
-            logger.info(f"broker {test_broker}")
-            logger.info(f"test get_declared_queues {test_broker.get_declared_queues()}")
-            logger.info(f"test get_declared_actors {test_broker.get_declared_actors()}")
+            # test_broker = dramatiq.broker.get_broker()
+            # logger.info(f"broker {test_broker}")
+            # logger.info(f"test get_declared_queues {test_broker.get_declared_queues()}")
+            # logger.info(f"test get_declared_actors {test_broker.get_declared_actors()}")
 
             drama_tasks.log_document_id.send(doc.id)
             logger.warning(f"_trigger_conversion_tasks() {doc.id=} sent")

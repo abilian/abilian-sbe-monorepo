@@ -5,13 +5,12 @@ import os
 from pprint import pformat
 
 import click
-import dramatiq
 import toml
 from dotenv import load_dotenv
 from flask import Blueprint, Response, abort, current_app, g, redirect, request
 from flask.cli import AppGroup, FlaskGroup
+from flask_dramatiq import Dramatiq
 from flask_login import current_user
-from flask_melodramatiq import Broker, RedisBroker
 from loguru import logger
 
 import abilian.cli
@@ -33,8 +32,7 @@ __all__ = ["create_app"]
 
 HOME_ACTION = NavItem("section", "home", title=_l("Home"), endpoint="social.home")
 
-broker = Broker()
-dramatiq.set_broker(broker)
+dramatiq = Dramatiq()
 
 
 class Application(BaseApplication):
@@ -53,18 +51,6 @@ class Application(BaseApplication):
         super().init_extensions()
 
         sbe.init_app(self)
-
-
-def declare_actor(callable) -> None:
-    actor_name = callable.__name__
-    dramatiq.Actor(
-        callable,
-        actor_name=actor_name,
-        queue_name="default",
-        priority=0,
-        broker=broker,
-        options={},
-    )
 
 
 def create_app(config=None, **kw):
@@ -97,20 +83,13 @@ def create_app(config=None, **kw):
 
     register_cli(app)
 
-    # broker = RedisBroker(url=os.environ["REDIS_URI"])
-    broker.init_app(app)
-    broker.set_default()
-    dramatiq.set_broker(broker)
+    dramatiq.init_app(app)
 
-    # broker.url = os.environ["REDIS_URI"]
-
-    # load actors
-    # declare_actor(dramas.log_document_id)
-
-    # debug
-    logger.info(f"broker {broker}")
-    logger.info(f"get_declared_queues {broker.get_declared_queues()}")
-    logger.info(f"get_declared_actors {broker.get_declared_actors()}")
+    broker = dramatiq.broker
+    print("broker in create_app:")
+    print(f"{broker=}")
+    print("broker.get_declared_queues()", broker.get_declared_queues())
+    print("broker.get_declared_actors()", broker.get_declared_actors())
 
     # Done
     return app

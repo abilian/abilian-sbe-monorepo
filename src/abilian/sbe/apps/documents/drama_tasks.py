@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy.sql.functions import mode
 
-import dramatiq
+from flask_dramatiq import Dramatiq
 from loguru import logger
 from sqlalchemy.orm import Session
 
@@ -20,6 +20,8 @@ if TYPE_CHECKING:
     from .models import Document
 
 connect_logger(logger)
+
+dramatiq = Dramatiq()
 
 
 @dramatiq.actor

@@ -40,15 +40,13 @@ export LESS_BIN="${ME}/node_modules/.bin/lessc"
 
 export FLASK_REDIS_URI="${REDIS_URI}"
 export FLASK_BROKER_URL="${REDIS_URI}"
-# export FLASK_CELERY_BROKER_URL="${REDIS_URI}"
-# export CELERY_BROKER_URL="${REDIS_URI}"
-# export FLASK_CELERY_RESULT_BACKEND="${REDIS_URI}"
-# export CELERY_RESULT_BACKEND="${REDIS_URI}"
 
+export FLASK_DRAMATIQ_BROKER="dramatiq.brokers.redis:RedisBroker"
 export FLASK_DRAMATIQ_BROKER_URL="${REDIS_URI}"
-export FLASK_DRAMATIQ_BROKER_CLASS='RedisBroker'
-# DRAMATIQ_BROKER_CONFIRM_DELIVERY = True
-# export FLASK_DRAMATIC_REDIS_URL="${REDIS_URI}1"
+
+export DRAMATIQ_BROKER="dramatiq.brokers.redis:RedisBroker"
+export DRAMATIQ_BROKER_URL="${REDIS_URI}"
+
 export FLASK_APP_LOG_FILE="${ME}/src/instance/app.log"
 
 export CLAMD_CONF_PATH=""
@@ -79,7 +77,7 @@ flask createuser --role admin --name admin ${ADMIN_MAIL} ${ADMIN_PASSWORD}
 
 echo "= dramatiq ==============================="
 # dramatiq extranet.wsgi:broker -p2 --log-file=${ME}/src/instance/dramatiq.log &
-dramatiq extranet.wsgi:broker -p1 --skip-logging --log-file=${ME}/src/instance/dramatiq.log &
+flask worker --processes=1 &
 
 
 echo "= gunicorn ==============================="
