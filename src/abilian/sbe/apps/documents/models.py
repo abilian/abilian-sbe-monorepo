@@ -786,7 +786,7 @@ def _trigger_conversion_tasks(session: Session) -> None:
             logger.debug(f"_trigger_conversion_tasks() {doc.id=}")
             drama_tasks.process_document.send(doc.id)
             logger.debug(f"_trigger_conversion_tasks() {doc.id=} sent")
-    logger.debug(f"_trigger_conversion_tasks() exit")
+    logger.debug("_trigger_conversion_tasks() exit")
 
 
 def setup_listener() -> None:

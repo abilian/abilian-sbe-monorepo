@@ -105,17 +105,25 @@ def preview_document(document_id: int) -> None:
             # deleted after task queued, but before task run
             return
 
-        try:
-            converter.to_image(
-                document.content_digest,
-                document.content,
-                document.content_type,
-                0,
-                document.preview_size,
-            )
-        except ConversionError as e:
-            logger.info(f"Preview failed: {e}", exc_info=True, extra={"stack": True})
+        convert_to_image(document)
+
     logger.info(f"preview_document() exit {document_id=}")
+
+
+@logger.catch(level="ERROR")
+def convert_to_image(doc: Document) -> None:
+    logger.info(f"convert_to_image() {doc=}")
+
+    try:
+        converter.to_image(
+            doc.content_digest,
+            doc.content,
+            doc.content_type,
+            0,
+            doc.preview_size,
+        )
+    except ConversionError as e:
+        logger.info(f"Preview failed for document {doc.name}: {e}")
 
 
 @dramatiq.actor(max_retries=5)
@@ -143,10 +151,7 @@ def convert_to_pdf(doc: Document) -> None:
         return
     try:
         doc.pdf = converter.to_pdf(doc.content_digest, doc.content, doc.content_type)
-    except HandlerNotFound:
-        doc.pdf = b""
-        logger.info(f"Conversion to PDF failed for document {doc.name}: {e}")
-    except ConversionError as e:
+    except (HandlerNotFound, ConversionError) as e:
         doc.pdf = b""
         logger.info(f"Conversion to PDF failed for document {doc.name}: {e}")
 
