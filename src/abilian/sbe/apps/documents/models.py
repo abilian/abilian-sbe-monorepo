@@ -5,10 +5,6 @@ TODO: move to an independent service / app.
 from __future__ import annotations
 
 import itertools
-
-# import logging
-from loguru import logger
-
 import mimetypes
 import threading
 import uuid
@@ -21,6 +17,9 @@ import sqlalchemy as sa
 import whoosh.fields as wf
 from flask import current_app, json, url_for
 from flask_login import current_user
+
+# import logging
+from loguru import logger
 from sqlalchemy.event import listen, listens_for
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import backref, foreign, relationship, remote
@@ -42,6 +41,7 @@ from abilian.logutils.configure import connect_logger
 from abilian.services.conversion import converter
 from abilian.services.indexing import indexable_role
 from abilian.services.security import Admin, Anonymous, InheritSecurity, security
+
 from . import drama_tasks
 
 # from . import tasks

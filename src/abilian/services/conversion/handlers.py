@@ -3,13 +3,13 @@ from __future__ import annotations
 import contextlib
 import glob
 import hashlib
-import logging
 import mimetypes
 import os
 import re
 import shutil
 import subprocess
 import threading
+import time
 import traceback
 from abc import ABCMeta, abstractmethod
 from base64 import b64decode, b64encode
@@ -17,25 +17,48 @@ from pathlib import Path
 from typing import Any
 from xmlrpc.client import ServerProxy
 
+import filelock
 from devtools import debug
 from flask import Flask
+from loguru import logger
 from magic import Magic
 
+from abilian.logutils.configure import connect_logger
 from abilian.services.image import resize
 
 from .exceptions import ConversionError
+from .handler_lock import acquire_lock
 from .util import get_tmp_dir, make_temp_file
 
-logger = logging.getLogger(__name__)
+connect_logger(logger)
+
+
+def poppler_bin_util(util: str) -> str:
+    if "POPPLER_BIN" not in os.environ:
+        return ""
+    path = Path(os.environ["POPPLER_BIN"]) / util
+    if path.is_file():
+        return str(path)
+    return ""
 
 
 # Quick check for tests
 def has_pdftotext() -> bool:
-    return shutil.which("pdftotext") is not None
+    if poppler_bin_util("pdftotext"):
+        return True
+    result = shutil.which("pdftotext") is not None
+    if not result:
+        logger.warning(f"has_pdftotext(): {result}")
+        logger.warning(f"has_pdftotext() PATH: {os.environ['PATH']}")
+    return result
 
 
 def has_libreoffice() -> bool:
-    return shutil.which("soffice") is not None
+    result = shutil.which("soffice") is not None
+    if not result:
+        logger.warning(f"has_libreoffice(): {result}")
+        logger.warning(f"has_libreoffice() PATH: {os.environ['PATH']}")
+    return result
 
 
 HAS_PDFTOTEXT = has_pdftotext()
@@ -49,7 +72,7 @@ class Handler(metaclass=ABCMeta):
     produces_mime_types: list[str] = []
 
     def __init__(self, *args, **kwargs):
-        self.log = logger.getChild(self.__class__.__name__)
+        self.log = logger
 
     def init_app(self, app: Flask):
         pass
@@ -93,10 +116,12 @@ class PdfToTextHandler(Handler):
     accepts_mime_types = ["application/pdf", "application/x-pdf"]
     produces_mime_types = ["text/plain"]
 
+    @acquire_lock("PdfToTextHandler")
     def convert(self, blob: bytes, **kw: Any) -> str:
         with make_temp_file(blob) as in_fn, make_temp_file() as out_fn:
+            pdftotext = poppler_bin_util("pdftotext") or "pdftotext"
             try:
-                subprocess.check_call(["pdftotext", in_fn, out_fn])
+                subprocess.check_call([pdftotext, in_fn, out_fn])
             except Exception as e:
                 raise ConversionError("pdftotext failed") from e
 
@@ -190,6 +215,7 @@ class ImageMagickHandler(Handler):
     accepts_mime_types = ["image/.*"]
     produces_mime_types = ["application/pdf"]
 
+    @acquire_lock("ImageMagickHandler")
     def convert(self, blob: bytes, **kw) -> bytes:
         with make_temp_file(blob) as in_fn, make_temp_file() as out_fn:
             try:
@@ -204,12 +230,14 @@ class PdfToPpmHandler(Handler):
     accepts_mime_types = ["application/pdf", "application/x-pdf"]
     produces_mime_types = ["image/jpeg"]
 
+    @acquire_lock("PdfToPpmHandler")
     def convert(self, blob: bytes, size: int = 500, **kw) -> list[bytes]:
         """Size is the maximum horizontal size."""
         file_list: list[str] = []
         with make_temp_file(blob) as in_fn, make_temp_file() as out_fn:
+            pdftoppm = poppler_bin_util("pdftoppm") or "pdftoppm"
             try:
-                subprocess.check_call(["pdftoppm", "-jpeg", in_fn, out_fn])
+                subprocess.check_call([pdftoppm, "-jpeg", in_fn, out_fn])
                 file_list = sorted(glob.glob(f"{out_fn}-*.jpg"))
 
                 converted_images = []
@@ -391,34 +419,41 @@ class LibreOfficePdfHandler(Handler):
 
         self.soffice = soffice
 
+    @acquire_lock("LibreOfficePdfHandler")
     def convert(self, blob: bytes, **kw: Any) -> bytes:
         """Convert using soffice converter."""
         timeout = self.run_timeout
-        with make_temp_file(blob) as in_fn:
-            cmd = [self.soffice, "--headless", "--convert-to", "pdf", in_fn]
-
-            # # TODO: fix this if needed, or remove if not needed
-            # if os.path.exists(
-            #         "/Applications/LibreOffice.app/Contents/program/python"):
-            #     cmd = [
-            #         '/Applications/LibreOffice.app/Contents/program/python',
-            #         '/usr/local/bin/unoconv', '-f', 'pdf', '-o', out_fn, in_fn
-            #     ]
+        with make_temp_file(blob, tmp_dir=self.tmp_dir) as in_fn:
+            cmd = [
+                self.soffice,
+                "--headless",
+                "--convert-to",
+                "pdf",
+                "--outdir",
+                str(self.tmp_dir),
+                str(in_fn),
+            ]
 
             def run_soffice():
                 try:
                     self._process = subprocess.Popen(
-                        cmd, close_fds=True, cwd=bytes(self.tmp_dir)
+                        cmd, close_fds=True, cwd=str(self.tmp_dir)
                     )
                     self._process.communicate()
+                except subprocess.CalledProcessError as e:
+                    logger.warning("CalledProcessError for soffice")
+                    logger.warning(f"returncode:{e.returncode}")
+                    logger.warning(f"e.cmd:{e.cmd}")
+                    logger.warning(f"stdout:{e.stdout}")
+                    logger.warning(f"stderr:{e.stderr}")
+                    raise ConversionError() from e
                 except Exception as e:
                     logger.error("soffice error: %s", e, exc_info=True)
-                    raise ConversionError("soffice conversion failed") from e
+                    raise ConversionError() from e
 
             run_thread = threading.Thread(target=run_soffice)
             run_thread.start()
             run_thread.join(timeout)
-
             try:
                 if run_thread.is_alive():
                     # timeout reached
