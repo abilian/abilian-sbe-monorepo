@@ -575,14 +575,11 @@ class Document(BaseContent, PathAndSecurityIndexable):
         if not self.antivirus_required:
             return
 
-        task_id = self.content_blob.meta.get("antivirus_task_id")
+        # task_id = self.content_blob.meta.get("antivirus_task_id")
+        task_id = self.id
         if task_id is not None:
             # if fail, the task will we tried again 20 times
             drama_tasks.process_document.send(task_id)
-
-        # # schedule a new task
-        # self.content_blob.meta["antivirus_task_id"] = str(uuid.uuid4())
-        # async_conversion(self)
 
     @property
     def antivirus_scanned(self) -> bool:
@@ -751,7 +748,8 @@ def _get_documents_queue() -> list[tuple[Document, str]]:
 
 def async_conversion(document: Document) -> None:
     _get_documents_queue().append(
-        (document, document.content_blob.meta.get("antivirus_task_id"))
+        # (document, document.content_blob.meta.get("antivirus_task_id"))
+        (document, document.id)
     )
 
 
@@ -771,8 +769,8 @@ def _trigger_conversion_tasks(session: Session) -> None:
     while document_queue:
         doc, task_id = document_queue.pop()
         # logger.debug(f"_trigger_conversion_tasks() {doc=} {task_id=}")
-        if doc.id:
-            # logger.debug(f"_trigger_conversion_tasks() {doc.id=}")
+        if doc.id and isinstance(doc.id, int):
+            logger.debug(f"_trigger_conversion_tasks() {doc.id=}")
             drama_tasks.process_document.send(doc.id)
             # logger.debug(f"_trigger_conversion_tasks() {doc.id=} sent")
     # logger.debug("_trigger_conversion_tasks() exit")
