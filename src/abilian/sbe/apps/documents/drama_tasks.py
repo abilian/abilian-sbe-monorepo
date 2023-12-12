@@ -49,14 +49,15 @@ def get_document(
         doc_session.close()
 
 
-@dramatiq.actor(max_retries=5)
+@dramatiq.actor(max_retries=20, max_backoff=86400000)
 def process_document(document_id: int) -> None:
-    """Test for dramatiq tasks
+    """Task to process a document.
 
-    log_document_id.send(id)
+    max_retries = 20 (Dramatiq default)
+    max_backoff = 86400000 , i.e. 1 day
     """
     connect_logger(logger)
-    logger.info(f"process_document() actor : {document_id=}")
+    logger.debug(f"process_document() actor : {document_id=}")
 
     with get_document(document_id) as (session, document):
         if document is None:
@@ -64,14 +65,14 @@ def process_document(document_id: int) -> None:
 
         # True = Ok, None means no check performed (no antivirus present)
         is_clean = _run_antivirus(document)
-        logger.info(f"process_document() {document_id=} {is_clean=}")
+        logger.debug(f"process_document() {document_id=} {is_clean=}")
         if is_clean is False:
             return
-    logger.info(f"process_document() virus clean {document_id=}")
+    logger.debug(f"process_document() virus clean {document_id=}")
     preview_document.send(document_id)
-    logger.info(f"process_document() before convert_document_content {document_id=}")
+    logger.debug(f"process_document() before convert_document_content {document_id=}")
     convert_document_content.send(document_id)
-    logger.info(f"process_document() exit {document_id=}")
+    logger.debug(f"process_document() exit {document_id=}")
 
 
 def _run_antivirus(document: Document) -> bool | None:
@@ -97,22 +98,20 @@ def antivirus_scan(document_id):
 def preview_document(document_id: int) -> None:
     """Compute the document preview images with its default preview size."""
     connect_logger(logger)
-    logger.info(f"preview_document() {document_id=}")
+    logger.debug(f"preview_document() {document_id=}")
 
     with get_document(document_id) as (session, document):
-        logger.info(f"preview_document() {document_id=} {document=}")
+        logger.debug(f"preview_document() {document_id=} {document=}")
         if document is None:
             # deleted after task queued, but before task run
             return
 
         convert_to_image(document)
 
-    logger.info(f"preview_document() exit {document_id=}")
-
 
 @logger.catch(level="ERROR")
 def convert_to_image(doc: Document) -> None:
-    logger.info(f"convert_to_image() {doc=}")
+    logger.debug(f"convert_to_image() {doc=}")
 
     try:
         converter.to_image(
@@ -130,7 +129,7 @@ def convert_to_image(doc: Document) -> None:
 def convert_document_content(document_id: int) -> None:
     """Convert document content."""
     connect_logger(logger)
-    logger.info(f"convert_document_content() {document_id=}")
+    logger.debug(f"convert_document_content() {document_id=}")
 
     with get_document(document_id) as (session, doc):
         if doc is None:
@@ -144,7 +143,7 @@ def convert_document_content(document_id: int) -> None:
 
 @logger.catch(level="ERROR")
 def convert_to_pdf(doc: Document) -> None:
-    logger.info(f"convert_to_pdf() {doc=}")
+    logger.debug(f"convert_to_pdf() {doc=}")
 
     if doc.content_type == "application/pdf":
         doc.pdf = doc.content
@@ -158,7 +157,7 @@ def convert_to_pdf(doc: Document) -> None:
 
 @logger.catch(level="ERROR")
 def convert_to_text(doc: Document) -> None:
-    logger.info(f"convert_to_text() {doc=}")
+    logger.debug(f"convert_to_text() {doc=}")
 
     try:
         doc.text = converter.to_text(doc.content_digest, doc.content, doc.content_type)
@@ -169,7 +168,7 @@ def convert_to_text(doc: Document) -> None:
 
 @logger.catch(level="ERROR")
 def extract_metadata(doc: Document) -> None:
-    logger.info(f"extract_metadata() {doc=}")
+    logger.debug(f"extract_metadata() {doc=}")
 
     doc.extra_metadata = {}
     try:

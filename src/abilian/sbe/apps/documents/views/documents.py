@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 from datetime import datetime
 from urllib.parse import quote
 
@@ -25,11 +26,14 @@ from abilian.core.util import unwrap
 from abilian.i18n import _, render_template_i18n
 from abilian.sbe.apps.communities.common import object_viewers
 from abilian.sbe.apps.communities.views import default_view_kw
+from abilian.sbe.apps.documents.drama_tasks import (
+    convert_document_content,
+    preview_document,
+)
 from abilian.sbe.apps.documents.models import Document
 from abilian.sbe.apps.documents.repository import content_repository
-from abilian.sbe.apps.documents.tasks import convert_document_content, preview_document
 from abilian.services import audit_service
-from abilian.services.conversion import converter
+from abilian.services.conversion import ConversionError, converter
 from abilian.services.image import FIT, resize
 from abilian.services.viewtracker import viewtracker
 from abilian.web import csrf, url_for
@@ -299,7 +303,11 @@ def refresh_preview(doc_id):
 
     check_manage_access(doc)
     # convert_document_content.apply([doc_id])
-    preview_document.apply([doc_id])
+    with contextlib.suppress(ConversionError, OSError):
+        convert_document_content(doc_id)
+    # preview_document.apply([doc_id])
+    with contextlib.suppress(ConversionError, OSError):
+        preview_document(doc_id)
     return redirect(url_for(doc))
 
 

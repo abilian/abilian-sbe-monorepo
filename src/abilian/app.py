@@ -412,15 +412,6 @@ class Application(
         # Admin interface
         Admin().init_app(self)
 
-        # Celery async service
-        # this allows all shared tasks to use this celery app
-        # if getattr(self, "celery_app_cls", None):
-        #     celery_app = self.extensions["celery"] = self.celery_app_cls()
-        #     # force reading celery conf now - default celery app will
-        #     # also update our config with default settings
-        #     assert celery_app.conf
-        #     celery_app.set_default()
-
         # dev helper
         if self.debug:
             # during dev, one can go to /http_error/403 to see rendering of 403

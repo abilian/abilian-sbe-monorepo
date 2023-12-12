@@ -43,8 +43,6 @@ from abilian.services.indexing import indexable_role
 from abilian.services.security import Admin, Anonymous, InheritSecurity, security
 
 from . import drama_tasks
-
-# from . import tasks
 from .lock import Lock
 
 if TYPE_CHECKING:
@@ -573,27 +571,18 @@ class Document(BaseContent, PathAndSecurityIndexable):
     sbe_type = "cmis:document"
 
     # antivirus status
-    def ensure_antivirus_scheduled(self) -> bool:
+    def ensure_antivirus_scheduled(self) -> None:
         if not self.antivirus_required:
-            return True
-
-        # if current_app.config.get("CELERY_ALWAYS_EAGER", False):
-        #     async_conversion(self)
-        #     return True
+            return
 
         task_id = self.content_blob.meta.get("antivirus_task_id")
-        # if task_id is not None:
-        #     res = drama_tasks.log_document_id.send(task_id)
-        # if task_id is not None:
-        #     res = tasks.process_document.AsyncResult(task_id)
-        #     if not res.failed():
-        #         # success, or pending or running
-        #         return True
+        if task_id is not None:
+            # if fail, the task will we tried again 20 times
+            drama_tasks.process_document.send(task_id)
 
-        # schedule a new task
-        self.content_blob.meta["antivirus_task_id"] = str(uuid.uuid4())
-        async_conversion(self)
-        return False
+        # # schedule a new task
+        # self.content_blob.meta["antivirus_task_id"] = str(uuid.uuid4())
+        # async_conversion(self)
 
     @property
     def antivirus_scanned(self) -> bool:
@@ -767,26 +756,26 @@ def async_conversion(document: Document) -> None:
 
 
 def _trigger_conversion_tasks(session: Session) -> None:
-    logger.debug("in _trigger_conversion_tasks()")
+    # logger.debug("in _trigger_conversion_tasks()")
     if (
         # this commit is not from the application session
         session is not db.session()
         # inside a sub-transaction: not yet written in DB
         or session.transaction.nested
     ):
-        logger.debug("_trigger_conversion_tasks() early return")
+        # logger.debug("_trigger_conversion_tasks() early return")
         return
 
     document_queue = _get_documents_queue()
-    logger.debug(f"_trigger_conversion_tasks() {document_queue=}")
+    # logger.debug(f"_trigger_conversion_tasks() {document_queue=}")
     while document_queue:
         doc, task_id = document_queue.pop()
-        logger.debug(f"_trigger_conversion_tasks() {doc=} {task_id=}")
+        # logger.debug(f"_trigger_conversion_tasks() {doc=} {task_id=}")
         if doc.id:
-            logger.debug(f"_trigger_conversion_tasks() {doc.id=}")
+            # logger.debug(f"_trigger_conversion_tasks() {doc.id=}")
             drama_tasks.process_document.send(doc.id)
-            logger.debug(f"_trigger_conversion_tasks() {doc.id=} sent")
-    logger.debug("_trigger_conversion_tasks() exit")
+            # logger.debug(f"_trigger_conversion_tasks() {doc.id=} sent")
+    # logger.debug("_trigger_conversion_tasks() exit")
 
 
 def setup_listener() -> None:
