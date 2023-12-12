@@ -12,18 +12,17 @@ Based on Flask-whooshalchemy by Karl Gyllstrom.
 from __future__ import annotations
 
 import contextlib
-import logging
+import os
 from collections.abc import Collection
 from inspect import isclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
-
-# from celery import shared_task
 from flask import Flask, _app_ctx_stack, appcontext_pushed, current_app, g
 from flask.globals import _lookup_app_object
 from flask_login import current_user
+from loguru import logger
 from sqlalchemy import event
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.unitofwork import UOWTransaction
@@ -33,15 +32,16 @@ from whoosh.index import FileIndex, Index
 from whoosh.qparser import DisMaxParser
 from whoosh.writing import CLEAR, AsyncWriter
 
-from abilian.core import signals
-
 # from abilian.core.celery import safe_session
+from abilian.core import signals
+from abilian.core.dramatiq_singleton import dramatiq
 from abilian.core.entities import Entity, Indexable
 from abilian.core.extensions import db
 from abilian.core.models import Model
 from abilian.core.models.subjects import Group, User
 from abilian.core.util import fqcn as base_fqcn
 from abilian.core.util import friendly_fqcn
+from abilian.logutils.configure import connect_logger
 from abilian.services import Service, ServiceState
 from abilian.services.security import Anonymous, Authenticated, Role, security
 
@@ -51,7 +51,7 @@ from .schema import DefaultSearchSchema, indexable_role
 if TYPE_CHECKING:
     from abilian.app import Application
 
-logger = logging.getLogger(__name__)
+connect_logger(logger)
 
 _pending_indexation_attr = "abilian_pending_indexation"
 
@@ -437,8 +437,10 @@ class WhooshIndexService(Service):
             if sa.orm.object_session(obj) is not None:
                 items.append((op, model_name, getattr(obj, primary_field), {}))
 
-        # if items:
-        #     index_update.apply_async(kwargs={"index": "default", "items": items})
+        if items:
+            logger.info(f"after_commit() {items=}")
+            if not os.environ.get("NO_INDEX_UPDATE"):
+                index_update.send(index="default", items=items)
 
         self.clear_update_queue()
 
@@ -506,18 +508,21 @@ class WhooshIndexService(Service):
 service = WhooshIndexService()
 
 
-# @shared_task
+@dramatiq.actor
 def index_update(index: str, items: list[list[dict | int | str]]):
     """
     :param:index: index name
     :param:items: list of (operation, full class name, primary key, data) tuples.
     """
+    connect_logger(logger)
+    logger.debug(f"index_update() actor : {index=}")
+
     index_name = index
     index = service.app_state.indexes[index_name]
     adapted = service.adapted
 
     # session = safe_session()
-    session = None
+    session = Session(bind=db.session.get_bind(None, None))
     updated = set()
     writer = AsyncWriter(index)
     try:
