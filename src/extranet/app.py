@@ -5,11 +5,13 @@ import os
 from pprint import pformat
 
 import click
+import dramatiq_abort.backends
+import redis
 import toml
 from dotenv import load_dotenv
+from dramatiq_abort import Abortable
 from flask import Blueprint, Response, abort, current_app, g, redirect, request
 from flask.cli import AppGroup, FlaskGroup
-from flask_dramatiq import Dramatiq
 from flask_login import current_user
 from icecream import ic
 from loguru import logger
@@ -25,6 +27,7 @@ from abilian.sbe.extension import sbe
 from abilian.web.action import actions
 from abilian.web.nav import NavItem
 from abilian.web.util import url_for
+
 from .config import BaseConfig
 
 __all__ = ["create_app"]
@@ -48,6 +51,45 @@ class Application(BaseApplication):
         super().init_extensions()
 
         sbe.init_app(self)
+
+
+def init_tasks_engine(app):
+    dramatiq.init_app(app)
+    _add_dramatiq_abordable(app)
+    _print_dramatiq_actors()
+
+
+def _add_dramatiq_abordable(app):
+    """Configure abort feature of dramatiq tasks.
+
+    The dramatiq-abort package provides a middleware that can be used to
+    abort running actors by message id. Here s how you might set it up:
+
+    @dramatiq.actor
+    def a_long_running_task():
+        ...
+
+    message = a_long_running_task.send()
+    abort(message.message_id)
+
+    abort(message_id, mode=AbortMode.CANCEL)
+    abort(message.message_id, mode=AbortMode.ABORT, abort_timeout=2000)
+    """
+    redis_client = redis.Redis.from_url(app.config["REDIS_URI"])
+    backend = dramatiq_abort.backends.RedisBackend(client=redis_client)
+    abortable = Abortable(backend=backend)
+    dramatiq.broker.add_middleware(abortable)
+
+
+def _print_dramatiq_actors():
+    """Show tasks broker configuration."""
+    broker = dramatiq.broker
+    print("broker in create_app:")
+    print(f"{broker=}")
+    middlewares = ", ".join([str(mw.__class__.__name__) for mw in broker.middleware])
+    print("broker middlewares", middlewares)
+    print("broker.get_declared_queues()", broker.get_declared_queues())
+    print("broker.get_declared_actors()", broker.get_declared_actors())
 
 
 def create_app(config=None, **kw):
@@ -82,14 +124,7 @@ def create_app(config=None, **kw):
 
     register_cli(app)
 
-    dramatiq.init_app(app)
-
-    # show broker configuration
-    broker = dramatiq.broker
-    print("broker in create_app:")
-    print(f"{broker=}")
-    print("broker.get_declared_queues()", broker.get_declared_queues())
-    print("broker.get_declared_actors()", broker.get_declared_actors())
+    init_tasks_engine(app)
 
     # Done
     return app

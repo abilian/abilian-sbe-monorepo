@@ -6,9 +6,8 @@ import click
 from flask.cli import with_appcontext
 
 from abilian.core.extensions import db
-from abilian.core.models.subjects import User
+from abilian.core.models.subjects import User, create_root_user
 from abilian.services import get_service
-from abilian.core.models.subjects import create_root_user
 
 
 @click.command()

@@ -10,11 +10,11 @@ from pathlib import PosixPath
 from typing import Any
 from uuid import UUID, uuid1
 
-# from celery import shared_task
 from flask import current_app
 
 from abilian.app import Application
 from abilian.core import signals
+from abilian.core.dramatiq_singleton import dramatiq
 from abilian.core.models.subjects import User
 from abilian.web import url_for
 
@@ -193,7 +193,7 @@ class FileUploadsExtension:
 
 
 # Task scheduled to run every hour: make it expire after 50min.
-# @shared_task(expires=3000)
+@dramatiq.actor
 def periodic_clean_upload_directory():
     """This task should be run periodically.
 
