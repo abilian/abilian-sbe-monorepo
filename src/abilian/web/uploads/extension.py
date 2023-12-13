@@ -12,6 +12,8 @@ from uuid import UUID, uuid1
 
 from flask import current_app
 
+# from periodiq import cron
+
 from abilian.app import Application
 from abilian.core import signals
 from abilian.core.dramatiq_singleton import dramatiq
@@ -66,9 +68,14 @@ class FileUploadsExtension:
         app.config["FILE_UPLOADS"] = self.config
 
         # celery schedule
-        celerybeat_schedule = app.config.setdefault("CELERYBEAT_SCHEDULE", {})
-        if CLEANUP_SCHEDULE_ID not in celerybeat_schedule:
-            celerybeat_schedule[CLEANUP_SCHEDULE_ID] = DEFAULT_CLEANUP_SCHEDULE
+        # celerybeat_schedule = app.config.setdefault("CELERYBEAT_SCHEDULE", {})
+        # if CLEANUP_SCHEDULE_ID not in celerybeat_schedule:
+        #     celerybeat_schedule[CLEANUP_SCHEDULE_ID] = DEFAULT_CLEANUP_SCHEDULE
+
+        # FIXME maybe mobe back to apscheduler if periodiq not easy to configure
+        # -> will go to apscheduler
+        # actor = periodic_clean_upload_directory
+        # actor.send()
 
         path = self.UPLOAD_DIR = app.data_dir / "uploads"
         if not path.exists():
@@ -192,8 +199,9 @@ class FileUploadsExtension:
                     content.unlink()
 
 
-# Task scheduled to run every hour: make it expire after 50min.
-@dramatiq.actor
+# Task scheduled to run every hour: make it expire after 50min (at invocation).
+# @dramatiq.actor(periodic=cron("0 * * * *"))
+@dramatiq.actor()
 def periodic_clean_upload_directory():
     """This task should be run periodically.
 

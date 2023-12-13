@@ -16,6 +16,8 @@ from flask_login import current_user
 from icecream import ic
 from loguru import logger
 
+# from periodiq import PeriodiqMiddleware
+
 import abilian.cli
 from abilian.app import Application as BaseApplication
 from abilian.core.dramatiq_singleton import dramatiq
@@ -55,11 +57,12 @@ class Application(BaseApplication):
 
 def init_tasks_engine(app):
     dramatiq.init_app(app)
-    _add_dramatiq_abordable(app)
+    _add_dramatiq_abortable(app)
+    _add_dramatiq_periodiq(app)
     _print_dramatiq_actors()
 
 
-def _add_dramatiq_abordable(app):
+def _add_dramatiq_abortable(app):
     """Configure abort feature of dramatiq tasks.
 
     The dramatiq-abort package provides a middleware that can be used to
@@ -79,6 +82,12 @@ def _add_dramatiq_abordable(app):
     backend = dramatiq_abort.backends.RedisBackend(client=redis_client)
     abortable = Abortable(backend=backend)
     dramatiq.broker.add_middleware(abortable)
+
+
+def _add_dramatiq_periodiq(app):
+    """Configure periodiq feature of dramatiq tasks."""
+    # FIXME use apscheduler
+    # dramatiq.broker.add_middleware(PeriodiqMiddleware(skip_delay=30))
 
 
 def _print_dramatiq_actors():
