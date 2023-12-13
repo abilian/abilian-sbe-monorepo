@@ -25,7 +25,6 @@ from abilian.sbe.extension import sbe
 from abilian.web.action import actions
 from abilian.web.nav import NavItem
 from abilian.web.util import url_for
-
 from .config import BaseConfig
 
 __all__ = ["create_app"]

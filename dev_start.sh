@@ -18,9 +18,9 @@ export REDIS_PORT="6379"
 export REDIS_URI="redis://${REDIS_HOST}:${REDIS_PORT}/"
 export POSTGRES_HOST="localhost"
 export POSTGRES_PORT="5432"
-export POSTGRES_DB="sbe1"
-export POSTGRES_USER="sbe1"
-export POSTGRES_PASSWORD="sbe1"
+export POSTGRES_DB="sbe3"
+export POSTGRES_USER="sbe3"
+export POSTGRES_PASSWORD="sbe3"
 
 
 export ADMIN_MAIL="jd@abilian.com"

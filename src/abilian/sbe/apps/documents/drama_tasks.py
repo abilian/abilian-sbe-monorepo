@@ -41,6 +41,7 @@ def get_document(
     with doc_session.begin_nested():
         query = doc_session.query(Document)
         document = query.get(document_id)
+        logger.debug(f"get_document() {document=} {session=}")
         yield (doc_session, document)
 
     # cleanup
