@@ -158,7 +158,7 @@ python-dotenv = "^1.0.0"
 defusedxml = "^0.7.1"
 pika = "^1.3.2"
 dramatiq-abort = "^1.1.0"
-apscheduler = "^3.10.4"
+periodiq = "^0.12.1"
 
 
 [tool.poetry.group.dev.dependencies]
