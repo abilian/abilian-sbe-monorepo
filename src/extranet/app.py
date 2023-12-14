@@ -16,11 +16,9 @@ from flask_login import current_user
 from icecream import ic
 from loguru import logger
 
-# from periodiq import PeriodiqMiddleware
-
 import abilian.cli
 from abilian.app import Application as BaseApplication
-from abilian.core.dramatiq_singleton import dramatiq
+from abilian.core.dramatiq.singleton import dramatiq
 from abilian.core.extensions import csrf
 from abilian.i18n import _l
 from abilian.logutils.configure import connect_logger
@@ -31,6 +29,10 @@ from abilian.web.nav import NavItem
 from abilian.web.util import url_for
 
 from .config import BaseConfig
+
+# from periodiq import PeriodiqMiddleware
+
+
 
 __all__ = ["create_app"]
 

@@ -12,15 +12,17 @@ from uuid import UUID, uuid1
 
 from flask import current_app
 
-# from periodiq import cron
-
 from abilian.app import Application
 from abilian.core import signals
-from abilian.core.dramatiq_singleton import dramatiq
+from abilian.core.dramatiq.singleton import dramatiq
 from abilian.core.models.subjects import User
 from abilian.web import url_for
 
 from .views import bp as blueprint
+
+# from periodiq import cron
+
+
 
 logger = logging.getLogger(__name__)
 

@@ -11,7 +11,7 @@ from loguru import logger
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.functions import mode
 
-from abilian.core.dramatiq_singleton import dramatiq
+from abilian.core.dramatiq.singleton import dramatiq
 from abilian.core.extensions import db
 from abilian.logutils.configure import connect_logger
 from abilian.services import converter, get_service

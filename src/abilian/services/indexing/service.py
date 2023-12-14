@@ -34,7 +34,7 @@ from whoosh.writing import CLEAR, AsyncWriter
 
 # from abilian.core.celery import safe_session
 from abilian.core import signals
-from abilian.core.dramatiq_singleton import dramatiq
+from abilian.core.dramatiq.singleton import dramatiq
 from abilian.core.entities import Entity, Indexable
 from abilian.core.extensions import db
 from abilian.core.models import Model
