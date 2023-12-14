@@ -75,7 +75,7 @@ flask createuser --role admin --name admin ${ADMIN_MAIL} ${ADMIN_PASSWORD}
 
 echo "= dramatiq ==============================="
 flask worker --processes 4 --threads 1 &
-# flask periodiq
+flask scheduler &
 
 echo "= gunicorn ==============================="
 gu_pid_file="${ME}/src/instance/gunicorn.pid"

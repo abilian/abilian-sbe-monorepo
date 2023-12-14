@@ -13,12 +13,12 @@ def register_plugin(app: Application) -> None:
     cfg.setdefault("DAILY_SOCIAL_DIGEST_SUBJECT", "Des nouvelles de vos communautés")
 
     # TODO: Slightly confusing. Reorg?
-    from .tasks.social import DEFAULT_DIGEST_SCHEDULE, DIGEST_TASK_NAME
+    # from .tasks.social import DEFAULT_DIGEST_SCHEDULE, DIGEST_TASK_NAME
     from .views import notifications, social
 
-    CELERYBEAT_SCHEDULE = app.config.setdefault("CELERYBEAT_SCHEDULE", {})
+    # CELERYBEAT_SCHEDULE = app.config.setdefault("CELERYBEAT_SCHEDULE", {})
 
-    if DIGEST_TASK_NAME not in CELERYBEAT_SCHEDULE:
-        CELERYBEAT_SCHEDULE[DIGEST_TASK_NAME] = DEFAULT_DIGEST_SCHEDULE
+    # if DIGEST_TASK_NAME not in CELERYBEAT_SCHEDULE:
+    #     CELERYBEAT_SCHEDULE[DIGEST_TASK_NAME] = DEFAULT_DIGEST_SCHEDULE
 
     app.register_blueprint(notifications)

@@ -5,6 +5,7 @@ import redis
 from dramatiq_abort import Abortable
 from loguru import logger
 
+from .cli import scheduler
 from .singleton import dramatiq
 
 DEFAULT_DRAMATIC_ABORT_REDIS_URL = "redis://localhost:6379/1"
@@ -14,7 +15,13 @@ def init_dramatiq_engine(app) -> None:
     logger.info("Setting up Dramatiq")
     dramatiq.init_app(app)
     _add_dramatiq_abortable(app)
+    _register_scheduler(app)
     _print_dramatiq_config()
+
+
+def _register_scheduler(app) -> None:
+    logger.info("Register scheduler")
+    app.cli.add_command(scheduler)
 
 
 def _abortable_redis_client(app) -> None:
@@ -42,6 +49,7 @@ def _add_dramatiq_abortable(app) -> None:
     abort(message_id, mode=AbortMode.CANCEL)
     abort(message.message_id, mode=AbortMode.ABORT, abort_timeout=2000)
     """
+    logger.info("Add dramatiq abortable")
     redis_client = _abortable_redis_client(app)
     backend = dramatiq_abort.backends.RedisBackend(client=redis_client)
     abortable = Abortable(backend=backend)

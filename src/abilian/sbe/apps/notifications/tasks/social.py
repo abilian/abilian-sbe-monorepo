@@ -8,13 +8,17 @@ import html2text
 # from celery.schedules import crontab
 from flask import current_app
 from flask_mail import Message
+from loguru import logger
 from sqlalchemy import and_, or_
 from validate_email import validate_email
 
+from abilian.core.dramatiq.scheduler import crontab
+from abilian.core.dramatiq.singleton import dramatiq
 from abilian.core.entities import Entity
 from abilian.core.models.subjects import User
 from abilian.core.util import md5
 from abilian.i18n import render_template_i18n
+from abilian.logutils.configure import connect_logger
 from abilian.sbe.apps.communities.models import Community
 from abilian.sbe.apps.documents.models import Document
 from abilian.sbe.apps.documents.repository import content_repository
@@ -27,18 +31,14 @@ from abilian.web import url_for
 
 from .. import TOKEN_SERIALIZER_NAME
 
-DIGEST_TASK_NAME = f"{__name__}.send_daily_social_digest_task"
-# DEFAULT_DIGEST_SCHEDULE = {
-#     "task": DIGEST_TASK_NAME,
-#     "schedule": crontab(hour=10, minute=0),
-# }
-DEFAULT_DIGEST_SCHEDULE = {}
 
-
-# expires after 1 day - 10 minutes
-# @shared_task(expires=85800)
+@crontab("0 10 * * *")
+@dramatiq.actor()
 def send_daily_social_digest_task():
     # a request_context is required when rendering templates
+    connect_logger(logger)
+
+    logger.info("Running job: send_daily_social_digest_task")
     with current_app.test_request_context("/tasks/send_daily_social_updates"):
         config = current_app.config
         if not config.get("PRODUCTION") or config.get("DEMO"):

@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import json
-import logging
 import time
 from datetime import timedelta
 from io import BufferedReader
@@ -11,20 +10,17 @@ from typing import Any
 from uuid import UUID, uuid1
 
 from flask import current_app
+from loguru import logger
 
 from abilian.app import Application
 from abilian.core import signals
+from abilian.core.dramatiq.scheduler import crontab
 from abilian.core.dramatiq.singleton import dramatiq
 from abilian.core.models.subjects import User
+from abilian.logutils.configure import connect_logger
 from abilian.web import url_for
 
 from .views import bp as blueprint
-
-# from periodiq import cron
-
-
-
-logger = logging.getLogger(__name__)
 
 CHUNK_SIZE = 64 * 1024
 
@@ -34,8 +30,8 @@ DEFAULT_CONFIG = {
     "DELETE_STALLED_AFTER": 60 * 60 * 24,  # delete files remaining after 1 day
 }
 
-CLEANUP_SCHEDULE_ID = f"{__name__}.periodic_clean_upload_directory"
-DEFAULT_CLEANUP_SCHEDULE = {"task": CLEANUP_SCHEDULE_ID, "schedule": timedelta(hours=1)}
+# CLEANUP_SCHEDULE_ID = f"{__name__}.periodic_clean_upload_directory"
+# DEFAULT_CLEANUP_SCHEDULE = {"task": CLEANUP_SCHEDULE_ID, "schedule": timedelta(hours=1)}
 
 
 def is_valid_handle(handle: str) -> bool:
@@ -68,16 +64,6 @@ class FileUploadsExtension:
         self.config.update(DEFAULT_CONFIG)
         self.config.update(app.config.get("FILE_UPLOADS", {}))
         app.config["FILE_UPLOADS"] = self.config
-
-        # celery schedule
-        # celerybeat_schedule = app.config.setdefault("CELERYBEAT_SCHEDULE", {})
-        # if CLEANUP_SCHEDULE_ID not in celerybeat_schedule:
-        #     celerybeat_schedule[CLEANUP_SCHEDULE_ID] = DEFAULT_CLEANUP_SCHEDULE
-
-        # FIXME maybe mobe back to apscheduler if periodiq not easy to configure
-        # -> will go to apscheduler
-        # actor = periodic_clean_upload_directory
-        # actor.send()
 
         path = self.UPLOAD_DIR = app.data_dir / "uploads"
         if not path.exists():
@@ -181,7 +167,6 @@ class FileUploadsExtension:
         Stalled files are files uploaded more than
         `DELETE_STALLED_AFTER` seconds ago.
         """
-        # FIXME: put lock in directory?
         CLEAR_AFTER = self.config["DELETE_STALLED_AFTER"]
         minimum_age = time.time() - CLEAR_AFTER
 
@@ -201,8 +186,12 @@ class FileUploadsExtension:
                     content.unlink()
 
 
-# Task scheduled to run every hour: make it expire after 50min (at invocation).
-# @dramatiq.actor(periodic=cron("0 * * * *"))
+# Task scheduled to run every hour:
+# make it expire after 50min (at invocation) : not necessary with apscheduler:
+# "By default, only one instance of each job is allowed to be run at the same
+# time. This means that if the job is about to be run but the previous run
+# hasn’t finished yet, then the latest run is considered a misfire."
+@crontab("0 * * * *")
 @dramatiq.actor()
 def periodic_clean_upload_directory():
     """This task should be run periodically.
@@ -211,6 +200,9 @@ def periodic_clean_upload_directory():
     :data:`DEFAULT_CLEANUP_SCHEDULE`. `CELERYBEAT_SCHEDULE` key is
     :data:`CLEANUP_SCHEDULE_ID`.
     """
+    connect_logger(logger)
+
+    logger.info("Running job: periodic_clean_upload_directory")
     with current_app.test_request_context("/tasks/periodic_clean_upload_directory"):
         uploads = current_app.extensions["uploads"]
         uploads.clear_stalled_files()
