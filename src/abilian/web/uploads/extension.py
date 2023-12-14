@@ -190,8 +190,8 @@ class FileUploadsExtension:
 # make it expire after 50min (at invocation) : not necessary with apscheduler:
 # "By default, only one instance of each job is allowed to be run at the same
 # time. This means that if the job is about to be run but the previous run
-# hasn’t finished yet, then the latest run is considered a misfire."
-@crontab("0 * * * *")
+# hasnt finished yet, then the latest run is considered a misfire."
+@crontab("PERIODIC_CLEAN_UPLOAD_DIRECTORY")
 @dramatiq.actor()
 def periodic_clean_upload_directory():
     """This task should be run periodically.

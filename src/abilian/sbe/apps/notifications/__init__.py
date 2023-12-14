@@ -17,7 +17,6 @@ def register_plugin(app: Application) -> None:
     from .views import notifications, social
 
     # CELERYBEAT_SCHEDULE = app.config.setdefault("CELERYBEAT_SCHEDULE", {})
-
     # if DIGEST_TASK_NAME not in CELERYBEAT_SCHEDULE:
     #     CELERYBEAT_SCHEDULE[DIGEST_TASK_NAME] = DEFAULT_DIGEST_SCHEDULE
 

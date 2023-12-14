@@ -32,7 +32,7 @@ from abilian.web import url_for
 from .. import TOKEN_SERIALIZER_NAME
 
 
-@crontab("0 10 * * *")
+@crontab("SCHEDULE_SEND_DAILY_SOCIAL_DIGEST")
 @dramatiq.actor()
 def send_daily_social_digest_task():
     # a request_context is required when rendering templates

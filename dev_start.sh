@@ -45,6 +45,10 @@ export FLASK_DRAMATIQ_BROKER="dramatiq.brokers.redis:RedisBroker"
 export FLASK_DRAMATIQ_BROKER_URL="${REDIS_URI}0"
 export FLASK_DRAMATIC_ABORT_REDIS_URL="${REDIS_URI}1"
 
+# scheduling crontab config
+export FLASK_SCHEDULE_SEND_DAILY_SOCIAL_DIGEST="0 12 * * *"
+export FLASK_PERIODIC_CLEAN_UPLOAD_DIRECTORY="5 * * * *"
+
 export FLASK_APP_LOG_FILE="${ME}/src/instance/app.log"
 
 export CLAMD_CONF_PATH=""
@@ -58,14 +62,6 @@ mkdir -p ${ME}/src/instance
 sudo /etc/init.d/clamav-freshclam start
 sudo /etc/init.d/clamav-daemon start
 sbe_log_server start
-# echo "-----------------------------------------------------"
-# celery_pid_file="${ME}/src/instance/celery.pid"
-# [ -f "${celery_pid_file}" ] && {
-#         kill $(cat "${celery_pid_file}")
-#         rm "${celery_pid_file}"
-# }
-# celery -A extranet.celery_app worker -l INFO  --logfile=${ME}/src/instance/celery.log --pidfile="${celery_pid_file}" --detach
-# echo "Celery pid file: ${celery_pid_file}"
 echo "-----------------------------------------------------"
 bash -c 'while :; do pg_isready -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -d ${POSTGRES_DB} -t 10 && break; sleep 5; done'
 date
