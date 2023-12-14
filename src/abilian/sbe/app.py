@@ -13,6 +13,7 @@ from abilian.app import Application as BaseApplication
 
 # from abilian.core.celery import FlaskLoader as CeleryBaseLoader
 from abilian.services import converter
+from abilian.services.conversion.handler_lock import init_conversion_lock_dir
 
 from .apps.documents.repository import content_repository
 from .extension import sbe
@@ -60,4 +61,5 @@ class Application(BaseApplication):
 def create_app(config: type | None = None, **kw) -> Application:
     app = Application(**kw)
     app.setup(config)
+    init_conversion_lock_dir(app.instance_path)
     return app
