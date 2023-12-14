@@ -38,14 +38,12 @@ export FLASK_DEBUG=0
 export FLASK_LESS_BIN="${ME}/node_modules/.bin/lessc"
 export LESS_BIN="${ME}/node_modules/.bin/lessc"
 
-export FLASK_REDIS_URI="${REDIS_URI}"
-export FLASK_BROKER_URL="${REDIS_URI}"
+export FLASK_REDIS_URI="${REDIS_URI}0"
+export FLASK_BROKER_URL="${REDIS_URI}0"
 
 export FLASK_DRAMATIQ_BROKER="dramatiq.brokers.redis:RedisBroker"
-export FLASK_DRAMATIQ_BROKER_URL="${REDIS_URI}"
-
-export DRAMATIQ_BROKER="dramatiq.brokers.redis:RedisBroker"
-export DRAMATIQ_BROKER_URL="${REDIS_URI}"
+export FLASK_DRAMATIQ_BROKER_URL="${REDIS_URI}0"
+export FLASK_DRAMATIC_ABORT_REDIS_URL="${REDIS_URI}1"
 
 export FLASK_APP_LOG_FILE="${ME}/src/instance/app.log"
 
