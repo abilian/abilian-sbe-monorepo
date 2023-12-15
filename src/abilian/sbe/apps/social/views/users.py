@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import logging
 import pkgutil
 from html import escape
 
@@ -9,6 +8,7 @@ import sqlalchemy.exc
 import sqlalchemy.orm
 from flask import Response, flash, jsonify, redirect, render_template, request
 from flask_login import current_user
+from loguru import logger
 from sqlalchemy.sql.expression import and_, asc, desc, func, nullslast, or_
 from werkzeug.exceptions import InternalServerError
 
@@ -26,8 +26,6 @@ from abilian.web.views import ObjectEdit, default_view
 from abilian.web.views.images import user_photo_url
 
 from .social import social
-
-logger = logging.getLogger(__name__)
 
 DEFAULT_USER_MUGSHOT = pkgutil.get_data(
     "abilian.sbe", "static/images/silhouette_unknown.png"

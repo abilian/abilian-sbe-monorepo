@@ -18,7 +18,7 @@ import whoosh.fields as wf
 from flask import current_app, json, url_for
 from flask_login import current_user
 
-# import logging
+# from loguru import logger
 from loguru import logger
 from sqlalchemy.event import listen, listens_for
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -37,7 +37,6 @@ from abilian.core.models import NOT_AUDITABLE, SEARCHABLE
 from abilian.core.models.blob import Blob
 from abilian.core.models.subjects import Group, User
 from abilian.core.util import md5
-from abilian.logutils.configure import connect_logger
 from abilian.services.conversion import converter
 from abilian.services.indexing import indexable_role
 from abilian.services.security import Admin, Anonymous, InheritSecurity, security
@@ -48,7 +47,7 @@ from .lock import Lock
 if TYPE_CHECKING:
     from abilian.sbe.apps.communities.models import Community
 
-connect_logger(logger)
+
 # logger = logging.getLogger(__package__)
 
 __all__ = (

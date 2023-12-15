@@ -1,16 +1,14 @@
 from __future__ import annotations
 
 import fileinput
-import logging
 import sys
 from email.parser import FeedParser
 
 import click
 from flask.cli import with_appcontext
+from loguru import logger
 
 # from .tasks import check_maildir, process_email
-
-logger = logging.getLogger(__name__)
 
 
 @click.command()
@@ -23,9 +21,6 @@ def inject_email(filename="-"):
 
 def _inject_email(filename="-"):
     parser = FeedParser()
-
-    if logger.level is logging.NOTSET:
-        logger.setLevel(logging.INFO)
 
     try:
         # iterate over stdin

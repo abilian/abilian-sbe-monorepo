@@ -41,7 +41,6 @@ from abilian.core.models import Model
 from abilian.core.models.subjects import Group, User
 from abilian.core.util import fqcn as base_fqcn
 from abilian.core.util import friendly_fqcn
-from abilian.logutils.configure import connect_logger
 from abilian.services import Service, ServiceState
 from abilian.services.security import Anonymous, Authenticated, Role, security
 
@@ -51,7 +50,7 @@ from .schema import DefaultSearchSchema, indexable_role
 if TYPE_CHECKING:
     from abilian.app import Application
 
-connect_logger(logger)
+
 
 _pending_indexation_attr = "abilian_pending_indexation"
 
@@ -514,7 +513,7 @@ def index_update(index: str, items: list[list[dict | int | str]]):
     :param:index: index name
     :param:items: list of (operation, full class name, primary key, data) tuples.
     """
-    connect_logger(logger)
+
     logger.debug(f"index_update() actor : {index=}")
 
     index_name = index

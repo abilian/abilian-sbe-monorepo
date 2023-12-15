@@ -1,13 +1,13 @@
 """"""
 from __future__ import annotations
 
-import logging
 from collections.abc import Callable
 from typing import Any
 
 from flask import Blueprint, Flask, g
 from flask.scaffold import _endpoint_from_view_func
 from flask_login import current_user
+from loguru import logger
 from werkzeug.exceptions import Forbidden
 from werkzeug.utils import import_string
 
@@ -19,8 +19,6 @@ from abilian.web.action import Endpoint, actions
 from abilian.web.nav import BreadcrumbItem, NavGroup, NavItem
 
 from .panel import AdminPanel
-
-logger = logging.getLogger(__name__)
 
 _BP_PREFIX = "admin"
 

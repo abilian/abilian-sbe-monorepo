@@ -13,14 +13,11 @@ from sqlalchemy.sql.functions import mode
 
 from abilian.core.dramatiq.singleton import dramatiq
 from abilian.core.extensions import db
-from abilian.logutils.configure import connect_logger
 from abilian.services import converter, get_service
 from abilian.services.conversion import ConversionError, HandlerNotFound
 
 if TYPE_CHECKING:
     from .models import Document
-
-connect_logger(logger)
 
 
 @contextmanager
@@ -30,8 +27,8 @@ def get_document(
     """Context manager that yields (session, document)."""
     from .models import Document
 
-    # connect_logger(logger)
-    logger.debug(f"get_document() {document_id=} {session=}")
+    #
+    logger.info(f"get_document() {document_id=} {session=}")
 
     if session is None:
         doc_session = db.create_scoped_session()
@@ -57,8 +54,7 @@ def process_document(document_id: int) -> None:
     max_retries = 20 (Dramatiq default)
     max_backoff = 86400000 , i.e. 1 day
     """
-    connect_logger(logger)
-    logger.debug(f"process_document() actor : {document_id=}")
+    logger.info(f"process_document() actor : {document_id=}")
 
     with get_document(document_id) as (session, document):
         if document is None:
@@ -98,8 +94,8 @@ def antivirus_scan(document_id):
 @dramatiq.actor(max_retries=5)
 def preview_document(document_id: int) -> None:
     """Compute the document preview images with its default preview size."""
-    connect_logger(logger)
-    logger.debug(f"preview_document() {document_id=}")
+
+    logger.info(f"preview_document() {document_id=}")
 
     with get_document(document_id) as (session, document):
         logger.debug(f"preview_document() {document_id=} {document=}")
@@ -112,7 +108,7 @@ def preview_document(document_id: int) -> None:
 
 @logger.catch(level="ERROR")
 def convert_to_image(doc: Document) -> None:
-    logger.debug(f"convert_to_image() {doc=}")
+    logger.info(f"convert_to_image() {doc=}")
 
     try:
         converter.to_image(
@@ -129,8 +125,8 @@ def convert_to_image(doc: Document) -> None:
 @dramatiq.actor(max_retries=5)
 def convert_document_content(document_id: int) -> None:
     """Convert document content."""
-    connect_logger(logger)
-    logger.debug(f"convert_document_content() {document_id=}")
+
+    logger.info(f"convert_document_content() {document_id=}")
 
     with get_document(document_id) as (session, doc):
         if doc is None:
@@ -144,7 +140,7 @@ def convert_document_content(document_id: int) -> None:
 
 @logger.catch(level="ERROR")
 def convert_to_pdf(doc: Document) -> None:
-    logger.debug(f"convert_to_pdf() {doc=}")
+    logger.info(f"convert_to_pdf() {doc=}")
 
     if doc.content_type == "application/pdf":
         doc.pdf = doc.content
@@ -158,7 +154,7 @@ def convert_to_pdf(doc: Document) -> None:
 
 @logger.catch(level="ERROR")
 def convert_to_text(doc: Document) -> None:
-    logger.debug(f"convert_to_text() {doc=}")
+    logger.info(f"convert_to_text() {doc=}")
 
     try:
         doc.text = converter.to_text(doc.content_digest, doc.content, doc.content_type)
@@ -169,7 +165,7 @@ def convert_to_text(doc: Document) -> None:
 
 @logger.catch(level="ERROR")
 def extract_metadata(doc: Document) -> None:
-    logger.debug(f"extract_metadata() {doc=}")
+    logger.info(f"extract_metadata() {doc=}")
 
     doc.extra_metadata = {}
     try:

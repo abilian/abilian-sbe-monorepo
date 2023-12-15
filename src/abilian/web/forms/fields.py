@@ -1,7 +1,6 @@
 """"""
 from __future__ import annotations
 
-import logging
 import operator
 from datetime import datetime
 from functools import partial
@@ -17,6 +16,7 @@ from flask.helpers import locked_cached_property
 from flask_babel import format_date, format_datetime, get_locale, get_timezone
 from flask_login import current_user
 from flask_wtf.file import FileField as BaseFileField
+from loguru import logger
 from werkzeug.datastructures import ImmutableMultiDict
 from wtforms import Field
 from wtforms import FieldList as BaseFieldList
@@ -491,7 +491,6 @@ class QuerySelect2Field(SelectFieldBase):
             validators = []
 
         if not any(isinstance(v, (Optional, DataRequired)) for v in validators):
-            logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
             logger.warning(
                 f'Use deprecated parameter `allow_blank` for field "{label}".'
             )

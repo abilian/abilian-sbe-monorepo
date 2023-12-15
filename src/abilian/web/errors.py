@@ -2,19 +2,17 @@
 applications."""
 from __future__ import annotations
 
-import logging
-import logging.config
 from functools import partial
 from pathlib import Path
 
 import sqlalchemy as sa
 import yaml
 from flask import Flask, _request_ctx_stack, g, render_template
+from loguru import logger
 from pkg_resources import resource_filename
 
 from abilian.core import extensions
 
-logger = logging.getLogger(__name__)
 db = extensions.db
 
 
@@ -23,28 +21,6 @@ class ErrorManagerMixin(Flask):
         # Force flask to create application logger before logging
         # configuration; else, flask will overwrite our settings
         assert self.logger
-
-        log_level = self.config.get("LOG_LEVEL")
-        if log_level:
-            self.logger.setLevel(log_level)
-
-        logging_file = self.config.get("LOGGING_CONFIG_FILE")
-        if logging_file:
-            logging_file = (Path(self.instance_path) / logging_file).resolve()
-        else:
-            logging_file = Path(
-                resource_filename("abilian.core", "default_logging.yml")
-            )
-
-        if logging_file.suffix == ".ini":
-            # old standard 'ini' file config
-            logging.config.fileConfig(str(logging_file), disable_existing_loggers=False)
-        elif logging_file.suffix == ".yml":
-            # yaml config file
-            logging_cfg = yaml.safe_load(logging_file.open())
-            logging_cfg.setdefault("version", 1)
-            logging_cfg.setdefault("disable_existing_loggers", False)
-            logging.config.dictConfig(logging_cfg)
 
     def handle_user_exception(self, e):
         # If session.transaction._parent is None, then exception has occured in

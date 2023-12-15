@@ -2,12 +2,12 @@
 from __future__ import annotations
 
 import contextlib
-import logging
 
 import sqlalchemy as sa
 import sqlalchemy.exc
 import sqlalchemy.orm
 from flask import current_app, flash, g, redirect, render_template, request, url_for
+from loguru import logger
 from werkzeug.exceptions import BadRequest, NotFound
 
 from abilian.core.entities import ValidationError
@@ -20,8 +20,6 @@ from abilian.services.security import CREATE, DELETE, READ, WRITE
 from .. import csrf, forms, nav
 from ..action import ButtonAction, Endpoint, actions
 from .base import JSONView, View
-
-logger = logging.getLogger(__name__)
 
 
 class BaseObjectView(View):

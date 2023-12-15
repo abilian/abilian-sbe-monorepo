@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-import logging
 from collections.abc import Callable
 from functools import wraps
 from typing import TYPE_CHECKING, Any
 
 from flask import current_app
+from loguru import logger
 
 from abilian.core.util import fqcn
 
@@ -28,7 +28,7 @@ class ServiceState:
     def __init__(self, service: Service, running: bool = False):
         self.service = service
         self.running = running
-        self.logger = logging.getLogger(fqcn(self.__class__))
+        self.logger = logger
 
 
 class Service:
@@ -45,7 +45,7 @@ class Service:
             msg = f"Service must have a name ({fqcn(self.__class__)})"
             raise ValueError(msg)
 
-        self.logger = logging.getLogger(fqcn(self.__class__))
+        self.logger = logger
         if app:
             self.init_app(app)
 

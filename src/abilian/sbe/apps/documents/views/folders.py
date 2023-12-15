@@ -3,14 +3,16 @@ from __future__ import annotations
 import contextlib
 import fnmatch
 import itertools
-import logging
 import os
 import re
+import sys
 import tempfile
+import traceback
 from collections.abc import Iterator
 from datetime import datetime
 from functools import partial
 from io import StringIO
+from itertools import takewhile
 from typing import IO, Any
 from urllib.parse import quote
 from zipfile import ZipFile, is_zipfile
@@ -32,6 +34,7 @@ from flask import (
     session,
 )
 from flask_login import current_user
+from loguru import logger
 from sqlalchemy import func
 from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import InternalServerError
@@ -70,6 +73,19 @@ from .views import blueprint
 route = blueprint.route
 
 __all__ = ()
+
+
+def tracing_formatter(record: dict):
+    """Add trace to the logger.
+
+    Taken from loguru documentation."""
+    # Filter out frames coming from Loguru internals
+    frames = takewhile(
+        lambda f: "/loguru/" not in f.filename, traceback.extract_stack()
+    )
+    stack = " > ".join(f"{f.filename}:{f.name}:{f.lineno}" for f in frames)
+    record["extra"]["stack"] = stack
+    return "{level} | {extra[stack]} - {message}\n{exception}"
 
 
 @route("/")
@@ -604,8 +620,9 @@ def folder_post(folder_id: int) -> Response:
     else:
         # Probably an error or a hack attempt.
         # Logger will inform sentry if enabled
-        logger = logging.getLogger(__name__)
-        logger.error("Unknown folder action.", extra={"stack": True})
+        logger.remove()
+        logger.add(sys.stderr, format=tracing_formatter)
+        logger.error("Unknown folder action.")
         flash(_("Unknown action."), "error")
         return redirect(url_for(folder))
 

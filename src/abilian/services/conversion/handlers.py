@@ -23,14 +23,11 @@ from flask import Flask
 from loguru import logger
 from magic import Magic
 
-from abilian.logutils.configure import connect_logger
 from abilian.services.image import resize
 
 from .exceptions import ConversionError
 from .handler_lock import acquire_lock
 from .util import get_tmp_dir, make_temp_file
-
-connect_logger(logger)
 
 
 def poppler_bin_util(util: str) -> str:

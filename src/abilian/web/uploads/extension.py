@@ -17,7 +17,6 @@ from abilian.core import signals
 from abilian.core.dramatiq.scheduler import crontab
 from abilian.core.dramatiq.singleton import dramatiq
 from abilian.core.models.subjects import User
-from abilian.logutils.configure import connect_logger
 from abilian.web import url_for
 
 from .views import bp as blueprint
@@ -200,7 +199,7 @@ def periodic_clean_upload_directory():
     :data:`DEFAULT_CLEANUP_SCHEDULE`. `CELERYBEAT_SCHEDULE` key is
     :data:`CLEANUP_SCHEDULE_ID`.
     """
-    connect_logger(logger)
+
 
     logger.info("Running job: periodic_clean_upload_directory")
     with current_app.test_request_context("/tasks/periodic_clean_upload_directory"):

@@ -1,14 +1,13 @@
 from __future__ import annotations
 
 import contextlib
-import logging
 import os
 from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
 from tempfile import mkstemp
 
-logger = logging.getLogger(__name__)
+from loguru import logger
 
 # Hack for Mac OS + homebrew
 os.environ["PATH"] += ":/usr/local/bin"

@@ -12,10 +12,10 @@ import sqlalchemy as sa
 import sqlalchemy.event
 import sqlalchemy.orm
 from flask import current_app
+from loguru import logger
 from sqlalchemy.engine import Connection, Engine
 from sqlalchemy.sql.schema import MetaData
 
-from abilian.core.logging import patch_logger
 from abilian.core.sqlalchemy import SQLAlchemy
 
 from . import upstream_info
@@ -53,7 +53,7 @@ def _message_send(self: Any, connection: flask_mail.Connection):
     connection.send(self, sender)
 
 
-patch_logger.info(flask_mail.Message.send)
+logger.info(flask_mail.Message.send)
 flask_mail.Message.send = _message_send
 
 mail = flask_mail.Mail()

@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import contextlib
 import json
-import logging
 import sys
 import uuid
 from sqlite3 import Connection
@@ -20,15 +19,12 @@ import sqlalchemy.orm
 import sqlalchemy.pool
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy as SAExtension
+from loguru import logger
 from sqlalchemy.engine.interfaces import Dialect
 from sqlalchemy.engine.url import URL
 from sqlalchemy.event import listens_for
 from sqlalchemy.ext.mutable import Mutable
 from sqlalchemy.sql.sqltypes import CHAR
-
-from .logging import patch_logger
-
-logger = logging.getLogger(__name__)
 
 
 @listens_for(sa.pool.Pool, "checkout")
@@ -113,7 +109,7 @@ def _calling_context(app_path: str) -> str:
     return sa_caller
 
 
-patch_logger.info(flask_sa._calling_context)
+logger.info(flask_sa._calling_context)
 flask_sa._calling_context = _calling_context
 del flask_sa
 

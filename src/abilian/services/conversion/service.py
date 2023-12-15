@@ -20,8 +20,6 @@ from loguru import logger
 from PIL import Image
 from PIL.ExifTags import TAGS
 
-from abilian.logutils.configure import connect_logger
-
 from .cache import Cache
 from .exceptions import HandlerNotFound
 from .handlers import Handler, poppler_bin_util
@@ -30,7 +28,7 @@ from .util import make_temp_file
 TMP_DIR = "tmp"
 CACHE_DIR = "cache"
 
-connect_logger(logger)
+
 
 
 class Converter:

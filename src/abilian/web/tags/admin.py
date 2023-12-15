@@ -1,12 +1,12 @@
 """Admin panel for tags."""
 from __future__ import annotations
 
-import logging
 from collections.abc import Callable
 
 import sqlalchemy as sa
 import sqlalchemy.orm
 from flask import current_app, flash, redirect, render_template, request
+from loguru import logger
 from sqlalchemy.sql import functions as func
 
 from abilian.core.entities import Entity
@@ -21,8 +21,6 @@ from abilian.web.views import ObjectEdit
 from abilian.web.views.base import View
 
 from .forms import TagForm
-
-logger = logging.getLogger(__name__)
 
 _OBJ_COUNT = func.count(entity_tag_tbl.c.entity_id).label("obj_count")
 

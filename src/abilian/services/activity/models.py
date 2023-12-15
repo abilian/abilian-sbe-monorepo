@@ -8,10 +8,10 @@ TODO: Look wether other attributes from the spec need to be implemented.
 """
 from __future__ import annotations
 
-import logging
 from collections.abc import Callable
 from datetime import datetime
 
+from loguru import logger
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.types import DateTime, Integer, String, Text
@@ -20,8 +20,6 @@ from abilian.core.entities import Entity, db
 from abilian.core.models.subjects import User
 
 __all__ = ["ActivityEntry"]
-
-logger = logging.getLogger(__name__)
 
 
 def _default_from(column: str) -> Callable:

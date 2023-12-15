@@ -8,7 +8,6 @@ TODO: In the future, we may decide to:
 from __future__ import annotations
 
 import contextlib
-import logging
 from datetime import datetime
 from inspect import isclass
 from typing import TYPE_CHECKING, Any
@@ -16,6 +15,7 @@ from typing import TYPE_CHECKING, Any
 import sqlalchemy as sa
 from flask import current_app, g
 from flask_sqlalchemy import Model
+from loguru import logger
 from sqlalchemy import event, extract
 from sqlalchemy.orm import Query, Session
 from sqlalchemy.orm.attributes import NEVER_SET, InstrumentedAttribute
@@ -29,8 +29,6 @@ from .models import CREATION, DELETION, RELATED, UPDATE, AuditEntry, Changes
 
 if TYPE_CHECKING:
     from abilian.app import Application
-
-log = logging.getLogger(__name__)
 
 
 class AuditableMeta:
@@ -245,7 +243,7 @@ class AuditService(Service):
                     except Exception:
                         if current_app.debug or current_app.testing:
                             raise
-                        log.error("Exception during entry creation", exc_info=True)
+                        logger.error("Exception during entry creation", exc_info=True)
 
                 session.add_all(entries)
         finally:
@@ -315,7 +313,7 @@ class AuditService(Service):
 
             related_name = f"{meta.backref_attr} {' '.join(enduser_ids)}"
             related_changes = changes
-            log.debug("related changes: %s", repr(related_changes))
+            logger.debug("related changes: %s", repr(related_changes))
             changes = Changes()
             changes.set_related_changes(related_name, related_changes)
 

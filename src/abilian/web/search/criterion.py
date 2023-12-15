@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-import logging
 from typing import TYPE_CHECKING, Any
 
 from flask import Request
+from loguru import logger
 from sqlalchemy import func, orm
 from sqlalchemy.sql.expression import or_
 
@@ -12,8 +12,6 @@ from abilian.core.models import Model
 
 if TYPE_CHECKING:
     from abilian.web.frontend import Module
-
-logger = logging.getLogger(__name__)
 
 
 class UNDEFINED:

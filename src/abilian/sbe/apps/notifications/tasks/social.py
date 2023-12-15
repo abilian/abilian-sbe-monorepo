@@ -18,7 +18,6 @@ from abilian.core.entities import Entity
 from abilian.core.models.subjects import User
 from abilian.core.util import md5
 from abilian.i18n import render_template_i18n
-from abilian.logutils.configure import connect_logger
 from abilian.sbe.apps.communities.models import Community
 from abilian.sbe.apps.documents.models import Document
 from abilian.sbe.apps.documents.repository import content_repository
@@ -36,7 +35,7 @@ from .. import TOKEN_SERIALIZER_NAME
 @dramatiq.actor()
 def send_daily_social_digest_task():
     # a request_context is required when rendering templates
-    connect_logger(logger)
+
 
     logger.info("Running job: send_daily_social_digest_task")
     with current_app.test_request_context("/tasks/send_daily_social_updates"):

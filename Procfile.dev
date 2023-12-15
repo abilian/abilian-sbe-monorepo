@@ -1,3 +1,3 @@
-worker: ./pre_start.sh && flask worker --processes 4 --threads 1
+worker: flask worker
 scheduler: flask scheduler
-web: gunicorn extranet.wsgi:app -b :8000 --workers 2 --log-level debug --log-file -
+web: gunicorn extranet.wsgi:app -b :8000 --workers 1 --log-level debug --log-file -

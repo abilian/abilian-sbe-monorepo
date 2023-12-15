@@ -1,20 +1,18 @@
 from __future__ import annotations
 
-import logging
 import uuid
 from collections.abc import Callable
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pkg_resources
+from loguru import logger
 
 from abilian.core.util import fqcn
 
 if TYPE_CHECKING:
     from abilian.sbe.app import Application
 
-
-logger = logging.getLogger(__name__)
 
 STATIC_DIR = pkg_resources.resource_filename(__name__, "static")
 LESSCSS_FILE = str(Path(STATIC_DIR, "less", "abilian-sbe.less"))

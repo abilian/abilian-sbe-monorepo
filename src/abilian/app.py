@@ -31,7 +31,6 @@ flask.json.JSONEncoder = json.JSONEncoder
 # Rest of the imports
 import errno
 import importlib
-import logging.config
 import os
 import sys
 import warnings
@@ -59,6 +58,7 @@ from flask.helpers import locked_cached_property
 from flask_migrate import Migrate
 from flask_tailwind import Tailwind
 from flask_talisman import DEFAULT_CSP_POLICY, Talisman
+from loguru import logger
 
 import abilian.core.util
 import abilian.i18n
@@ -97,7 +97,6 @@ from abilian.web.views import Registry as ViewRegistry
 
 defusedxml.defuse_stdlib()
 
-logger = logging.getLogger(__name__)
 db = extensions.db
 __all__ = ["create_app", "Application", "ServiceManager"]
 

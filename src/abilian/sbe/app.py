@@ -5,9 +5,8 @@ and activation.
 """
 from __future__ import annotations
 
-import logging
-
 import jinja2
+from loguru import logger
 
 from abilian.app import Application as BaseApplication
 
@@ -22,8 +21,6 @@ from .extension import sbe
 
 
 __all__ = ["create_app", "Application"]
-
-logger = logging.getLogger(__name__)
 
 
 # loader to be used by celery workers

@@ -1,18 +1,16 @@
 from __future__ import annotations
 
-import logging
 from typing import Any
 
 import whoosh.fields as wf
 import whoosh.query as wq
 from flask import Flask, g
 from flask_login import current_user
+from loguru import logger
 from whoosh.query.compound import Or
 from whoosh.query.terms import Term
 
 from .models import Membership
-
-logger = logging.getLogger(__name__)
 
 _COMMUNITY_CONTENT_FIELDNAME = "is_community_content"
 _COMMUNITY_CONTENT_FIELD = wf.BOOLEAN()

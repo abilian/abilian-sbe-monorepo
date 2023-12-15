@@ -1,12 +1,12 @@
 """Objects to schema adapters."""
 from __future__ import annotations
 
-import logging
 from abc import ABCMeta, abstractmethod
 from operator import attrgetter
 from typing import Any
 
 import sqlalchemy as sa
+from loguru import logger
 from sqlalchemy.orm.session import Session
 from whoosh.fields import ID, TEXT, Schema
 
@@ -17,8 +17,6 @@ from abilian.core.models import Model
 from .schema import accent_folder
 
 __all__ = ["SchemaAdapter", "SAAdapter"]
-
-logger = logging.getLogger(__name__)
 
 
 class SchemaAdapter(metaclass=ABCMeta):

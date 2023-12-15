@@ -7,13 +7,13 @@ NB: not used anymore.
 """
 from __future__ import annotations
 
-import logging
 import os
 import subprocess
 import sys
 from pathlib import Path
 
 from flask import current_app
+from loguru import logger
 from werkzeug.serving import BaseWSGIServer
 
 # SBE demo app bootstrap stuff
@@ -55,8 +55,6 @@ def setup_sbe_app():
     Will create `abilian_sbe` script, run a local server and open
     browser on app's setup wizard.
     """
-    logger = logging.getLogger("sbe_demo")
-    logger.setLevel(logging.INFO)
 
     if "VIRTUAL_ENV" not in os.environ:
         logger.error("Not in a virtualenv! Aborting.")

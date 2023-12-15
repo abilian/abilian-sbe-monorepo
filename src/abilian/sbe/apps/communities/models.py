@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import logging
 import time
 from datetime import datetime
 from pathlib import Path
@@ -9,6 +8,7 @@ from typing import Any
 import sqlalchemy as sa
 from blinker import ANY
 from flask import current_app
+from loguru import logger
 from sqlalchemy import (
     Boolean,
     DateTime,
@@ -43,8 +43,6 @@ from abilian.services.security import Writer as WRITER
 from abilian.services.security import security
 
 from . import signals
-
-logger = logging.getLogger(__name__)
 
 MEMBER = Role("member", label=_l("role_member"), assignable=False)
 VALID_ROLES = frozenset([READER, WRITER, MANAGER, MEMBER])

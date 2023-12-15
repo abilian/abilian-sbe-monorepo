@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import contextlib
 import hashlib
-import logging
 from collections import Counter
 from collections.abc import Callable
 from datetime import datetime
@@ -30,6 +29,7 @@ from flask import (
 )
 from flask.blueprints import BlueprintSetupState
 from flask_login import current_user, login_required
+from loguru import logger
 from openpyxl.cell import WriteOnlyCell
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 from werkzeug.wrappers.response import Response
@@ -60,7 +60,6 @@ from abilian.web.views import images as image_views
 
 __all__ = ["communities", "route", "tab", "BaseCommunityView", "default_view_kw"]
 
-logger = logging.getLogger(__name__)
 
 EPOCH = datetime.fromtimestamp(0.0, tz=pytz.utc)
 

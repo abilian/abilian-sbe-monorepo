@@ -9,13 +9,13 @@ TODO: In the future, we may decide to:
 """
 from __future__ import annotations
 
-import logging
 import pickle
 from datetime import datetime
 from typing import Any
 
 from flask import current_app
 from flask_sqlalchemy import BaseQuery
+from loguru import logger
 from sqlalchemy import LargeBinary
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm.base import NEVER_SET
@@ -30,8 +30,6 @@ CREATION = 0
 UPDATE = 1
 DELETION = 2
 RELATED = 1 << 7
-
-logger = logging.getLogger(__name__)
 
 
 class Changes:

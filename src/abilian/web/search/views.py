@@ -1,7 +1,6 @@
 """"""
 from __future__ import annotations
 
-import logging
 from collections import OrderedDict
 from functools import partial
 
@@ -10,14 +9,13 @@ import whoosh.highlight
 import whoosh.searching
 import whoosh.sorting
 from flask import Blueprint, current_app, g, render_template, request, url_for
+from loguru import logger
 
 from abilian.i18n import _
 from abilian.services import get_service
 from abilian.web import views
 from abilian.web.action import Endpoint
 from abilian.web.nav import BreadcrumbItem
-
-logger = logging.getLogger(__name__)
 
 BOOTSTRAP_MARKUP_HIGHLIGHTER = whoosh.highlight.HtmlFormatter(
     tagname="mark", classname="", termclass="term-", between="[…]"

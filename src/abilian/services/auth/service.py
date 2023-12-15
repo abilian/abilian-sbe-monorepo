@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import logging
 import typing
 from collections.abc import Callable
 from datetime import datetime, timedelta
@@ -9,6 +8,7 @@ from typing import Any
 from flask import Flask, current_app, g, redirect, request, url_for
 from flask_babel import lazy_gettext as _l
 from flask_login import current_user, login_user, user_logged_in, user_logged_out
+from loguru import logger
 from werkzeug.exceptions import Forbidden
 from werkzeug.wrappers import Response
 
@@ -27,8 +27,6 @@ if typing.TYPE_CHECKING:
     from abilian.app import Application
 
 __all__ = ["AuthService", "user_menu"]
-
-logger = logging.getLogger(__name__)
 
 
 def is_anonymous(context: dict[str, bool]) -> bool:

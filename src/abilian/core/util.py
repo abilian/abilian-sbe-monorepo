@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import functools
 import hashlib
-import logging
 import re
 import time
 import unicodedata
@@ -14,6 +13,7 @@ from typing import Any
 import pytz
 from babel.dates import LOCALTZ
 from flask import request
+from loguru import logger
 from werkzeug.local import LocalProxy
 
 
@@ -88,15 +88,15 @@ def get_params(names):
 class timer:
     """Decorator that mesures the time it takes to run a function."""
 
-    def __init__(self, f):
-        self.__f = f
-        self.log = logging.getLogger(f"{f.__module__}.{f.__name__}")
+    def __init__(self, callable):
+        self.__f = callable
 
     def __call__(self, *args, **kwargs):
         self.__start = time.time()
         result = self.__f(*args, **kwargs)
-        value = time.time() - self.__start
-        self.log.info(f"elapsed time: {(value * 1000):.2f}ms")
+        value = (time.time() - self.__start) * 1000
+        prefix = f"{self.__f.__module__}.{self.__f.__name__}"
+        logger.info(f"{prefix} - elapsed time: {value :.2f}ms")
         return result
 
 

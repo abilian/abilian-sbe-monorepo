@@ -5,6 +5,7 @@ import uuid
 
 from flask import Blueprint, request
 from flask_login import current_user
+from loguru import logger
 from lxml.etree import XMLSyntaxError
 from werkzeug.datastructures import Headers
 from werkzeug.exceptions import Forbidden, NotFound
@@ -42,9 +43,6 @@ __all__ = ["webdav"]
 class Logger:
     def debug(self, msg):
         print(msg)
-
-
-log = Logger()
 
 
 # XXX: temporary debug info.

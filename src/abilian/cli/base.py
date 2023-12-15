@@ -86,7 +86,7 @@ def createuser(email, password, role=None, name=None, first_name=None):
 
 #
 # # coding=utf-8
-# import logging
+# from loguru import logger
 # import runpy
 # from pprint import pformat
 #

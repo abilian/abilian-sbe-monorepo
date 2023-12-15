@@ -10,7 +10,6 @@ packages = [
 ]
 
 [tool.poetry.scripts]
-sbe_log_server = "abilian.logutils.log_server:log_server"
 
 [tool.poetry.dependencies]
 # Doesn't work currently w/ Python 3.12

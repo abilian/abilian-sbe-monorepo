@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import json
-import logging
 import os
 import re
 import shutil
@@ -12,6 +11,7 @@ from os.path import isabs
 from pathlib import Path
 
 from flask import current_app
+from loguru import logger
 from webassets.filter import ExternalTool, Filter, get_filter, register_filter
 from webassets.filter.closure import ClosureJS as BaseClosureJS
 from webassets.utils import working_directory
@@ -24,7 +24,6 @@ class ImportCSSFilter(Filter):
     name = "cssimporter"
     max_debug_level = None
 
-    logger = logging.getLogger(f"{__name__}.ImportCssFilter")
     _IMPORT_RE = re.compile(
         r"""@import ("|')(?P<filename>(/?[-a-zA-Z0-9_\.]+)+\.css)("|');"""
     )
@@ -41,7 +40,7 @@ class ImportCSSFilter(Filter):
         base_dir = Path(filepath).parent
         rel_dir = Path(source).parent
 
-        self.logger.debug('process "%s"', filepath)
+        logger.debug('process "{}"', filepath)
 
         for line in _in.readlines():
             import_match = self._IMPORT_RE.search(line)
@@ -99,8 +98,6 @@ class LessImportFilter(Filter):
     name = "less_import"
     options = {"run_in_debug": "LESS_RUN_IN_DEBUG"}  # use same option as less filter
     max_debug_level = None
-
-    logger = logging.getLogger(f"{__name__}.LessImportFilter")
 
     def setup(self):
         super().setup()
@@ -208,8 +205,6 @@ class Less(ExternalTool):
         "source_map_file": "less_source_map_file",
     }
     max_debug_level = None
-
-    logger = logging.getLogger(f"{__name__}.LessFilter")
 
     def setup(self):
         super().setup()

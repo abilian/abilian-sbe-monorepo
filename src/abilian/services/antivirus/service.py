@@ -2,15 +2,14 @@
 from __future__ import annotations
 
 import io
-import logging
 import os
 import pathlib
+
+from loguru import logger
 
 from abilian.core.models.blob import Blob
 
 from ..base import Service
-
-logger = logging.getLogger(__name__)
 
 try:
     from clamd import ClamdUnixSocket
