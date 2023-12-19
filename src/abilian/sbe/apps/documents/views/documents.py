@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 import contextlib
 from datetime import datetime
 from urllib.parse import quote
