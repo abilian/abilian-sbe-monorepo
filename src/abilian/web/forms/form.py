@@ -12,6 +12,7 @@ from flask_wtf import Form as BaseForm
 from loguru import logger
 from wtforms.fields import Field, HiddenField
 from wtforms_alchemy import model_form_factory
+
 from abilian.core.entities import Entity
 from abilian.core.models.subjects import User
 from abilian.i18n import _, _n

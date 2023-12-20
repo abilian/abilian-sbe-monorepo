@@ -11,6 +11,7 @@ Job = namedtuple("Job", ["actor", "key"])
 DEFAULT_SCHEDULE = {
     "SCHEDULE_SEND_DAILY_SOCIAL_DIGEST": "0 10 * * *",
     "PERIODIC_CLEAN_UPLOAD_DIRECTORY": "0 * * * *",
+    "SCHEDULE_CHECK_MAILDIR": "* * * * *",
 }
 
 _actor_registry = set()
