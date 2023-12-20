@@ -5,7 +5,7 @@ import sqlalchemy as sa
 import sqlalchemy.orm
 from flask.cli import with_appcontext
 
-from . import drama_tasks
+from . import tasks
 from .models import Document
 
 
@@ -26,7 +26,7 @@ def antivirus():
         total += 1
         meta = d.content_blob.meta
         if "antivirus" not in meta and "antivirus_task" not in meta:
-            drama_tasks.antivirus_scan.delay(d.id)
+            tasks.antivirus_scan.delay(d.id)
             count += 1
 
     print(f"{count}/{total} documents scheduled")

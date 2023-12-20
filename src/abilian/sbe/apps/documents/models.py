@@ -41,7 +41,7 @@ from abilian.services.conversion import converter
 from abilian.services.indexing import indexable_role
 from abilian.services.security import Admin, Anonymous, InheritSecurity, security
 
-from . import drama_tasks
+from . import tasks
 from .lock import Lock
 
 if TYPE_CHECKING:
@@ -578,7 +578,7 @@ class Document(BaseContent, PathAndSecurityIndexable):
         task_id = self.id
         if task_id is not None:
             # if fail, the task will we tried again 20 times
-            drama_tasks.process_document.send(task_id)
+            tasks.process_document.send(task_id)
 
     @property
     def antivirus_scanned(self) -> bool:
@@ -770,7 +770,7 @@ def _trigger_conversion_tasks(session: Session) -> None:
         # logger.debug(f"_trigger_conversion_tasks() {doc=} {task_id=}")
         if doc.id and isinstance(doc.id, int):
             logger.debug(f"_trigger_conversion_tasks() {doc.id=}")
-            drama_tasks.process_document.send(doc.id)
+            tasks.process_document.send(doc.id)
             # logger.debug(f"_trigger_conversion_tasks() {doc.id=} sent")
     # logger.debug("_trigger_conversion_tasks() exit")
 

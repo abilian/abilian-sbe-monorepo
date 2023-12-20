@@ -26,7 +26,7 @@ from abilian.core.util import unwrap
 from abilian.i18n import _, render_template_i18n
 from abilian.sbe.apps.communities.common import object_viewers
 from abilian.sbe.apps.communities.views import default_view_kw
-from abilian.sbe.apps.documents.drama_tasks import (
+from abilian.sbe.apps.documents.tasks import (
     convert_document_content,
     preview_document,
 )
