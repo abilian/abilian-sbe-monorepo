@@ -1,3 +1,4 @@
+nullsmtp: nullsmtp --no-fork -H localhost -P 2525 --mail-dir ~/.nullsmtp
 worker: flask worker
 scheduler: flask scheduler
-web: gunicorn extranet.wsgi:app -b :8000 --workers 1 --log-level debug --log-file -
+web: gunicorn extranet.wsgi:app -b :8000 --workers 1 --log-file -

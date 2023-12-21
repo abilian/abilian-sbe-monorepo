@@ -20,6 +20,7 @@ from itsdangerous import Serializer
 from loguru import logger
 
 from abilian.core.dramatiq.scheduler import crontab
+from abilian.core.dramatiq.setup import RATE_LIMITER
 from abilian.core.dramatiq.singleton import dramatiq
 from abilian.core.extensions import db, mail
 from abilian.core.models.subjects import User
@@ -36,7 +37,7 @@ MAIL_REPLY_MARKER = _l("_____Write above this line to post_____")
 
 
 @dramatiq.actor(max_retries=20, max_backoff=86400000)
-def send_post_by_email(post_id: int):
+def send_post_by_email(post_id: int | str):
     """Send a post to community members by email.
 
     max_retries = 20 (Dramatiq default)
@@ -67,9 +68,9 @@ def send_post_by_email(post_id: int):
             batch_send_post_to_users(post.id, chunk)
 
 
+# FIXME: add the dramatiq backernd for rate limit
 # @shared_task(max_retries=10, rate_limit="12/m")
 @dramatiq.actor(max_retries=20, max_backoff=86400000)
-# FIXME: add the dramatiq backernd for rate limit
 def batch_send_post_to_users(post_id, members_id, failed_ids=None):
     """Task run from send_post_by_email; auto-retry for mails that could not be
     successfully sent.
@@ -89,41 +90,42 @@ def batch_send_post_to_users(post_id, members_id, failed_ids=None):
     if post is None:
         # deleted after task queued, but before task run
         return None
+    with RATE_LIMITER[0].acquire():
+        logger.info(f"{post_id=} {members_id=} {failed_ids=}")
+        failed = set()
+        successfully_sent = []
+        thread = post.thread
+        community = thread.community
+        user_filter = (
+            User.id.in_(members_id) if len(members_id) > 1 else User.id == members_id[0]
+        )
+        users = User.query.filter(user_filter).all()
 
-    failed = set()
-    successfully_sent = []
-    thread = post.thread
-    community = thread.community
-    user_filter = (
-        User.id.in_(members_id) if len(members_id) > 1 else User.id == members_id[0]
-    )
-    users = User.query.filter(user_filter).all()
+        for user in users:
+            try:
+                with current_app.test_request_context("/send_post_by_email"):
+                    send_post_to_user(community, post, user)
+            except BaseException:
+                failed.add(user.id)
+            else:
+                successfully_sent.append(user.id)
 
-    for user in users:
-        try:
-            with current_app.test_request_context("/send_post_by_email"):
-                send_post_to_user(community, post, user)
-        except BaseException:
-            failed.add(user.id)
-        else:
-            successfully_sent.append(user.id)
+        # if failed:
+        #     if failed_ids is not None:
+        #         failed_ids = set(failed_ids)
+        #
+        #     if failed == failed_ids:
+        #         # 5 minutes * (2** retry count)
+        #         countdown = 300 * 2 ** batch_send_post_to_users.request.retries
+        #         batch_send_post_to_users.retry([post_id, list(failed)], countdown=countdown)
+        #     else:
+        #         batch_send_post_to_users.apply_async([post_id, list(failed)])
 
-    # if failed:
-    #     if failed_ids is not None:
-    #         failed_ids = set(failed_ids)
-    #
-    #     if failed == failed_ids:
-    #         # 5 minutes * (2** retry count)
-    #         countdown = 300 * 2 ** batch_send_post_to_users.request.retries
-    #         batch_send_post_to_users.retry([post_id, list(failed)], countdown=countdown)
-    #     else:
-    #         batch_send_post_to_users.apply_async([post_id, list(failed)])
-
-    return {
-        "post_id": post_id,
-        "successfully_sent": successfully_sent,
-        "failed": list(failed),
-    }
+        return {
+            "post_id": post_id,
+            "successfully_sent": successfully_sent,
+            "failed": list(failed),
+        }
 
 
 def build_local_part(name, uid):
@@ -198,8 +200,47 @@ def has_subtag(address: str) -> bool:
 
 
 def send_post_to_user(community, post, member):
+    """Send a post though SMTP.
+
+    Configuring Flask-Mail
+    Flask-Mail is configured through the standard Flask config API.
+    These are the available options:
+
+    MAIL_SERVER : default ‘localhost’
+    MAIL_PORT : default 25
+    MAIL_USE_TLS : default False
+    MAIL_USE_SSL : default False
+    MAIL_DEBUG : default app.debug
+    MAIL_USERNAME : default None
+    MAIL_PASSWORD : default None
+    MAIL_DEFAULT_SENDER : default None
+    MAIL_MAX_EMAILS : default None
+    MAIL_SUPPRESS_SEND : default app.testing
+    MAIL_ASCII_ATTACHMENTS : default False
+    """
+
+    message = _mail_from_post(community, post, member)
+
+    logger.info(f"Sending new post by email to {message.recipients}")
+    logger.info(f"{mail=}")
+    if not mail.app:
+        logger.warning(f"mail object not initialized mail:{vars(mail)}")
+        logger.info(f"initializing from: {current_app=}")
+        mail.init_app(current_app)
+        logger.info(f"mail:{vars(mail)}")
+    try:
+        # with mail.connect() as connection:
+        mail.send(message)
+    except BaseException as e:
+        # log to sentry if enabled
+        logger.error(f"Send mail to user failed: {e}")
+
+
+def _mail_from_post(community, post, member) -> Message:
+    """Return a mail.Message build from a post in community forum"""
     recipient = member.email
     subject = f"[{community.name}] {post.title}"
+    logger.info(f"{subject=} {recipient=}")
 
     config = current_app.config
     SENDER = config.get("BULK_MAIL_SENDER", config["MAIL_SENDER"])
@@ -246,13 +287,7 @@ def send_post_to_user(community, post, member):
     }
     msg.html = render_template_i18n("forum/mail/new_message.html", **ctx)
     msg.body = html2text.html2text(msg.html)
-    logger.debug("Sending new post by email to %r", member.email)
-
-    try:
-        mail.send(msg)
-    except BaseException:
-        # log to sentry if enabled
-        logger.error("Send mail to user failed")
+    return msg
 
 
 def extract_content(payload, marker):

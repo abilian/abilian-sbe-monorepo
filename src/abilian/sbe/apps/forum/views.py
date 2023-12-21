@@ -332,9 +332,11 @@ class ThreadCreate(BaseThreadView, views.ObjectCreate):
 
     def commit_success(self):
         if self.send_by_email:
-            task = send_post_by_email.send(self.post.id)
+            message = send_post_by_email.send(self.post.id)
+            # task = send_post_by_email.delay(self.post.id)
             meta = self.post.meta.setdefault("abilian.sbe.forum", {})
-            meta["send_post_by_email_task"] = task.id
+            # note: message_id is of type str
+            meta["send_post_by_email_task"] = message.message_id
             self.post.meta.changed()
             session = sa.orm.object_session(self.post)
             session.commit()

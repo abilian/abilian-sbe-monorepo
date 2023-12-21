@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from dramatiq.rate_limits.backends import RedisBackend as RateLimitRedisBackend
+from dramatiq.rate_limits import BucketRateLimiter
 import dramatiq_abort.backends
 import redis
 from dramatiq_abort import Abortable
@@ -9,14 +11,37 @@ from .cli import scheduler
 from .singleton import dramatiq
 
 DEFAULT_DRAMATIC_ABORT_REDIS_URL = "redis://localhost:6379/1"
+DEFAULT_DRAMATIC_RATE_LIMIT_REDIS_URL = "redis://localhost:6379/0"
+RATE_LIMITER = []
 
 
+# with DISTRIBUTED_MUTEX.acquire():
+#         time.sleep(1)
 def init_dramatiq_engine(app) -> None:
     logger.info("Setting up Dramatiq")
     dramatiq.init_app(app)
+    _setup_rate_limiter(app)
     _add_dramatiq_abortable(app)
     _register_scheduler(app)
     _print_dramatiq_config()
+
+
+def _setup_rate_limiter(app):
+    logger.info("Add dramatiq rate limiter")
+    redis_client = _rate_limiter_redis_client(app)
+    backend = RateLimitRedisBackend(client=redis_client)
+    # rate limit is 6/min
+    limiter = BucketRateLimiter(backend, "mail-limit", limit=6, bucket=60_000)
+    RATE_LIMITER.append(limiter)
+
+
+def _rate_limiter_redis_client(app) -> redis.Redis:
+    redis_url = app.config.get("DRAMATIC_RATE_LIMIT_REDIS_URL")
+    if not redis_url:
+        redis_url = app.config.get("DRAMATIC_REDIS_URL")
+    if not redis_url:
+        redis_url = DEFAULT_DRAMATIC_RATE_LIMIT_REDIS_URL
+    return redis.Redis.from_url(redis_url)
 
 
 def _register_scheduler(app) -> None:
@@ -24,7 +49,7 @@ def _register_scheduler(app) -> None:
     app.cli.add_command(scheduler)
 
 
-def _abortable_redis_client(app) -> None:
+def _abortable_redis_client(app) -> redis.Redis:
     redis_url = app.config.get("DRAMATIC_ABORT_REDIS_URL")
     if not redis_url:
         redis_url = app.config.get("DRAMATIC_REDIS_URL")
