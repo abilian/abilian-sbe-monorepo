@@ -206,7 +206,7 @@ def send_post_to_user(community, post, member):
     Flask-Mail is configured through the standard Flask config API.
     These are the available options:
 
-    MAIL_SERVER : default ‘localhost’
+    MAIL_SERVER : default 'localhost'
     MAIL_PORT : default 25
     MAIL_USE_TLS : default False
     MAIL_USE_SSL : default False
