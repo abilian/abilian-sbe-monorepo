@@ -222,15 +222,10 @@ def send_post_to_user(community, post, member):
     message = _mail_from_post(community, post, member)
 
     logger.info(f"Sending new post by email to {message.recipients}")
-    logger.info(f"{mail=}")
-    if not mail.app:
-        logger.warning(f"mail object not initialized mail:{vars(mail)}")
-        logger.info(f"initializing from: {current_app=}")
-        mail.init_app(current_app)
-        logger.info(f"mail:{vars(mail)}")
     try:
         # with mail.connect() as connection:
-        mail.send(message)
+        with current_app.app_context():
+            mail.send(message)
     except BaseException as e:
         # log to sentry if enabled
         logger.error(f"Send mail to user failed: {e}")
