@@ -55,6 +55,8 @@ class DefaultConfig:
     TRACKING_CODE = ""  # tracking code for web analytics to insert before </body>
     MAIL_ADDRESS_TAG_CHAR = None
 
+    DRAMATIQ_BROKER = "dramatiq.brokers.redis:RedisBroker"
+
 
 default_config: dict[str, Any] = dict(Flask.default_config)
 default_config.update(vars(DefaultConfig))
