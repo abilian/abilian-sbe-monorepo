@@ -129,7 +129,7 @@ class SettingsPanel(AdminPanel):
             db.session.commit()
 
             # FIXME: this is weak: only this process will have its config changed;
-            # full reload of app stack (web workers + celery workers) has to be done
+            # full reload of app stack (web workers + task workers) has to be done
             # manually.
             current_app.config.update(settings.as_dict())
             flash(_("Changes saved."))

@@ -10,7 +10,6 @@ from loguru import logger
 
 from abilian.app import Application as BaseApplication
 
-# from abilian.core.celery import FlaskLoader as CeleryBaseLoader
 from abilian.services import converter
 from abilian.services.conversion.handler_lock import init_conversion_lock_dir
 
@@ -21,11 +20,6 @@ from .extension import sbe
 
 
 __all__ = ["create_app", "Application"]
-
-
-# loader to be used by celery workers
-# class CeleryLoader(CeleryBaseLoader):
-#     flask_app_factory = "abilian.sbe.app.create_app"
 
 
 class Application(BaseApplication):

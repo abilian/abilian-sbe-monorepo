@@ -32,7 +32,6 @@ from whoosh.index import FileIndex, Index
 from whoosh.qparser import DisMaxParser
 from whoosh.writing import CLEAR, AsyncWriter
 
-# from abilian.core.celery import safe_session
 from abilian.core import signals
 from abilian.core.dramatiq.singleton import dramatiq
 from abilian.core.entities import Entity, Indexable

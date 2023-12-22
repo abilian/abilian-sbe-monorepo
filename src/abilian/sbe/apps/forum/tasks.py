@@ -1,4 +1,4 @@
-"""Celery tasks related to document transformation and preview."""
+"""Dramatiq tasks related to document transformation and preview."""
 from __future__ import annotations
 
 import email

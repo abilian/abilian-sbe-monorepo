@@ -14,7 +14,7 @@ from .tasks import check_maildir, process_email
 @click.command()
 @with_appcontext
 def inject_email(filename="-"):
-    """Read one email from stdin, parse it, forward it in a celery task to be
+    """Read one email from stdin, parse it, forward it in a task to be
     persisted."""
     _inject_email(filename)
 
@@ -58,6 +58,6 @@ def _inject_email(filename="-"):
 @with_appcontext
 def check_email():
     """Read one email from current user Maildir, parse it, forward it in a
-    celery task to be persisted."""
+    task to be persisted."""
 
     check_maildir()

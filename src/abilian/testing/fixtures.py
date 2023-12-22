@@ -31,8 +31,6 @@ class TestConfig:
     DEBUG = True
     SECRET_KEY = "SECRET"  # noqa: S105
     SERVER_NAME = "localhost.localdomain"
-    CELERY_ALWAYS_EAGER = True  # run tasks locally, no async
-    CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
     MAIL_SENDER = "tester@example.com"
     SITE_NAME = "Abilian Test"
     # WTF_CSRF_ENABLED = True

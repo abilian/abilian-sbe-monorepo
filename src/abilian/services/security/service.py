@@ -189,7 +189,7 @@ class SecurityService(Service):
             return session.query(User).get(0)
 
         if sa.orm.object_session(user) is not session:
-            # this can happen when called from a celery task during development
+            # this can happen when called from a task during development
             # (with CELERY_ALWAYS_EAGER=True): the task SA session is not
             # app.db.session, and we should not attach this object to
             # the other session, because it can make weird, hard-to-debug

@@ -65,7 +65,6 @@ import abilian.i18n
 from abilian.config import default_config
 from abilian.core import extensions, signals
 
-# from abilian.core.celery import FlaskCelery
 from abilian.services import (
     Service,
     activity_service,
@@ -175,9 +174,6 @@ class Application(
 
     #: json serializable dict to land in Javascript under Abilian.api
     js_api: dict[str, Any]
-
-    #: celery app class
-    # celery_app_cls = FlaskCelery
 
     def __init__(self, name: Any | None = None, *args: Any, **kwargs: Any):
         name = name or __name__

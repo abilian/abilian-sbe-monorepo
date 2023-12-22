@@ -218,7 +218,7 @@ def test_parse_forum_email(mock_process_email, mock_email):
 
     # assert the email is read
     assert mock_email.called
-    # assert a call on the celery task was made implying a message creation
+    # assert a call on the task was made implying a message creation
     assert mock_process_email.delay.called
 
     ##

@@ -25,11 +25,6 @@ class DefaultConfig:
     BABEL_ACCEPT_LANGUAGES = ["en"]
     DEFAULT_COUNTRY = None
 
-    # Celery
-    CELERYD_MAX_TASKS_PER_CHILD = 1000
-    CELERY_ACCEPT_CONTENT = ["pickle", "json", "msgpack", "yaml"]
-    CELERY_TIMEZONE = LOCALTZ
-
     # Sentry
     SENTRY_SDK_URL = "https://browser.sentry-cdn.com/4.5.3/bundle.min.js"
 

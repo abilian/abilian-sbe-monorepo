@@ -4,8 +4,6 @@ from datetime import datetime, timedelta
 
 import html2text
 
-# from celery import shared_task
-# from celery.schedules import crontab
 from flask import current_app
 from flask_mail import Message
 from loguru import logger
