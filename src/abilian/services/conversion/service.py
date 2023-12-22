@@ -29,8 +29,6 @@ TMP_DIR = "tmp"
 CACHE_DIR = "cache"
 
 
-
-
 class Converter:
     tmp_dir: Path
     cache_dir: Path

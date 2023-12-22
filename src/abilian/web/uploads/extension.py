@@ -200,7 +200,6 @@ def periodic_clean_upload_directory():
     :data:`CLEANUP_SCHEDULE_ID`.
     """
 
-
     logger.info("Running job: periodic_clean_upload_directory")
     with current_app.test_request_context("/tasks/periodic_clean_upload_directory"):
         uploads = current_app.extensions["uploads"]

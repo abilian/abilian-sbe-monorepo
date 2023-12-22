@@ -51,7 +51,6 @@ if TYPE_CHECKING:
     from abilian.app import Application
 
 
-
 _pending_indexation_attr = "abilian_pending_indexation"
 
 

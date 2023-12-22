@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from dramatiq.rate_limits.backends import RedisBackend as RateLimitRedisBackend
-from dramatiq.rate_limits import BucketRateLimiter
 import dramatiq_abort.backends
 import redis
+from dramatiq.rate_limits import BucketRateLimiter
+from dramatiq.rate_limits.backends import RedisBackend as RateLimitRedisBackend
 from dramatiq_abort import Abortable
 from loguru import logger
 
