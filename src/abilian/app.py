@@ -64,7 +64,6 @@ import abilian.core.util
 import abilian.i18n
 from abilian.config import default_config
 from abilian.core import extensions, signals
-
 from abilian.services import (
     Service,
     activity_service,

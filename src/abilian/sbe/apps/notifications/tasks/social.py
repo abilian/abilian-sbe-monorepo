@@ -3,7 +3,6 @@ from __future__ import annotations
 from datetime import datetime, timedelta
 
 import html2text
-
 from flask import current_app
 from flask_mail import Message
 from loguru import logger

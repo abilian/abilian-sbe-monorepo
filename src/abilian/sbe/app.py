@@ -10,7 +10,6 @@ from loguru import logger
 
 from abilian.app import Application as BaseApplication
 from abilian.core.dramatiq.setup import init_dramatiq_engine
-
 from abilian.services import converter
 from abilian.services.conversion.handler_lock import init_conversion_lock_dir
 
