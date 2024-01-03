@@ -102,8 +102,13 @@ def test_antivirus_properties(app: Application, session: Session) -> None:
 
 
 def test_folder_indexed(
-    app: Application, session: Session, community1: Community, community2: Community
+    app: Application,
+    session: Session,
+    community1: Community,
+    community2: Community,
+    monkeypatch,
 ) -> None:
+    monkeypatch.setenv("TESTING_DIRECT_FUNCTION_CALL", "testing")
     index_service.start()
     security_service.start()
 

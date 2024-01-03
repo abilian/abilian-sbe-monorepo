@@ -436,7 +436,10 @@ class WhooshIndexService(Service):
 
         if items:
             logger.info(f"after_commit() {items=}")
-            if not os.environ.get("NO_INDEX_UPDATE"):
+            if os.environ.get("TESTING_DIRECT_FUNCTION_CALL"):
+                index_update(index="default", items=items)
+            else:
+                # productioncall: async dramatiq actor
                 index_update.send(index="default", items=items)
 
         self.clear_update_queue()
@@ -506,7 +509,7 @@ service = WhooshIndexService()
 
 
 @dramatiq.actor
-def index_update(index: str, items: list[list[dict | int | str]]):
+def index_update(index: str, items: list[tuple[str, str, int, dict]]):
     """
     :param:index: index name
     :param:items: list of (operation, full class name, primary key, data) tuples.
