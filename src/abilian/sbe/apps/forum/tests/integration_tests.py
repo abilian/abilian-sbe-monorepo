@@ -8,6 +8,8 @@ from flask_login import login_user
 from flask_sqlalchemy import SQLAlchemy
 
 from abilian.sbe.apps.communities.models import MANAGER, MEMBER
+from abilian.sbe.apps.forum.tasks import send_post_by_email
+from abilian.sbe.apps.forum.views import ThreadCreate
 from abilian.services import security_service
 from abilian.testing.util import client_login
 
@@ -69,11 +71,20 @@ def test_forum_home(client, community1, login_admin):
     assert response.status_code == 200
 
 
-def test_create_thread_informative(app, db: SQLAlchemy, client, community1):
+def test_create_thread_informative_member(
+    app, db: SQLAlchemy, client, community1, monkeypatch
+):
     """Test with 'informative' community.
 
     No mail sent, unless user is MANAGER
     """
+
+    def commit_success_no_task(self):
+        if self.send_by_email:
+            send_post_by_email(self.post.id)
+
+    monkeypatch.setattr(ThreadCreate, "commit_success", commit_success_no_task)
+
     user = community1.test_user
     assert community1.type == "informative"
     community1.set_membership(user, MEMBER)
@@ -93,9 +104,33 @@ def test_create_thread_informative(app, db: SQLAlchemy, client, community1):
             # FIXME: this doesn't pass
             # assert len(outbox) == 0
 
-        community1.set_membership(user, MANAGER)
-        db.session.commit()
 
+def test_create_thread_informative_manager(
+    app, db: SQLAlchemy, client, community1, monkeypatch
+):
+    """Test with 'informative' community.
+
+    No mail sent, unless user is MANAGER
+    """
+
+    def commit_success_no_task(self):
+        if self.send_by_email:
+            send_post_by_email(self.post.id)
+
+    monkeypatch.setattr(ThreadCreate, "commit_success", commit_success_no_task)
+
+    user = community1.test_user
+    assert community1.type == "informative"
+    community1.set_membership(user, MANAGER)
+    db.session.commit()
+
+    title = "Brand new thread"
+    content = "shiny thread message"
+    url = url_for("forum.new_thread", community_id=community1.slug)
+    data = {"title": title, "message": content, "__action": "create"}
+
+    mail = app.extensions["mail"]
+    with client_login(client, user):
         with mail.record_messages() as outbox:
             data["send_by_email"] = "y"  # should be in html form
             response = client.post(url, data=data)
