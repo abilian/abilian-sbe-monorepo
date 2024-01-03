@@ -88,7 +88,9 @@ def test_wiki_indexed(
     app: Application,
     db: SQLAlchemy,
     client,
+    monkeypatch,
 ):
+    monkeypatch.setenv("TESTING_DIRECT_FUNCTION_CALL", "testing")
     SERVICES = ("security", "indexing")
     for _svc in SERVICES:
         svc = app.services[_svc]
