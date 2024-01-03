@@ -17,7 +17,9 @@ if typing.TYPE_CHECKING:
 def _vocabularies() -> set[type[BaseVocabulary]]:
     return {
         cls
-        for cls in BaseVocabulary.registry._class_registry.values().values()
+        # for cls in BaseVocabulary.registry._class_registry.values().values()
+        # for sqlalchemy 1.3.24:
+        for cls in BaseVocabulary._decl_class_registry.values()
         if isclass(cls) and issubclass(cls, BaseVocabulary)
     }
 
