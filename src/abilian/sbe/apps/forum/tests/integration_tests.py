@@ -36,7 +36,8 @@ def test_posts_ordering(db: SQLAlchemy, community1):
     assert [p.id for p in thread.posts] == [p2_id, p1_id]
 
 
-def test_thread_indexed(app, db: SQLAlchemy, community1, community2):
+def test_thread_indexed(app, db: SQLAlchemy, community1, community2, monkeypatch):
+    monkeypatch.setenv("TESTING_DIRECT_FUNCTION_CALL", "testing")
     index_svc = app.services["indexing"]
     index_svc.start()
     security_service.start()
