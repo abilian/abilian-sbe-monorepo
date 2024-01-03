@@ -182,7 +182,8 @@ def test_community_content_decorator(community: Community, db: SQLAlchemy) -> No
 ##########################################################################
 
 
-def test_community_indexed(app: Application, db: SQLAlchemy) -> None:
+def test_community_indexed(app: Application, db: SQLAlchemy, monkeypatch) -> None:
+    monkeypatch.setenv("TESTING_DIRECT_FUNCTION_CALL", "testing")
     index_service.start()
 
     security_service.start()
@@ -226,8 +227,9 @@ def test_community_indexed(app: Application, db: SQLAlchemy) -> None:
 
 
 def test_default_view_kw_with_hit(
-    app: Application, db: SQLAlchemy, community: Community
+    app: Application, db: SQLAlchemy, community: Community, monkeypatch
 ) -> None:
+    monkeypatch.setenv("TESTING_DIRECT_FUNCTION_CALL", "testing")
     index_service.start()
 
     security_service.start()
