@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timedelta
 from unittest import mock
 
+import pytest
 from flask import url_for
 from flask_login import login_user
 from flask_sqlalchemy import SQLAlchemy
@@ -71,6 +72,7 @@ def test_forum_home(client, community1, login_admin):
     assert response.status_code == 200
 
 
+@pytest.mark.skip("Require fixing dramatiq tests to not loose session in test context")
 def test_create_thread_informative_member(
     app, db: SQLAlchemy, client, community1, monkeypatch
 ):
@@ -105,6 +107,7 @@ def test_create_thread_informative_member(
             # assert len(outbox) == 0
 
 
+@pytest.mark.skip("Require fixing dramatiq tests to not loose session in test context")
 def test_create_thread_informative_manager(
     app, db: SQLAlchemy, client, community1, monkeypatch
 ):
@@ -179,6 +182,7 @@ def test_extract_mail_destination_3(app):
     assert infos == ("en", "3", "4")
 
 
+@pytest.mark.skip("Require fixing dramatiq tests to not loose session in test context")
 def test_create_thread_and_post(community1, client, app, db):
     community = community1
     user = community.test_user
@@ -241,6 +245,7 @@ def test_create_thread_and_post(community1, client, app, db):
         assert str(outbox[0].subject) == expected
 
 
+@pytest.mark.skip("Require fixing dramatiq tests to not loose session in test context")
 @mock.patch("fileinput.input")
 @mock.patch("abilian.sbe.apps.forum.cli.process_email")
 def test_parse_forum_email(mock_process_email, mock_email):
