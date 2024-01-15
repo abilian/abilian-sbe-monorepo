@@ -60,16 +60,16 @@ class Admin:
         for fqn in panels:
             panel_class = import_string(fqn, silent=True)
             if panel_class is None:
-                logger.warning('Could not import panel: "%s"', fqn)
+                logger.warning('Could not import panel: "{}"', fqn)
                 continue
             if not issubclass(panel_class, AdminPanel):
                 logger.error(
-                    '"%s" is not a %s.AdminPanel, skipping', fqn, AdminPanel.__module__
+                    '"{}" is not a {}.AdminPanel, skipping', fqn, AdminPanel.__module__
                 )
                 continue
 
             self.register_panel(panel_class())
-            logger.debug('Registered panel "%s"', fqn)
+            logger.debug('Registered panel "{}"', fqn)
 
         if not self.panels:
 
