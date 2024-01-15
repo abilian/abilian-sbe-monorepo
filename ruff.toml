@@ -191,6 +191,13 @@ extend-ignore = [
     "TRY004", # Prefer `TypeError` exception for invalid type
     "TRY300", # Consider moving this statement to an `else` block
     "TRY400", # Use `logging.exception` instead of `logging.error`
+    #
+    "PLC2801", # Unnecessary dunder call
+    # FIXME:
+    "S403", # `pickle`, `cPickle`, `dill`, and `shelve` modules are possibly insecure
+    "S404", # `subprocess` module is possibly insecure
+    "S405", # lxml` is vulnerable to XML attacks
+    "S410", # lxml` is vulnerable to XML attacks
 ]
 
 [mccabe]

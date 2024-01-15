@@ -46,11 +46,8 @@ class UpstreamInfo:
         enabled = config["ABILIAN_UPSTREAM_INFO_INCLUDE"]
 
         for key, val in info.items():
-            if (
-                default_enabled
-                and key in disabled
-                or not default_enabled
-                and key not in enabled
+            if (default_enabled and key in disabled) or (
+                not default_enabled and key not in enabled
             ):
                 continue
 

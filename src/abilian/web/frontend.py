@@ -710,9 +710,8 @@ class Module(metaclass=ModuleMeta):
             if isinstance(sort_col, (Date, DateTime)):
                 sort_dir = "asc" if sort_dir == "desc" else "desc"
 
-            elif (
-                isinstance(sort_col, sa.types.String)
-                or hasattr(sort_col, "property")
+            elif isinstance(sort_col, sa.types.String) or (
+                hasattr(sort_col, "property")
                 and isinstance(sort_col.property.columns[0].type, sa.types.String)
             ):
                 sort_col = func.lower(sort_col)
