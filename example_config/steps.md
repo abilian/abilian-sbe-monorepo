@@ -113,7 +113,6 @@ From `abilian-sbe-monorepo` directory:
 
 ```bash
 npm install --verbose
-cd tailwind && npm install --verbose && cd ..
 ```
 
 Check that `lessc` is now available (or edit the related `Flask` config variable for the actual path):
@@ -147,7 +146,6 @@ flask createuser --role admin --name admin admin@example.com some_password
 Create a local `Procfile` containing those lines (adapt the `gunicorn` configuration)
 
 ```
-tailwind: flask tailwind start
 worker: flask worker
 scheduler: flask scheduler
 web: gunicorn extranet.wsgi:app -b :8000 --workers 4 --log-file -
