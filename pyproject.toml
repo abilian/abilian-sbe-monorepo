@@ -202,7 +202,7 @@ deptry = "^0.12.0"
 # watchfiles = "^0.21.0"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=1.2.0"]
 build-backend = "poetry.core.masonry.api"
 
 # -----------------------------------------------------------------------------
