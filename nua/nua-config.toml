@@ -1,0 +1,147 @@
+[metadata]
+id = "abilian-sbe"
+title = "Abilian Social Business Engine (SBE)"
+author = "Abilian"
+description = "Abilian SBE is a Python web application framework for building social business applications."
+tagline = "Abilian Social Business Engine (SBE)"
+tags = ["social", "business", "document", "wiki"]
+website = "https://github.com/abilian/abilian-sbe-monorepo"
+version = "1.0.5"
+release = 17
+
+
+[build]
+license = "LGPL-3.0"
+git-url = "https://github.com/abilian/abilian-sbe-monorepo.git"
+git-branch = "task"
+build = [
+    "pip install -U poetry",
+    "sed -i.bak 's/psycopg2.*=.*$/psycopg2-binary = \"*\"/g' pyproject.toml",
+    "poetry lock --no-update",
+    "poetry install",
+    "echo -e 'worker: flask worker\nscheduler: flask scheduler\nweb: gunicorn extranet.wsgi:app -b :8000 --workers 4 --log-file -\n' > /nua/Procfile",
+    "sudo python -c 'from nua.lib.actions.nodejs import install_nodejs as n; n(\"16\")'",
+    "sudo npm install -g --verbose /nua/build/abilian-sbe-monorepo ",
+    "sudo npm install -g --verbose nodemon",
+    "sudo npm install -g --verbose less",
+]
+test = ["python -c 'import abilian.sbe'",
+        "lessc --version"
+]
+
+
+[run]
+packages = [
+    "clamav",
+    "clamav-daemon",
+    "default-jre",
+    "fontconfig",
+    "imagemagick",
+    "libmagic1",
+    "libreoffice",
+    "libreoffice-java-common",
+    "nodejs",
+    "npm",
+    "poppler-utils",
+    "postgresql-client"
+]
+
+start = [
+    "env",
+    "date",
+    "sudo mkdir -p /nua/build/abilian-sbe-monorepo/src/instance",
+    "sudo chown nua:nua /nua/build/abilian-sbe-monorepo/src/instance",
+    "mkdir -p /nua/Maildir/{cur,new,tmp}",
+    "chmod 0700 /nua/Maildir/{cur,new,tmp}",
+    "sudo /etc/init.d/clamav-freshclam start",
+    "sleep 3",
+    "sudo /etc/init.d/clamav-daemon start",
+    "bash -c 'while :; do pg_isready -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -d ${POSTGRES_DB} -t 10 && break; sleep 5; done'",
+    "date",
+    "flask assets build",
+    "flask initdb",
+    "flask createuser --role admin --name admin ${ADMIN_MAIL} ${ADMIN_PASSWORD}",
+    "honcho -f /nua/Procfile start"
+]
+
+
+[env]
+DOMAIN = { from="", key="domain" }
+LANG = "C.UTF-8"
+NODE_ENV = "production"
+
+ADMIN_MAIL = "admin@{DOMAIN}"
+ADMIN_PASSWORD = { random="true", type="str", length=12, display="true", persist="true" }
+
+FLASK_SERVER_NAME = "{DOMAIN}"
+FLASK_SITE_NAME = "SBE server at {DOMAIN}"
+FLASK_SECRET_KEY = { random="true", type="str", length=24, display="true", persist="true" }
+FLASK_SQLALCHEMY_DATABASE_URI = "postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+FLASK_SESSION_COOKIE_DOMAIN = "{DOMAIN}"
+
+FLASK_MAIL_DEBUG = 0
+FLASK_MAIL_SERVER = "{DOMAIN}"
+FLASK_MAIL_PORT = "25"
+FLASK_MAIL_USERNAME = ""
+FLASK_MAIL_PASSWORD = ""
+FLASK_MAIL_SENDER = "sbe-server@{DOMAIN}"
+
+FLASK_REDIS_URI = "{REDIS_URI}"
+FLASK_BROKER_URL = "{REDIS_URI}"
+FLASK_DRAMATIQ_BROKER="dramatiq.brokers.redis:RedisBroker"
+FLASK_DRAMATIQ_BROKER_URL = "{REDIS_URI}/0"
+FLASK_DRAMATIC_ABORT_REDIS_URL = "{REDIS_URI}/1"
+
+FLASK_SCHEDULE_SEND_DAILY_SOCIAL_DIGEST = "0 12 * * *"
+FLASK_PERIODIC_CLEAN_UPLOAD_DIRECTORY = "5 * * * *"
+
+CLAMD_CONF_PATH = ""
+
+POSTGRES_HOST = { from="database", key="hostname" }
+POSTGRES_PORT = "5432"
+POSTGRES_DB = { from="database", key="POSTGRES_DB" }
+POSTGRES_USER = { from="database", key="POSTGRES_USER" }
+POSTGRES_PASSWORD = { from="database", key="POSTGRES_PASSWORD" }
+
+REDIS_HOST = { from="broker", key="hostname" }
+REDIS_PORT = { from="broker", key="REDIS_PORT" }
+REDIS_URI = "redis://{REDIS_HOST}:{REDIS_PORT}/"
+
+
+[docker]
+# parameters passed as a dict to docker run
+auto_remove = false
+
+[port.web]
+container = 8000
+
+
+[[volume]]
+name = "instance-path"
+target = "/nua/build/abilian-sbe-monorepo/src/instance"
+
+[[volume]]
+name = "clamav-db"
+target = "/var/lib/clamav"
+
+[[volume]]
+name = "clamav-log"
+target = "/var/log/clamav"
+
+
+[[provider]]
+name = "database"
+module-name = "postgres"
+module-version = ">=14, <15"
+
+[provider.backup]
+method = "pg_dump"
+options = { destination = "local" }
+frequency = "24h"
+
+
+[[provider]]
+# declaration of the required image for the provider: official Redis image
+name = "broker"
+module-name = "redis-cache"
+module-version = ">=7"

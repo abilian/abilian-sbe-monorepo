@@ -63,6 +63,8 @@ npm install # or npm i
 
 Set up the following environment variables (you may put these in a `.env` or `.envs` file and use an environment variable manager like [direnv](https://direnv.net/).
 
+An example of configured `.env` is available: see `dot_env.example` file.
+
 ```bash
 export FLASK_SECRET_KEY=<your secret key>
 export FLASK_SQLALCHEMY_DATABASE_URI=postgres://localhost/sbe-demo # or whatever
@@ -75,8 +77,8 @@ export FLASK_MAIL_DEBUG=1
 # Same redis URL for all three variables
 export FLASK_REDIS_URI=redis://localhost:6379/0 # or whatever
 export FLASK_BROKER_URL=redis://localhost:6379/0
-export FLASK_CELERY_RESULT_BACKEND=redis://localhost:6379/0
 ```
+
 
 Then run:
 
@@ -115,7 +117,6 @@ export FLASK_MAIL_SERVER=<your email server>
 # Same redis URL for all three variables
 export FLASK_REDIS_URI=redis://localhost:6379/0 # or whatever
 export FLASK_BROKER_URL=redis://localhost:6379/0
-export FLASK_CELERY_RESULT_BACKEND=redis://localhost:6379/0
 ```
 
 You can start the server with:
@@ -126,6 +127,9 @@ gunicorn 'abilian.sbe.app.create_app()'
 
 If you are using a web server as a reverse proxy, for instance nginx, you can use the `proxy_pass` option to forward requests to the gunicorn server.
 
+## Configuration example
+
+A step by step configuration example using `honcho`, `.env` and `Python 3.12` is available in the `example_config` folder.
 
 ## On Heroku
 

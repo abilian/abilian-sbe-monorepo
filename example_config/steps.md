@@ -126,6 +126,13 @@ Expected result: `lessc 4.2.0 (Less Compiler) [JavaScript]`
 
 If using Nginx, check you have configured `nginx` with relevant SSL keys. See example file `sbe.example.com` in this directory.
 
+Note: The example `nginx` configuration contains a permanent redirect for some static web resources. This can be adapted to the actual site configuration for static files. The other parts of the setup are otherwise pretty standard.
+
+```
+location ~ ^/static/min/abilian/web/resources/(.*) {
+    		return 301 /static/abilian/$1 ;
+        }
+```
 
 ## Create a local '.env' file
 

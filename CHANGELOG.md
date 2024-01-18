@@ -2,11 +2,44 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [1.0.5]
+
+### Bug Fixes
+
+- Adapt `_vocabularies()` function to `sqlalchemy` v1.3.24.
+- Monkeypatch tests for `dramatiq` use (forum, wiki, communities, documents).
+- If root user (user 0) not present, create it during initialization.
+- Make sure only one LibreOffice process is running at any time to fix conversion failure (via locking).
+- Better detection of `lessc`, permit to configure its path with `FLASK_LESS_BIN`.
+
+### Continuous Integration
+
+- Update pre-commit dependencies.
+- Ensure `pip_audit` is updated in `tox.ini`.
+- Update `adt` command in `tox.ini` (adt security-check -> adt audit).
+- Remove `git-cliff`.
 
 ### Documentation
 
-- Cliff config.
+- Add `example_config` folder with step by step install procedure.
+- Add Nua config example.
+- Add SlapOS config example.
+
+### Features
+
+- Task scheduler crontab can be configured through `flask.config` (or `.env`).
+
+### Refactor
+
+- Update Python to version 3.12.
+- Move logging system to `Loguru`.
+- Complete removal of `Celery`, use now `Dramatiq` task manager.
+- `Dramatiq` configured with: `flask-dramatiq`, `dramatiq-abort`, `apscheduler`.
+- Add `honcho` dependency, provide a default `Procfile`.
+- Provide a `.env` example (named `dot_env.example`).
+- Provide an explicit `wsgi.py` file in extranet package.
+- Permit flask configuration from environment, using `.from_prefixed_env()`.
+- Update dependencies.
 
 ## [1.0.2] - 2023-10-04
 
