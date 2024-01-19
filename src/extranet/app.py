@@ -69,7 +69,7 @@ def create_app(config=None, **kw):
     init_logging(app)
 
     # show all app config
-    logger.info(pformat(dict(sorted(app.config.items()))))
+    logger.debug(pformat(dict(sorted(app.config.items()))))
 
     # We must register this before blueprint is registered
     social.url_value_preprocessor(on_home_blueprint)
