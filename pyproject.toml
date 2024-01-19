@@ -12,8 +12,10 @@ packages = [
 [tool.poetry.scripts]
 
 [tool.poetry.dependencies]
-# Doesn't work currently w/ Python 3.12
 python = "^3.9,<3.13"
+
+# setuptools provides pkg_resources:
+setuptools = "*"
 
 # Flask (and dependencies), pinned because it's hard to upgrade
 Flask = "~2.1"
