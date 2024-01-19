@@ -282,7 +282,8 @@ def _get_translations_multi_paths() -> Translations | None:
             if not trs or not hasattr(trs, "merge"):
                 # got None or NullTranslations instance
                 continue
-            elif translations is not None and hasattr(translations, "merge"):
+
+            if translations is not None and hasattr(translations, "merge"):
                 translations.merge(trs)
             else:
                 translations = trs

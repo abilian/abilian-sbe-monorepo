@@ -95,14 +95,21 @@ class CommunityForm(Form):
     def validate_name(self, field: StringField) -> None:
         name = field.data = field.data.strip()
 
-        if name and field.object_data:
-            # form is bound to an existing object, name is not empty
-            if name != field.object_data:
-                # name changed: check for duplicates
-                if Community.query.filter(Community.name == name).count() > 0:
-                    raise ValidationError(
-                        _("A community with this name already exists")
-                    )
+        if not name:
+            return
+
+        if not field.object_data:
+            return
+
+        # form is bound to an existing object, name is not empty
+        if name == field.object_data:
+            return
+
+        # name changed: check for duplicates
+        if Community.query.filter(Community.name == name).count() > 0:
+            raise ValidationError(
+                _("A community with this name already exists")
+            )
 
     def validate_description(self, field: TextAreaField) -> None:
         field.data = field.data.strip()

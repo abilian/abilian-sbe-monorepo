@@ -43,10 +43,10 @@ class LoginSessionsPanel(AdminPanel):
 
                     if country:
                         break
-                    else:
-                        country = unknown_country
+                else:
+                    country = unknown_country
 
-                    session.country = country
+                session.country = country
 
         if geoips:
             for session in sessions:

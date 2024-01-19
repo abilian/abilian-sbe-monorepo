@@ -215,7 +215,8 @@ class AuthService(Service):
             verdict = access_controller(user=user, roles=user_roles)
             if verdict is None:
                 continue
-            elif verdict is True:
+
+            if verdict is True:
                 return None
             else:
                 if user.is_anonymous:
