@@ -107,9 +107,7 @@ class CommunityForm(Form):
 
         # name changed: check for duplicates
         if Community.query.filter(Community.name == name).count() > 0:
-            raise ValidationError(
-                _("A community with this name already exists")
-            )
+            raise ValidationError(_("A community with this name already exists"))
 
     def validate_description(self, field: TextAreaField) -> None:
         field.data = field.data.strip()

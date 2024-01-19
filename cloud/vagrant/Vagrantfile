@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+ARM_BOX = "perk/ubuntu-2204-arm64"
+INTEL_BOX = "generic/ubuntu2204"
+
+# Detect host architecture
+host_arch = `uname -m`
+
+if host_arch.include? 'x86_64'
+  ubuntu_box = INTEL_BOX
+elsif host_arch.include? 'arm'
+  ubuntu_box = ARM_BOX
+else
+  raise 'Unsupported architecture'
+end
+
+Vagrant.configure("2") do |config|
+  # Use the selected box
+  config.vm.box = ubuntu_box
+  # config.vm.synced_folder ".", "/vagrant", type: "rsync"
+
+  # Further configuration...
+end

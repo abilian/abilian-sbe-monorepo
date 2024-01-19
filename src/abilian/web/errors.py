@@ -3,13 +3,10 @@ applications."""
 from __future__ import annotations
 
 from functools import partial
-from pathlib import Path
 
 import sqlalchemy as sa
-import yaml
 from flask import Flask, _request_ctx_stack, g, render_template
 from loguru import logger
-from pkg_resources import resource_filename
 
 from abilian.core import extensions
 

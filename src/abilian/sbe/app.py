@@ -6,7 +6,6 @@ and activation.
 from __future__ import annotations
 
 import jinja2
-from loguru import logger
 
 from abilian.app import Application as BaseApplication
 from abilian.core.dramatiq.setup import init_dramatiq_engine

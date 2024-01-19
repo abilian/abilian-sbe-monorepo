@@ -84,7 +84,7 @@ extend-ignore = [
     "E501", # line too long
     "E741", # Ambiguous variable name
     "ERA001", # Found commented-out code
-    "F401", # 'module' imported but unused
+#    "F401", # 'module' imported but unused
     "F841", # Local variable `...` is assigned to but never used
     "I001", # Import block is un-sorted or un-formatted
     "PLC0415", # `import` should be at the top-level of a file
@@ -178,9 +178,6 @@ extend-ignore = [
     "PYI034", # `__enter__` methods in classes like `FormContext` usually return `self` at runtime
     "PYI036", # The first argument in `__exit__` should be annotated with `object` or `type[BaseException] | None`
     "RET503", # Missing explicit `return` at the end of function able to return non-`None` value
-    "RET507", # Unnecessary `elif` after `continue` statement
-    "RET508", # Unnecessary `else` after `break` statement
-#    "RSE102", # Unnecessary parentheses on raised exception
     "SIM102", # Use a single `if` statement instead of nested `if` statements
     "SIM115", # Use context handler for opening files
     "SIM117", # Use a single `with` statement with multiple contexts instead of nested `with` statements

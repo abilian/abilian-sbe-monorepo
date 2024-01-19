@@ -21,7 +21,6 @@ from flask import current_app, g, json, render_template, render_template_string
 from flask_babel import format_date, format_datetime, format_number, get_locale
 from flask_login import current_user
 from flask_wtf.file import FileField
-from loguru import logger
 from markupsafe import Markup
 from sqlalchemy.orm.mapper import Mapper
 from wtforms.fields import Field, IntegerField, Label, StringField

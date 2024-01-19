@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import abc
 from functools import total_ordering
-from typing import Any, Optional, Protocol
+from typing import Any
 
 import sqlalchemy as sa
 import sqlalchemy.orm

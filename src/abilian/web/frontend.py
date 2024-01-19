@@ -25,7 +25,6 @@ from flask import (
 )
 from flask.blueprints import Blueprint, BlueprintSetupState
 from flask_login import current_user
-from loguru import logger
 from sqlalchemy import Date, DateTime, func, orm
 from sqlalchemy.sql.expression import asc, desc, nullsfirst, nullslast
 from werkzeug.exceptions import BadRequest

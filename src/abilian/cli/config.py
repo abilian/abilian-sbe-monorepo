@@ -1,8 +1,6 @@
 """"""
 from __future__ import annotations
 
-from pprint import pformat
-
 from flask import current_app
 from flask.cli import AppGroup
 from loguru import logger
