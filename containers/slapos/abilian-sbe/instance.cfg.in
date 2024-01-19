@@ -1,0 +1,113 @@
+[buildout]
+parts = switch-softwaretype
+
+# std stuff for slapos instance
+eggs-directory = {{ buildout_egg_directory }}
+develop-eggs-directory = {{ buildout_develop_directory }}
+offline = true
+
+
+[switch-softwaretype]
+recipe = slapos.cookbook:switch-softwaretype
+default  = dynamic-template-sbe:output
+RootSoftwareInstance = ${:default}
+
+
+[slap-configuration]
+recipe = slapos.cookbook:slapconfiguration.serialised
+computer = ${slap-connection:computer-id}
+partition = ${slap-connection:partition-id}
+url = ${slap-connection:server-url}
+key = ${slap-connection:key-file}
+cert = ${slap-connection:cert-file}
+
+
+[jinja2-template-base]
+recipe = slapos.recipe.template:jinja2
+output = ${buildout:directory}/${:filename}
+extensions = jinja2.ext.do
+extra-context =
+context =
+  key develop_eggs_directory buildout:develop-eggs-directory
+  key buildout_directory buildout:directory
+  key eggs_directory buildout:eggs-directory
+  key ipv4 slap-configuration:ipv4
+  key ipv6 slap-configuration:ipv6
+  key global_ipv4_prefix network-information:global-ipv4-network
+  key slapparameter_dict slap-configuration:configuration
+  key computer_id slap-configuration:computer
+  raw template_monitor {{ template_monitor_cfg }}
+  raw logrotate_cfg {{ logrotate_cfg }}
+  raw openssl_location {{ openssl_location }}
+  ${:extra-context}
+
+
+[dynamic-template-sbe-parameters]
+bin_directory = {{ bin_directory }}
+buildout_egg_directory = {{ buildout_egg_directory }}
+buildout_develop_directory = {{ buildout_develop_directory }}
+buildout_directory = {{ buildout_directory }}
+template_monitor_cfg = {{ template_monitor_cfg }}
+logrotate_cfg = {{ logrotate_cfg }}
+gunicorn = {{ gunicorn }}
+celery = {{ celery }}
+sbe_path = {{ sbe_path }}
+flask = {{ flask }}
+template_sbe = {{ template_sbe }}
+redis_bin = {{ redis_bin }}
+redis_cli = {{ redis_cli }}
+postgresql_location = {{ postgresql_location }}
+imagemagick = {{ imagemagick }}
+poppler = {{ poppler }}
+curl = {{ curl }}
+libreoffice_bin = {{ libreoffice_bin }}
+openssl_location = {{ openssl_location }}
+clamd_bin = {{ clamd_bin }}
+template_clamd_conf = {{ template_clamd_conf }}
+freshclam_bin = {{ freshclam_bin }}
+template_freshclam_conf = {{ template_freshclam_conf }}
+avahi = {{ avahi }}
+cairo = {{ cairo }}
+coreutils = {{ coreutils }}
+cups = {{ cups }}
+dash = {{ dash }}
+dbus = {{ dbus }}
+dbus-glib = {{ dbus_glib }}
+file = {{ file }}
+fontconfig = {{ fontconfig }}
+template-fonts-conf = {{ template_fonts_conf }}
+fonts = {{ dumps(fonts) }}
+fontconfig-includes = {{ fontconfig_includes }}
+freetype = {{ freetype }}
+gcc = {{ gcc }}
+glib = {{ glib }}
+glu = {{ glu }}
+java = {{ java }}
+libICE = {{ libICE }}
+libSM = {{ libSM }}
+libX11 = {{ libX11 }}
+libXau = {{ libXau }}
+libXdmcp = {{ libXdmcp }}
+libXext = {{ libXext }}
+libXrender = {{ libXrender }}
+libXinerama = {{ libXinerama }}
+libexpat = {{ libexpat }}
+libffi = {{ libffi }}
+libpng12 = {{ libpng12 }}
+libxcb = {{ libxcb }}
+mesa = {{ mesa }}
+nss = {{ nss }}
+nspr = {{ nspr }}
+pixman = {{ pixman }}
+xdamage = {{ xdamage }}
+xfixes = {{ xfixes }}
+xserver = {{ xserver }}
+zlib = {{ zlib }}
+
+
+[dynamic-template-sbe]
+<= jinja2-template-base
+url = {{ template_sbe }}
+filename = instance-sbe.cfg
+extra-context =
+  section parameter_dict dynamic-template-sbe-parameters

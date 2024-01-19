@@ -1,0 +1,345 @@
+[directory]
+recipe = slapos.cookbook:mkdirectory
+etc = ${buildout:directory}/etc
+bin = ${buildout:directory}/bin
+srv = ${buildout:directory}/srv
+var = ${buildout:directory}/var
+backup = ${buildout:directory}/backup
+run = ${:var}/run
+log = ${:var}/log
+scripts = ${:etc}/run
+services = ${:etc}/service
+plugins = ${:etc}/plugin
+ssl = ${:etc}/ssl
+tmp = ${:srv}/tmp
+# redis
+redis     = ${:srv}/redis
+redis-log = ${:log}/redis
+redis-backup   = ${:backup}/sbe
+# clamav
+clamd_tmp = ${:tmp}
+clamd_db_dir = ${:srv}/clamd_db
+# LO
+font = ${:srv}/font
+fontconfig-cache = ${buildout:directory}/.fontconfig
+
+# Postgresql
+
+[postgresql-password]
+recipe = slapos.cookbook:generate.password
+
+[postgresql-address]
+recipe = slapos.cookbook:free_port
+minimum = 5432
+maximum = 5452
+ip = {{ (ipv4 | list)[0] }}
+
+
+[postgresql]
+recipe = slapos.cookbook:postgres
+bin = {{ parameter_dict['postgresql_location'] }}/bin/
+services = ${directory:services}
+dbname  = sbe
+superuser = sbe
+password = ${postgresql-password:passwd}
+pgdata-directory = ${directory:srv}/postgresql
+
+ipv4 = ${postgresql-address:ip}
+# disable listening on ipv6
+ipv6 =
+port = ${postgresql-address:port}
+
+
+[postgres-uri]
+uri = postgres://${postgresql:superuser}:${postgresql:password}@${postgresql:ipv4}:${postgresql:port}/${postgresql:dbname}
+
+
+[postgresql-binary-link]
+recipe = slapos.cookbook:symbolic.link
+target-directory = ${directory:bin}
+link-binary = ${postgresql:bin}/postgres ${postgresql:bin}/psql
+
+
+[service-redis]
+recipe  = slapos.cookbook:redis.server
+wrapper = ${directory:services}/redis
+promise-wrapper = ${directory:bin}/redis-promise
+server-dir  = ${directory:redis}
+config-file = ${directory:etc}/redis.conf
+log-file    = ${directory:redis-log}/redis.log
+pid-file    = ${directory:run}/redis.pid
+use-passwd  = false
+unixsocket  = ${:server-dir}/redis.socket
+# port = 0 means "don't listen on TCP at all" - listen only on unix socket
+#ipv6 = {{ (ipv6 | list)[0] }}
+ipv6 = ::1
+port    = 0
+port = 0
+server-bin = {{ parameter_dict['redis_bin'] }}
+cli-bin = {{ parameter_dict['redis_cli'] }}
+depend =
+    ${logrotate-entry-redis:recipe}
+
+
+[redis-uri]
+redis = redis+socket://${service-redis:unixsocket}
+unix = unix://${service-redis:unixsocket}
+socket = socket://${service-redis:unixsocket}
+
+#tcp = redis://${service-redis:ipv4}:${service-redis:port}/0
+#redisonly = redis://${service-redis:unixsocket}
+#ipv6 = redis://[${service-redis:ipv6}]:${service-redis:port}/0
+
+
+[redis-promise]
+<= monitor-promise-base
+promise = check_command_execute
+name = redis.py
+config-command = ${service-redis:promise-wrapper}
+
+
+[logrotate-entry-redis]
+<= logrotate-entry-base
+name = redis
+log = ${directory:redis-log}/*.log
+frequency = daily
+rotate-num = 30
+
+
+[clamconf]
+tmp_dir = ${directory:clamd_tmp}
+db_dir = ${directory:clamd_db_dir}
+socket = ${directory:run}/clamd.ctl
+
+
+[clamd-config-file]
+recipe = slapos.recipe.template:jinja2
+url = {{ parameter_dict['template_clamd_conf'] }}
+filename = clamd.conf
+output = ${directory:etc}/${:filename}
+context =
+  section clamconf clamconf
+  key slapparameter_dict slap-configuration:configuration
+
+
+[freshclam-config-file]
+recipe = slapos.recipe.template:jinja2
+url = {{ parameter_dict['template_freshclam_conf'] }}
+filename = freshclam.conf
+output = ${directory:etc}/${:filename}
+context =
+  section clamconf clamconf
+  key slapparameter_dict slap-configuration:configuration
+
+
+
+
+[clamd-server]
+recipe = slapos.cookbook:wrapper
+clamd = {{ parameter_dict['clamd_bin'] }}
+config_file = ${clamd-config-file:output}
+datadir = ${directory:clamd_db_dir}
+pid = ${directory:run}/clamd.pid
+command-line =
+  ${:clamd} --foreground --config-file=${:config_file} --datadir=${:datadir} --pid=${:pid}
+wrapper-path = ${directory:services}/clamd_server
+environment =
+  LD_LIBRARY_PATH={{ openssl_location }}/lib
+
+
+[clamd-server-promise]
+<= monitor-promise-base
+promise = check_socket_listening
+name = clamd-server-promise.py
+config-pathname = ${clamconf:socket}
+
+
+[freshclam-init]
+recipe = slapos.cookbook:wrapper
+freshclam = {{ parameter_dict['freshclam_bin'] }}
+config_file = ${freshclam-config-file:output}
+datadir = ${directory:clamd_db_dir}
+# pid = ${directory:run}/freshclam.pid
+command-line =
+  ${:freshclam} --stdout --datadir=${:datadir} --config-file=${:config_file}
+wrapper-path = ${directory:services}/freshclam-init
+environment =
+  LD_LIBRARY_PATH={{ openssl_location }}/lib
+
+
+[request-sbe-frontend]
+<= slap-connection
+recipe = slapos.cookbook:requestoptional
+name = sbe Frontend
+# XXX We have hardcoded SR URL here.
+software-url = http://git.erp5.org/gitweb/slapos.git/blob_plain/HEAD:/software/apache-frontend/software.cfg
+shared = true
+config-url = http://[${sbe-parameters:ipv6}]:${sbe-parameters:port}
+return = secure_access domain
+
+
+[sbe-frontend-promise]
+<= monitor-promise-base
+promise = check_url_available
+name = sbe-frontend.py
+config-url = ${request-sbe-frontend:connection-secure_access}
+
+
+[dummy-mail]
+recipe = slapos.cookbook:wrapper
+host = ${sbe-parameters:ipv4}
+port = 2503
+command-line =
+  sh -c "python3 -u -m smtpd -n -c DebuggingServer ${:host}:${:port} >> ${directory:log}/mail_dump.log"
+wrapper-path = ${directory:services}/dummy_mail
+
+
+[fontconfig-conf]
+recipe = slapos.recipe.template:jinja2
+url = {{ parameter_dict['template-fonts-conf'] }}
+output = ${directory:etc}/fonts.conf
+context =
+    key cachedir directory:fontconfig-cache
+    key fonts :fonts
+    key includes :includes
+fonts =
+{% for font in parameter_dict['fonts'].splitlines() %}
+    {{ font }}
+{% endfor%}
+    ${directory:font}
+includes =
+{% for include in parameter_dict['fontconfig-includes'].splitlines() %}
+   {{ include }}
+{% endfor%}
+
+
+[sbe-parameters]
+pid-file = ${directory:run}/gunicorn.pid
+ipv6 = {{ (ipv6 | list)[0] }}
+ipv4 = {{ (ipv4 | list)[0] }}
+port = 8005
+log-file = ${directory:log}/sbe.log
+
+
+[sbe-admin]
+mail = jd@abilian.com
+passwd = azerty
+
+
+[sbe-wrapper]
+recipe = slapos.cookbook:wrapper
+environment =
+  FLASK_APP=wsgi.py
+  FLASK_SECRET_KEY="zzzsdqlfkjhqldsfjhoiertzoetryi"
+  FLASK_SQLALCHEMY_DATABASE_URI=${postgres-uri:uri}
+  FLASK_DEBUG=1
+  FLASK_MAIL_DEBUG=1
+  FLASK_MAIL_SENDER=sbe-server@abilian.com
+  FLASK_REDIS_URI=${redis-uri:unix}
+  REDIS_URI=${redis-uri:unix}
+  FLASK_CELERY_BROKER_URL=${redis-uri:redis}
+  CELERY_BROKER_URL=${redis-uri:redis}
+  FLASK_CELERY_RESULT_BACKEND=${redis-uri:redis}
+  CELERY_RESULT_BACKEND=${redis-uri:redis}
+  FLASK_SITE_NAME=some name
+  FLASK_MAIL_SERVER=FLASK_SERVER_NAME=${dummy-mail:host}:${dummy-mail:port}
+  LIBREOFFICEPATH={{parameter_dict['libreoffice_bin']}}/program
+  FLASK_SOFFICE_LOCATION = {{parameter_dict['libreoffice_bin']}}/program/soffice.bin
+  CLAMD_CONF_PATH = ${clamd-config-file:output}
+  FONTCONFIG_FILE = ${fontconfig-conf:output}
+  LANG = C.UTF-8
+  POPPLER_BIN = {{parameter_dict['poppler']}}/bin
+  INSTANCE_VAR_RUN = ${directory:run}
+  JAVA_HOME = {{ parameter_dict['java'] }}
+  LD_LIBRARY_PATH = {{ parameter_dict['java'] }}:{{ parameter_dict['avahi'] }}/lib:{{ parameter_dict['cairo'] }}/lib:{{ parameter_dict['cups'] }}/lib:{{ parameter_dict['cups'] }}/lib64:{{ parameter_dict['dbus'] }}/lib:{{ parameter_dict['dbus-glib'] }}/lib:{{ parameter_dict['file'] }}/lib:{{ parameter_dict['fontconfig'] }}/lib:{{ parameter_dict['freetype'] }}/lib:{{ parameter_dict['gcc'] }}/lib:{{ parameter_dict['gcc'] }}/lib64:{{ parameter_dict['glib'] }}/lib:{{ parameter_dict['glu'] }}/lib:{{ parameter_dict['libICE'] }}/lib:{{ parameter_dict['libSM'] }}/lib:{{ parameter_dict['libX11'] }}/lib:{{ parameter_dict['libXau'] }}/lib:{{ parameter_dict['libXdmcp'] }}/lib:{{ parameter_dict['libXext'] }}/lib:{{ parameter_dict['libXrender'] }}/lib:{{ parameter_dict['libXinerama'] }}/lib:{{ parameter_dict['libexpat'] }}/lib:{{ parameter_dict['libffi'] }}/lib:{{ parameter_dict['libffi'] }}/lib64:{{ parameter_dict['libpng12'] }}/lib:{{ parameter_dict['libxcb'] }}/lib:{{ parameter_dict['mesa'] }}/lib:{{ parameter_dict['nss'] }}/lib:{{ parameter_dict['nspr'] }}/lib:{{ parameter_dict['pixman'] }}/lib:{{ parameter_dict['xdamage'] }}/lib:{{ parameter_dict['xfixes'] }}/lib:{{ parameter_dict['zlib'] }}/lib
+
+
+[sbe-assets]
+<= sbe-wrapper
+command-line =
+  sh -c "cd {{parameter_dict['sbe_path']}} && {{parameter_dict['flask']}} assets build"
+wrapper-path = ${directory:services}/sbe_assets
+
+
+[sbe-initdb]
+<= sbe-wrapper
+command-line =
+  sh -c "cd {{parameter_dict['sbe_path']}} && {{parameter_dict['flask']}} initdb"
+wrapper-path = ${directory:services}/sbe_initdb
+
+
+[sbe-create-admin]
+<= sbe-wrapper
+command-line =
+  sh -c "cd {{parameter_dict['sbe_path']}} && {{parameter_dict['flask']}} createuser --role admin --name admin ${sbe-admin:mail} ${sbe-admin:passwd}"
+wrapper-path = ${directory:services}/sbe_create_admin
+
+
+[celery-cmd]
+command = {{parameter_dict['celery']}} -A extranet.celery_app worker -l INFO
+
+
+[start-celery]
+<= sbe-wrapper
+command-line =
+  sh -c "cd {{parameter_dict['sbe_path']}} && ${celery-cmd:command}"
+wrapper-path = ${directory:services}/sbe_start_celery
+
+
+[gunicorn-cmd]
+command = {{parameter_dict['gunicorn']}} extranet.wsgi:app -b [${sbe-parameters:ipv6}]:${sbe-parameters:port} -p ${sbe-parameters:pid-file} --workers 2 --error-logfile ${sbe-parameters:log-file} --log-level debug --timeout 10000
+
+
+[sbe-start-gunicorn]
+<= sbe-wrapper
+command-line =
+  sh -c "cd {{parameter_dict['sbe_path']}} && ${gunicorn-cmd:command}"
+wrapper-path = ${directory:services}/sbe_start_gunicorn
+
+
+[sbe-listen-promise]
+<= monitor-promise-base
+promise = check_socket_listening
+name = sbe-listen.py
+config-host = ${sbe-parameters:ipv6}
+config-port = ${sbe-parameters:port}
+
+
+[publish-connection-information]
+<= monitor-publish
+recipe = slapos.cookbook:publish
+url = ${request-sbe-frontend:connection-secure_access}
+backend-url = ${request-sbe-frontend:config-url}
+
+
+[buildout]
+extends = {{ template_monitor }}
+parts =
+  publish-connection-information
+
+  clamd-config-file
+  freshclam-config-file
+  freshclam-init
+  clamd-server
+  clamd-server-promise
+
+  postgresql
+  postgresql-binary-link
+
+  service-redis
+  redis-promise
+  logrotate-entry-redis
+
+  dummy-mail
+
+  sbe-assets
+  sbe-initdb
+  sbe-create-admin
+  start-celery
+  sbe-start-gunicorn
+  sbe-listen-promise
+  sbe-frontend-promise
+
+eggs-directory = {{ eggs_directory }}
+develop-eggs-directory = {{ develop_eggs_directory }}
+offline = true
