@@ -4,7 +4,6 @@ from __future__ import annotations
 import email
 import mailbox
 import re
-from datetime import timedelta
 from os.path import expanduser
 from pathlib import Path
 from typing import Any
@@ -27,7 +26,6 @@ from abilian.core.models.subjects import User
 from abilian.core.signals import activity
 from abilian.core.util import md5, unwrap
 from abilian.i18n import _l, render_template_i18n
-from abilian.sbe.app import Application
 from abilian.web import url_for
 
 from .forms import ALLOWED_ATTRIBUTES, ALLOWED_STYLES, ALLOWED_TAGS

@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from urllib.parse import urlparse
 
-from devtools import debug
 from flask import url_for
 from flask.testing import FlaskClient
 

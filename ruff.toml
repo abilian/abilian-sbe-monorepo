@@ -84,7 +84,7 @@ extend-ignore = [
     "E501", # line too long
     "E741", # Ambiguous variable name
     "ERA001", # Found commented-out code
-#    "F401", # 'module' imported but unused
+    "F401", # 'module' imported but unused
     "F841", # Local variable `...` is assigned to but never used
     "I001", # Import block is un-sorted or un-formatted
     "PLC0415", # `import` should be at the top-level of a file

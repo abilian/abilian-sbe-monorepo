@@ -3,13 +3,10 @@ from __future__ import annotations
 
 from collections.abc import Iterator
 from contextlib import contextmanager
-from pathlib import Path
 from typing import TYPE_CHECKING
 
-from flask import current_app
 from loguru import logger
 from sqlalchemy.orm import Session
-from sqlalchemy.sql.functions import mode
 
 from abilian.core.dramatiq.singleton import dramatiq
 from abilian.core.extensions import db
