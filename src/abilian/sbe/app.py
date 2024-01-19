@@ -18,7 +18,7 @@ from .extension import sbe
 # Used for side effects, do not remove
 
 
-__all__ = ["create_app", "Application"]
+__all__ = ["Application", "create_app"]
 
 
 class Application(BaseApplication):

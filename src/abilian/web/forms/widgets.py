@@ -43,20 +43,13 @@ from abilian.web.filters import babel2datepicker, labelize
 from .util import babel2datetime
 
 __all__ = [
-    "linkify_url",
-    "text2html",
-    "Column",
+    "AjaxMainTableView",
     # Views
     "BaseTableView",
-    "MainTableView",
-    "RelatedTableView",
-    "AjaxMainTableView",
-    "SingleView",
-    "Panel",
-    "Row",
     # Widgets
     "BooleanWidget",
     "Chosen",
+    "Column",
     "DateInput",
     "DateTimeInput",
     "DateTimeWidget",
@@ -68,15 +61,22 @@ __all__ = [
     "FloatWidget",
     "ImageInput",
     "ListWidget",
+    "MainTableView",
     "ModelListWidget",
     "MoneyWidget",
+    "Panel",
+    "RelatedTableView",
     "RichTextWidget",
+    "Row",
     "Select2",
     "Select2Ajax",
+    "SingleView",
     "TabularFieldListWidget",
     "TagInput",
     "TextArea",
     "URLWidget",
+    "linkify_url",
+    "text2html",
 ]
 
 

@@ -30,11 +30,11 @@ converter.register_handler(LibreOfficePdfHandler())
 conversion_service = converter
 
 __all__ = (
+    "ConversionError",
+    "Converter",
+    "HandlerNotFound",
     "conversion_service",
     "converter",
-    "Converter",
-    "ConversionError",
-    "HandlerNotFound",
 )
 
 # converter.register_handler(AbiwordPDFHandler())

@@ -16,7 +16,7 @@ from abilian.core.models import Model
 
 from .schema import accent_folder
 
-__all__ = ["SchemaAdapter", "SAAdapter"]
+__all__ = ["SAAdapter", "SchemaAdapter"]
 
 
 class SchemaAdapter(metaclass=ABCMeta):

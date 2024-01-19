@@ -65,6 +65,7 @@ from flask_babel import Babel as BabelBase
 from flask_babel import LazyString, force_locale, gettext, lazy_gettext, ngettext
 
 __all__ = [
+    "VALID_LANGUAGES_CODE",
     "_",
     "_l",
     "_n",
@@ -77,7 +78,6 @@ __all__ = [
     "ngettext",
     "render_template_i18n",
     "timezoneselector",
-    "VALID_LANGUAGES_CODE",
 ]
 
 #: gettext alias

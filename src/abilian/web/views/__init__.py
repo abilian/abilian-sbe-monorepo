@@ -14,16 +14,16 @@ from .object import (
 from .registry import Registry, default_view
 
 __all__ = (
-    "View",
-    "JSONView",
-    "Registry",
-    "default_view",
     "BaseObjectView",
-    "ObjectView",
-    "ObjectEdit",
-    "ObjectCreate",
-    "ObjectDelete",
     "JSONBaseSearch",
     "JSONModelSearch",
+    "JSONView",
     "JSONWhooshSearch",
+    "ObjectCreate",
+    "ObjectDelete",
+    "ObjectEdit",
+    "ObjectView",
+    "Registry",
+    "View",
+    "default_view",
 )

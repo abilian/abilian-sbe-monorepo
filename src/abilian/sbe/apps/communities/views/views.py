@@ -57,7 +57,7 @@ from abilian.web.action import Endpoint
 from abilian.web.nav import BreadcrumbItem
 from abilian.web.views import images as image_views
 
-__all__ = ["communities", "route", "tab", "BaseCommunityView", "default_view_kw"]
+__all__ = ["BaseCommunityView", "communities", "default_view_kw", "route", "tab"]
 
 
 EPOCH = datetime.fromtimestamp(0.0, tz=pytz.utc)

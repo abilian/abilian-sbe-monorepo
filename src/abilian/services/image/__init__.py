@@ -8,7 +8,7 @@ from typing import Any
 
 from PIL import Image
 
-__all__ = ["resize", "get_format", "RESIZE_MODES", "SCALE", "FIT", "CROP"]
+__all__ = ["CROP", "FIT", "RESIZE_MODES", "SCALE", "get_format", "resize"]
 
 # resize modes
 

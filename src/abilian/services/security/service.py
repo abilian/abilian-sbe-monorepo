@@ -55,11 +55,11 @@ if TYPE_CHECKING:
 PERMISSIONS = frozenset(["read", "write", "manage"])
 
 __all__ = [
-    "security",
-    "SecurityError",
-    "SecurityService",
     "InheritSecurity",
     "SecurityAudit",
+    "SecurityError",
+    "SecurityService",
+    "security",
 ]
 
 #: default security matrix

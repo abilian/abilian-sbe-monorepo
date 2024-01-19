@@ -1,7 +1,7 @@
 """Field filters for WTForm."""
 from __future__ import annotations
 
-__all__ = ["strip", "uppercase", "lowercase"]
+__all__ = ["lowercase", "strip", "uppercase"]
 
 
 def strip(data: None | int | str) -> int | str:

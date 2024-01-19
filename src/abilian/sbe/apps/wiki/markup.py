@@ -15,7 +15,7 @@ from abilian.sbe.apps.wiki.models import WikiPage
 
 from .util import page_exists
 
-__all__ = ("convert", "SBEWikiLinkExtension")
+__all__ = ("SBEWikiLinkExtension", "convert")
 
 
 class UrlBuilder:

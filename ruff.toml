@@ -107,7 +107,6 @@ extend-ignore = [
     "TCH002", # Move import into a type-checking block
     "TCH003", # Move import into a type-checking block
     "TRY003", # Avoid specifying long messages outside the exception class
-    "UP038", # Use `X | Y` in `isinstance` call instead of `(X, Y)`
     # More...
     "BLE001", # Do not catch blind exception
     "C901", # X is too complex
@@ -126,7 +125,6 @@ extend-ignore = [
     "G201", # Logging `.exception(...)` should be used instead of `.error(..., exc_info=True)`
     "ISC001", # Implicitly concatenated string literals on one line
     "ISC003", # Explicitly concatenated string should be implicitly concatenated
-    "N801", # Class name `timer` should use CapWords convention
     "N801", # Class name should use CapWords convention
     "N802", # Function name should be lowercase
     "N803", # Argument name should be lowercase
@@ -182,6 +180,7 @@ extend-ignore = [
     "SIM115", # Use context handler for opening files
     "SIM117", # Use a single `with` statement with multiple contexts instead of nested `with` statements
     "SIM118", # Use `key in dict` instead of `key in dict.keys()`
+    "SIM113", # Use `enumerate()` for index variabl
     "SLF001", # Private member accessed
     "TID252", # Relative imports from parent modules are banned
     "TRY002", # Create your own exception
@@ -190,6 +189,7 @@ extend-ignore = [
     "TRY400", # Use `logging.exception` instead of `logging.error`
     #
     "PLC2801", # Unnecessary dunder call
+    "PLC2701", # Private name import `_...` from external module
     # FIXME:
     "S403", # `pickle`, `cPickle`, `dill`, and `shelve` modules are possibly insecure
     "S404", # `subprocess` module is possibly insecure

@@ -17,12 +17,12 @@ from abilian.services import get_service
 from abilian.web import url_for
 
 __all__ = (
-    "stop_all_services",
-    "ensure_services_started",
     "cleanup_db",
     "client_login",
+    "ensure_services_started",
     "login",
     "path_from_url",
+    "stop_all_services",
 )
 
 

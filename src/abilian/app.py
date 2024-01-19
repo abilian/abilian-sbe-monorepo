@@ -96,7 +96,7 @@ from abilian.web.views import Registry as ViewRegistry
 defusedxml.defuse_stdlib()
 
 db = extensions.db
-__all__ = ["create_app", "Application", "ServiceManager"]
+__all__ = ["Application", "ServiceManager", "create_app"]
 
 # Silence those warnings for now.
 warnings.simplefilter("ignore", category=sa.exc.SAWarning)

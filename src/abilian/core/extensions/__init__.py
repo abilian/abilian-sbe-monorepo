@@ -26,12 +26,12 @@ from .login import login_manager
 from .redis import Redis
 
 __all__ = (
-    "get_extension",
-    "redis",
-    "db",
-    "mail",
-    "login_manager",
     "csrf",
+    "db",
+    "get_extension",
+    "login_manager",
+    "mail",
+    "redis",
     "upstream_info",
 )
 

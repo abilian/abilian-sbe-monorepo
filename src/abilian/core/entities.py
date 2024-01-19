@@ -33,9 +33,9 @@ __all__ = (
     "Entity",
     "EntityQuery",
     "Indexable",
+    "ValidationError",
     "all_entity_classes",
     "db",
-    "ValidationError",
 )
 
 

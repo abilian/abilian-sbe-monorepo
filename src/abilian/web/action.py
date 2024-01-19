@@ -18,21 +18,21 @@ from abilian.web import csrf
 from abilian.web.util import url_for
 
 __all__ = (
+    "ACTIVE",
+    "DISABLED",
+    "ENABLED",
     "Action",
     "ActionDropDown",
     "ActionGroup",
     "ActionGroupItem",
     "ButtonAction",
-    "FAIcon",
     "DynamicIcon",
-    "StaticIcon",
-    "ModalActionMixin",
     "Endpoint",
-    "actions",
-    "ENABLED",
-    "ACTIVE",
-    "DISABLED",
+    "FAIcon",
     "Glyphicon",
+    "ModalActionMixin",
+    "StaticIcon",
+    "actions",
     "getset",
 )
 

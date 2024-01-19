@@ -15,24 +15,24 @@ from abilian.i18n import _, _n
 from abilian.services import get_service
 
 __all__ = (
+    "VALIDATORS",
+    "anyof",
+    "email",
     "equalto",
+    "flaghidden",
+    "ipaddress",
     "length",
+    "macaddress",
+    "noneof",
     "numberrange",
     "optional",
-    "required",
     "regexp",
-    "email",
-    "ipaddress",
-    "macaddress",
-    "url",
-    "siret",
-    "uuid",
-    "anyof",
-    "noneof",
-    "flaghidden",
     "renderempty",
-    "VALIDATORS",
+    "required",
+    "siret",
     "siret_validator",
+    "url",
+    "uuid",
 )
 
 

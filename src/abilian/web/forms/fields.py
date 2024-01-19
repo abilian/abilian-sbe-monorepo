@@ -37,16 +37,16 @@ from .util import babel2datetime
 from .widgets import DateInput, DateTimeInput, FileInput, Select2, Select2Ajax
 
 __all__ = [
-    "ModelFieldList",
-    "FileField",
     "DateField",
     "DateTimeField",
-    "Select2Field",
-    "Select2MultipleField",
-    "QuerySelect2Field",
+    "FileField",
+    "FormField",
     "JsonSelect2Field",
     "JsonSelect2MultipleField",
-    "FormField",
+    "ModelFieldList",
+    "QuerySelect2Field",
+    "Select2Field",
+    "Select2MultipleField",
 ]
 
 

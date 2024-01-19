@@ -90,9 +90,6 @@ hyperlink = "*"
 # Used by DeferredJS (TODO: remove)
 lxml = "*"
 
-# Used by the logging config loader (TODO: remove)
-PyYAML = "*"
-
 # Configuration
 toml = "*"
 

@@ -6,7 +6,7 @@ from flask import Flask
 from .criterion import TagCriterion
 from .extension import TagsExtension
 
-__all__ = ["TagsExtension", "TagCriterion"]
+__all__ = ["TagCriterion", "TagsExtension"]
 
 
 def register_plugin(app: Flask):

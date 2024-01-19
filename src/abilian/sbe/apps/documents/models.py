@@ -51,10 +51,10 @@ if TYPE_CHECKING:
 # logger = logging.getLogger(__package__)
 
 __all__ = (
-    "CmisObject",
-    "Folder",
-    "Document",
     "BaseContent",
+    "CmisObject",
+    "Document",
+    "Folder",
     "PathAndSecurityIndexable",
     "icon_for",
     "icon_url",
