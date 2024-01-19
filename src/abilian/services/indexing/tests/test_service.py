@@ -5,13 +5,14 @@ from collections.abc import Iterator
 from typing import cast
 
 import sqlalchemy as sa
-from pytest import fixture
+from pytest import fixture, mark
 from sqlalchemy.orm import Session
 
 from abilian.app import Application
 from abilian.core.entities import Entity
 from abilian.services import get_service
 from abilian.services.indexing.service import WhooshIndexService
+from abilian.testing.util import redis_available
 
 
 class IndexedContact(Entity):
@@ -35,6 +36,7 @@ def test_app_state(app: Application, svc: WhooshIndexService):
     assert IndexedContact.entity_type in state.indexed_fqcn
 
 
+@mark.skipif(not redis_available(), reason="requires redis connection")
 def test_index_only_after_final_commit(
     app: Application, session: Session, svc: WhooshIndexService
 ):

@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timedelta
 from unittest import mock
 
+import pytest
 from flask_login import login_user
 from pytz import UTC
 from sqlalchemy.orm import Session
@@ -11,6 +12,7 @@ from abilian.core.models.subjects import User
 from abilian.sbe.app import Application
 from abilian.sbe.apps.documents import lock
 from abilian.sbe.apps.documents.lock import Lock
+from abilian.testing.util import redis_available
 
 
 def test_lock() -> None:
@@ -25,6 +27,7 @@ def test_lock() -> None:
     assert l.date == date
 
 
+@pytest.mark.skipif(not redis_available(), reason="requires redis connection")
 def test_lock2(app: Application, session: Session) -> None:
     user = User(
         email="test@example.com", first_name="Joe", last_name="Smith", can_login=True

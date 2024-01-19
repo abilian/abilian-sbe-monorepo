@@ -7,6 +7,7 @@ from contextlib import AbstractContextManager
 from flask.testing import FlaskClient
 from flask_login import login_user, logout_user
 from hyperlink import URL
+from redis import Redis
 from sqlalchemy.exc import DatabaseError
 
 from abilian.app import Application
@@ -103,3 +104,13 @@ def stop_all_services(app: Application):
     for service in app.services.values():
         if service.running:
             service.stop()
+
+
+def redis_available() -> bool:
+    redis_host = "127.0.0.1"
+    try:
+        client = Redis(redis_host, socket_connect_timeout=1)
+        client.ping()
+    except Exception:
+        return False
+    return True

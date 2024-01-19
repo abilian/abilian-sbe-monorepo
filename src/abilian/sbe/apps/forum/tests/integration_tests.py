@@ -12,7 +12,7 @@ from abilian.sbe.apps.communities.models import MANAGER, MEMBER
 from abilian.sbe.apps.forum.tasks import send_post_by_email
 from abilian.sbe.apps.forum.views import ThreadCreate
 from abilian.services import security_service
-from abilian.testing.util import client_login
+from abilian.testing.util import client_login, redis_available
 
 from ..cli import _inject_email
 from ..models import Post, Thread
@@ -39,6 +39,7 @@ def test_posts_ordering(db: SQLAlchemy, community1):
     assert [p.id for p in thread.posts] == [p2_id, p1_id]
 
 
+@pytest.mark.skipif(not redis_available(), reason="requires redis connection")
 def test_thread_indexed(app, db: SQLAlchemy, community1, community2, monkeypatch):
     monkeypatch.setenv("TESTING_DIRECT_FUNCTION_CALL", "testing")
     index_svc = app.services["indexing"]

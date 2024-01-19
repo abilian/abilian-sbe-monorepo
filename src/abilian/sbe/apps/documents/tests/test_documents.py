@@ -13,7 +13,7 @@ from abilian.sbe.apps.communities.models import Community
 from abilian.sbe.apps.documents.models import Document, Folder
 from abilian.sbe.apps.documents.views.folders import explore_archive
 from abilian.services import index_service, security_service
-from abilian.testing.util import login
+from abilian.testing.util import login, redis_available
 
 
 def open_file(filename: str) -> IO[bytes]:
@@ -21,6 +21,7 @@ def open_file(filename: str) -> IO[bytes]:
     return path.open("rb")
 
 
+@pytest.mark.skipif(not redis_available(), reason="requires redis connection")
 def test_document(app: Application, session: Session) -> None:
     root = Folder(title="root")
     doc = Document(parent=root, title="test")

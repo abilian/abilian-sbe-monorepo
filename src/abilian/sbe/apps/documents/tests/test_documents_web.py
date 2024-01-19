@@ -8,7 +8,7 @@ from zipfile import ZipFile
 import flask_mail
 from flask import g, get_flashed_messages
 from flask.testing import FlaskClient
-from pytest import fixture
+from pytest import fixture, mark
 from toolz import first
 from werkzeug.datastructures import FileStorage
 
@@ -18,7 +18,7 @@ from abilian.sbe.apps.communities.models import WRITER, Community
 from abilian.sbe.apps.communities.presenters import CommunityPresenter
 from abilian.sbe.apps.documents.models import Folder
 from abilian.sbe.apps.documents.views import util as view_util
-from abilian.testing.util import client_login, path_from_url
+from abilian.testing.util import client_login, path_from_url, redis_available
 from abilian.web.util import url_for
 
 
@@ -46,6 +46,7 @@ def community(community1: Community, db: SQLAlchemy) -> Community:
     return community
 
 
+@mark.skipif(not redis_available(), reason="requires redis connection")
 def test_util_create(
     app: Application, client: FlaskClient, db: SQLAlchemy, community: Community
 ) -> None:
@@ -74,6 +75,7 @@ def test_util_create(
         assert len(messages) == 1
 
 
+@mark.skipif(not redis_available(), reason="requires redis connection")
 def test_home(
     app: Application, client: FlaskClient, db: SQLAlchemy, community: Community
 ) -> None:
@@ -149,6 +151,7 @@ def _test_upload(
     assert response.status_code == 404
 
 
+@mark.skipif(not redis_available(), reason="requires redis connection")
 def test_text_upload(client: FlaskClient, community: Community) -> None:
     name = "wikipedia-fr.txt"
     user = community.test_user
@@ -156,6 +159,7 @@ def test_text_upload(client: FlaskClient, community: Community) -> None:
         _test_upload(community, client, name, "text/plain", test_preview=False)
 
 
+@mark.skipif(not redis_available(), reason="requires redis connection")
 def test_pdf_upload(client: FlaskClient, community: Community) -> None:
     name = "onepage.pdf"
     user = community.test_user
@@ -163,6 +167,7 @@ def test_pdf_upload(client: FlaskClient, community: Community) -> None:
         _test_upload(community, client, name, "application/pdf")
 
 
+@mark.skipif(not redis_available(), reason="requires redis connection")
 def test_image_upload(client: FlaskClient, community: Community) -> None:
     name = "picture.jpg"
     user = community.test_user
@@ -170,6 +175,7 @@ def test_image_upload(client: FlaskClient, community: Community) -> None:
         _test_upload(community, client, name, "image/jpeg")
 
 
+@mark.skipif(not redis_available(), reason="requires redis connection")
 def test_binary_upload(client, community):
     name = "random.bin"
     user = community.test_user
@@ -183,6 +189,7 @@ def test_binary_upload(client, community):
         )
 
 
+@mark.skipif(not redis_available(), reason="requires redis connection")
 def test_zip_upload_uncompress(
     community: Community, db: SQLAlchemy, client: FlaskClient
 ):
@@ -212,6 +219,7 @@ def test_zip_upload_uncompress(
     assert expected == {f.title for f in folder.subfolders}
 
 
+@mark.skipif(not redis_available(), reason="requires redis connection")
 def test_zip(community: Community, client: FlaskClient) -> None:
     user = community.test_user
     with client_login(client, user):
@@ -238,6 +246,7 @@ def test_zip(community: Community, client: FlaskClient) -> None:
         assert [zipfile.namelist()[0]] == [title]
 
 
+@mark.skipif(not redis_available(), reason="requires redis connection")
 def test_recursive_zip(community: Community, client: FlaskClient) -> None:
     user = community.test_user
     with client_login(client, user):
@@ -275,6 +284,7 @@ def test_recursive_zip(community: Community, client: FlaskClient) -> None:
         assert zipfile.namelist() == [f"my folder/{title}"]
 
 
+@mark.skipif(not redis_available(), reason="requires redis connection")
 def test_document_send_by_mail(
     app: Application, community: Community, client: FlaskClient
 ) -> None:
