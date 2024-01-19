@@ -202,6 +202,7 @@ deptry = "^0.12.0"
 
 # Replaces watchgod. Not sure it's needed.
 # watchfiles = "^0.21.0"
+mkdocs-material = "^9.5.4"
 
 [build-system]
 requires = ["poetry-core>=1.2.0"]
