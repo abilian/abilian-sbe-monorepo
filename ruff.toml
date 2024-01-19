@@ -180,7 +180,7 @@ extend-ignore = [
     "RET503", # Missing explicit `return` at the end of function able to return non-`None` value
     "RET507", # Unnecessary `elif` after `continue` statement
     "RET508", # Unnecessary `else` after `break` statement
-    "RSE102", # Unnecessary parentheses on raised exception
+#    "RSE102", # Unnecessary parentheses on raised exception
     "SIM102", # Use a single `if` statement instead of nested `if` statements
     "SIM115", # Use context handler for opening files
     "SIM117", # Use a single `with` statement with multiple contexts instead of nested `with` statements

@@ -176,7 +176,7 @@ class PreferenceService(Service):
                     return redirect(url_for(f"preferences.{panel.id}"))
 
             # Should not happen.
-            raise InternalServerError()
+            raise InternalServerError
 
     def build_breadcrumbs(self, endpoint, view_args):
         state = self.app_state

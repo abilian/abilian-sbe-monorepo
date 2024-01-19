@@ -95,7 +95,7 @@ class UserPreferencesPanel(PreferencePanel):
     def get(self):
         # Manual security check, should be done by the framework instead.
         if not self.is_accessible():
-            raise InternalServerError()
+            raise InternalServerError
 
         data = {}
         photo = g.user.photo
@@ -120,7 +120,7 @@ class UserPreferencesPanel(PreferencePanel):
     def post(self):
         # Manual security check, should be done by the framework instead.
         if not self.is_accessible():
-            raise InternalServerError()
+            raise InternalServerError
 
         if request.form["_action"] == "cancel":
             return redirect(url_for(".user"))

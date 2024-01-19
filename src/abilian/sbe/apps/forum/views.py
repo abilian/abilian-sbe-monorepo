@@ -139,7 +139,7 @@ def index(filter=None):
     elif filter == "year":
         dt = timedelta(days=365)
     elif filter:
-        raise BadRequest()
+        raise BadRequest
 
     if dt:
         cutoff_date = datetime.utcnow() - dt
@@ -539,7 +539,7 @@ def attachment_download(thread_id, post_id, attachment_id):
         or post.thread is not thread
         or attachment.post is not post
     ):
-        raise NotFound()
+        raise NotFound
 
     # Don't fail too hard when attachment is not available.
     try:

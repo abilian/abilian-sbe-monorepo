@@ -22,7 +22,7 @@ def get_user(endpoint, values):
         if user:
             values["user"] = user
         else:
-            raise NotFound()
+            raise NotFound
     except KeyError:
         # this endpoint is not looking for a specific user
         pass
@@ -31,7 +31,7 @@ def get_user(endpoint, values):
 @blueprint.route("/<int:user_id>/photo")
 def photo(user):
     if not user.photo:
-        raise NotFound()
+        raise NotFound
 
     data = user.photo
     self_photo = user.id == g.user.id

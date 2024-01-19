@@ -172,7 +172,7 @@ class Admin:
         def check_security():
             user = unwrap(current_user)
             if not security.has_role(user, "admin"):
-                raise Forbidden()
+                raise Forbidden
 
     def panel_preprocess_value(self, endpoint: str, view_args: dict[Any, Any]):
         panel = self._panels_endpoints.get(endpoint)

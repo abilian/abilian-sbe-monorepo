@@ -152,7 +152,7 @@ def get_selected_objects(folder: Folder) -> tuple[list[Folder], list[Document]]:
 
     for obj in docs + folders:
         if obj.parent != folder:
-            raise InternalServerError()
+            raise InternalServerError
 
     return folders, docs
 
@@ -165,14 +165,14 @@ def check_read_access(obj: BaseContent) -> None:
     (403).
     """
     if not obj:
-        raise NotFound()
+        raise NotFound
     if not security.running:
         return
     if security.has_role(current_user, Admin):
         return
     if content_repository.has_access(current_user, obj):
         return
-    raise Forbidden()
+    raise Forbidden
 
 
 def check_write_access(obj: BaseContent) -> None:
@@ -184,7 +184,7 @@ def check_write_access(obj: BaseContent) -> None:
     (403).
     """
     if not obj:
-        raise NotFound()
+        raise NotFound
     if not security.running:
         return
     if security.has_role(current_user, Admin):
@@ -194,7 +194,7 @@ def check_write_access(obj: BaseContent) -> None:
         current_user, obj
     ) and content_repository.has_permission(current_user, WRITE, obj):
         return
-    raise Forbidden()
+    raise Forbidden
 
 
 def check_manage_access(obj) -> None:
@@ -207,7 +207,7 @@ def check_manage_access(obj) -> None:
     """
 
     if not obj:
-        raise NotFound()
+        raise NotFound
     if not security.running:
         return
     if security.has_role(current_user, Admin):
@@ -216,7 +216,7 @@ def check_manage_access(obj) -> None:
         current_user, obj
     ) and content_repository.has_permission(current_user, MANAGE, obj):
         return
-    raise Forbidden()
+    raise Forbidden
 
 
 def match(mime_type: str, patterns: tuple[str, str, str]) -> bool:

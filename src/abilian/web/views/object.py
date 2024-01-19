@@ -60,7 +60,7 @@ class BaseObjectView(View):
         args, kwargs = self.init_object(args, kwargs)
 
         if self.obj is None:
-            raise NotFound()
+            raise NotFound
 
         return args, kwargs
 

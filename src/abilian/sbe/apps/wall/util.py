@@ -30,7 +30,7 @@ def get_recent_entries(
     # Check just in case
     if not current_user.has_role(Admin):
         if community and not community.has_member(current_user):
-            raise Forbidden()
+            raise Forbidden
 
     query = AE.query.options(sa.orm.joinedload(AE.object))
 

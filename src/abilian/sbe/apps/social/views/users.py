@@ -239,7 +239,7 @@ def users_json():
     q = request.args.get("q").replace("%", " ").lower()
 
     if not q or len(q) < 2:
-        raise InternalServerError()
+        raise InternalServerError
 
     query = User.query.filter(
         or_(

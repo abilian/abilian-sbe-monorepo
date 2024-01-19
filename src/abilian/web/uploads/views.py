@@ -81,7 +81,7 @@ class UploadView(BaseUploadsView, View):
         file_obj = self.uploads.get_file(self.user, handle)
 
         if file_obj is None:
-            raise NotFound()
+            raise NotFound
 
         metadata = self.uploads.get_metadata(self.user, handle)
         filename = metadata.get("filename", handle)
@@ -99,7 +99,7 @@ class UploadView(BaseUploadsView, View):
 
     def delete(self, handle, *args, **kwargs) -> dict:
         if self.uploads.get_file(self.user, handle) is None:
-            raise NotFound()
+            raise NotFound
         self.uploads.remove_file(self.user, handle)
         return {"success": True}
 

@@ -62,4 +62,4 @@ def unsubscribe_sbe(token: str) -> str:
         db.session.commit()
         return render_template_i18n("notifications/unsubscribed.html", token=token)
     else:
-        raise MethodNotAllowed()
+        raise MethodNotAllowed

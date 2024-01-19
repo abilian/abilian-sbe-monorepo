@@ -45,7 +45,7 @@ def ping_connection(dbapi_connection: Connection, connection_record, connection_
 
         # raise DisconnectionError - pool will try
         # connecting again up to three times before raising.
-        raise sa.exc.DisconnectionError() from e
+        raise sa.exc.DisconnectionError from e
     cursor.close()
 
 

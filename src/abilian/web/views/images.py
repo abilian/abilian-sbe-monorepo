@@ -71,7 +71,7 @@ class BaseImageView(BaseFileDownload):
             fmt = get_format(image)
         except OSError as e:
             # not a known image file
-            raise NotFound() from e
+            raise NotFound from e
 
         self.content_type = "image/png" if fmt == "PNG" else "image/jpeg"
         ext = f".{fmt.lower()!s}"
@@ -146,7 +146,7 @@ class BlobView(BaseImageView):
 
         blob = Blob.query.get(blob_id)
         if not blob:
-            raise NotFound()
+            raise NotFound
 
         meta = blob.meta
         filename = meta.get("filename", meta.get("md5", str(blob.uuid)))
@@ -169,7 +169,7 @@ class UserMugshot(BaseImageView):
         user = User.query.options(sa.orm.undefer(User.photo)).get(user_id)
 
         if user is None:
-            raise NotFound()
+            raise NotFound
 
         kwargs["user"] = user
         kwargs["image"] = user.photo

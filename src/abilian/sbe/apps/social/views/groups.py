@@ -178,7 +178,7 @@ def group_mugshot(group_id):
     group = Group.query.get(group_id)
 
     if not group:
-        raise NotFound()
+        raise NotFound
 
     if group.photo:
         data = group.photo
@@ -202,7 +202,7 @@ def groups_json():
     q = request.args.get("q").replace("%", " ").lower()
 
     if not q or len(q) < 2:
-        raise InternalServerError()
+        raise InternalServerError
 
     query = Group.query
     # query = query.filter(func.lower(Group.name).like(q + "%"))

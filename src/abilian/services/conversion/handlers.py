@@ -443,10 +443,10 @@ class LibreOfficePdfHandler(Handler):
                     logger.warning(f"e.cmd:{e.cmd}")
                     logger.warning(f"stdout:{e.stdout}")
                     logger.warning(f"stderr:{e.stderr}")
-                    raise ConversionError() from e
+                    raise ConversionError from e
                 except Exception as e:
                     logger.error("soffice error: %s", e, exc_info=True)
-                    raise ConversionError() from e
+                    raise ConversionError from e
 
             run_thread = threading.Thread(target=run_soffice)
             run_thread.start()

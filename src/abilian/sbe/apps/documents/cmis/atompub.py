@@ -135,13 +135,13 @@ def get_object(id):
 # @atompub.before_request
 def authenticate():
     if not request.authorization:
-        raise Unauthorized()
+        raise Unauthorized
 
     username = request.authorization.username
     password = request.authorization.password
 
     if (username, password) != ("admin", "admin"):
-        raise Unauthorized()
+        raise Unauthorized
 
 
 # @atompub.errorhandler(401)

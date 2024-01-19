@@ -22,7 +22,7 @@ def require_admin(func: Callable) -> Callable:
     def decorated_view(*args: Any, **kwargs: Any) -> str | Response:
         is_admin = security_service.has_role(current_user, "admin")
         if not is_admin:
-            raise Forbidden()
+            raise Forbidden
         return func(*args, **kwargs)
 
     return decorated_view
@@ -36,7 +36,7 @@ def require_manage(func: Callable) -> Callable:
             return func(*args, **kwargs)
         is_admin = security_service.has_role(current_user, "admin")
         if not is_admin:
-            raise Forbidden()
+            raise Forbidden
         return func(*args, **kwargs)
 
     return decorated_view
@@ -55,7 +55,7 @@ def check_access(
     community: CommunityPresenter | None = None, user: User | None = None
 ) -> None:
     if not has_access(community, user):
-        raise Forbidden()
+        raise Forbidden
 
 
 def has_access(

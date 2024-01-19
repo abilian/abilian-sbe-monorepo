@@ -986,7 +986,7 @@ def check_valid_name():
         parent = obj.parent
         help_text = _('Cannot rename: "{name}" is already present in parent ' "folder")
     else:
-        raise InternalServerError()
+        raise InternalServerError
 
     existing = {e.title for e in parent.children}
 

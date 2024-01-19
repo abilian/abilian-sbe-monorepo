@@ -391,7 +391,7 @@ def attachment_download() -> Response:
     try:
         page = get_page_by_title(title)
     except NoResultFound as e:
-        raise NotFound() from e
+        raise NotFound from e
 
     attachment = WikiPageAttachment.query.get(attachment_id)
     assert attachment is not None
@@ -413,7 +413,7 @@ def attachment_upload() -> Response:
     try:
         page = get_page_by_title(title)
     except NoResultFound as e:
-        raise NotFound() from e
+        raise NotFound from e
 
     files = request.files.getlist("attachments")
     saved_count = 0
@@ -458,7 +458,7 @@ def attachment_delete():
     try:
         page = get_page_by_title(title)
     except NoResultFound as e:
-        raise NotFound() from e
+        raise NotFound from e
 
     attachment = WikiPageAttachment.query.get(attachment_id)
     assert attachment is not None

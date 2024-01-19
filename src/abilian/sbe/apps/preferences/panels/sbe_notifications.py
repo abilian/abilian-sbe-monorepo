@@ -31,7 +31,7 @@ class SbeNotificationsPanel(PreferencePanel):
     def get(self) -> str:
         # Manual security check, should be done by the framework instead.
         if not self.is_accessible():
-            raise Forbidden()
+            raise Forbidden
 
         preferences = app.services["preferences"]
         data = {}
@@ -48,7 +48,7 @@ class SbeNotificationsPanel(PreferencePanel):
     def post(self):
         # Manual security check, should be done by the framework instead.
         if not self.is_accessible():
-            raise Forbidden()
+            raise Forbidden
 
         if request.form["_action"] == "cancel":
             return redirect(url_for(".sbe_notifications"))

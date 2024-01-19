@@ -61,7 +61,7 @@ def only_admin():
     security = get_service("security")
 
     if not security.has_role(current_user, "admin"):
-        raise Forbidden()
+        raise Forbidden
 
 
 @webdav.after_request
@@ -85,7 +85,7 @@ def split_path(path):
 def get_object(path):
     obj = repository.get_object_by_path(path)
     if obj is None:
-        raise NotFound()
+        raise NotFound
     return obj
 
 

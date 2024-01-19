@@ -75,6 +75,6 @@ def pull_community(endpoint: str, values: dict[str, Any]) -> None:
             breadcrumb_item = BreadcrumbItem(label=community.name, url=wall_url)
             g.breadcrumb.append(breadcrumb_item)
         else:
-            raise NotFound()
+            raise NotFound
     except KeyError:
         pass

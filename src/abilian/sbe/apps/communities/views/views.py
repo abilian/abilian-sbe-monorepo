@@ -178,7 +178,7 @@ def list_json2():
 
     q = args.get("q").replace("%", " ")
     if not q or len(q) < 2:
-        raise BadRequest()
+        raise BadRequest
 
     query = (
         db.session.query(Community.id, Community.name)
@@ -308,7 +308,7 @@ class CommunityImageView(image_views.BlobView):
     def prepare_args(self, args, kwargs):
         community = g.community
         if not community:
-            raise NotFound()
+            raise NotFound
 
         kwargs[self.id_arg] = community.image.id
         # image = open(join(dirname(__file__), "data", "community.png"), 'rb')
@@ -406,7 +406,7 @@ def members_post() -> Response:
         membership_id = int(request.form["membership"])
         membership = Membership.query.get(membership_id)
         if membership.user_id != user_id:
-            raise InternalServerError()
+            raise InternalServerError
 
         community.remove_membership(user)
 
@@ -519,7 +519,7 @@ def doc(doc_id):
     doc = Document.query.get(doc_id)
 
     if doc is None:
-        raise NotFound()
+        raise NotFound
 
     folder = doc.parent
     while True:

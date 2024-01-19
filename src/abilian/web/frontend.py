@@ -795,7 +795,7 @@ class Module(metaclass=ModuleMeta):
 
         q = args.get("q", "").replace("%", " ")
         if not q or len(q) < 2:
-            raise BadRequest()
+            raise BadRequest
 
         results = self.list_json2_query_all(q)
         return {"results": results}

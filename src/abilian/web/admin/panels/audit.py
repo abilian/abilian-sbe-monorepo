@@ -45,7 +45,7 @@ class JSONUserSearch(JSONView):
         q = q.replace("%", " ").strip().lower()
 
         if not q or len(q) < 2:
-            raise InternalServerError()
+            raise InternalServerError
 
         query = User.query
         lower = sa.sql.func.lower

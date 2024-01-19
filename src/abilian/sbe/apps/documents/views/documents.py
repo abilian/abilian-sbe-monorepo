@@ -291,7 +291,7 @@ def refresh_preview(doc_id):
     """Force to compute a new preview."""
     doc = get_document(doc_id)
     if not doc:
-        raise NotFound()
+        raise NotFound
 
     ct = doc.find_content_type(doc.content_type)
     if ct != doc.content_type:
