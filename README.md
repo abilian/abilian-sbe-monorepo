@@ -1,15 +1,14 @@
 # About Abilian SBE
 
-## Features
+## Introduction to Abilian SBE
 
-Abilian SBE (Social Business Engine) is a platform for social business applications, and more specifically collaborative / enterprise 2.0 business applications, such as enterprise social networks (ESN).
+Abilian SBE (Social Business Engine) is a versatile platform designed for social business applications, particularly in the realm of collaborative or enterprise 2.0 business applications. It is ideal for creating enterprise social networks (ESN) and similar applications.
 
-Abilian SBE revolves around the concept of *communities*, which are collaborative spaces with services such as lightweight document management, discussions, wikis, user timelines, etc.
+### Key Features
 
-It is based on the `Abilian Core <http://abilian-core.readthedocs.org/en/latest/>`_ project which provide the basic services, on top of Flask and SQLAlchemy.
-
-Abilian SBE is used by several major customers in production, since mid 2013.
-
+- **Community-Centric:** Focuses on 'communities' as collaborative spaces, offering services like document management, discussions, wikis, and user timelines.
+- **Robust Foundation:** Built upon the `Abilian Core` project, which integrates Flask and SQLAlchemy, providing essential services.
+- **Proven Track Record:** Reliably used by several major customers in production environments since mid-2013.
 
 ## Installation
 
