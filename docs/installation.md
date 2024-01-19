@@ -4,6 +4,7 @@ This guide provides a detailed walkthrough for installing software on a Ubuntu L
 
 The following instructions are tailored for a bare-metal server setup, specifically for a server named "sbe.example.com."
 
+(For cloud installations, the 'cloud' folder contains configuration examples for Docker, Nua, SlaoOS.)
 
 ## Create a dedicated user
 
