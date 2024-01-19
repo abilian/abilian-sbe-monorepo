@@ -63,7 +63,7 @@ npm install # or npm i
 
 Set up the following environment variables (you may put these in a `.env` or `.envs` file and use an environment variable manager like [direnv](https://direnv.net/).
 
-An example of configured `.env` is available: see `dot_env.example` file.
+An example of configured `.env` is available: see `example_config/dot_env` file.
 
 ```bash
 export FLASK_SECRET_KEY=<your secret key>
