@@ -1,5 +1,3 @@
-ADMIN_MAIL="admin@example.com"
-ADMIN_PASSWORD="some_password"
 NODE_ENV="production"
 FLASK_SECRET_KEY="some_secret_key"
 FLASK_SITE_NAME="SBE server at sbe.example.com"
