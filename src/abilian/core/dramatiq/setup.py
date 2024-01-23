@@ -10,8 +10,8 @@ from loguru import logger
 from .cli import scheduler
 from .singleton import dramatiq
 
-DEFAULT_DRAMATIC_ABORT_REDIS_URL = "redis://localhost:6379/1"
-DEFAULT_DRAMATIC_RATE_LIMIT_REDIS_URL = "redis://localhost:6379/0"
+DEFAULT_DRAMATIQ_ABORT_REDIS_URL = "redis://localhost:6379/0"
+DEFAULT_DRAMATIQ_RATE_LIMIT_REDIS_URL = "redis://localhost:6379/0"
 RATE_LIMITER = []
 
 
@@ -36,11 +36,11 @@ def _setup_rate_limiter(app):
 
 
 def _rate_limiter_redis_client(app) -> redis.Redis:
-    redis_url = app.config.get("DRAMATIC_RATE_LIMIT_REDIS_URL")
+    redis_url = app.config.get("DRAMATIQ_RATE_LIMIT_REDIS_URL")
     if not redis_url:
-        redis_url = app.config.get("DRAMATIC_REDIS_URL")
+        redis_url = app.config.get("DRAMATIQ_BROKER_URL")
     if not redis_url:
-        redis_url = DEFAULT_DRAMATIC_RATE_LIMIT_REDIS_URL
+        redis_url = DEFAULT_DRAMATIQ_RATE_LIMIT_REDIS_URL
     return redis.Redis.from_url(redis_url)
 
 
@@ -50,11 +50,11 @@ def _register_scheduler(app) -> None:
 
 
 def _abortable_redis_client(app) -> redis.Redis:
-    redis_url = app.config.get("DRAMATIC_ABORT_REDIS_URL")
+    redis_url = app.config.get("DRAMATIQ_ABORT_REDIS_URL")
     if not redis_url:
-        redis_url = app.config.get("DRAMATIC_REDIS_URL")
+        redis_url = app.config.get("DRAMATIQ_BROKER_URL")
     if not redis_url:
-        redis_url = DEFAULT_DRAMATIC_ABORT_REDIS_URL
+        redis_url = DEFAULT_DRAMATIQ_ABORT_REDIS_URL
     return redis.Redis.from_url(redis_url)
 
 

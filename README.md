@@ -73,9 +73,9 @@ export FLASK_SERVER_NAME=127.0.0.1:5000
 export FLASK_DEBUG=true
 export FLASK_MAIL_DEBUG=1
 
-# Same redis URL for all three variables
+# Same redis URL for all variables
 export FLASK_REDIS_URI=redis://localhost:6379/0 # or whatever
-export FLASK_BROKER_URL=redis://localhost:6379/0
+export FLASK_DRAMATIQ_BROKER_URL=redis://localhost:6379/0
 ```
 
 
@@ -113,9 +113,9 @@ export FLASK_MAIL_SERVER=<your email server>
 #export FLASK_MAIL_USERNAME : default None
 #export FLASK_MAIL_PASSWORD : default None
 
-# Same redis URL for all three variables
+# Same redis URL for all variables
 export FLASK_REDIS_URI=redis://localhost:6379/0 # or whatever
-export FLASK_BROKER_URL=redis://localhost:6379/0
+export FLASK_DRAMATIQ_BROKER_URL=redis://localhost:6379/0
 ```
 
 You can start the server with:
