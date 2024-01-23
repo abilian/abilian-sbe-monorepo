@@ -7,8 +7,6 @@ from contextlib import contextmanager
 from pathlib import Path
 from tempfile import mkstemp
 
-from loguru import logger
-
 # Hack for Mac OS + homebrew
 os.environ["PATH"] += ":/usr/local/bin"
 # Used on SlapOS

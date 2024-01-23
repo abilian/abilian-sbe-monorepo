@@ -11,7 +11,6 @@ from __future__ import annotations
 from collections.abc import Callable
 from datetime import datetime
 
-from loguru import logger
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.types import DateTime, Integer, String, Text

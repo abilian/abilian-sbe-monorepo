@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import json
 import time
-from datetime import timedelta
 from io import BufferedReader
 from pathlib import PosixPath
 from typing import Any

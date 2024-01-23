@@ -9,7 +9,6 @@ import whoosh.highlight
 import whoosh.searching
 import whoosh.sorting
 from flask import Blueprint, current_app, g, render_template, request, url_for
-from loguru import logger
 
 from abilian.i18n import _
 from abilian.services import get_service

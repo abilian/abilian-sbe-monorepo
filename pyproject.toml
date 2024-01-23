@@ -202,6 +202,7 @@ deptry = "^0.12.0"
 
 # Documentation
 mkdocs-material = "^9.5.4"
+shed = "^2023.6.1"
 
 [build-system]
 requires = ["poetry-core>=1.2.0"]
