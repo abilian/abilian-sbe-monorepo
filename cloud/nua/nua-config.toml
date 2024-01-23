@@ -13,7 +13,7 @@ release = 17
 [build]
 license = "LGPL-3.0"
 git-url = "https://github.com/abilian/abilian-sbe-monorepo.git"
-git-branch = "task"
+git-branch = "main"
 build = [
     "pip install -U poetry",
     "sed -i.bak 's/psycopg2.*=.*$/psycopg2-binary = \"*\"/g' pyproject.toml",
