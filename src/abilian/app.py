@@ -338,8 +338,23 @@ class Application(
 
         return path
 
+    def _init_babel(self):
+        # Babel (for i18n)
+        babel = abilian.i18n.babel
+        # Temporary (?) workaround
+        babel.locale_selector_func = None
+        babel.timezone_selector_func = None
+
+        babel.init_app(self)
+
+        babel.add_translations("wtforms", translations_dir="locale", domain="wtforms")
+        babel.add_translations("abilian")
+
     def init_extensions(self):
         """Initialize flask extensions, helpers and services."""
+
+        self._init_babel()
+
         extensions.redis.init_app(self)
         extensions.mail.init_app(self)
         extensions.deferred_js.init_app(self)
@@ -355,18 +370,6 @@ class Application(
         # webassets
         self.setup_asset_extension()
         self.register_base_assets()
-
-        # Babel (for i18n)
-        babel = abilian.i18n.babel
-        # Temporary (?) workaround
-        babel.locale_selector_func = None
-        babel.timezone_selector_func = None
-
-        babel.init_app(self)
-        babel.add_translations("wtforms", translations_dir="locale", domain="wtforms")
-        babel.add_translations("abilian")
-        babel.localeselector(abilian.i18n.localeselector)
-        babel.timezoneselector(abilian.i18n.timezoneselector)
 
         # Flask-Migrate
         Migrate(self, db)

@@ -16,33 +16,57 @@ python = "^3.9,<3.13"
 
 # setuptools provides pkg_resources:
 setuptools = "*"
+# setuptools==69.0.3
+
 
 # Flask (and dependencies), pinned because it's hard to upgrade
 Flask = "~2.1"
-jinja2 = "~3.0"
-# Pinned because wtforms is pinned too.
+# Flask==2.1.3
+jinja2 = "~3.1.3" # last 11 janv. 2024
+# • Updating jinja2 (3.0.3 -> 3.1.3)
+# Pinned because wtforms is pinned too
+# .
 werkzeug = "~2.0"
-# requirement of jinja2; > 0.21 has an important fix for string format. See
-# https://github.com/mitsuhiko/markupsafe/issues/28
-MarkupSafe = ">=2.1.1"
-
+# Werkzeug==2.0.3
+MarkupSafe = "~2.1.4" # last  19 janv. 2024
+# MarkupSafe==2.1.4
 # Flask plugins (somme are pinned)
-flask-babel = "~1.0.0"
-flask-assets = ">=0.12"
-flask-mail = ">=0.9.1"
-flask-migrate = ">=3.1.0"
-flask-login = ">=0.6.2"
-flask-talisman = ">=1.0.0"
+
+# keep flask-babel to 1.0.0
+Flask-Babel==1.0.0
+# flask-babel = "~4.0.0"  # last 2 oct. 2023
+
+# flask-assets = ">=0.12" #0.12: 2016-08-18
+flask-assets = ">=0.12" #0.12: 2016-08-18  see webassets
+# Flask-Assets==0.12
+
+flask-mail = ">=0.9.1"  # last 29 sept. 2014
+# Flask-Mail==0.9.1
+# flask-migrate = ">=3.1.0"
+flask-migrate = "~4.0.5" # last 12 sept. 2023
+# Flask-Migrate==4.0.5
+flask-login = "~0.6.3"  # last 30 oct. 2023
+# Flask-Login==0.6.3
+
+# flask-talisman = ">=1.0.0"
+flask-talisman = "~1.1.0"   # last  3 août 2023
+# flask-talisman==1.1.0
+
+# Flask-DebugToolbar==0.14.1
+# Flask-LinkTester==0.3.0
 
 # TODO: replace by flask-vite which is maintained
-flask-tailwind = "^0.2.2"
+flask-tailwind = "^0.2.2"  # last 15 nov. 2023
+# flask-tailwind==0.2.2
 
 # Transitive dependencies, but called explicitly in our code
 Babel = "*"
+# Babel==2.14.0
+
 blinker = "*"
 click = "*"
 itsdangerous = "*"
-numpy = "^1.26.0"
+numpy = "^1.26.3" # las  2 janv. 2024
 pytest = "*"
 pytz = "*"
 requests = "*"
@@ -51,21 +75,32 @@ requests = "*"
 # We're not ready for SQLAlchemy 1.4 yet (due to sqlalchemy_utils).
 sqlalchemy = "~1.3.24"
 # flask-sqlachemy 2.2 breaks our apps.
-flask-sqlalchemy = "~2.1"
+flask-sqlalchemy = "2.1"
+# Flask-SQLAlchemy==2.1
 # flask-sqlalchemy = {git = "https://github.com/pallets/flask-sqlalchemy.git", rev = "f4662ad464a73befa47cf74754fdbfe156570e59"}
 psycopg2 = "^2.9.9"
 
 # Currently broken w/ 0.13
 Flask-WTF = ">=0.12,<0.13"
+# https://flask-wtf.readthedocs.io/en/1.2.x/changes/#version-0-13
+
+# Flask-WTF==0.12
 wtforms = "<2.2"
 WTForms-Alchemy = ">=0.17.0"
 wtforms-sqlalchemy = "*"
+# WTForms==2.1
+# WTForms-Alchemy==0.17.0
+# WTForms-Components==0.10.5
+# WTForms-SQLAlchemy==0.3
 
 # Currently broken w/ 2.0
 webassets = "< 2"
+# webassets==0.12.1  (2017-01-08)
+
+
 
 # can parse isoformat / used in a jinja filter
-python-dateutil = "^2.8.2"
+python-dateutil = "^2.8.2" # last 14 juil. 2021
 
 # Indexing
 Whoosh = "^2.7.4"
@@ -77,6 +112,7 @@ loguru = "^0.7.2"
 dramatiq = "^1.15.0"
 redis = ">=4.6.0,<5.0"
 flask-dramatiq = "^0.6.0"
+# flask-dramatiq==0.6.0
 filelock = "~3.13.1"
 
 # Security
@@ -112,7 +148,8 @@ python-magic = "*"
 pillow = "*"
 
 # Reporting
-pandas = ">=1.5.0"
+pandas = ">=2.2.0"  # last version 20 janv. 2024
+# pandas==2.2.0
 
 #
 # Assets management (might not be necessary if distributing compiled assets)
@@ -122,14 +159,16 @@ cssmin = "*"
 closure = "==20161201"
 
 # Email validation (when sending digests)
-validate_email = "*"
+validate_email = "*"  # 1.3 last 23 mars 2015
+# validate-email==1.3
 
 # Language and charset detection
 langid = ">=1.1.6"
 chardet = "*"
 
 # Markdown support for Wiki
-markdown = "^3"
+markdown = "^3"  # 3.5.2 last10 janv. 2024
+# Markdown==3.5.2
 
 # needed by folder: export to xls
 xlwt = "*"
@@ -149,7 +188,9 @@ gunicorn = "*"
 devtools = "*"
 
 # Additional stuff
-python-dotenv = "^1.0.0"
+python-dotenv = "^1.0.1"  # last 1.0.1 23 janv. 2024
+# python-dotenv==1.0.1
+
 #flask-env = "*"
 defusedxml = "^0.7.1"
 dramatiq-abort = "^1.1.0"

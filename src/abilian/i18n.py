@@ -49,7 +49,7 @@ import importlib
 import os
 import re
 import unicodedata
-from collections.abc import Iterator
+from collections.abc import Iterator, Callable
 from datetime import datetime, tzinfo
 from gettext import GNUTranslations
 from pathlib import Path
@@ -183,8 +183,28 @@ class Babel(BabelBase):
 
     _translations_paths: list[tuple[str, str]]
 
-    def init_app(self, app: Flask):
-        super().init_app(app)
+    def init_app(
+        self,
+        app: Flask,
+        locale_selector: Callable | None = None,
+        timezone_selector: Callable | None = None,
+    ):
+        if locale_selector is None:
+            locale_selector = localeselector
+        if timezone_selector is None:
+            timezone_selector = timezoneselector
+        if hasattr(self, "localeselector"):
+            # Old Babel version
+            super().init_app(app)
+            self.localeselector(locale_selector)
+            self.timezoneselector(timezone_selector)
+        else:
+            # recent Babel version
+            super().init_app(
+                app,
+                locale_selector=locale_selector,
+                timezone_selector=timezone_selector,
+            )
         assert app.root_path
         self._translations_paths = [
             (os.path.join(app.root_path, "translations"), "messages")
