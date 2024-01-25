@@ -11,7 +11,6 @@ sys.path = ["src"] + sys.path
 import werkzeug.datastructures
 import werkzeug.urls
 
-werkzeug.url_encode = werkzeug.urls.url_encode
 werkzeug.FileStorage = werkzeug.datastructures.FileStorage
 
 # Normal bootstrap
