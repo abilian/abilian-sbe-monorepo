@@ -19,19 +19,19 @@ encoding_sniffer = Magic(mime_encoding=True)
 
 
 @fixture()
-def converter() -> Iterator[Iterator | Iterator[Converter]]:
-    from abilian.services.conversion import converter as c
+def converter() -> Iterator[Converter]:
+    from abilian.services.conversion import converter as converter_instance
 
     cache_dir = Path(tempfile.mkdtemp(suffix="unittest"))
     tmp_dir = Path(tempfile.mkdtemp(suffix="unittest"))
-    c.init_work_dirs(cache_dir, tmp_dir)
-    yield c
+    converter_instance.init_work_dirs(cache_dir, tmp_dir)
+    yield converter_instance
 
-    c.clear()
+    converter_instance.clear()
 
 
-def read_file(fn: str) -> bytes:
-    return (Path(__file__).parent / "dummy_files" / fn).open("rb").read()
+def read_file(file_name: str) -> bytes:
+    return (Path(__file__).parent / "dummy_files" / file_name).read_bytes()
 
 
 # To text
