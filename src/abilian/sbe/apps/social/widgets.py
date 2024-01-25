@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from flask import Markup, render_template
+from flask import render_template
+from markupsafe import Markup
 
 
 class UserPhotoInputWidget:
