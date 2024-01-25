@@ -14,6 +14,8 @@ import werkzeug.security
 import werkzeug.urls
 from markupsafe import Markup, escape
 
+from abilian.services.conversion.handler_lock import init_conversion_lock_dir
+
 from .backports import safe_str_cmp
 
 # Monkey patching werkzeug, jinja2 and flask to keep working with old version
@@ -210,6 +212,7 @@ class Application(
         self.install_default_handlers()
 
         with self.app_context():
+            init_conversion_lock_dir(self.instance_path)
             self.init_extensions()
             self.register_plugins()
             self.add_access_controller(
