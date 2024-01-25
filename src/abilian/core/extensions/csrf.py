@@ -4,14 +4,14 @@ from __future__ import annotations
 
 from flask import current_app, flash, request
 from flask.signals import request_started
-from flask_wtf.csrf import CsrfProtect
+from flask_wtf.csrf import CSRFProtect, CSRFError
 from markupsafe import Markup
 from werkzeug.exceptions import BadRequest
 
 from abilian.core.util import unwrap
 from abilian.i18n import _l
 
-wtf_csrf = CsrfProtect()
+wtf_csrf = CSRFProtect()
 
 
 class AbilianCsrf:
@@ -34,10 +34,19 @@ class AbilianCsrf:
     def init_app(self, app):
         if "csrf" not in app.extensions:
             raise RuntimeError(
-                'Please install flask_wtf.csrf.CsrfProtect() as "csrf" in '
+                'Please install flask_wtf.csrf.CSRFProtect() as "csrf" in '
                 "extensions before AbilianCsrf()"
             )
-        app.extensions["csrf"].error_handler(self.csrf_error_handler)
+
+        # FIXME
+        # app.extensions["csrf"].error_handler(self.csrf_error_handler)  # deprecated since flask-wtf 0.14
+        # see https://flask-wtf.readthedocs.io/en/1.2.x/changes/#version-0-14
+        #     https://github.com/wtforms/flask-wtf/pull/264
+
+        wtf_csrf.init_app(app)
+
+        app.register_error_handler(CSRFError, self.csrf_error_handler)
+
         app.extensions["csrf-handler"] = self
         request_started.connect(self.request_started, sender=app)
         app.before_request(self.before_request)

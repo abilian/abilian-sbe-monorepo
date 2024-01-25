@@ -6,7 +6,7 @@ import datetime
 from unittest import mock
 
 import pytz
-from wtforms.form import Form
+from wtforms import Form
 
 from abilian.app import Application
 from abilian.core.entities import Entity

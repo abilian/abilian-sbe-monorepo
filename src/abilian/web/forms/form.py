@@ -9,9 +9,9 @@ from typing import Any
 
 from flask import g, has_app_context
 from flask_login import current_user
-from flask_wtf import Form as BaseForm
+from flask_wtf import FlaskForm
 from loguru import logger
-from wtforms.fields import Field, HiddenField
+from wtforms import Field, HiddenField
 from wtforms_alchemy import model_form_factory
 
 from abilian.core.entities import Entity
@@ -86,7 +86,7 @@ class FormContext:
         g.__form_ctx__ = self.__existing
 
 
-class Form(BaseForm):
+class Form(FlaskForm):
     _groups: dict[str, list[Field]] = OrderedDict()
 
     #: :class:`FormPermissions` instance

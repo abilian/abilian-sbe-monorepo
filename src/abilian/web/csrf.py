@@ -3,8 +3,8 @@ from __future__ import annotations
 from collections.abc import Callable
 from functools import wraps
 
-from flask import Blueprint, current_app, request
-from flask_wtf import Form as FlaskForm
+from flask import Blueprint, current_app, request, config
+from flask_wtf import FlaskForm
 from werkzeug.exceptions import Forbidden
 from wtforms.ext.csrf.fields import CSRFTokenField
 
@@ -22,7 +22,12 @@ def field() -> CSRFTokenField:
 
     Renders an empty string if `config.WTF_CSRF_ENABLED` is not set.
     """
-    return FlaskForm().csrf_token
+    # from icecream import ic
+    #
+    if current_app.config.get("WTF_CSRF_ENABLED"):
+        return FlaskForm().csrf_token
+    else:
+        return CSRFTokenField()
 
 
 def time_limit():

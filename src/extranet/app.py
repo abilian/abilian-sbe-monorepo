@@ -75,6 +75,8 @@ def create_app(config=None, **kw):
     app.register_blueprint(MAIN)
     app.before_request(login_required)
 
+    app.register_error_handler(400, csrf_error_response)
+
     register_cli(app)
 
     init_dramatiq_engine(app)
@@ -114,7 +116,6 @@ def register_cli(app):
             app.cli.add_command(obj)
 
 
-@csrf.error_handler
 def csrf_error_response(reason):
     # let sentry be aware of csrf failures. They might show app is broken
     # somewhere

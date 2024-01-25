@@ -14,27 +14,36 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.9,<3.13"
 
+# FIXME tests
+icecream = "*"
+
 # setuptools provides pkg_resources:
 setuptools = "*"
 # setuptools==69.0.3
 
 
 # Flask (and dependencies), pinned because it's hard to upgrade
-Flask = "~2.1"
+Flask = "2.1.3"
 # Flask==2.1.3
-jinja2 = "~3.0.3" # 3.1.3 last 11 janv. 2024
+jinja2 = "3.0.3" # 3.1.3 last 11 janv. 2024
 # • Updating jinja2 (3.0.3 -> 3.1.3)
 # Pinned because wtforms is pinned too
 # .
-werkzeug = "~2.0"
+# But: "Because flask-babel (4.0.0) depends on Jinja2 (>=3.1)
+#       and no versions of flask-babel match >4.0.0,<4.1.0, flask-babel (>=4.0.0,<4.1.0) requires Jinja2 (>=3.1).
+#       So, because abilian-sbe depends on both jinja2 (~3.0.3) and flask-babel (~4.0.0), version solving failed."
+#
+werkzeug = "2.0.3"
 # Werkzeug==2.0.3
-MarkupSafe = "~2.1.4" # last  19 janv. 2024
+MarkupSafe = "2.1.4" # last  19 janv. 2024
 # MarkupSafe==2.1.4
 # Flask plugins (somme are pinned)
-
-# keep flask-babel to 1.0.0
-Flask-Babel==1.0.0
+#flask-babel = "~1.0.0"
 # flask-babel = "~4.0.0"  # last 2 oct. 2023
+# • Updating flask-babel (1.0.0 -> 4.0.0)
+# Flask-Babel==1.0.0
+
+flask-babel = "~2.0.0"
 
 # flask-assets = ">=0.12" #0.12: 2016-08-18
 flask-assets = ">=0.12" #0.12: 2016-08-18  see webassets
@@ -73,21 +82,23 @@ requests = "*"
 
 # Databases / persistence
 # We're not ready for SQLAlchemy 1.4 yet (due to sqlalchemy_utils).
-sqlalchemy = "~1.3.24"
+sqlalchemy = "1.3.24"
 # flask-sqlachemy 2.2 breaks our apps.
-flask-sqlalchemy = "2.1"
-# Flask-SQLAlchemy==2.1
+# flask-sqlalchemy = "2.1"
+flask-sqlalchemy = "2.2"
 # flask-sqlalchemy = {git = "https://github.com/pallets/flask-sqlalchemy.git", rev = "f4662ad464a73befa47cf74754fdbfe156570e59"}
 psycopg2 = "^2.9.9"
 
 # Currently broken w/ 0.13
-Flask-WTF = ">=0.12,<0.13"
+Flask-WTF = "1.1.2"
 # https://flask-wtf.readthedocs.io/en/1.2.x/changes/#version-0-13
 
 # Flask-WTF==0.12
-wtforms = "<2.2"
-WTForms-Alchemy = ">=0.17.0"
-wtforms-sqlalchemy = "*"
+# wtforms = "<2.2"
+#wtforms = "~2.1"
+wtforms = "2.1"
+WTForms-Alchemy = "0.17.0"
+wtforms-sqlalchemy = "0.3"
 # WTForms==2.1
 # WTForms-Alchemy==0.17.0
 # WTForms-Components==0.10.5
@@ -96,8 +107,6 @@ wtforms-sqlalchemy = "*"
 # Currently broken w/ 2.0
 webassets = "< 2"
 # webassets==0.12.1  (2017-01-08)
-
-
 
 # can parse isoformat / used in a jinja filter
 python-dateutil = "^2.8.2" # last 14 juil. 2021

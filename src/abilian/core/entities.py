@@ -485,7 +485,16 @@ def register_metadata(cls: type[Entity]):
 
     # TODO: use SQLAlchemy 0.8 introspection
     if hasattr(cls, "__table__"):
-        columns = cls.__table__.columns
+        from icecream import ic
+
+        try:
+            columns = cls.__table__.columns
+        except Exception:
+            ic.configureOutput(includeContext=True)
+            ic(cls)
+            ic(cls.__table__)
+            ic(dir(cls))
+            raise
     else:
         columns = [v for k, v in vars(cls).items() if isinstance(v, Column)]
 
