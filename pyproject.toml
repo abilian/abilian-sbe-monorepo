@@ -158,7 +158,7 @@ apscheduler = "^3.10.4"
 
 [tool.poetry.group.dev.dependencies]
 # Generic dev deps
-abilian-devtools = "*"
+abilian-devtools = "^0.5.17"
 mypy = "^1.5.1"
 
 # Testing
