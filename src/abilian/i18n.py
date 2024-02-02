@@ -210,8 +210,7 @@ class Babel(BabelBase):
 
             if not os.access(str(path), os.R_OK):
                 self.app.logger.warning(
-                    "Babel translations: read access not allowed {}, skipping."
-                    "".format(repr(str(path).encode("utf-8")))
+                    f"Babel translations: read access not allowed {path}, skipping."
                 )
                 continue
 

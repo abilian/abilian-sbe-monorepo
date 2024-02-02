@@ -31,9 +31,7 @@ from .. import TOKEN_SERIALIZER_NAME
 @crontab("SCHEDULE_SEND_DAILY_SOCIAL_DIGEST")
 @dramatiq.actor()
 def send_daily_social_digest_task():
-    # a request_context is required when rendering templates
-
-    logger.info("Running job: send_daily_social_digest_task")
+    logger.debug("Running job: send_daily_social_digest_task")
     with current_app.test_request_context("/tasks/send_daily_social_updates"):
         config = current_app.config
         if not config.get("PRODUCTION") or config.get("DEMO"):

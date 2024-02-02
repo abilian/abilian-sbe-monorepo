@@ -98,10 +98,9 @@ class AntiVirusService(Service):
 
             if size > CLAMD_STREAMMAXLENGTH:
                 logger.error(
-                    "Content size exceed antivirus size limit, size=%d, limit=%d (%s)",
-                    size,
-                    CLAMD_STREAMMAXLENGTH,
-                    CLAMD_CONF["StreamMaxLength"].encode("utf-8"),
+                    "Content size exceed antivirus size limit, "
+                    f"size={size}, limit={CLAMD_STREAMMAXLENGTH} "
+                    f"({CLAMD_CONF['StreamMaxLength'].encode('utf8')})",
                     extra={"stack": True},
                 )
                 return None
@@ -112,7 +111,7 @@ class AntiVirusService(Service):
         try:
             res = scan(content)
         except clamd.ClamdError as e:
-            self.logger.warning("Error during content scan: %s", repr(e))
+            self.logger.warning(f"Error during content scan: {e!r}")
             return None
 
         if "stream" not in res:

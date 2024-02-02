@@ -42,7 +42,7 @@ class UniqueName(metaclass=ValueSingletonMeta):
     A subclass of :class:`UniqueName` defines a namespace.
     """
 
-    __slots__ = ("_hash", "__name")
+    __slots__ = ("__name", "_hash")
     attr = "name"
 
     def __init__(self, name: str):

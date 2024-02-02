@@ -314,7 +314,7 @@ class Application(
 
         if not path.exists():
             if create:
-                logger.info("Create instance folder: %s", path)
+                logger.info(f"Create instance folder: {path}")
                 path.mkdir(0o775, parents=True)
             else:
                 err = "Instance folder does not exists"

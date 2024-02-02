@@ -63,15 +63,15 @@ def setup_sbe_app():
     bin_dir = Path(sys.prefix) / "bin"
 
     if not bin_dir.exists() or not bin_dir.is_dir():
-        logger.error("%s doesn't exists or is not a directory. Aborting", bin_dir)
+        logger.error(f"{bin_dir} doesn't exists or is not a directory. Aborting")
         return 1
 
     script_file = bin_dir / "abilian_sbe"
     if script_file.exists():
-        logger.info("%s already exists. Skipping creation.", script_file)
+        logger.info(f"{script_file} already exists. Skipping creation.")
     else:
         with script_file.open("w") as out:
-            logger.info('Create script: "%s".', script_file)
+            logger.info(f'Create script: "{script_file}".')
             content = _SBE_DEMO_SCRIPT.format(BIN_DIR=bin_dir)
             out.write(content)
         # 0755: -rwxr-xr-x

@@ -44,9 +44,9 @@ def run_scheduler(config: dict):
     for job in _actor_registry:
         crontab_content = crontab_from_config(config, job)
         if not crontab_content:
-            logger.info(f"NOT registering cron job: {job.actor}")
+            logger.warning(f"Missing crontab, NOT registering cron job: {job.actor}")
             continue
-        logger.info(f"Registering cron job: {job.actor} {crontab_content}")
+        logger.debug(f"Registering cron job: {job.actor} {crontab_content}")
 
         scheduler.add_job(
             job.actor.send,

@@ -121,7 +121,7 @@ class ErrorManagerMixin(Flask):
         for http_error_code 404.
         """
         logger.debug(
-            "Set Default HTTP error handler for status code %d", http_error_code
+            f"Set Default HTTP error handler for status code {http_error_code}"
         )
         handler = partial(self.handle_http_error, http_error_code)
         self.errorhandler(http_error_code)(handler)

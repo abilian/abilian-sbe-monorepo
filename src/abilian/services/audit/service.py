@@ -313,7 +313,7 @@ class AuditService(Service):
 
             related_name = f"{meta.backref_attr} {' '.join(enduser_ids)}"
             related_changes = changes
-            logger.debug("related changes: %s", repr(related_changes))
+            logger.debug(f"related changes: {related_changes!r}")
             changes = Changes()
             changes.set_related_changes(related_name, related_changes)
 

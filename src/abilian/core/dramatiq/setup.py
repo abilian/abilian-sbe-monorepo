@@ -74,6 +74,7 @@ def _add_dramatiq_abortable(app) -> None:
     abort(message_id, mode=AbortMode.CANCEL)
     abort(message.message_id, mode=AbortMode.ABORT, abort_timeout=2000)
     """
+    logger.debug("Add dramatiq abortable")
     redis_client = _abortable_redis_client(app)
     backend = dramatiq_abort.backends.RedisBackend(client=redis_client)
     abortable = Abortable(backend=backend)
@@ -94,5 +95,4 @@ def _print_dramatiq_config() -> None:
     messages.append("broker.get_declared_actors():")
     messages.append(str(broker.get_declared_actors()))
     for msg in messages:
-        # print(msg)
         logger.debug(msg)

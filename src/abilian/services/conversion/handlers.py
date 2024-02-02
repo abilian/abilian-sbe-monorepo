@@ -337,7 +337,7 @@ class UnoconvPdfHandler(Handler):
                     )
                     self._process.communicate()
                 except Exception as e:
-                    logger.error("run_uno error: %s", e, exc_info=True)
+                    logger.error(f"run_uno error: {e}", exc_info=True)
                     raise ConversionError("unoconv failed") from e
 
             run_thread = threading.Thread(target=run_uno)
@@ -352,7 +352,7 @@ class UnoconvPdfHandler(Handler):
                         try:
                             self._process.kill()
                         except OSError:
-                            logger.warning("Failed to kill process %s", self._process)
+                            logger.warning(f"Failed to kill process {self._process}")
 
                     raise ConversionError(f"Conversion timeout ({timeout})")
 
@@ -436,14 +436,14 @@ class LibreOfficePdfHandler(Handler):
                     )
                     self._process.communicate()
                 except subprocess.CalledProcessError as e:
-                    logger.warning("CalledProcessError for soffice")
-                    logger.warning(f"returncode:{e.returncode}")
-                    logger.warning(f"e.cmd:{e.cmd}")
-                    logger.warning(f"stdout:{e.stdout}")
-                    logger.warning(f"stderr:{e.stderr}")
+                    logger.debug("CalledProcessError for soffice")
+                    logger.debug(f"returncode:{e.returncode}")
+                    logger.debug(f"e.cmd:{e.cmd}")
+                    logger.debug(f"stdout:{e.stdout}")
+                    logger.debug(f"stderr:{e.stderr}")
                     raise ConversionError from e
                 except Exception as e:
-                    logger.error("soffice error: %s", e, exc_info=True)
+                    logger.error(f"soffice error: {e}", exc_info=True)
                     raise ConversionError from e
 
             run_thread = threading.Thread(target=run_soffice)
@@ -457,7 +457,7 @@ class LibreOfficePdfHandler(Handler):
                         try:
                             self._process.kill()
                         except OSError:
-                            logger.warning("Failed to kill process %s", self._process)
+                            logger.warning(f"Failed to kill process {self._process}")
 
                     raise ConversionError(f"Conversion timeout ({timeout})")
 

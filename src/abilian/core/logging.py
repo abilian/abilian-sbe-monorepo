@@ -30,7 +30,7 @@ def init_loguru(app: Flask):
 
     app.logger.handlers = []
     app.logger.addHandler(InterceptHandler())
-    logger.info("Loguru initialized")
+    logger.debug("Loguru initialized")
 
 
 def set_loguru_config(level: str = "DEBUG"):

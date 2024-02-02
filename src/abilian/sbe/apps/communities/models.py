@@ -348,11 +348,7 @@ def _membership_added(sender: Community, membership: Membership, is_new: bool) -
 
     if sender.group and membership.user not in sender.group.members:
         logger.debug(
-            "_membership_added(%r, %r, %r) user: %r",
-            sender,
-            membership,
-            is_new,
-            membership.user,
+            f"_membership_added({sender!r}, {membership!r}, {is_new!r}) user: {membership.user!r}"
         )
         setattr(membership.user, _PROCESSED_ATTR, OP_APPEND)
         sender.group.members.add(membership.user)
@@ -365,7 +361,7 @@ def membership_removed(sender: Community, membership: Membership) -> None:
 
     if sender.group and membership.user in sender.group.members:
         logger.debug(
-            "_membership_removed(%r, %r) user: %r", sender, membership, membership.user
+            f"_membership_removed({sender!r}, {membership!r}) user: {membership.user!r}"
         )
         setattr(membership.user, _PROCESSED_ATTR, OP_REMOVE)
         sender.group.members.discard(membership.user)
@@ -378,7 +374,7 @@ def _on_member_change(community, user, initiator):
     if not group:
         return
 
-    logger.debug("_on_member_change(%r, %r, op=%r)", community, user, initiator.op)
+    logger.debug(f"_on_member_change({community!r}, {user!r}, op={initiator.op!r})")
 
     if getattr(user, _PROCESSED_ATTR, False) is initiator.op:
         return
@@ -401,24 +397,18 @@ def _on_linked_group_change(
     if value == oldvalue:
         return
 
-    logger.debug("_on_linked_group_change(%r, %r, %r)", community, value, oldvalue)
+    logger.debug(f"_on_linked_group_change({community!r}, {value!r}, {oldvalue!r})")
 
     if oldvalue is not None and oldvalue.members:
         logger.debug(
-            "_on_linked_group_change(%r, %r, %r): oldvalue clear()",
-            community,
-            value,
-            oldvalue,
+            f"_on_linked_group_change({community!r}, {value!r}, {oldvalue!r}): oldvalue clear()"
         )
         oldvalue.members.clear()
 
     members = set(community.members)
     if value is not None and value.members != members:
         logger.debug(
-            "_on_linked_group_change(%r, %r, %r): set value.members",
-            community,
-            value,
-            oldvalue,
+            f"_on_linked_group_change({community!r}, {value!r}, {oldvalue!r}): set value.members"
         )
         value.members = members
 
@@ -458,11 +448,8 @@ def _on_group_member_change(group: Group, user: User, initiator: Event) -> None:
     is_present = user in community.members
     setattr(user, _PROCESSED_ATTR, op)
     logger.debug(
-        "_on_group_member_change(%r, %r, op=%r) community: %r",
-        group,
-        user,
-        initiator.op,
-        community,
+        f"_on_group_member_change({group!r}, {user!r}, op={initiator.op!r}) "
+        f"community: {community!r}"
     )
 
     if (op is OP_APPEND and is_present) or (op is OP_REMOVE and not is_present):

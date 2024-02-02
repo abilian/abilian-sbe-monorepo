@@ -50,7 +50,7 @@ WIDGET_ALLOWED = {}
 for attr in ALLOWED_TAGS:
     allowed = ALLOWED_ATTRIBUTES.get(attr, True)
     if not isinstance(allowed, bool):
-        allowed = {tag: True for tag in allowed}
+        allowed = dict.fromkeys(allowed, True)
     WIDGET_ALLOWED[attr] = allowed
 
 # instantiate this one before PostForm fields, so that it is listed first

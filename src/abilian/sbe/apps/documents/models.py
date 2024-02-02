@@ -753,26 +753,20 @@ def async_conversion(document: Document) -> None:
 
 
 def _trigger_conversion_tasks(session: Session) -> None:
-    # logger.debug("in _trigger_conversion_tasks()")
     if (
         # this commit is not from the application session
         session is not db.session()
         # inside a sub-transaction: not yet written in DB
         or session.transaction.nested
     ):
-        # logger.debug("_trigger_conversion_tasks() early return")
         return
 
     document_queue = _get_documents_queue()
-    # logger.debug(f"_trigger_conversion_tasks() {document_queue=}")
     while document_queue:
         doc, task_id = document_queue.pop()
-        # logger.debug(f"_trigger_conversion_tasks() {doc=} {task_id=}")
         if doc.id and isinstance(doc.id, int):
             logger.debug(f"_trigger_conversion_tasks() {doc.id=}")
             tasks.process_document.send(doc.id)
-            # logger.debug(f"_trigger_conversion_tasks() {doc.id=} sent")
-    # logger.debug("_trigger_conversion_tasks() exit")
 
 
 def setup_listener() -> None:

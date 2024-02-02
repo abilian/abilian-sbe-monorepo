@@ -170,13 +170,13 @@ class FileUploadsExtension:
 
         for user_dir in self.UPLOAD_DIR.iterdir():
             if not user_dir.is_dir():
-                logger.error("Found non-directory in upload dir: %r", bytes(user_dir))
+                logger.error(f"Found non-directory in upload dir: {bytes(user_dir)!r}")
                 continue
 
             for content in user_dir.iterdir():
                 if not content.is_file():
                     logger.error(
-                        "Found non-file in user upload dir: %r", bytes(content)
+                        f"Found non-file in user upload dir: {bytes(content)!r}"
                     )
                     continue
 
@@ -198,8 +198,7 @@ def periodic_clean_upload_directory():
     :data:`DEFAULT_CLEANUP_SCHEDULE`. `CELERYBEAT_SCHEDULE` key is
     :data:`CLEANUP_SCHEDULE_ID`.
     """
-
-    logger.info("Running job: periodic_clean_upload_directory")
+    logger.debug("Running job: periodic_clean_upload_directory")
     with current_app.test_request_context("/tasks/periodic_clean_upload_directory"):
         uploads = current_app.extensions["uploads"]
         uploads.clear_stalled_files()

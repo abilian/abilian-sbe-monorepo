@@ -94,7 +94,7 @@ class Role(UniqueName):
         Anonymous/Authenticated).
     """
 
-    __slots__ = ("label", "assignable")
+    __slots__ = ("assignable", "label")
 
     def __init__(
         self, name: str, label: None | str | LazyString = None, assignable: bool = True

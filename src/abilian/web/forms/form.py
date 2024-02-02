@@ -135,10 +135,8 @@ class Form(BaseForm):
                 for field_name in list(self._fields):
                     if empty_form or not has_permission(field=field_name):
                         logger.debug(
-                            "{}(permission={!r}): field {!r}: removed"
-                            "".format(
-                                self.__class__.__name__, ctx.permission, field_name
-                            )
+                            f"{self.__class__.__name__}(permission={ctx.permission!r}): "
+                            f"field {field_name!r}: removed"
                         )
                         del self[field_name]
                         group = self._field_groups.get(field_name)

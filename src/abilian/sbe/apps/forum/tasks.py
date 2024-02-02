@@ -89,7 +89,7 @@ def batch_send_post_to_users(post_id, members_id, failed_ids=None):
         # deleted after task queued, but before task run
         return None
     with RATE_LIMITER[0].acquire():
-        logger.info(f"{post_id=} {members_id=} {failed_ids=}")
+        logger.debug(f"{post_id=} {members_id=} {failed_ids=}")
         failed = set()
         successfully_sent = []
         thread = post.thread
@@ -233,7 +233,7 @@ def _mail_from_post(community, post, member) -> Message:
     """Return a mail.Message build from a post in community forum"""
     recipient = member.email
     subject = f"[{community.name}] {post.title}"
-    logger.info(f"{subject=} {recipient=}")
+    logger.debug(f"{subject=} {recipient=}")
 
     config = current_app.config
     SENDER = config.get("BULK_MAIL_SENDER", config["MAIL_SENDER"])
@@ -425,7 +425,7 @@ def process_email(message: email.message.Message) -> bool:
     assert isinstance(to_address, str)
 
     if not (has_subtag(to_address)):
-        logger.info("Email %r has no subtag, skipping...", to_address)
+        logger.info(f"Email {to_address!r} has no subtag, skipping...")
         return False
 
     try:
@@ -435,8 +435,7 @@ def process_email(message: email.message.Message) -> bool:
         user_id = infos[2]
     except BaseException:
         logger.error(
-            "Recipient %r cannot be converted to locale/thread_id/user.id",
-            to_address,
+            f"Recipient {to_address!r} cannot be converted to locale/thread_id/user.id",
             exc_info=True,
         )
         return False

@@ -24,8 +24,7 @@ def get_document(
     """Context manager that yields (session, document)."""
     from .models import Document
 
-    #
-    logger.info(f"get_document() {document_id=} {session=}")
+    logger.debug(f"get_document() {document_id=} {session=}")
 
     if session is None:
         doc_session = db.create_scoped_session()
@@ -51,7 +50,7 @@ def process_document(document_id: int) -> None:
     max_retries = 20 (Dramatiq default)
     max_backoff = 86400000 , i.e. 1 day
     """
-    logger.info(f"process_document() actor : {document_id=}")
+    logger.debug(f"process_document() actor : {document_id=}")
 
     with get_document(document_id) as (session, document):
         if document is None:
@@ -62,11 +61,8 @@ def process_document(document_id: int) -> None:
         logger.debug(f"process_document() {document_id=} {is_clean=}")
         if is_clean is False:
             return
-    logger.debug(f"process_document() virus clean {document_id=}")
     preview_document.send(document_id)
-    logger.debug(f"process_document() before convert_document_content {document_id=}")
     convert_document_content.send(document_id)
-    logger.debug(f"process_document() exit {document_id=}")
 
 
 def _run_antivirus(document: Document) -> bool | None:
@@ -92,8 +88,6 @@ def antivirus_scan(document_id):
 def preview_document(document_id: int) -> None:
     """Compute the document preview images with its default preview size."""
 
-    logger.info(f"preview_document() {document_id=}")
-
     with get_document(document_id) as (session, document):
         logger.debug(f"preview_document() {document_id=} {document=}")
         if document is None:
@@ -105,7 +99,7 @@ def preview_document(document_id: int) -> None:
 
 @logger.catch(level="ERROR")
 def convert_to_image(doc: Document) -> None:
-    logger.info(f"convert_to_image() {doc=}")
+    logger.debug(f"convert_to_image() {doc=}")
 
     try:
         converter.to_image(
@@ -123,7 +117,7 @@ def convert_to_image(doc: Document) -> None:
 def convert_document_content(document_id: int) -> None:
     """Convert document content."""
 
-    logger.info(f"convert_document_content() {document_id=}")
+    logger.debug(f"convert_document_content() {document_id=}")
 
     with get_document(document_id) as (session, doc):
         if doc is None:
@@ -137,7 +131,7 @@ def convert_document_content(document_id: int) -> None:
 
 @logger.catch(level="ERROR")
 def convert_to_pdf(doc: Document) -> None:
-    logger.info(f"convert_to_pdf() {doc=}")
+    logger.debug(f"convert_to_pdf() {doc=}")
 
     if doc.content_type == "application/pdf":
         doc.pdf = doc.content
@@ -151,7 +145,7 @@ def convert_to_pdf(doc: Document) -> None:
 
 @logger.catch(level="ERROR")
 def convert_to_text(doc: Document) -> None:
-    logger.info(f"convert_to_text() {doc=}")
+    logger.debug(f"convert_to_text() {doc=}")
 
     try:
         doc.text = converter.to_text(doc.content_digest, doc.content, doc.content_type)
@@ -162,7 +156,7 @@ def convert_to_text(doc: Document) -> None:
 
 @logger.catch(level="ERROR")
 def extract_metadata(doc: Document) -> None:
-    logger.info(f"extract_metadata() {doc=}")
+    logger.debug(f"extract_metadata() {doc=}")
 
     doc.extra_metadata = {}
     try:

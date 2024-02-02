@@ -159,10 +159,8 @@ class SAAdapter(SchemaAdapter):
                 field_def = TEXT(stored=True, analyzer=accent_folder)
 
             logger.debug(
-                "Adding field to schema:\n  Model: %s\n" '  Field: "%s" %s',
-                model_class._object_type(),
-                field_name,
-                field_def,
+                f"Adding field to schema:\n  Model: {model_class._object_type()}\n"
+                f'  Field: "{field_name}" {field_def}',
             )
             schema.add(field_name, field_def)
 

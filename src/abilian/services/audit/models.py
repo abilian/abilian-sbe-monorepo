@@ -201,7 +201,7 @@ class AuditEntry(db.Model):
                             val = val.decode("utf-8")
                         except UnicodeDecodeError:
                             current_app.logger.error(
-                                "A Unicode error happened on changes %s", repr(changes)
+                                f"A Unicode error happened on changes {changes!r}"
                             )
                             val = "[[Somme error occurred. Working on it]]"
                     uv.append(val)

@@ -45,7 +45,7 @@ def get_entities_for_reindex(tags):
     with session.no_autoflush:
         for entity_type, entity_id in session.execute(query):
             if entity_type not in indexing.adapted:
-                logger.debug("%r is not indexed, skipping", entity_type)
+                logger.debug(f"{entity_type!r} is not indexed, skipping")
 
             item = ("changed", entity_type, entity_id, ())
             entities.add(item)
