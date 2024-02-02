@@ -18,7 +18,7 @@ RATE_LIMITER = []
 # with DISTRIBUTED_MUTEX.acquire():
 #         time.sleep(1)
 def init_dramatiq_engine(app) -> None:
-    logger.info("Setting up Dramatiq")
+    logger.debug("Setting up Dramatiq")
     dramatiq.init_app(app)
     _setup_rate_limiter(app)
     _add_dramatiq_abortable(app)
@@ -27,7 +27,7 @@ def init_dramatiq_engine(app) -> None:
 
 
 def _setup_rate_limiter(app):
-    logger.info("Add dramatiq rate limiter")
+    logger.debug("Add dramatiq rate limiter")
     redis_client = _rate_limiter_redis_client(app)
     backend = RateLimitRedisBackend(client=redis_client)
     # rate limit is 6/min
@@ -45,7 +45,7 @@ def _rate_limiter_redis_client(app) -> redis.Redis:
 
 
 def _register_scheduler(app) -> None:
-    logger.info("Register scheduler")
+    logger.debug("Register scheduler")
     app.cli.add_command(scheduler)
 
 
@@ -74,7 +74,6 @@ def _add_dramatiq_abortable(app) -> None:
     abort(message_id, mode=AbortMode.CANCEL)
     abort(message.message_id, mode=AbortMode.ABORT, abort_timeout=2000)
     """
-    logger.info("Add dramatiq abortable")
     redis_client = _abortable_redis_client(app)
     backend = dramatiq_abort.backends.RedisBackend(client=redis_client)
     abortable = Abortable(backend=backend)
@@ -95,5 +94,5 @@ def _print_dramatiq_config() -> None:
     messages.append("broker.get_declared_actors():")
     messages.append(str(broker.get_declared_actors()))
     for msg in messages:
-        print(msg)
-        logger.info(msg)
+        # print(msg)
+        logger.debug(msg)

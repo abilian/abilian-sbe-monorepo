@@ -19,11 +19,12 @@ class InterceptHandler(logging.Handler):
 
 def init_loguru(app: Flask):
     # register loguru as (sole) handler
-    # level = app.config.get('LOG_LEVEL', 'INFO')
-    if app.debug:
-        level = "DEBUG"
-    else:
-        level = "INFO"
+    level = app.config.get("LOG_LEVEL")
+    if not level:
+        if app.debug:
+            level = "DEBUG"
+        else:
+            level = "INFO"
 
     set_loguru_config(level)
 
