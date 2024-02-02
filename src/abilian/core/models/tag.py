@@ -16,7 +16,7 @@ from .base import IdMixin, Model
 TAGS_ATTR = "__tags__"
 
 
-class SupportTagging(metaclass=abc.ABCMeta):
+class SupportTagging(abc.ABC):
     id: Any | None
 
 

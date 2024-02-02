@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import random
 import string
-from abc import ABCMeta, abstractmethod
+from abc import ABC, ABCMeta, abstractmethod
 from datetime import datetime, timedelta
 
 import bcrypt
@@ -87,7 +87,7 @@ def gen_random_password(length=15):
     return "".join(rg.choice(_RANDOM_PASSWORD_CHARS) for i in range(length))
 
 
-class PasswordStrategy(metaclass=ABCMeta):
+class PasswordStrategy(ABC):
     @property
     @abstractmethod
     def name(self):

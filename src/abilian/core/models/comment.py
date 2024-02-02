@@ -14,7 +14,7 @@ from abilian.services.security import CREATE, DELETE, WRITE, Anonymous, Owner
 ATTRIBUTE = "__comments__"
 
 
-class Commentable(metaclass=abc.ABCMeta):
+class Commentable(abc.ABC):
     id: int
 
 

@@ -10,7 +10,7 @@ import shutil
 import subprocess
 import threading
 import traceback
-from abc import ABCMeta, abstractmethod
+from abc import ABC, ABCMeta, abstractmethod
 from base64 import b64decode, b64encode
 from pathlib import Path
 from typing import Any
@@ -60,7 +60,7 @@ HAS_PDFTOTEXT = has_pdftotext()
 HAS_LIBREOFFICE = has_libreoffice()
 
 
-class Handler(metaclass=ABCMeta):
+class Handler(ABC):
     """Abstract base class for handlers."""
 
     accepts_mime_types: list[str] = []

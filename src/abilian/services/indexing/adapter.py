@@ -1,7 +1,7 @@
 """Objects to schema adapters."""
 from __future__ import annotations
 
-from abc import ABCMeta, abstractmethod
+from abc import ABC, ABCMeta, abstractmethod
 from operator import attrgetter
 from typing import Any
 
@@ -19,7 +19,7 @@ from .schema import accent_folder
 __all__ = ["SAAdapter", "SchemaAdapter"]
 
 
-class SchemaAdapter(metaclass=ABCMeta):
+class SchemaAdapter(ABC):
     """Abstract base class for objects to schema adapter.
 
     The purpose of adapters is that given an object they return kwargs
