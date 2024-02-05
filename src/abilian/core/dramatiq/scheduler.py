@@ -5,6 +5,7 @@ from collections import namedtuple
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from loguru import logger
+from _collections_abc import Callable
 
 Job = namedtuple("Job", ["actor", "key"])
 
@@ -17,9 +18,9 @@ DEFAULT_SCHEDULE = {
 _actor_registry = set()
 
 
-def crontab(crontab: str):
-    def decorator(func):
-        logger.debug("Registering cron job: {func}", func=func.__name__)
+def crontab(crontab: str) -> Callable:
+    def decorator(func: Callable) -> Callable:
+        logger.debug("Registering cron job: {func}", func=str(func))
         job = Job(actor=func, key=crontab)
         _actor_registry.add(job)
         return func
