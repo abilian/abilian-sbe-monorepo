@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from collections import namedtuple
 
+from _collections_abc import Callable
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from loguru import logger
-from _collections_abc import Callable
 
 Job = namedtuple("Job", ["actor", "key"])
 
