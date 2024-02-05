@@ -42,6 +42,7 @@ And just type:
 
     $ python setup.py extract_messages
 """
+
 from __future__ import annotations
 
 import importlib
@@ -210,7 +211,8 @@ class Babel(BabelBase):
 
             if not os.access(str(path), os.R_OK):
                 self.app.logger.warning(
-                    f"Babel translations: read access not allowed {path}, skipping."
+                    "Babel translations: read access not allowed {path}, skipping.",
+                    path=str(path),
                 )
                 continue
 

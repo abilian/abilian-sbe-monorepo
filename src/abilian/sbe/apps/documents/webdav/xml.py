@@ -1,4 +1,5 @@
 """Parses and produces XML documents specified by the standard."""
+
 from __future__ import annotations
 
 from typing import Any

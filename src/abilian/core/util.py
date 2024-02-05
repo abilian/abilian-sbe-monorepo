@@ -1,4 +1,5 @@
 """Various tools that don't belong some place specific."""
+
 from __future__ import annotations
 
 import functools
@@ -96,7 +97,11 @@ class timer:
         result = self.__f(*args, **kwargs)
         value = (time.time() - self.__start) * 1000
         prefix = f"{self.__f.__module__}.{self.__f.__name__}"
-        logger.info(f"{prefix} - elapsed time: {value :.2f}ms")
+        logger.info(
+            "{prefix} - elapsed time: {value:.2f}ms",
+            prefix=prefix,
+            value=value,
+        )
         return result
 
 

@@ -1,4 +1,5 @@
 """Some functions to retrieve activity entries."""
+
 # TODO: move to the activity service ?
 
 from __future__ import annotations

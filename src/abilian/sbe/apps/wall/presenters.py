@@ -145,7 +145,7 @@ class ActivityEntryPresenter(BasePresenter):
             return Markup(msg)
 
         except BaseException:
-            logger.exception("Exception while presenting activity message")
+            logger.error("Exception while presenting activity message")
             raise
 
     @property

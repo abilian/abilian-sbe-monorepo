@@ -1,4 +1,5 @@
 """"""
+
 from __future__ import annotations
 
 import json
@@ -157,7 +158,7 @@ class FileUploadsExtension:
                 try:
                     file_path.unlink()
                 except Exception:
-                    logger.exception("Error during remove file")
+                    logger.error("Error during remove file")
 
     def clear_stalled_files(self):
         """Scan upload directory and delete stalled files.
@@ -170,13 +171,17 @@ class FileUploadsExtension:
 
         for user_dir in self.UPLOAD_DIR.iterdir():
             if not user_dir.is_dir():
-                logger.error(f"Found non-directory in upload dir: {bytes(user_dir)!r}")
+                logger.error(
+                    "Found non-directory in upload dir: {user_dir}",
+                    user_dir=repr(user_dir),
+                )
                 continue
 
             for content in user_dir.iterdir():
                 if not content.is_file():
                     logger.error(
-                        f"Found non-file in user upload dir: {bytes(content)!r}"
+                        "Found non-file in user upload dir: {content}",
+                        content=repr(content),
                     )
                     continue
 

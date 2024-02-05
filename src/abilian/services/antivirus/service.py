@@ -1,4 +1,5 @@
 """"""
+
 from __future__ import annotations
 
 import io
@@ -99,8 +100,11 @@ class AntiVirusService(Service):
             if size > CLAMD_STREAMMAXLENGTH:
                 logger.error(
                     "Content size exceed antivirus size limit, "
-                    f"size={size}, limit={CLAMD_STREAMMAXLENGTH} "
-                    f"({CLAMD_CONF['StreamMaxLength'].encode('utf8')})",
+                    "size={size}, limit={limit} "
+                    "({max_length})",
+                    size=size,
+                    limit=CLAMD_STREAMMAXLENGTH,
+                    max_length=CLAMD_CONF["StreamMaxLength"].encode("utf8"),
                     extra={"stack": True},
                 )
                 return None
@@ -111,7 +115,10 @@ class AntiVirusService(Service):
         try:
             res = scan(content)
         except clamd.ClamdError as e:
-            self.logger.warning(f"Error during content scan: {e!r}")
+            self.logger.warning(
+                "Error during content scan: {error}",
+                error=str(e),
+            )
             return None
 
         if "stream" not in res:

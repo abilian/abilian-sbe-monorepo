@@ -1,5 +1,6 @@
 """Base Flask application class, used by tests or to be extended in real
 applications."""
+
 from __future__ import annotations
 
 # Temps monkey patches
@@ -136,7 +137,7 @@ class PluginManager:
 
     def register_plugin(self, name: str):
         """Load and register a plugin given its package name."""
-        logger.info(f"Registering plugin: {name}")
+        logger.info("Registering plugin: {name}", name=name)
         module = importlib.import_module(name)
         module.register_plugin(self)  # type: ignore
 
@@ -314,7 +315,7 @@ class Application(
 
         if not path.exists():
             if create:
-                logger.info(f"Create instance folder: {path}")
+                logger.info("Create instance folder: {path}", path=str(path))
                 path.mkdir(0o775, parents=True)
             else:
                 err = "Instance folder does not exists"

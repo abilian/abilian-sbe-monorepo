@@ -5,6 +5,7 @@ and activation.
 
 NB: not used anymore.
 """
+
 from __future__ import annotations
 
 import os
@@ -63,15 +64,24 @@ def setup_sbe_app():
     bin_dir = Path(sys.prefix) / "bin"
 
     if not bin_dir.exists() or not bin_dir.is_dir():
-        logger.error(f"{bin_dir} doesn't exists or is not a directory. Aborting")
+        logger.error(
+            "{bin_dir} doesn't exists or is not a directory. Aborting",
+            bin_dir=str(bin_dir),
+        )
         return 1
 
     script_file = bin_dir / "abilian_sbe"
     if script_file.exists():
-        logger.info(f"{script_file} already exists. Skipping creation.")
+        logger.info(
+            "{script_file} already exists. Skipping creation.",
+            script_file=str(script_file),
+        )
     else:
         with script_file.open("w") as out:
-            logger.info(f'Create script: "{script_file}".')
+            logger.info(
+                'Create script: "{script_file}".',
+                script_file=str(script_file),
+            )
             content = _SBE_DEMO_SCRIPT.format(BIN_DIR=bin_dir)
             out.write(content)
         # 0755: -rwxr-xr-x

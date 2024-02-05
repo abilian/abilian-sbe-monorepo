@@ -5,6 +5,7 @@ TODO: In the future, we may decide to:
 - Make Models that have the __auditable__ property (set to True) auditable.
 - Make Entities that have the __auditable__ property set to False not auditable.
 """
+
 from __future__ import annotations
 
 import contextlib
@@ -243,7 +244,9 @@ class AuditService(Service):
                     except Exception:
                         if current_app.debug or current_app.testing:
                             raise
-                        logger.error("Exception during entry creation", exc_info=True)
+                        logger.opt(exception=True).error(
+                            "Exception during entry creation"
+                        )
 
                 session.add_all(entries)
         finally:
@@ -313,7 +316,10 @@ class AuditService(Service):
 
             related_name = f"{meta.backref_attr} {' '.join(enduser_ids)}"
             related_changes = changes
-            logger.debug(f"related changes: {related_changes!r}")
+            logger.debug(
+                "related changes: {related_changes}",
+                related_changes=repr(related_changes),
+            )
             changes = Changes()
             changes.set_related_changes(related_name, related_changes)
 

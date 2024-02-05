@@ -1,4 +1,5 @@
 """"""
+
 from __future__ import annotations
 
 import json
@@ -40,7 +41,7 @@ class ImportCSSFilter(Filter):
         base_dir = Path(filepath).parent
         rel_dir = Path(source).parent
 
-        logger.debug(f'process "{filepath}"')
+        logger.debug('process "{filepath}"', filepath=filepath)
 
         for line in _in.readlines():
             import_match = self._IMPORT_RE.search(line)

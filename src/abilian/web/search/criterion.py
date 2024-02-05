@@ -124,7 +124,9 @@ class TextSearchCriterion(BaseCriterion):
 
             if attr is None:
                 logger.debug(
-                    f'Model: "{self.model.__class__.__name__}", could not find "{attr_name}"'
+                    'Model: "{model}", could not find "{attr_name}"',
+                    model=self.model.__class__.__name__,
+                    attr_name=attr_name,
                 )
                 to_del.append(attr_name)
             else:

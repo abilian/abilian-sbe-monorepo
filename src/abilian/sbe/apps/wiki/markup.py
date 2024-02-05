@@ -2,6 +2,7 @@
 
 Add extensions here (for now).
 """
+
 from __future__ import annotations
 
 from xml.etree.ElementTree import Element

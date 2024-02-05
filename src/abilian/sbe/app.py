@@ -3,6 +3,7 @@
 TODO: add more (runtime) flexibility in plugin discovery, selection
 and activation.
 """
+
 from __future__ import annotations
 
 import jinja2

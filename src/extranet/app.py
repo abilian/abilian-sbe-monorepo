@@ -124,7 +124,11 @@ def register_cli(app):
 def csrf_error_response(reason):
     # let sentry be aware of csrf failures. They might show app is broken
     # somewhere
-    logger.error(f"Csrf error report, reason: {reason}", extra={"stack": True})
+    logger.error(
+        "Csrf error report, reason: {reason}",
+        reason=reason,
+        extra={"stack": True},
+    )
     return abort(400, reason)
 
 

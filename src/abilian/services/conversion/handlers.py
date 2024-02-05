@@ -43,16 +43,16 @@ def has_pdftotext() -> bool:
         return True
     result = shutil.which("pdftotext") is not None
     if not result:
-        logger.warning(f"has_pdftotext(): {result}")
-        logger.warning(f"has_pdftotext() PATH: {os.environ['PATH']}")
+        logger.warning("has_pdftotext(): {result}", result=result)
+        logger.warning("has_pdftotext() PATH: {path}", path=os.environ["PATH"])
     return result
 
 
 def has_libreoffice() -> bool:
     result = shutil.which("soffice") is not None
     if not result:
-        logger.warning(f"has_libreoffice(): {result}")
-        logger.warning(f"has_libreoffice() PATH: {os.environ['PATH']}")
+        logger.warning("has_libreoffice(): {result}", result=result)
+        logger.warning("has_libreoffice() PATH: {path}", path=os.environ["PATH"])
     return result
 
 
@@ -288,10 +288,14 @@ class UnoconvPdfHandler(Handler):
                 execute_ok = os.access(unoconv, os.X_OK)
                 if not execute_ok:
                     self.log.warning(
-                        'Not allowed to execute "%s", fallback to "unoconv"', unoconv
+                        'Not allowed to execute {unoconv}, fallback to "unoconv"',
+                        unoconv=repr(unoconv),
                     )
             else:
-                self.log.warning('Cannot find "%s", fallback to "unoconv"', unoconv)
+                self.log.warning(
+                    'Cannot find {unoconv}, fallback to "unoconv"',
+                    unoconv=repr(unoconv),
+                )
 
         if not unoconv or not found or not execute_ok:
             unoconv = "unoconv"
@@ -337,7 +341,9 @@ class UnoconvPdfHandler(Handler):
                     )
                     self._process.communicate()
                 except Exception as e:
-                    logger.error(f"run_uno error: {e}", exc_info=True)
+                    logger.opt(exception=True).error(
+                        "run_uno error: {error}", error=str(e)
+                    )
                     raise ConversionError("unoconv failed") from e
 
             run_thread = threading.Thread(target=run_uno)
@@ -352,7 +358,10 @@ class UnoconvPdfHandler(Handler):
                         try:
                             self._process.kill()
                         except OSError:
-                            logger.warning(f"Failed to kill process {self._process}")
+                            logger.warning(
+                                "Failed to kill process {process}",
+                                process=self._process,
+                            )
 
                     raise ConversionError(f"Conversion timeout ({timeout})")
 
@@ -393,7 +402,7 @@ class LibreOfficePdfHandler(Handler):
             soffice_path = Path(soffice).resolve()
             found = soffice_path.is_file()
             if not found:
-                self.log.error("Can't find executable %s", soffice)
+                self.log.error("Can't find executable {soffice}", soffice=soffice)
 
         elif Path("/usr/local/bin/soffice").is_file():
             soffice = "/usr/local/bin/soffice"
@@ -406,7 +415,7 @@ class LibreOfficePdfHandler(Handler):
 
         if soffice:
             if not os.access(soffice, os.X_OK):
-                self.log.warning(f'Not allowed to execute "{soffice}"')
+                self.log.warning('Not allowed to execute "{soffice}"', soffice=soffice)
 
         else:
             self.log.error("Can't find LibreOffice executable")
@@ -437,13 +446,15 @@ class LibreOfficePdfHandler(Handler):
                     self._process.communicate()
                 except subprocess.CalledProcessError as e:
                     logger.debug("CalledProcessError for soffice")
-                    logger.debug(f"returncode:{e.returncode}")
-                    logger.debug(f"e.cmd:{e.cmd}")
-                    logger.debug(f"stdout:{e.stdout}")
-                    logger.debug(f"stderr:{e.stderr}")
+                    logger.debug("returncode:{returncode}", returncode=e.returncode)
+                    logger.debug("e.cmd:{cmd}", cmd=e.cmd)
+                    logger.debug("stdout:{stdout}", stdout=e.stdout)
+                    logger.debug("stderr:{stderr}", stderr=e.stderr)
                     raise ConversionError from e
                 except Exception as e:
-                    logger.error(f"soffice error: {e}", exc_info=True)
+                    logger.opt(exception=True).error(
+                        "soffice error: {error}", error=str(e)
+                    )
                     raise ConversionError from e
 
             run_thread = threading.Thread(target=run_soffice)
@@ -457,7 +468,10 @@ class LibreOfficePdfHandler(Handler):
                         try:
                             self._process.kill()
                         except OSError:
-                            logger.warning(f"Failed to kill process {self._process}")
+                            logger.warning(
+                                "Failed to kill process {process}",
+                                process=self._process,
+                            )
 
                     raise ConversionError(f"Conversion timeout ({timeout})")
 

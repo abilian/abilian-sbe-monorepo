@@ -133,7 +133,7 @@ class AuthService(Service):
                 # will ensure they cannot continue if he had an active session
                 return None
         except Exception:
-            logger.warning("Error during login.", exc_info=True)
+            logger.opt(exception=True).warning("Error during login.")
             session = db.session()
             if not session.is_active:
                 # session is not usable, rollback should restore a usable

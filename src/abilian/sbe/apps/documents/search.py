@@ -1,4 +1,5 @@
 """Indexing related utilities for Folder, Documents."""
+
 from __future__ import annotations
 
 import sqlalchemy as sa

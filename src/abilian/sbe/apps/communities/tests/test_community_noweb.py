@@ -1,5 +1,6 @@
 """Tests from test_community are currently refactored using pytest in this
 module."""
+
 from __future__ import annotations
 
 from unittest import mock

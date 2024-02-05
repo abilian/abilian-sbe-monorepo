@@ -348,7 +348,11 @@ def _membership_added(sender: Community, membership: Membership, is_new: bool) -
 
     if sender.group and membership.user not in sender.group.members:
         logger.debug(
-            f"_membership_added({sender!r}, {membership!r}, {is_new!r}) user: {membership.user!r}"
+            "_membership_added({sender}, {membership}, {is_new}) user: {user}",
+            sender=repr(sender),
+            membership=repr(membership),
+            is_new=repr(is_new),
+            user=repr(membership.user),
         )
         setattr(membership.user, _PROCESSED_ATTR, OP_APPEND)
         sender.group.members.add(membership.user)
@@ -361,7 +365,10 @@ def membership_removed(sender: Community, membership: Membership) -> None:
 
     if sender.group and membership.user in sender.group.members:
         logger.debug(
-            f"_membership_removed({sender!r}, {membership!r}) user: {membership.user!r}"
+            "_membership_removed({sender}, {membership}) user: {user}",
+            sender=repr(sender),
+            membership=repr(membership),
+            user=repr(membership.user),
         )
         setattr(membership.user, _PROCESSED_ATTR, OP_REMOVE)
         sender.group.members.discard(membership.user)
@@ -374,7 +381,12 @@ def _on_member_change(community, user, initiator):
     if not group:
         return
 
-    logger.debug(f"_on_member_change({community!r}, {user!r}, op={initiator.op!r})")
+    logger.debug(
+        "_on_member_change({community}, {user}, op={initiator})",
+        community=repr(community),
+        user=repr(user),
+        initiator=repr(initiator.op),
+    )
 
     if getattr(user, _PROCESSED_ATTR, False) is initiator.op:
         return
@@ -397,18 +409,29 @@ def _on_linked_group_change(
     if value == oldvalue:
         return
 
-    logger.debug(f"_on_linked_group_change({community!r}, {value!r}, {oldvalue!r})")
+    logger.debug(
+        "_on_linked_group_change({community}, {value}, {oldvalue})",
+        community=repr(community),
+        value=repr(value),
+        oldvalue=repr(oldvalue),
+    )
 
     if oldvalue is not None and oldvalue.members:
         logger.debug(
-            f"_on_linked_group_change({community!r}, {value!r}, {oldvalue!r}): oldvalue clear()"
+            "_on_linked_group_change({community}, {value}, {oldvalue}): oldvalue clear()",
+            community=repr(community),
+            value=repr(value),
+            oldvalue=repr(oldvalue),
         )
         oldvalue.members.clear()
 
     members = set(community.members)
     if value is not None and value.members != members:
         logger.debug(
-            f"_on_linked_group_change({community!r}, {value!r}, {oldvalue!r}): set value.members"
+            "_on_linked_group_change({community}, {value}, {oldvalue}): set value.members",
+            community=repr(community),
+            value=repr(value),
+            oldvalue=repr(oldvalue),
         )
         value.members = members
 
@@ -448,8 +471,12 @@ def _on_group_member_change(group: Group, user: User, initiator: Event) -> None:
     is_present = user in community.members
     setattr(user, _PROCESSED_ATTR, op)
     logger.debug(
-        f"_on_group_member_change({group!r}, {user!r}, op={initiator.op!r}) "
-        f"community: {community!r}"
+        "_on_group_member_change({group}, {user}, op={initiator}) "
+        "community: {community}",
+        group=repr(group),
+        user=repr(user),
+        initiator=repr(initiator.op),
+        community=repr(community),
     )
 
     if (op is OP_APPEND and is_present) or (op is OP_REMOVE and not is_present):
@@ -473,11 +500,12 @@ def _on_group_members_replace(group, value, oldvalue, initiator):
 
     members = set(community.members)
     logger.debug(
-        "_on_group_members_replace(%r, %r, %r) community: %r",
-        group,
-        value,
-        oldvalue,
-        community,
+        "_on_group_members_replace({group}, {value}, {oldvalue}) "
+        "community: {community}",
+        group=repr(group),
+        value=repr(value),
+        oldvalue=repr(oldvalue),
+        community=repr(community),
     )
 
     for u in members - value:

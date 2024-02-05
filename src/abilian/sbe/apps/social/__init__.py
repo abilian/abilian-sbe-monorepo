@@ -1,6 +1,5 @@
 """Default ("home") page for social apps."""
 
-
 from __future__ import annotations
 
 from abilian.sbe.app import Application

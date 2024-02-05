@@ -1,4 +1,5 @@
 """Security service, manages roles and permissions."""
+
 from __future__ import annotations
 
 from collections.abc import Callable, Collection

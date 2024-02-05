@@ -55,7 +55,9 @@ def send_daily_social_digest():
         try:
             send_daily_social_digest_to(user)
         except BaseException:
-            current_app.logger.error("Error sending daily social digest", exc_info=True)
+            current_app.logger.opt(exception=True).error(
+                "Error sending daily social digest"
+            )
 
 
 def send_daily_social_digest_to(user: User):

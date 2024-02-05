@@ -19,7 +19,7 @@ _actor_registry = set()
 
 def crontab(crontab: str):
     def decorator(func):
-        logger.debug(f"Registering cron job: {func}")
+        logger.debug("Registering cron job: {func}", func=func.__name__)
         job = Job(actor=func, key=crontab)
         _actor_registry.add(job)
         return func
@@ -44,9 +44,16 @@ def run_scheduler(config: dict):
     for job in _actor_registry:
         crontab_content = crontab_from_config(config, job)
         if not crontab_content:
-            logger.warning(f"Missing crontab, NOT registering cron job: {job.actor}")
+            logger.warning(
+                "Missing crontab, NOT registering cron job: {actor}",
+                actor=str(job.actor),
+            )
             continue
-        logger.debug(f"Registering cron job: {job.actor} {crontab_content}")
+        logger.debug(
+            "Registering cron job: {actor} {crontab}",
+            actor=str(job.actor),
+            crontab=crontab_content,
+        )
 
         scheduler.add_job(
             job.actor.send,

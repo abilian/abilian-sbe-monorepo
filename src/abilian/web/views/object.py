@@ -1,4 +1,5 @@
 """Class based views."""
+
 from __future__ import annotations
 
 import contextlib
@@ -372,7 +373,7 @@ class ObjectEdit(ObjectView):
             if rv is not None:
                 return rv
             session.rollback()
-            logger.error(e)
+            logger.error(str(e))
             flash(_("An entity with this name already exists in the system."), "error")
             return self.get()
 
@@ -532,7 +533,7 @@ class ObjectDelete(ObjectEdit):
             if rv is not None:
                 return rv
             session.rollback()
-            logger.error(e)
+            logger.error(str(e))
             flash(
                 _("This entity is referenced by another object and cannot be deleted."),
                 "error",
@@ -650,8 +651,10 @@ class JSONWhooshSearch(JSONBaseSearch):
                     results.sort(key=lambda it: it.fields().get(itemkey))
         except Exception:
             if itemkey is not None:
-                msg = f"we could not sort whoosh results on fields' key {itemkey}."
-                logger.warning(msg)
+                logger.warning(
+                    "we could not sort whoosh results on fields' key {itemkey}.",
+                    itemkey=itemkey,
+                )
 
         return results
 

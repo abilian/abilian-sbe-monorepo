@@ -38,8 +38,10 @@ def init_app(app: Flask) -> None:
             if fieldname in schema:
                 if schema[fieldname] is not field:
                     logger.warning(
-                        f'Field "{fieldname}" already in schema {schema!r}, replacing with '
-                        "expected fieldtype instance"
+                        "Field {fieldname} already in schema {schema}, replacing with "
+                        "expected fieldtype instance",
+                        fieldname=repr(fieldname),
+                        schema=repr(schema),
                     )
                     del schema._fields[fieldname]
                 else:

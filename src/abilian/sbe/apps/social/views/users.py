@@ -202,7 +202,7 @@ class UserProfileEdit(ObjectEdit):
             log_msg = "Error saving user profile"
         else:
             log_msg = "Unexpected error while saving user profile"
-        logger.error(log_msg, exc_info=True, extra={"stack": True})
+        logger.opt(exception=True).error(log_msg, extra={"stack": True})
         flash(_("Error occured"), "error")
         return self.redirect_to_view()
 

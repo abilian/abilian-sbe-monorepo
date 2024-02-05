@@ -1,4 +1,5 @@
 """Dramatiq tasks related to document transformation and preview."""
+
 from __future__ import annotations
 
 import email
@@ -50,7 +51,8 @@ def send_post_by_email(post_id: int | str):
         thread = post.thread
         community = thread.community
         logger.info(
-            f"Sending new post by email to members of community {community.name!r}"
+            "Sending new post by email to members of community {community}",
+            community=repr(community.name),
         )
 
         CHUNK_SIZE = 20
@@ -89,7 +91,12 @@ def batch_send_post_to_users(post_id, members_id, failed_ids=None):
         # deleted after task queued, but before task run
         return None
     with RATE_LIMITER[0].acquire():
-        logger.debug(f"{post_id=} {members_id=} {failed_ids=}")
+        logger.debug(
+            "post_id={post_id} members_id={members_id} failed_ids={failed_ids}",
+            post_id=post_id,
+            members_id=members_id,
+            failed_ids=failed_ids,
+        )
         failed = set()
         successfully_sent = []
         thread = post.thread
@@ -219,21 +226,28 @@ def send_post_to_user(community, post, member):
 
     message = _mail_from_post(community, post, member)
 
-    logger.info(f"Sending new post by email to {message.recipients}")
+    logger.info(
+        "Sending new post by email to {recipients}",
+        recipients=message.recipients,
+    )
     try:
         # with mail.connect() as connection:
         with current_app.app_context():
             mail.send(message)
     except BaseException as e:
         # log to sentry if enabled
-        logger.error(f"Send mail to user failed: {e}")
+        logger.error("Send mail to user failed: {error}", error=str(e))
 
 
 def _mail_from_post(community, post, member) -> Message:
     """Return a mail.Message build from a post in community forum"""
     recipient = member.email
     subject = f"[{community.name}] {post.title}"
-    logger.debug(f"{subject=} {recipient=}")
+    logger.debug(
+        "subject={subject} recipient={recipient}",
+        subject=subject,
+        recipient=recipient,
+    )
 
     config = current_app.config
     SENDER = config.get("BULK_MAIL_SENDER", config["MAIL_SENDER"])
@@ -425,7 +439,10 @@ def process_email(message: email.message.Message) -> bool:
     assert isinstance(to_address, str)
 
     if not (has_subtag(to_address)):
-        logger.info(f"Email {to_address!r} has no subtag, skipping...")
+        logger.info(
+            "Email {to_address} has no subtag, skipping...",
+            to_address=repr(to_address),
+        )
         return False
 
     try:
@@ -434,9 +451,9 @@ def process_email(message: email.message.Message) -> bool:
         thread_id = infos[1]
         user_id = infos[2]
     except BaseException:
-        logger.error(
-            f"Recipient {to_address!r} cannot be converted to locale/thread_id/user.id",
-            exc_info=True,
+        logger.opt(exception=True).error(
+            "Recipient {to_address} cannot be converted to locale/thread_id/user.id",
+            to_address=repr(to_address),
         )
         return False
 
@@ -449,7 +466,7 @@ def process_email(message: email.message.Message) -> bool:
     try:
         newpost, attachments = process(message, marker)
     except BaseException:
-        logger.error("Could not Process message", exc_info=True)
+        logger.opt(exception=True).error("Could not Process message")
         return False
 
     # Persist post

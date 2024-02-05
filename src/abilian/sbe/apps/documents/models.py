@@ -2,6 +2,7 @@
 
 TODO: move to an independent service / app.
 """
+
 from __future__ import annotations
 
 import itertools
@@ -765,7 +766,10 @@ def _trigger_conversion_tasks(session: Session) -> None:
     while document_queue:
         doc, task_id = document_queue.pop()
         if doc.id and isinstance(doc.id, int):
-            logger.debug(f"_trigger_conversion_tasks() {doc.id=}")
+            logger.debug(
+                "_trigger_conversion_tasks() doc.id={doc_id}",
+                doc_id=repr(doc.id),
+            )
             tasks.process_document.send(doc.id)
 
 

@@ -7,6 +7,7 @@ TODO: In the future, we may decide to:
 - Make Models that have the __auditable__ property (set to True) auditable.
 - Make Entities that have the __auditable__ property set to False not auditable.
 """
+
 from __future__ import annotations
 
 import pickle
@@ -137,7 +138,9 @@ class AuditEntry(db.Model):
                 try:
                     changes = pickle.loads(self.changes_pickle, encoding="bytes")
                 except Exception:
-                    logger.warning("migration error on audit entry:", exc_info=True)
+                    logger.opt(exception=True).warning(
+                        "migration error on audit entry:"
+                    )
                     changes = Changes()
 
             if isinstance(changes, dict):
@@ -201,7 +204,8 @@ class AuditEntry(db.Model):
                             val = val.decode("utf-8")
                         except UnicodeDecodeError:
                             current_app.logger.error(
-                                f"A Unicode error happened on changes {changes!r}"
+                                "A Unicode error happened on changes {changes}",
+                                changes=repr(changes),
                             )
                             val = "[[Somme error occurred. Working on it]]"
                     uv.append(val)

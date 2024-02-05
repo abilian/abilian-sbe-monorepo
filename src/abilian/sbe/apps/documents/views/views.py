@@ -1,4 +1,5 @@
 """Document management blueprint."""
+
 from __future__ import annotations
 
 from flask import g

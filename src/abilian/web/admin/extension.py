@@ -1,4 +1,5 @@
 """"""
+
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -60,16 +61,18 @@ class Admin:
         for fqn in panels:
             panel_class = import_string(fqn, silent=True)
             if panel_class is None:
-                logger.warning(f'Could not import panel: "{fqn}"')
+                logger.warning('Could not import panel: "{fqn}"', fqn=fqn)
                 continue
             if not issubclass(panel_class, AdminPanel):
                 logger.error(
-                    f'"{fqn}" is not a {AdminPanel.__module__}.AdminPanel, skipping'
+                    '"{fqn}" is not a {module}.AdminPanel, skipping',
+                    fqn=fqn,
+                    module=AdminPanel.__module__,
                 )
                 continue
 
             self.register_panel(panel_class())
-            logger.debug(f'Registered panel "{fqn}"')
+            logger.debug('Registered panel "{fqn}"', fqn=fqn)
 
         if not self.panels:
 

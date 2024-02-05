@@ -1,4 +1,5 @@
 """"""
+
 from __future__ import annotations
 
 import operator
@@ -492,7 +493,8 @@ class QuerySelect2Field(SelectFieldBase):
 
         if not any(isinstance(v, (Optional, DataRequired)) for v in validators):
             logger.warning(
-                f'Use deprecated parameter `allow_blank` for field "{label}".'
+                'Use deprecated parameter `allow_blank` for field "{label}".',
+                label=label,
             )
             if not allow_blank:
                 validators.append(DataRequired())

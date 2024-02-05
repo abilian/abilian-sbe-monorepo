@@ -1,5 +1,6 @@
 """Base Flask application class, used by tests or to be extended in real
 applications."""
+
 from __future__ import annotations
 
 from functools import partial
@@ -121,7 +122,8 @@ class ErrorManagerMixin(Flask):
         for http_error_code 404.
         """
         logger.debug(
-            f"Set Default HTTP error handler for status code {http_error_code}"
+            "Set Default HTTP error handler for status code {http_error_code}",
+            http_error_code=http_error_code,
         )
         handler = partial(self.handle_http_error, http_error_code)
         self.errorhandler(http_error_code)(handler)

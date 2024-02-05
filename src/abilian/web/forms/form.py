@@ -1,4 +1,5 @@
 """Extensions to WTForms fields, widgets and validators."""
+
 from __future__ import annotations
 
 import typing
@@ -135,8 +136,11 @@ class Form(BaseForm):
                 for field_name in list(self._fields):
                     if empty_form or not has_permission(field=field_name):
                         logger.debug(
-                            f"{self.__class__.__name__}(permission={ctx.permission!r}): "
-                            f"field {field_name!r}: removed"
+                            "{class_name}(permission={permission}): "
+                            "field {field_name}: removed",
+                            class_name=self.__class__.__name__,
+                            permission=repr(ctx.permission),
+                            field_name=repr(field_name),
                         )
                         del self[field_name]
                         group = self._field_groups.get(field_name)
@@ -188,7 +192,7 @@ if not _PATCHED:
 
         self.view_widget = view_widget
 
-    logger.debug(Field.__init__)
+    logger.debug("Field.__init__: {field}", field=Field.__init__)
     Field.__init__ = _core_field_init
     del _core_field_init
 
@@ -201,7 +205,7 @@ if not _PATCHED:
             self.__class__.__module__, self.__class__.__name__, id(self), self.name
         )
 
-    logger.debug(f"{Field.__module__}.Field.__repr__")
+    logger.debug("{module}.Field.__repr__", module=Field.__module__)
     Field.__repr__ = _core_field_repr
     del _core_field_repr
 
@@ -214,7 +218,7 @@ if not _PATCHED:
 
         return _wtforms_Field_render(self, **kwargs)
 
-    logger.debug(Field.__call__)
+    logger.debug("Field.__call__: {field_call}", field_call=Field.__call__)
     Field.__call__ = _core_field_render
     del _core_field_render
 
@@ -228,7 +232,7 @@ if not _PATCHED:
 
         return DefaultViewWidget().render_view(self, **kwargs)
 
-    logger.debug(f"Add method {Field.__module__}.Field.render_view")
+    logger.debug("Add method {module}.Field.render_view", module=Field.__module__)
     Field.render_view = render_view
     del render_view
 
@@ -237,7 +241,7 @@ if not _PATCHED:
         is not set on `HiddenField` :-("""
         return self.flags.hidden or isinstance(self, HiddenField)
 
-    logger.debug(f"Add method {Field.__module__}.Field.is_hidden")
+    logger.debug("Add method {module}.Field.is_hidden", module=Field.__module__)
     Field.is_hidden = property(is_hidden)
     del is_hidden
 

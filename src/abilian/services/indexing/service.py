@@ -9,6 +9,7 @@ Based on Flask-whooshalchemy by Karl Gyllstrom.
 :copyright: (c) 2012 by Karl Gyllstrom
 :license: BSD (see LICENSE.txt)
 """
+
 from __future__ import annotations
 
 import contextlib
@@ -62,7 +63,7 @@ def url_for_hit(hit, default="#"):
     except KeyError:
         return default
     except Exception:
-        logger.error("Error building URL for search result", exc_info=True)
+        logger.opt(exception=True).error("Error building URL for search result")
         return default
 
 
@@ -435,7 +436,7 @@ class WhooshIndexService(Service):
                 items.append((op, model_name, getattr(obj, primary_field), {}))
 
         if items:
-            logger.debug(f"after_commit() {items=}")
+            logger.debug("after_commit() items={items}", items=items)
             if os.environ.get("TESTING_DIRECT_FUNCTION_CALL"):
                 index_update(index="default", items=items)
             else:
@@ -500,7 +501,10 @@ class WhooshIndexService(Service):
                     # logger is here to give us more infos in order to catch a weird bug
                     # that happens regularly on CI but is not reliably
                     # reproductible.
-                    logger.error(f"writer.add_document({document!r})", exc_info=True)
+                    logger.opt(exception=True).error(
+                        "writer.add_document({document})",
+                        document=repr(document),
+                    )
                     raise
                 indexed.add(object_key)
 
@@ -515,7 +519,7 @@ def index_update(index: str, items: list[tuple[str, str, int, dict]]):
     :param:items: list of (operation, full class name, primary key, data) tuples.
     """
 
-    logger.debug(f"index_update() actor : {index=}")
+    logger.debug("index_update() actor : index={index}", index=index)
 
     index_name = index
     index = service.app_state.indexes[index_name]
@@ -561,7 +565,10 @@ def index_update(index: str, items: list[tuple[str, str, int, dict]]):
                     # logger is here to give us more infos in order to catch a weird bug
                     # that happens regularly on CI but is not reliably
                     # reproductible.
-                    logger.error(f"writer.add_document({document!r})", exc_info=True)
+                    logger.opt(exception=True).error(
+                        "writer.add_document({document})",
+                        document=repr(document),
+                    )
                     raise
                 updated.add(object_key)
     except Exception:

@@ -1,4 +1,5 @@
 """Objects to schema adapters."""
+
 from __future__ import annotations
 
 from abc import ABC, ABCMeta, abstractmethod
@@ -159,8 +160,11 @@ class SAAdapter(SchemaAdapter):
                 field_def = TEXT(stored=True, analyzer=accent_folder)
 
             logger.debug(
-                f"Adding field to schema:\n  Model: {model_class._object_type()}\n"
-                f'  Field: "{field_name}" {field_def}',
+                "Adding field to schema:\n  Model: {model}\n"
+                '  Field: "{field_name}" {field_def}',
+                model=model_class._object_type(),
+                field_name=field_name,
+                field_def=field_def,
             )
             schema.add(field_name, field_def)
 

@@ -1,4 +1,5 @@
 """Field filters for WTForm."""
+
 from __future__ import annotations
 
 __all__ = ["lowercase", "strip", "uppercase"]

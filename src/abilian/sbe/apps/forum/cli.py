@@ -30,7 +30,7 @@ def _inject_email(filename="-"):
         logger.info("Aborted by user, exiting.")
         sys.exit(1)
     except BaseException:
-        logger.error("Error during email parsing", exc_info=True)
+        logger.opt(exception=True).error("Error during email parsing")
         sys.exit(1)
     finally:
         # close the parser to generate a email.message
@@ -45,9 +45,9 @@ def _inject_email(filename="-"):
             logger.error(
                 "email has defects, message content:\n"
                 "------ START -------\n"
-                "%s"
+                "{message}"
                 "\n------ END -------\n",
-                message,
+                message=message,
                 extra={"stack": True},
             )
     else:
