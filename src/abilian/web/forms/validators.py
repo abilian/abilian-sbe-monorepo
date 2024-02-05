@@ -108,7 +108,7 @@ class Length(Rule):
         self.message = message
 
     def __call__(self, form, field):
-        field_data_length = (field.data and len(field.data)) or 0
+        field_data_length = len(field.data) if field.data else 0
 
         if field_data_length < self.min or (
             self.max != -1 and field_data_length > self.max
