@@ -173,6 +173,7 @@ lint.extend-ignore = [
     #
     "PLC2801", # Unnecessary dunder call
     "PLC2701", # Private name import `_...` from external module
+    "RUF027", # missing-f-string-syntax
     # FIXME:
     "S104", # Possible binding to all interfaces
     "S301", # `pickle`...
