@@ -16,7 +16,6 @@ from flask import current_app
 from flask.helpers import locked_cached_property
 from flask_babel import format_date, format_datetime, get_locale, get_timezone
 from flask_login import current_user
-
 from flask_wtf.file import FileField as BaseFileField
 from loguru import logger
 from werkzeug.datastructures import ImmutableMultiDict
@@ -26,11 +25,6 @@ from wtforms import FormField as BaseFormField
 from wtforms import SelectField, SelectFieldBase, SelectMultipleField, ValidationError
 from wtforms.compat import text_type
 from wtforms.ext.csrf import SecureForm
-
-# FIXME
-# Warning
-# Deprecated since version 2.0: wtforms.ext.appengine is deprecated and will be removed in WTForms 3.0. Use WTForms-Appengine instead.
-
 from wtforms.validators import DataRequired, Optional
 from wtforms_alchemy import ModelFieldList as BaseModelFieldList
 from wtforms_alchemy import ModelFormField as BaseModelFormField
@@ -42,6 +36,13 @@ from abilian.core.util import utc_dt
 
 from .util import babel2datetime
 from .widgets import DateInput, DateTimeInput, FileInput, Select2, Select2Ajax
+
+# FIXME
+# Warning
+# Deprecated since version 2.0:
+#   wtforms.ext.appengine is deprecated and will be removed in WTForms 3.0.
+#   Use WTForms-Appengine instead.
+
 
 __all__ = [
     "DateField",

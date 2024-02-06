@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from flask import current_app, flash, request
 from flask.signals import request_started
-from flask_wtf.csrf import CSRFProtect, CSRFError
+from flask_wtf.csrf import CSRFError, CSRFProtect
 from markupsafe import Markup
 from werkzeug.exceptions import BadRequest
 
@@ -39,7 +39,9 @@ class AbilianCsrf:
             )
 
         # FIXME
-        # app.extensions["csrf"].error_handler(self.csrf_error_handler)  # deprecated since flask-wtf 0.14
+        # app.extensions["csrf"].error_handler(self.csrf_error_handler)
+        # Note: deprecated since flask-wtf 0.14
+
         # see https://flask-wtf.readthedocs.io/en/1.2.x/changes/#version-0-14
         #     https://github.com/wtforms/flask-wtf/pull/264
 

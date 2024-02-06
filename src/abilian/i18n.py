@@ -49,7 +49,7 @@ import importlib
 import os
 import re
 import unicodedata
-from collections.abc import Iterator, Callable
+from collections.abc import Callable, Iterator
 from datetime import datetime, tzinfo
 from gettext import GNUTranslations
 from pathlib import Path
