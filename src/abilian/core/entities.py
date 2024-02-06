@@ -20,8 +20,7 @@ from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.types import Integer, String, UnicodeText
 
 from .extensions import db
-from .models import BaseMixin
-from .models.base import EDITABLE, SEARCHABLE, SYSTEM, Indexable, Model
+from .models import BaseMixin, EDITABLE, SEARCHABLE, SYSTEM, Indexable, Model
 from .sqlalchemy import JSONDict
 from .util import friendly_fqcn, memoized, slugify
 
