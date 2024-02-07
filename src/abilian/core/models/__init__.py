@@ -14,9 +14,9 @@ from .base import (
     SEARCHABLE,
     SYSTEM,
     IdMixin,
+    Indexable,
     Model,
     TimestampedMixin,
-    Indexable,
 )
 from .base_mixin import BaseMixin
 from .owned import OwnedMixin

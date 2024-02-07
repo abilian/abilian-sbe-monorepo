@@ -8,10 +8,7 @@ from typing import Any
 
 from sqlalchemy.orm.util import class_mapper
 
-from .base import (
-    IdMixin,
-    TimestampedMixin,
-)
+from .base import IdMixin, TimestampedMixin
 from .owned import OwnedMixin
 
 
