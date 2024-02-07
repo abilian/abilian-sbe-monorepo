@@ -2,16 +2,28 @@
 
 from __future__ import annotations
 
+import os
+
+import click
 from flask import current_app
-from flask.cli import AppGroup
-from loguru import logger
-
-config_commands = AppGroup("config")
+from flask.cli import with_appcontext
 
 
-@config_commands.command()
-def show(only_path=False):
-    """Show the current config."""
-    infos = ["\n", f'Instance path: "{current_app.instance_path}"']
+@click.command(short_help="Show config")
+@with_appcontext
+def config() -> None:
+    config_ = dict(sorted(current_app.config.items()))
+    print("CONFIG:\n")
+    for k, v in config_.items():
+        if not k[0].isupper():
+            continue
+        try:
+            print(f"{k}: {v}")
+        except Exception as e:
+            print(f"{k}: {e}")
 
-    logger.info("\n  ".join(infos))
+    print("\nENV:\n")
+
+    env_ = dict(sorted(os.environ.items()))
+    for k, v in env_.items():
+        print(f"{k}: {v}")
