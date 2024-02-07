@@ -269,7 +269,7 @@ def permissions(folder_id):
                 msg = _('On {date}, {manager} has given role "{role}" to {principal}')
             elif e.op == e.REVOKE:
                 msg = _(
-                    'On {date}, {manager} has revoked role "{role}" from ' "{principal}"
+                    'On {date}, {manager} has revoked role "{role}" from {principal}'
                 )
             else:
                 raise Exception(f"Unknown audit entry type {e.op}")
@@ -984,7 +984,7 @@ def check_valid_name():
         help_text = _('An element named "{name}" is already present in folder')
     elif action in ("folder-edit", "document-edit"):
         parent = obj.parent
-        help_text = _('Cannot rename: "{name}" is already present in parent ' "folder")
+        help_text = _('Cannot rename: "{name}" is already present in parent folder')
     else:
         raise InternalServerError
 

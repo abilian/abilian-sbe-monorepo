@@ -116,9 +116,6 @@ lint.extend-ignore = [
     "DTZ005", # The use of `datetime.datetime.now()` without `tz` argument is not allowed
     "DTZ007", # The use of `datetime.datetime.strptime()` without %z must be followed by `.replace(tzinfo=)` or `.astimezone()`
     "FURB113", # Use `x.extend(...)` instead of repeatedly calling `x.append()`
-#    "FURB148", # `enumerate` index is unused, use `for x in y` instead
-    "ISC001", # Implicitly concatenated string literals on one line
-    "ISC003", # Explicitly concatenated string should be implicitly concatenated
     "N801", # Class name should use CapWords convention
     "N802", # Function name should be lowercase
     "N803", # Argument name should be lowercase

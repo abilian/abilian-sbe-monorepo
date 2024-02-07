@@ -254,7 +254,7 @@ class AuditPanel(AdminPanel):
 #
 class BaseEntryPresenter:
     _USER_FMT = (
-        '<a href="{{ url_for("social.user", user_id=user.id) }}">' "{{ user.name }}</a>"
+        '<a href="{{ url_for("social.user", user_id=user.id) }}"> {{ user.name }}</a>'
     )
     _GROUP_FMT = (
         '<a href="{{ url_for("social.group_home", group_id=group.id)'
@@ -376,12 +376,11 @@ class SecurityEntryPresenter(BaseEntryPresenter):
                 msg = _("{manager} has deactivated inheritance on {entity}")
             elif e.op == e.GRANT:
                 msg = _(
-                    '{manager} has given role "{role}" to {principal} ' "on {entity}"
+                    '{manager} has given role "{role}" to {principal} on {entity}'
                 )
             elif e.op == e.REVOKE:
                 msg = _(
-                    '{manager} has revoked role "{role}" from '
-                    "{principal} on {entity}"
+                    '{manager} has revoked role "{role}" from {principal} on {entity}'
                 )
             else:
                 raise Exception(f"Invalid entity op: {e.op}")

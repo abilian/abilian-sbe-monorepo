@@ -122,7 +122,7 @@ class ActivityEntryPresenter(BasePresenter):
 
             elif entry.verb == "post":
                 msg = _(
-                    "has posted an object of type {object_type} " 'called "{object}"'
+                    'has posted an object of type {object_type} called "{object}"'
                 ).format(**ctx)
 
                 if entry.target and not ignore_community:
