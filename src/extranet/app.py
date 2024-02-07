@@ -61,11 +61,11 @@ def create_app(config=None, **kw):
         read_config(app)
         app.config.from_prefixed_env()
 
+    # Setup stuff.
+    init_logging(app)
+
     if "DATABASE_URL" in os.environ:
         app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
-
-    # Setup stuff
-    init_logging(app)
 
     # We must register this before blueprint is registered
     social.url_value_preprocessor(on_home_blueprint)

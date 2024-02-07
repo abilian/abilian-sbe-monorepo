@@ -8,7 +8,13 @@ from loguru import logger
 
 
 def init_logging(app: Flask) -> None:
-    init_loguru(app)
+    run_from_cli = app.config.get("RUN_FROM_CLI")
+    if run_from_cli and not app.debug:
+        print("Running from CLI, skipping logging init (use --debug to enable)")
+        logger.configure(handlers=[])
+
+    else:
+        init_loguru(app)
 
 
 class InterceptHandler(logging.Handler):
