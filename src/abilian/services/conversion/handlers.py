@@ -201,9 +201,8 @@ class AbiwordPDFHandler(Handler):
             except Exception as e:
                 raise ConversionError("abiword failed") from e
 
-            with open(out_fn, "rb") as f:
-                converted = f.read()
-                return converted
+            converted = Path(out_fn).read_bytes()
+            return converted
 
 
 class ImageMagickHandler(Handler):

@@ -115,9 +115,7 @@ lint.extend-ignore = [
     "DTZ004", # The use of `datetime.datetime.utcfromtimestamp()` is not allowed, use `datetime.datetime.fromtimestamp(ts, tz=)` instead
     "DTZ005", # The use of `datetime.datetime.now()` without `tz` argument is not allowed
     "DTZ007", # The use of `datetime.datetime.strptime()` without %z must be followed by `.replace(tzinfo=)` or `.astimezone()`
-    "FURB101", # `open` and `read` should be replaced by `Path(out_fn).read_bytes()`
     "FURB113", # Use `x.extend(...)` instead of repeatedly calling `x.append()`
-    "FURB132",
     "FURB148", # `enumerate` index is unused, use `for x in y` instead
     "ISC001", # Implicitly concatenated string literals on one line
     "ISC003", # Explicitly concatenated string should be implicitly concatenated

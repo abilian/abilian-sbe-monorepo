@@ -428,10 +428,9 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
             if role in allowed_roles:
                 principals.add(user)
 
-        if Anonymous in principals:
-            # it's a role listed in role assignments - legacy when there wasn't
-            # permission-role assignments
-            principals.remove(Anonymous)
+        # it's a role listed in role assignments - legacy when there wasn't
+        # permission-role assignments
+        principals.discard(Anonymous)
 
         for p in principals:
             result.append(indexable_role(p))

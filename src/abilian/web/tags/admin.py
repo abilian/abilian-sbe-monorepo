@@ -173,9 +173,7 @@ class NSView(View):
             return self.get(self.ns)
 
         merge_from = set(self._get_selected_tags())
-
-        if target in merge_from:
-            merge_from.remove(target)
+        merge_from.discard(target)
 
         if not merge_from:
             flash(_("No tag selected for merging"), "warning")
