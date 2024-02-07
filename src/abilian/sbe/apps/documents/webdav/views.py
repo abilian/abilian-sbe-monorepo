@@ -210,11 +210,10 @@ def copy_or_move(path):
 
     if request.method == "COPY":
         repository.copy_object(orig_obj, dest_folder, dest_name)
+    elif dest_folder == orig_obj.parent:
+        repository.rename_object(orig_obj, dest_name)
     else:
-        if dest_folder == orig_obj.parent:
-            repository.rename_object(orig_obj, dest_name)
-        else:
-            repository.move_object(orig_obj, dest_folder, dest_name)
+        repository.move_object(orig_obj, dest_folder, dest_name)
 
     db.session.commit()
     return "", status, {}

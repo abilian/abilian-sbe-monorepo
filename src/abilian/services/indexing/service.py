@@ -195,7 +195,7 @@ class WhooshIndexService(Service):
         logger.info("Resetting indexes")
         state = self.app_state
 
-        for _name, idx in state.indexes.items():
+        for idx in state.indexes.values():
             writer = AsyncWriter(idx)
             writer.commit(merge=True, optimize=True, mergetype=CLEAR)
 

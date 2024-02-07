@@ -384,13 +384,12 @@ class SecurityEntryPresenter(BaseEntryPresenter):
                 )
             else:
                 raise Exception(f"Invalid entity op: {e.op}")
+        elif e.op == e.GRANT:
+            msg = _('{manager} has given role "{role}" to {principal}')
+        elif e.op == e.REVOKE:
+            msg = _('{manager} has revoked role "{role}" from {principal}')
         else:
-            if e.op == e.GRANT:
-                msg = _('{manager} has given role "{role}" to {principal}')
-            elif e.op == e.REVOKE:
-                msg = _('{manager} has revoked role "{role}" from {principal}')
-            else:
-                raise Exception(f"Invalid entity op: {e.op}")
+            raise Exception(f"Invalid entity op: {e.op}")
 
         self.msg = Markup(
             msg.format(manager=manager, principal=principal, role=e.role, entity=entity)

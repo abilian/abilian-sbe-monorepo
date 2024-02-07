@@ -118,7 +118,6 @@ lint.extend-ignore = [
     "N814", # Camelcase ... imported as constant
     "N816", # Variable in global scope should not be mixedCase
     "PD011", # Use `.to_numpy()` instead of `.values`
-    "PERF102", # When using only the values of a dict use the `values()` method
     "PERF203", # `try`-`except` within a loop incurs performance overhead
     "PERF401", # Use a list comprehension to create a transformed list
     "PERF403", # Use a dictionary comprehension instead of a for-loop
@@ -133,7 +132,6 @@ lint.extend-ignore = [
     "PLR0917", # Too many positional arguments
     "PLR2044",
     "PLR0914",
-    "PLR5501", # Use `elif` instead of `else` then `if`, to reduce indentation
     "PLR6201", # Use a `set` literal when testing for membership
     #
     "PLW1514", # `open` in text mode without explicit `encoding` argument

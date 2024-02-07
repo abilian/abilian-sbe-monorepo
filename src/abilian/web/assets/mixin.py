@@ -17,12 +17,11 @@ class AssetManagerMixin(Flask):
     def init_assets(self):
         if self.debug:
             js_filters = None
+        elif os.system("java -version 2> /dev/null") == 0:
+            js_filters = ("closure_js",)
         else:
-            if os.system("java -version 2> /dev/null") == 0:
-                js_filters = ("closure_js",)
-            else:
-                logger.warning("Java is not installed. Can't use Closure")
-                js_filters = None
+            logger.warning("Java is not installed. Can't use Closure")
+            js_filters = None
 
         self._assets_bundles = {
             "css": {

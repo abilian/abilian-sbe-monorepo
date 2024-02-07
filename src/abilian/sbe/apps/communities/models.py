@@ -275,11 +275,10 @@ class Community(Entity):
                 role = membership.role
                 if role == MANAGER:
                     security.grant_role(user, MANAGER, self.folder)
+                elif self.type == "participative":
+                    security.grant_role(user, WRITER, self.folder)
                 else:
-                    if self.type == "participative":
-                        security.grant_role(user, WRITER, self.folder)
-                    else:
-                        security.grant_role(user, READER, self.folder)
+                    security.grant_role(user, READER, self.folder)
 
     def ungrant_all_roles_on_folder(self) -> None:
         # Only needed if the object is not being created

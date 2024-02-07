@@ -591,9 +591,8 @@ class Module(metaclass=ModuleMeta):
         # If url is not provided, generate it from endpoint name
         if self.url is None:
             self.url = f"{self.crud_app.url}/{self.endpoint}"
-        else:
-            if not self.url.startswith("/"):
-                self.url = f"{self.crud_app.url}/{self.url}"
+        elif not self.url.startswith("/"):
+            self.url = f"{self.crud_app.url}/{self.url}"
 
         # Create blueprint and register rules
         self.blueprint = Blueprint(self.endpoint, __name__, url_prefix=self.url)
