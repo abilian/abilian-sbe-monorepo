@@ -85,7 +85,8 @@ requests = "*"
 sqlalchemy = "1.3.24"
 # flask-sqlachemy 2.2 breaks our apps.
 # flask-sqlalchemy = "2.1"
-flask-sqlalchemy = "2.2"
+# flask-sqlalchemy = "2.2"
+flask-sqlalchemy = "2.3.2"
 # flask-sqlalchemy = {git = "https://github.com/pallets/flask-sqlalchemy.git", rev = "f4662ad464a73befa47cf74754fdbfe156570e59"}
 psycopg2 = "^2.9.9"
 
