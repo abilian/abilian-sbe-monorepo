@@ -337,11 +337,11 @@ def get_template_i18n(template_name: str, locale: Locale) -> list[str]:
     suffix = parts[1]
 
     if locale.territory is not None:
-        locale_string = "_".join([locale.language, locale.territory])
-        localized_template_path = ".".join([root, locale_string, suffix])
+        locale_string = f"{locale.language}_{locale.territory}"
+        localized_template_path = f"{root}.{locale_string}.{suffix}"
         template_list.append(localized_template_path)
 
-    localized_template_path = ".".join([root, locale.language, suffix])
+    localized_template_path = f"{root}.{locale.language}.{suffix}"
     template_list.append(localized_template_path)
 
     # append the default

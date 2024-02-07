@@ -5,5 +5,5 @@ class ConversionError(Exception):
     pass
 
 
-class HandlerNotFound(ConversionError):
+class HandlerNotFoundError(ConversionError):
     pass

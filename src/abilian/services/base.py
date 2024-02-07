@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from abilian.app import Application
 
 
-class ServiceNotRegistered(Exception):
+class ServiceNotRegisteredError(Exception):
     pass
 
 
@@ -79,7 +79,7 @@ class Service:
         try:
             return current_app.extensions[self.name]
         except KeyError as e:
-            raise ServiceNotRegistered(self.name) from e
+            raise ServiceNotRegisteredError(self.name) from e
 
     @property
     def running(self) -> bool:
@@ -90,7 +90,7 @@ class Service:
         """
         try:
             return self.app_state.running
-        except (RuntimeError, ServiceNotRegistered):
+        except (RuntimeError, ServiceNotRegisteredError):
             # RuntimeError: happens when current_app is None: working outside
             # application context
             return False

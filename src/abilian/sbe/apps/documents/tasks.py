@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 from abilian.core.dramatiq.singleton import dramatiq
 from abilian.core.extensions import db
 from abilian.services import converter, get_service
-from abilian.services.conversion import ConversionError, HandlerNotFound
+from abilian.services.conversion import ConversionError, HandlerNotFoundError
 
 if TYPE_CHECKING:
     from .models import Document
@@ -165,7 +165,7 @@ def convert_to_pdf(doc: Document) -> None:
         return
     try:
         doc.pdf = converter.to_pdf(doc.content_digest, doc.content, doc.content_type)
-    except (HandlerNotFound, ConversionError) as e:
+    except (HandlerNotFoundError, ConversionError) as e:
         doc.pdf = b""
         logger.info(
             "Conversion to PDF failed for document {doc_name}: {error}",

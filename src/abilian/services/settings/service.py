@@ -27,15 +27,15 @@ class SettingsNamespace:
 
     def ns(self, key: str) -> str:
         """Returns full key name for use in settings service."""
-        return ":".join((self.name, key))
+        return f"{self.name}:{key}"
 
     def keys(self, prefix: str = "") -> list[str]:
-        prefix = ":".join((self.name, prefix))
+        prefix = f"{self.name}:{prefix}"
         start = len(self.name) + 1  # +1 for colon
         return [k[start:] for k in self.service.keys(prefix=prefix)]
 
     def iteritems(self, prefix: str = "") -> Iterator[tuple[str, int]]:
-        prefix = ":".join((self.name, prefix))
+        prefix = f"{self.name}:{prefix}"
         start = len(self.name) + 1  # +1 for colon
         for k, v in self.service.iteritems(prefix=prefix):
             yield (k[start:], v)

@@ -19,7 +19,7 @@ from abilian.services.conversion.handlers import (
 )
 
 from .exceptions import ConversionError
-from .service import Converter, HandlerNotFound
+from .service import Converter, HandlerNotFoundError
 
 # Singleton, yuck!
 converter = Converter()
@@ -33,7 +33,7 @@ conversion_service = converter
 __all__ = (
     "ConversionError",
     "Converter",
-    "HandlerNotFound",
+    "HandlerNotFoundError",
     "conversion_service",
     "converter",
 )

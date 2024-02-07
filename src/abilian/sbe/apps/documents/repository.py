@@ -14,10 +14,6 @@ if TYPE_CHECKING:
     from abilian.sbe.app import Application
 
 
-class SecurityException(Exception):
-    pass
-
-
 class ContentRepository:
     """A simple document repository, implementing the basic functionalities of
     the CMIS model."""

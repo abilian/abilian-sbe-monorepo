@@ -115,7 +115,6 @@ lint.extend-ignore = [
     "DTZ004", # The use of `datetime.datetime.utcfromtimestamp()` is not allowed, use `datetime.datetime.fromtimestamp(ts, tz=)` instead
     "DTZ005", # The use of `datetime.datetime.now()` without `tz` argument is not allowed
     "DTZ007", # The use of `datetime.datetime.strptime()` without %z must be followed by `.replace(tzinfo=)` or `.astimezone()`
-    "FLY002", # Consider `f"..."` instead of string join
     "FURB101", # `open` and `read` should be replaced by `Path(out_fn).read_bytes()`
     "FURB113", # Use `x.extend(...)` instead of repeatedly calling `x.append()`
     "FURB132",
@@ -130,7 +129,6 @@ lint.extend-ignore = [
     "N806", # Variable in function should be lowercase
     "N814", # Camelcase ... imported as constant
     "N816", # Variable in global scope should not be mixedCase
-    "N818", # Exception name should be named with an Error suffix
     "PD011", # Use `.to_numpy()` instead of `.values`
     "PERF102", # When using only the values of a dict use the `values()` method
     "PERF203", # `try`-`except` within a loop incurs performance overhead
