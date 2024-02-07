@@ -131,6 +131,7 @@ lint.extend-ignore = [
     "PERF403", # Use a dictionary comprehension instead of a for-loop
     "PIE810", # Call `startswith` / `endswith` once with a `tuple`
     "PLC1901", # `x == ""` can be simplified to `not x` as an empty string is falsey
+    #
     "PLR0904", # Too many public methods (22 > 20)
     "PLR0911", # Too many return statements
     "PLR0912", # Too many branches
@@ -141,13 +142,16 @@ lint.extend-ignore = [
     "PLR0914",
     "PLR5501", # Use `elif` instead of `else` then `if`, to reduce indentation
     "PLR6201", # Use a `set` literal when testing for membership
+    #
     "PLW0108", # Lambda may be unnecessary; consider inlining inner function
     "PLW1514", # `open` in text mode without explicit `encoding` argument
     "PLW2901", # `for` loop variable overwritten by assignment target
     "PLW3201", # Bad or misspelled dunder method name. (bad-dunder-name)
+    #
     "PT011", # `pytest.raises(ValueError)` is too broad, set the `match` parameter or use a more specific exception
     "PT012", # `pytest.raises()` block should contain a single simple statement
     "PT013", # Found incorrect import of pytest, use simple `import pytest` instead
+    #
     "PTH100", # `os.path.abspath()` should be replaced by `Path.resolve()`
     "PTH107", # `os.remove()` should be replaced by `Path.unlink()`
     "PTH109", # `os.getcwd()` should be replaced by `Path.cwd()`
@@ -161,13 +165,15 @@ lint.extend-ignore = [
     "PTH123", # `open()` should be replaced by `Path.open()`
     "PTH202", # `os.path.getsize` should be replaced by `Path.stat().st_size`
     "PTH207", # Replace `glob` with `Path.glob` or `Path.rglob`
+    #
     "PYI024", # Use `typing.NamedTuple` instead of `collections.namedtuple`
     "PYI034", # `__enter__` methods in classes like `FormContext` usually return `self` at runtime
     "RET503", # Missing explicit `return` at the end of function able to return non-`None` value
+    #
     "SIM102", # Use a single `if` statement instead of nested `if` statements
     "SIM115", # Use context handler for opening files
     "SIM117", # Use a single `with` statement with multiple contexts instead of nested `with` statements
-    "SIM113", # Use `enumerate()` for index variabl
+    #
     "SLF001", # Private member accessed
     "TID252", # Relative imports from parent modules are banned
     "TRY002", # Create your own exception

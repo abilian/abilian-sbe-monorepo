@@ -452,7 +452,6 @@ def members_excel_export():
         # sheet title cannot exceed 31 char. max length
         ws_title = f"{ws_title[:30]}…"
     ws = wb.create_sheet(title=ws_title)
-    row = 0
     cells = []
 
     cols_width = []
@@ -467,7 +466,6 @@ def members_excel_export():
     ws.append(cells)
 
     for membership_info in _members_query().all():
-        row += 1
         cells = []
         for col, getter in enumerate(attributes):
             with contextlib.suppress(AttributeError):
