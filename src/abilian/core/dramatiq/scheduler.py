@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from collections import namedtuple
+from collections.abc import Callable
 
-from _collections_abc import Callable
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from loguru import logger
