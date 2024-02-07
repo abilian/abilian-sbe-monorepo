@@ -9,29 +9,29 @@ lint.select = [
     "C90", # mccabe
     "I", # isort
     "N", # pep8-naming
-#    "D", # pydocstyle
+    #    "D", # pydocstyle
     "UP", # pyupgrade
     "YTT", # flake8-2020
-#    "ANN", # flake8-annotations
+    #    "ANN", # flake8-annotations
     "ASYNC", # flake8-async
     "S", # flake8-bandit
     "BLE", # flake8-blind-except
-#    "FBT", # flake8-boolean-trap
+    #    "FBT", # flake8-boolean-trap
     "B", # flake8-bugbear
     "A", # flake8-builtins
-#    "COM", # flake8-commas
-#    "CPY", # flake8-copyright
+    #    "COM", # flake8-commas
+    #    "CPY", # flake8-copyright
     "C4", # flake8-comprehensions
     "DTZ", # flake8-datetimez
     "T10", # flake8-debugger
     "DJ", # flake8-django
-#    "EM", # flake8-errmsg
+    #    "EM", # flake8-errmsg
     "EXE", # flake8-executable
     "FA", # flake8-future-annotations
     "ISC", # flake8-implicit-str-concat
     "ICN", # flake8-import-conventions
     "G", # flake8-logging-format
-#    "INP", # flake8-no-pep420
+    #    "INP", # flake8-no-pep420
     "PIE", # flake8-pie
     "T20", # flake8-print
     "PYI", # flake8-pyi
@@ -45,18 +45,18 @@ lint.select = [
     "TID", # flake8-tidy-imports
     "TCH", # flake8-type-checking
     "INT", # flake8-gettext
-#    "ARG", # flake8-unused-arguments
+    #    "ARG", # flake8-unused-arguments
     "PTH", # flake8-use-pathlib
-#    "TD", # flake8-todos
-#    "FIX", # flake8-fixme
+    #    "TD", # flake8-todos
+    #    "FIX", # flake8-fixme
     "ERA", # eradicate
     "PD", # pandas-vet
-#    "PGH", # pygrep-hooks
+    #    "PGH", # pygrep-hooks
     "PL", # Pylint
     "TRY", # tryceratops
     "FLY", # flynt
-#    "NPY", # NumPy-specific rules
-#    "AIR", # Airflow
+    #    "NPY", # NumPy-specific rules
+    #    "AIR", # Airflow
     "PERF", # Perflint
     "FURB", # refurb
     "LOG", # flake8-logging
@@ -75,7 +75,7 @@ lint.extend-ignore = [
     "TCH001", # Move import into a type-checking block
     "TCH002", # Move import into a type-checking block
     "TCH003", # Move import into a type-checking block
-    # Fix these
+    # Fix these (if possible)
     "A001", # Variable `...` is shadowing a python builtin
     "A002", # Argument `...` is shadowing a python builtin
     "A003", # Class attribute ... is shadowing a python builtin
@@ -97,13 +97,6 @@ lint.extend-ignore = [
     "RET505", # Unnecessary `else` after `return` statement
     "RUF005", # Consider iterable unpacking instead of concatenation
     "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
-    "S104", # Possible binding to all interfaces
-    "S301",
-    "S603",
-    "S605",
-    "S606",
-    "S607",
-    "S701", # By default, jinja2 sets `autoescape` to `False`
     "SIM108", # Use ternary operator
     "T201", # `print` found
     "TRY003", # Avoid specifying long messages outside the exception class
@@ -184,10 +177,18 @@ lint.extend-ignore = [
     "PLC2801", # Unnecessary dunder call
     "PLC2701", # Private name import `_...` from external module
     # FIXME:
+    "S104", # Possible binding to all interfaces
+    "S301", # `pickle`...
     "S403", # `pickle`, `cPickle`, `dill`, and `shelve` modules are possibly insecure
     "S404", # `subprocess` module is possibly insecure
     "S405", # lxml` is vulnerable to XML attacks
     "S410", # lxml` is vulnerable to XML attacks
+    "S603", # Subprocess related...
+    "S605", # Subprocess related...
+    "S606", # Subprocess related...
+    "S607", # Subprocess related...
+    "S701", # By default, jinja2 sets `autoescape` to `False`.
+    # Consider using `autoescape=True` or the `select_autoescape` function to mitigate XSS vulnerabilities.
 ]
 
 [lint.mccabe]
