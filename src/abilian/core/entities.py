@@ -367,33 +367,34 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
             self.meta = {}
 
     @property
-    def auto_slug(self) -> str:
+    def auto_slug(self) -> str | None:
         """This property is used to auto-generate a slug from the name
         attribute.
 
         It can be customized by subclasses.
         """
         slug = self.name
-        if slug is not None:
-            slug = slugify(slug, separator=self.SLUG_SEPARATOR)
-            session = sa.orm.object_session(self)
-            if not session:
-                return ""
-            query = session.query(Entity.slug).filter(
-                Entity._entity_type == self.object_type
-            )
-            if self.id is not None:
-                query = query.filter(Entity.id != self.id)
-            slug_re = re.compile(f"{re.escape(slug)}-?(-\\d+)?")
-            results = [
-                int(m.group(1) or 0)  # 0: for the unnumbered slug
-                for m in (slug_re.match(s.slug) for s in query.all() if s.slug)
-                if m
-            ]
+        if slug is None:
+            return None  # FIXME
+        slug = slugify(slug, separator=self.SLUG_SEPARATOR)
+        session = sa.orm.object_session(self)
+        if not session:
+            return ""
+        query = session.query(Entity.slug).filter(
+            Entity._entity_type == self.object_type
+        )
+        if self.id is not None:
+            query = query.filter(Entity.id != self.id)
+        slug_re = re.compile(f"{re.escape(slug)}-?(-\\d+)?")
+        same_slug_ids = [
+            int(m.group(1) or 0)  # 0: for the unnumbered slug
+            for m in (slug_re.match(s.slug) for s in query.all() if s.slug)
+            if m
+        ]
 
-            max_id = max(-1, -1, *results) + 1
-            if max_id:
-                slug = f"{slug}-{max_id}"
+        current_id = max(same_slug_ids, default=-1)
+        if current_id >= 0:
+            slug = f"{slug}-{current_id + 1}"
         return slug
 
     @property
