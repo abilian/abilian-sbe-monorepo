@@ -491,32 +491,13 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
 # TODO: make this unecessary
 @event.listens_for(Entity, "class_instrument", propagate=True)
 def register_metadata(cls: type[Entity]):
-    # editable_columns = set()
-
     # TODO: use SQLAlchemy 0.8 introspection
-    if hasattr(cls, "__table__"):
-        from icecream import ic
-
-        try:
-            columns = cls.__table__.columns
-        except Exception:
-            ic.configureOutput(includeContext=True)
-            ic(cls)
-            ic(cls.__table__)
-            ic(dir(cls))
-            raise
+    if hasattr(cls, "__table__") and cls.__table__ is not None:
+        columns = cls.__table__.columns
     else:
         columns = [col for key, col in vars(cls).items() if isinstance(col, Column)]
 
-    # for column in columns:
-    #     name = column.name
-    #     info = column.info
-
-    #     if info.get("editable", True):
-    #         editable_columns.add(name)
-
     editable_columns = {col.name for col in columns if col.info.get("editable", True)}
-
     cls.__editable__ = frozenset(editable_columns)
 
 
