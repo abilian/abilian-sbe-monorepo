@@ -1,3 +1,9 @@
+# ruff: noqa
+
+"""
+This file is currently not used.
+"""
+
 from __future__ import annotations
 
 from collections.abc import Callable
