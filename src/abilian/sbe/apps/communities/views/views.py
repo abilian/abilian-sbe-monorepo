@@ -456,7 +456,7 @@ def members_excel_export():
     cells = []
 
     cols_width = []
-    for _col, label in enumerate(MEMBERS_EXPORT_HEADERS, 1):
+    for label in MEMBERS_EXPORT_HEADERS:
         value = str(label)
         cell = WriteOnlyCell(ws, value=value)
         cell.font = HEADER_FONT

@@ -72,6 +72,9 @@ lint.extend-ignore = [
     "S101", # Use of `assert` detected
     "S320", # OK, we're using defusedxml
     "RUF027", # Possible f-string without an `f` prefix
+    "TCH001", # Move import into a type-checking block
+    "TCH002", # Move import into a type-checking block
+    "TCH003", # Move import into a type-checking block
     # Fix these
     "A001", # Variable `...` is shadowing a python builtin
     "A002", # Argument `...` is shadowing a python builtin
@@ -103,9 +106,6 @@ lint.extend-ignore = [
     "S701", # By default, jinja2 sets `autoescape` to `False`
     "SIM108", # Use ternary operator
     "T201", # `print` found
-    "TCH001", # Move import into a type-checking block
-    "TCH002", # Move import into a type-checking block
-    "TCH003", # Move import into a type-checking block
     "TRY003", # Avoid specifying long messages outside the exception class
     # More...
     "BLE001", # Do not catch blind exception
@@ -116,7 +116,7 @@ lint.extend-ignore = [
     "DTZ005", # The use of `datetime.datetime.now()` without `tz` argument is not allowed
     "DTZ007", # The use of `datetime.datetime.strptime()` without %z must be followed by `.replace(tzinfo=)` or `.astimezone()`
     "FURB113", # Use `x.extend(...)` instead of repeatedly calling `x.append()`
-    "FURB148", # `enumerate` index is unused, use `for x in y` instead
+#    "FURB148", # `enumerate` index is unused, use `for x in y` instead
     "ISC001", # Implicitly concatenated string literals on one line
     "ISC003", # Explicitly concatenated string should be implicitly concatenated
     "N801", # Class name should use CapWords convention
