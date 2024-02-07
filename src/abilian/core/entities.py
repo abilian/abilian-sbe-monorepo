@@ -20,7 +20,7 @@ from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.types import Integer, String, UnicodeText
 
 from .extensions import db
-from .models import BaseMixin, EDITABLE, SEARCHABLE, SYSTEM, Indexable, Model
+from .models import EDITABLE, SEARCHABLE, SYSTEM, BaseMixin, Indexable, Model
 from .sqlalchemy import JSONDict
 from .util import friendly_fqcn, memoized, slugify
 
@@ -404,7 +404,7 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
         from abilian.services.indexing import indexable_role
         from abilian.services.security import READ, Admin, Anonymous, Creator, Owner
 
-        result = []
+        result: list[str] = []
         security = get_security_service()
 
         # roles - required to match when user has a global role
@@ -412,8 +412,8 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
         allowed_roles = assignments.get(READ, set())
         allowed_roles.add(Admin)
 
-        for r in allowed_roles:
-            result.append(indexable_role(r))
+        for role in allowed_roles:
+            result.append(indexable_role(role))
 
         for role, attr in ((Creator, "creator"), (Owner, "owner")):
             if role in allowed_roles:
@@ -422,17 +422,27 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
                     result.append(indexable_role(user))
 
         # users and groups
-        principals = set()
-        for user, role in security.get_role_assignements(self):
-            if role in allowed_roles:
-                principals.add(user)
+        # principals = set()
+        # for user, role in security.get_role_assignements(self):
+        #     if role in allowed_roles:
+        #         principals.add(user)
+        principals = {
+            user
+            for user, role in security.get_role_assignements(self)
+            if role in allowed_roles
+        }
 
-        # it's a role listed in role assignments - legacy when there wasn't
-        # permission-role assignments
+        # Anonymous is a role listed in role assignments
+        # - legacy when there wasn't permission-role assignments
         principals.discard(Anonymous)
 
-        for p in principals:
-            result.append(indexable_role(p))
+        # if Anonymous in principals:
+        #     # it's a role listed in role assignments - legacy when there wasn't
+        #     # permission-role assignments
+        #     principals.remove(Anonymous)
+
+        for user in principals:
+            result.append(indexable_role(user))
 
         return " ".join(result)
 
@@ -445,15 +455,15 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
             return []
 
         default_ns = tags.entity_default_ns(self)
-        return [t for t in tags.entity_tags(self) if t.ns == default_ns]
+        return [tag for tag in tags.entity_tags(self) if tag.ns == default_ns]
 
     @property
     def _indexable_tag_ids(self) -> str:
-        return " ".join(str(t.id) for t in self._indexable_tags)
+        return " ".join(str(tag.id) for tag in self._indexable_tags)
 
     @property
     def _indexable_tag_text(self) -> str:
-        return " ".join(str(t.label) for t in self._indexable_tags)
+        return " ".join(str(tag.label) for tag in self._indexable_tags)
 
     def clone(self):
         """Copy an entity: copy every field, except the id and sqlalchemy
@@ -480,7 +490,7 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
 # TODO: make this unecessary
 @event.listens_for(Entity, "class_instrument", propagate=True)
 def register_metadata(cls: type[Entity]):
-    editable_columns = set()
+    # editable_columns = set()
 
     # TODO: use SQLAlchemy 0.8 introspection
     if hasattr(cls, "__table__"):
@@ -495,14 +505,16 @@ def register_metadata(cls: type[Entity]):
             ic(dir(cls))
             raise
     else:
-        columns = [v for k, v in vars(cls).items() if isinstance(v, Column)]
+        columns = [col for key, col in vars(cls).items() if isinstance(col, Column)]
 
-    for column in columns:
-        name = column.name
-        info = column.info
+    # for column in columns:
+    #     name = column.name
+    #     info = column.info
 
-        if info.get("editable", True):
-            editable_columns.add(name)
+    #     if info.get("editable", True):
+    #         editable_columns.add(name)
+
+    editable_columns = {col.name for col in columns if col.info.get("editable", True)}
 
     cls.__editable__ = frozenset(editable_columns)
 
