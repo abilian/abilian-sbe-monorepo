@@ -71,6 +71,7 @@ lint.extend-ignore = [
     "E713", # Test for membership should be `not in`
     "S101", # Use of `assert` detected
     "S320", # OK, we're using defusedxml
+    "RUF027", # Possible f-string without an `f` prefix
     # Fix these
     "A001", # Variable `...` is shadowing a python builtin
     "A002", # Argument `...` is shadowing a python builtin
