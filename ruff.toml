@@ -79,8 +79,7 @@ lint.extend-ignore = [
     "A003", # Class attribute `...` is shadowing a python builtin
     "B024", # `...` is an abstract base class, but it has no abstract methods
     "B027", # `...` is an empty method in an abstract base class, but has no abstract decorator
-    "B028", # No explicit `stacklevel` keyword argument found
-    "B905", # `zip()` without an explicit `strict=` parameter
+    "B028", # No explicit `...` keyword argument found
     "E402", # Module level import not at top of file
     "E501", # line too long
     "E741", # Ambiguous variable name

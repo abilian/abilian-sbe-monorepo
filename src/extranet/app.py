@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import os
-from pprint import pformat
 
 import click
 import toml
