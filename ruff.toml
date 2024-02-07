@@ -64,18 +64,19 @@ lint.select = [
 ]
 
 lint.extend-ignore = [
-    # False positive, don't remove
+    # False positive, don't remove (unless you know exactly what you're doing)
     "E203", # whitespace before ':'
     "E711", # comparison to None should be 'if cond is not None:'
     "E712", # ...
     "E713", # Test for membership should be `not in`
+    "PLR2044", # Line with empty comment
+    "RUF027", # Possible f-string without an `f` prefix
     "S101", # Use of `assert` detected
     "S320", # OK, we're using defusedxml
-    "RUF027", # Possible f-string without an `f` prefix
     "TCH001", # Move import into a type-checking block
     "TCH002", # Move import into a type-checking block
     "TCH003", # Move import into a type-checking block
-    # Fix these (if possible)
+    # Fix these (if possible / reasonable)
     "A001", # Variable `...` is shadowing a python builtin
     "A002", # Argument `...` is shadowing a python builtin
     "A003", # Class attribute ... is shadowing a python builtin
@@ -130,8 +131,7 @@ lint.extend-ignore = [
     "PLR0913", # Too many arguments in function definition
     "PLR0915", # Too many statements
     "PLR0917", # Too many positional arguments
-    "PLR2044",
-    "PLR0914",
+    "PLR0914", # Too many local variables
     "PLR6201", # Use a `set` literal when testing for membership
     #
     "PLW1514", # `open` in text mode without explicit `encoding` argument
