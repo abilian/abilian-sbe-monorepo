@@ -174,12 +174,10 @@ lint.extend-ignore = [
     "PTH207", # Replace `glob` with `Path.glob` or `Path.rglob`
     "PYI024", # Use `typing.NamedTuple` instead of `collections.namedtuple`
     "PYI034", # `__enter__` methods in classes like `FormContext` usually return `self` at runtime
-    "PYI036", # The first argument in `__exit__` should be annotated with `object` or `type[BaseException] | None`
     "RET503", # Missing explicit `return` at the end of function able to return non-`None` value
     "SIM102", # Use a single `if` statement instead of nested `if` statements
     "SIM115", # Use context handler for opening files
     "SIM117", # Use a single `with` statement with multiple contexts instead of nested `with` statements
-    "SIM118", # Use `key in dict` instead of `key in dict.keys()`
     "SIM113", # Use `enumerate()` for index variabl
     "SLF001", # Private member accessed
     "TID252", # Relative imports from parent modules are banned

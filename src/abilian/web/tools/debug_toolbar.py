@@ -29,7 +29,7 @@ class ActionDebugPanel(DebugPanel):
     def content(self) -> str:
         actions_for_template = []
 
-        for category in actions.actions().keys():
+        for category in actions.actions():
             available_actions = actions.for_category(category)
             for action in available_actions:
                 d = {

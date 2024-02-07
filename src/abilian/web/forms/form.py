@@ -78,7 +78,7 @@ class FormContext:
         g.__form_ctx__ = self
         return self
 
-    def __exit__(self, exc_type: None, exc_val: None, exc_tb: None):
+    def __exit__(self, exc_type, exc_val, exc_tb):
         if not has_app_context():
             return
 

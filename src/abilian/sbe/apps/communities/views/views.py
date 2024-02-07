@@ -470,7 +470,6 @@ def members_excel_export():
         row += 1
         cells = []
         for col, getter in enumerate(attributes):
-            value = None
             with contextlib.suppress(AttributeError):
                 value = getter(membership_info)
 
