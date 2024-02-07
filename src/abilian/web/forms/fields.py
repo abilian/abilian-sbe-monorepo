@@ -545,7 +545,7 @@ class QuerySelect2Field(SelectFieldBase):
             if all(hasattr(x, "name") for x in data):
                 data = sorted(data, key=lambda x: x.name)
             else:
-                data = sorted(data, key=lambda x: str(x))
+                data = sorted(data, key=str)
 
             if data:
                 if not self.multiple:

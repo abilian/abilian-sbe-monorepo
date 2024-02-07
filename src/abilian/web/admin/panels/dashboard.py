@@ -185,7 +185,7 @@ def uniquelogins(sessions: list[Any]) -> tuple[list[Any], list[Any], list[Any]]:
     # convert the index to Datetime type
     daily_serie.index = pd.DatetimeIndex(daily_serie.index)
     # calculate the values instead of users lists
-    daily_serie = daily_serie.apply(lambda x: len(x))
+    daily_serie = daily_serie.apply(len)
 
     # GroupBy Week/month, Thanks Panda
     weekly_serie = daily_serie.groupby(pd.Grouper(freq="W")).aggregate(numpysum)

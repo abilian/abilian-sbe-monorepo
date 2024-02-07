@@ -77,7 +77,9 @@ def test_build_attrs_3():
         "text",
         "updated_at",
     }
-    assert all(lambda f: callable(f) for f in adapter.doc_attrs.values())
+
+    # FIXME: this test doesn't make sense
+    # assert all(lambda f: callable(f) for f in adapter.doc_attrs.values())
 
     assert set(schema.names()) == {
         "allowed_roles_and_users",
@@ -111,7 +113,9 @@ def test_build_attrs_4():
         "object_type",
         "object_key",
     }
-    assert all(lambda f: callable(f) for f in adapter.doc_attrs.values())
+
+    # FIXME: this test doesn't make sense
+    # assert all(lambda f: callable(f) for f in adapter.doc_attrs.values())
 
     assert set(schema.names()) == {
         "id",

@@ -136,7 +136,6 @@ lint.extend-ignore = [
     "PLR5501", # Use `elif` instead of `else` then `if`, to reduce indentation
     "PLR6201", # Use a `set` literal when testing for membership
     #
-    "PLW0108", # Lambda may be unnecessary; consider inlining inner function
     "PLW1514", # `open` in text mode without explicit `encoding` argument
     "PLW2901", # `for` loop variable overwritten by assignment target
     "PLW3201", # Bad or misspelled dunder method name. (bad-dunder-name)

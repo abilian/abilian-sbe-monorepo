@@ -35,7 +35,7 @@ class UserPreferencesForm(Form):
     locale = fields.LocaleSelectField(
         label=_l("Preferred Language"),
         validators=[required()],
-        default=lambda: get_default_locale(),
+        default=get_default_locale,
     )
 
     timezone = fields.TimezoneField(
