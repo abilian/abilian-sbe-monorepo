@@ -25,9 +25,6 @@ from abilian.web.util import url_for
 
 from .config import BaseConfig
 
-# from periodiq import PeriodiqMiddleware
-
-
 __all__ = ["create_app"]
 
 HOME_ACTION = NavItem("section", "home", title=_l("Home"), endpoint="social.home")
@@ -52,8 +49,6 @@ class Application(BaseApplication):
 
 
 def create_app(config=None, **kw):
-    # global broker
-
     app = Application(__name__, **kw)
     app.config.from_object(BaseConfig)
 

@@ -15,6 +15,7 @@ from wtforms.fields import Field, HiddenField
 from wtforms_alchemy import model_form_factory
 
 from abilian.core.entities import Entity
+from abilian.core.logger_patch import patch_logger
 from abilian.core.models.subjects import User
 from abilian.i18n import _, _n
 from abilian.services.security import Permission
@@ -192,7 +193,7 @@ if not _PATCHED:
 
         self.view_widget = view_widget
 
-    logger.debug("Field.__init__: {field}", field=Field.__init__)
+    patch_logger.info(Field.__init__)
     Field.__init__ = _core_field_init
     del _core_field_init
 
@@ -205,7 +206,7 @@ if not _PATCHED:
             self.__class__.__module__, self.__class__.__name__, id(self), self.name
         )
 
-    logger.debug("{module}.Field.__repr__", module=Field.__module__)
+    patch_logger.info(f"{Field.__module__}.Field.__repr__")
     Field.__repr__ = _core_field_repr
     del _core_field_repr
 
@@ -218,7 +219,7 @@ if not _PATCHED:
 
         return _wtforms_Field_render(self, **kwargs)
 
-    logger.debug("Field.__call__: {field_call}", field_call=Field.__call__)
+    patch_logger.info(Field.__call__)
     Field.__call__ = _core_field_render
     del _core_field_render
 
@@ -232,7 +233,7 @@ if not _PATCHED:
 
         return DefaultViewWidget().render_view(self, **kwargs)
 
-    logger.debug("Add method {module}.Field.render_view", module=Field.__module__)
+    patch_logger.info(f"Add method {Field.__module__}.Field.render_view")
     Field.render_view = render_view
     del render_view
 
@@ -241,7 +242,7 @@ if not _PATCHED:
         is not set on `HiddenField` :-("""
         return self.flags.hidden or isinstance(self, HiddenField)
 
-    logger.debug("Add method {module}.Field.is_hidden", module=Field.__module__)
+    patch_logger.info(f"Add method {Field.__module__}.Field.is_hidden")
     Field.is_hidden = property(is_hidden)
     del is_hidden
 

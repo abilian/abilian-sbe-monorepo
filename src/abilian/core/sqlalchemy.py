@@ -20,12 +20,13 @@ import sqlalchemy.orm
 import sqlalchemy.pool
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy as SAExtension
-from loguru import logger
 from sqlalchemy.engine.interfaces import Dialect
 from sqlalchemy.engine.url import URL
 from sqlalchemy.event import listens_for
 from sqlalchemy.ext.mutable import Mutable
 from sqlalchemy.sql.sqltypes import CHAR
+
+from .logger_patch import patch_logger
 
 
 @listens_for(sa.pool.Pool, "checkout")
@@ -110,7 +111,7 @@ def _calling_context(app_path: str) -> str:
     return sa_caller
 
 
-logger.info(flask_sa._calling_context)
+patch_logger.info(flask_sa._calling_context)
 flask_sa._calling_context = _calling_context
 del flask_sa
 
