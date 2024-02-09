@@ -73,6 +73,7 @@ class AttachmentQuery(EntityQuery):
 class Attachment(Entity):
     """An Attachment owned by an :class:`Entity`."""
 
+    __tablename__ = "attachment"
     __auditable_entity__ = ("entity", "attachment", ("id", "name"))
 
     entity_id = Column(Integer, ForeignKey(Entity.id), nullable=False)

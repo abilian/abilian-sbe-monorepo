@@ -111,6 +111,7 @@ def indexable_roles_and_users(community: Community) -> str:
 class Community(Entity):
     """Ad-hoc objects that hold properties about a community."""
 
+    __tablename__ = "community"
     __index_to__ = (("id", ("id", "community_id")),)
 
     is_community_content = True

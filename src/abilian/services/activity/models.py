@@ -39,6 +39,8 @@ def _default_from(column: str) -> Callable:
 class ActivityEntry(db.Model):
     """Main table for all activities."""
 
+    __tablename__ = "activity_entry"
+
     id = Column(Integer, primary_key=True)
     happened_at = Column(DateTime, default=datetime.utcnow)
 

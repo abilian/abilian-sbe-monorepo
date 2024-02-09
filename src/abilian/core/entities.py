@@ -261,6 +261,7 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
               return args
     """
 
+    __tablename__ = "entity"
     __indexable__ = False
     __index_to__ = (
         ("_indexable_roles_and_users", ("allowed_roles_and_users",)),

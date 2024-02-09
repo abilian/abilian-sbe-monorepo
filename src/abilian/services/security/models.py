@@ -435,4 +435,4 @@ class InheritSecurity:
 
 
 class FolderishModel(Entity, InheritSecurity):
-    pass
+    __tablename__ = "folderish_model"

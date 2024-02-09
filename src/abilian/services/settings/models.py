@@ -63,6 +63,8 @@ class Setting(db.Model):
     value must be stored as Unicode.
     """
 
+    __tablename__ = "setting"
+
     transformers = _transformers
     key = sa.Column("key", sa.String(length=1000), primary_key=True)
 

@@ -69,6 +69,7 @@ class CommentQuery(EntityQuery):
 class Comment(Entity):
     """A Comment related to an :class:`Entity`."""
 
+    __tablename__ = "comment"
     __default_permissions__ = {WRITE: {Owner}, DELETE: {Owner}, CREATE: {Anonymous}}
 
     entity_id = Column(Integer, ForeignKey(Entity.id), nullable=False)

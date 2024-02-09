@@ -85,6 +85,8 @@ class Changes:
 class AuditEntry(db.Model):
     """Logs modifications to auditable classes."""
 
+    __tablename__ = "audit_entry"
+
     id = Column(Integer, primary_key=True)
     happened_at = Column(DateTime, default=datetime.utcnow, index=True)
     type = Column(Integer)  # CREATION / UPDATE / DELETION

@@ -276,7 +276,7 @@ class PathAndSecurityIndexable:
 
 
 class Folder(PathAndSecurityIndexable, CmisObject):
-    __tablename__: str | None = None
+    __tablename__ = "folder"
     sbe_type = "cmis:folder"
 
     __indexable__ = True
@@ -423,6 +423,7 @@ class Folder(PathAndSecurityIndexable, CmisObject):
 class BaseContent(CmisObject):
     """A base class for cmisobject with an attached file."""
 
+    __tablename__ = "base_content"
     _content_id = Column(Integer, db.ForeignKey(Blob.id))
     content_blob = relationship(Blob, cascade="all, delete", foreign_keys=[_content_id])
 
@@ -514,8 +515,7 @@ class BaseContent(CmisObject):
 class Document(BaseContent, PathAndSecurityIndexable):
     """A document, in the CMIS sense."""
 
-    __tablename__: str | None = None
-
+    __tablename__ = "document"
     __indexable__ = True
     __index_to__ = (("text", ("text",)),)
 
