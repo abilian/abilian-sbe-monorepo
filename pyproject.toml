@@ -38,12 +38,11 @@ werkzeug = "2.0.3"
 MarkupSafe = "2.1.4" # last  19 janv. 2024
 # MarkupSafe==2.1.4
 # Flask plugins (somme are pinned)
-#flask-babel = "~1.0.0"
-# flask-babel = "~4.0.0"  # last 2 oct. 2023
-# • Updating flask-babel (1.0.0 -> 4.0.0)
-# Flask-Babel==1.0.0
 
-flask-babel = "~2.0.0"
+flask-babel = "1.0.0"
+# note : flask-babel = "~2.0.0" breaks tests
+# flask-babel = "~4.0.0"  # last 2 oct. 2023
+
 
 # flask-assets = ">=0.12" #0.12: 2016-08-18
 flask-assets = ">=0.12" #0.12: 2016-08-18  see webassets
