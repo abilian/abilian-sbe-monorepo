@@ -16,18 +16,16 @@ def json_token_view():
     return {"token": token()}
 
 
-def field() -> CSRFTokenField:
+def field() -> CSRFTokenField | None:
     """Return an instance of `wtforms.ext.csrf.fields.CSRFTokenField`, suitable
     for rendering.
 
     Renders an empty string if `config.WTF_CSRF_ENABLED` is not set.
     """
-    # from icecream import ic
-    #
     if current_app.config.get("WTF_CSRF_ENABLED"):
         return FlaskForm().csrf_token
     else:
-        return CSRFTokenField()
+        return None
 
 
 def time_limit():
@@ -48,7 +46,9 @@ def token() -> str:
 
     Useful for passing it to JavaScript for instance.
     """
-    return field().current_token or ""
+    if csrf_token := field() is None:
+        return ""
+    return csrf_token.current_token
 
 
 def support_graceful_failure(view: Callable) -> Callable:
