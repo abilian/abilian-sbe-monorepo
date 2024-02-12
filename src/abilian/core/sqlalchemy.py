@@ -73,47 +73,47 @@ class SQLAlchemy(SAExtension):
             options.setdefault("client_encoding", "utf8")
 
 
-# PATCH flask_sqlalchemy for proper info in debug toolbar.
-#
-# Original code works only when current app code is involved. If using 3rd party
-# app the query is logged but source is marked "unknown". Our patch is a "best
-# guess".
-def _calling_context(app_path: str) -> str:
-    frm = sys._getframe(1)
-    entered_sa_code = exited_sa_code = False
-    sa_caller = "<unknown>"
-    format_name = (
-        "{frm.f_code.co_filename}:{frm.f_lineno} ({frm.f_code.co_name})".format
-    )
+# # PATCH flask_sqlalchemy for proper info in debug toolbar.
+# #
+# # Original code works only when current app code is involved. If using 3rd party
+# # app the query is logged but source is marked "unknown". Our patch is a "best
+# # guess".
+# def _calling_context(app_path: str) -> str:
+#     frm = sys._getframe(1)
+#     entered_sa_code = exited_sa_code = False
+#     sa_caller = "<unknown>"
+#     format_name = (
+#         "{frm.f_code.co_filename}:{frm.f_lineno} ({frm.f_code.co_name})".format
+#     )
 
-    while frm.f_back is not None:
-        name = frm.f_globals.get("__name__")
-        if name and (
-            name == app_path
-            or name.startswith(f"{app_path}.")
-            or name.startswith("abilian.")
-        ):
-            return format_name(frm=frm)
+#     while frm.f_back is not None:
+#         name = frm.f_globals.get("__name__")
+#         if name and (
+#             name == app_path
+#             or name.startswith(f"{app_path}.")
+#             or name.startswith("abilian.")
+#         ):
+#             return format_name(frm=frm)
 
-        if not exited_sa_code:
-            in_sa_code = name and (
-                name == "sqlalchemy" or name.startswith("sqlalchemy.")
-            )
-            if not entered_sa_code:
-                entered_sa_code = bool(in_sa_code)
-            elif not in_sa_code:
-                # exited from sa stack: retain name
-                sa_caller = format_name(frm=frm)
-                exited_sa_code = True
+#         if not exited_sa_code:
+#             in_sa_code = name and (
+#                 name == "sqlalchemy" or name.startswith("sqlalchemy.")
+#             )
+#             if not entered_sa_code:
+#                 entered_sa_code = bool(in_sa_code)
+#             elif not in_sa_code:
+#                 # exited from sa stack: retain name
+#                 sa_caller = format_name(frm=frm)
+#                 exited_sa_code = True
 
-        frm = frm.f_back
+#         frm = frm.f_back
 
-    return sa_caller
+#     return sa_caller
 
 
-patch_logger.info(flask_sa._calling_context)
-flask_sa._calling_context = _calling_context
-del flask_sa
+# patch_logger.info(flask_sa._calling_context)
+# flask_sa._calling_context = _calling_context
+# del flask_sa
 
 # END PATCH
 
