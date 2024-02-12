@@ -294,9 +294,7 @@ class Less(ExternalTool):
             return url
 
         src_path = os.path.normpath(os.path.abspath(os.path.join(cur_path, url)))
-        possible_paths = [
-            p for p in self.ctx.url_mapping if src_path.startswith(p)
-        ]
+        possible_paths = [p for p in self.ctx.url_mapping if src_path.startswith(p)]
         if not possible_paths:
             return url
 
@@ -355,9 +353,7 @@ class ClosureJS(BaseClosureJS):
         self.fix_source_map_urls(str(smap_path))
 
     def fix_url(self, cur_path, src_path):
-        possible_paths = [
-            p for p in self.ctx.url_mapping if src_path.startswith(p)
-        ]
+        possible_paths = [p for p in self.ctx.url_mapping if src_path.startswith(p)]
 
         if not possible_paths:
             raise RuntimeError("Should not happen")

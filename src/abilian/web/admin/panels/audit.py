@@ -375,9 +375,7 @@ class SecurityEntryPresenter(BaseEntryPresenter):
             elif e.op == e.UNSET_INHERIT:
                 msg = _("{manager} has deactivated inheritance on {entity}")
             elif e.op == e.GRANT:
-                msg = _(
-                    '{manager} has given role "{role}" to {principal} on {entity}'
-                )
+                msg = _('{manager} has given role "{role}" to {principal} on {entity}')
             elif e.op == e.REVOKE:
                 msg = _(
                     '{manager} has revoked role "{role}" from {principal} on {entity}'

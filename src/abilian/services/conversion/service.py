@@ -82,7 +82,9 @@ class Converter:
                     continue
                 self.cache[cache_key] = pdf
                 return pdf
-        raise HandlerNotFoundError(f"No handler found to convert from {mime_type} to PDF")
+        raise HandlerNotFoundError(
+            f"No handler found to convert from {mime_type} to PDF"
+        )
 
     def to_text(self, digest: str, blob: bytes, mime_type: str) -> str:
         """Convert a file to plain text.
@@ -114,7 +116,9 @@ class Converter:
                 self.cache[cache_key] = text
                 return text
 
-        raise HandlerNotFoundError(f"No handler found to convert from {mime_type} to text")
+        raise HandlerNotFoundError(
+            f"No handler found to convert from {mime_type} to text"
+        )
 
     def has_image(self, digest, mime_type, index, size=500):
         """Tell if there is a preview image."""
@@ -168,7 +172,9 @@ class Converter:
                     self.cache[cache_key] = converted
                 return converted_images[index]
 
-        raise HandlerNotFoundError(f"No handler found to convert from {mime_type} to image")
+        raise HandlerNotFoundError(
+            f"No handler found to convert from {mime_type} to image"
+        )
 
     def get_metadata(self, digest, content, mime_type):
         """Get a dictionary representing the metadata embedded in the given
