@@ -84,9 +84,9 @@ class BaseVocabulary(db.Model, metaclass=_VocabularyMeta):
 
     __table_args__ = (sa.CheckConstraint(sa.sql.func.trim(sa.sql.text("label")) != ""),)
 
-    @sa.ext.declarative.declared_attr
-    def __mapper_args__(cls):
-        return {"order_by": [cls.__table__.c.position.asc()]}
+    # @sa.ext.declarative.declared_attr
+    # def __mapper_args__(cls):
+    #     return {"order_by": [cls.__table__.c.position.asc()]}
 
     class Meta:
         label = None
