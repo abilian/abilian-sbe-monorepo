@@ -23,6 +23,7 @@ from PIL.ExifTags import TAGS
 
 from .cache import Cache
 from .exceptions import HandlerNotFoundError
+from .handler_lock import init_conversion_lock_dir
 from .handlers import Handler, poppler_bin_util
 from .util import make_temp_file
 
@@ -44,7 +45,7 @@ class Converter:
             cache_dir=Path(app.instance_path, CACHE_DIR),
             tmp_dir=Path(app.instance_path, TMP_DIR),
         )
-
+        init_conversion_lock_dir(app.instance_path)
         app.extensions["conversion"] = self
 
         for handler in self.handlers:

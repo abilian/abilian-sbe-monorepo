@@ -18,7 +18,6 @@ from abilian.core.logging import init_logging
 from abilian.i18n import _l
 from abilian.sbe.apps.social.views.social import social
 from abilian.sbe.extension import sbe
-from abilian.services.conversion.handler_lock import init_conversion_lock_dir
 from abilian.web.action import actions
 from abilian.web.nav import NavItem
 from abilian.web.util import url_for
@@ -66,8 +65,6 @@ def create_app(config=None, **kw):
     social.url_value_preprocessor(on_home_blueprint)
 
     app.setup(config)
-
-    init_conversion_lock_dir(app.instance_path)
 
     with app.app_context():
         actions.register(HOME_ACTION)
