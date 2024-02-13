@@ -37,6 +37,7 @@ class TestConfig:
     # WTF_CSRF_ENABLED = True
     WTF_CSRF_ENABLED = False
     BABEL_ACCEPT_LANGUAGES = ["en", "fr"]
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
 
 
 @fixture()
