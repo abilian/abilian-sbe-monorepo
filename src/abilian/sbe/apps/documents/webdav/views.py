@@ -8,7 +8,7 @@ from flask_login import current_user
 from lxml.etree import XMLSyntaxError
 from werkzeug.datastructures import Headers
 from werkzeug.exceptions import Forbidden, NotFound
-from werkzeug.wrappers import BaseResponse as Response
+from werkzeug.wrappers import Response
 
 from abilian.core.extensions import db
 from abilian.services import get_service
