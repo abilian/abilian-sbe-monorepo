@@ -76,8 +76,9 @@ def test_transaction(session: Session):
     blob_store.set(u, b"first draft")
     path = session_blob_store.get(session, u)
     assert isinstance(path, Path)
-    assert path.open("rb").read() == b"first draft"
+    assert path.read_bytes() == b"first draft"
 
+    # same uuid, changed content
     session_blob_store.set(session, u, b"new content")
 
     # test nested (savepoint)
@@ -89,7 +90,7 @@ def test_transaction(session: Session):
     db_tr.rollback()
     path = session_blob_store.get(session, u)
     assert isinstance(path, Path)
-    assert path.open("rb").read() == b"new content"
+    assert path.read_bytes() == b"new content"
 
     # delete and commit
     with session.begin(nested=True):
@@ -111,7 +112,7 @@ def test_transaction(session: Session):
     db_tr.rollback()
     path = session_blob_store.get(session, u)
     assert isinstance(path, Path)
-    assert path.open("rb").read() == b"first draft"
+    assert path.read_bytes() == b"first draft"
 
     session.rollback()
 
@@ -121,6 +122,10 @@ def test_transaction(session: Session):
 
     assert session_blob_store.get(session, u) is None
     assert blob_store.get(u) is not None
+
+    path = blob_store.get(u)
+    assert isinstance(path, Path)
+    assert path.read_bytes() == b"first draft"
 
     session.commit()
     assert blob_store.get(u) is None

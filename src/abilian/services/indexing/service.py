@@ -19,9 +19,9 @@ from inspect import isclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+import flask
 import sqlalchemy as sa
-from flask import Flask, _app_ctx_stack, appcontext_pushed, current_app, g
-from flask.globals import _lookup_app_object
+from flask import Flask, appcontext_pushed, current_app, g
 from flask_login import current_user
 from loguru import logger
 from sqlalchemy import event
@@ -51,7 +51,7 @@ if TYPE_CHECKING:
     from abilian.app import Application
 
 
-_pending_indexation_attr = "abilian_pending_indexation"
+PENDING_INDEXATION_ATTR = "abilian_pending_indexation"
 
 
 def url_for_hit(hit, default="#"):
@@ -86,15 +86,14 @@ class IndexServiceState(ServiceState):
 
     @property
     def to_update(self) -> list[tuple[str, Entity]]:
-        return _lookup_app_object(_pending_indexation_attr)
+        if not hasattr(g, PENDING_INDEXATION_ATTR):
+            values: list[tuple[str, Entity]] = []
+            setattr(g, PENDING_INDEXATION_ATTR, values)
+        return getattr(g, PENDING_INDEXATION_ATTR)
 
     @to_update.setter
-    def to_update(self, value: list):
-        top = _app_ctx_stack.top
-        if top is None:
-            raise RuntimeError("working outside of application context")
-
-        setattr(top, _pending_indexation_attr, value)
+    def to_update(self, values: list[tuple[str, Entity]]):
+        setattr(g, PENDING_INDEXATION_ATTR, values)
 
 
 class WhooshIndexService(Service):

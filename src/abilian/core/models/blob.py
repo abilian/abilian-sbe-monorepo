@@ -74,9 +74,9 @@ class Blob(Model):
         :param:content: bytes, or any object with a `read()` method
         :param:encoding: encoding to use when content is Unicode
         """
-        from abilian.services.blob_store import session_blob_store as blob_store
+        from abilian.services.blob_store import session_blob_store
 
-        blob_store.set(self, self.uuid, value)
+        session_blob_store.set(self, self.uuid, value)
         if self.value:
             self.meta["md5"] = str(hashlib.md5(self.value).hexdigest())  # noqa: S324
 

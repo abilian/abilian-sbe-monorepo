@@ -8,10 +8,10 @@ from pathlib import Path
 from typing import IO, Any
 from uuid import UUID, uuid1
 
+from flask import g
 import sqlalchemy as sa
-import sqlalchemy.event
-from flask import _app_ctx_stack
-from flask.globals import _lookup_app_object
+
+# import sqlalchemy.event
 from sqlalchemy.engine.base import Connection
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm.session import Session, SessionTransaction
@@ -157,37 +157,61 @@ _BLOB_STORE_TRANSACTION = "abilian_blob_store_transactions"
 class SessionBlobStoreState(ServiceState):
     path: Path
 
-    @property
-    def transactions(self) -> dict[int, Any]:
-        try:
-            return _lookup_app_object(_BLOB_STORE_TRANSACTION)
-        except AttributeError:
-            reg: dict[int, Any] = {}
-            setattr(_app_ctx_stack.top, _BLOB_STORE_TRANSACTION, reg)
-            return reg
+    # @property
+    # def transactions(self) -> dict[int, Any]:
+    #     if not hasattr(g, _BLOB_STORE_TRANSACTION):
+    #         reg: dict[int, Any] = {}
+    #         setattr(g, _BLOB_STORE_TRANSACTION, reg)
+    #     return getattr(g, _BLOB_STORE_TRANSACTION)
+    #     # try:
+    #     #     return flask._lookup_app_object(_BLOB_STORE_TRANSACTION)
+    #     # except AttributeError:
+    #     #     reg: dict[int, Any] = {}
+    #     #     setattr(flask._app_ctx_stack.top, _BLOB_STORE_TRANSACTION, reg)
+    #     #     return reg
 
-    @transactions.setter
-    def transactions(self, value):
-        top = _app_ctx_stack.top
-        if top is None:
-            raise RuntimeError("working outside of application context")
+    # @transactions.setter
+    # def transactions(self, reg: dict[int, Any]):
+    #     setattr(g, _BLOB_STORE_TRANSACTION, reg)
 
-        setattr(top, _BLOB_STORE_TRANSACTION, value)
+    @staticmethod
+    def transaction_key(session: Session | scoped_session) -> str:
+        from icecream import ic
+
+        if isinstance(session, scoped_session):
+            session = session()
+        session_id = id(session)
+        return ic(f"blob_session_{session_id}")
 
     # transaction <-> db session accessors
     def get_transaction(
         self, session: Session | scoped_session
     ) -> BlobStoreTransaction | None:
+        from icecream import ic
+
+        ic("----------- get_transaction()")
+        ic(session)
         if isinstance(session, scoped_session):
+            ic("is scoped_session")
             session = session()
+            ic("actual session", session)
 
-        s_id = id(session)
-        default = (weakref.ref(session), None)
-        s_ref, transaction = self.transactions.get(s_id, default)
-        s = s_ref()
+        key = self.transaction_key(session)
+        default = weakref.ref(session), None
+        ic(default)
+        session_reference, transaction = g.get(key, default)
+        ic(session_reference)
+        ic(transaction)
+        found_session = ic(session_reference())
 
-        if s is None or s is not session:
-            # old session with same id, maybe not yet garbage collected
+        # session_id = ic(id(session))
+        # ic(self.transactions)
+        # session_ref, transaction = self.transactions.get(session_id, default)
+        # found_session = ic(session_ref())
+        # ic(transaction)
+
+        if found_session is None or found_session is not session:
+            ic("# old session with same id, maybe not yet garbage collected")
             transaction = None
         return transaction
 
@@ -195,12 +219,16 @@ class SessionBlobStoreState(ServiceState):
         self,
         session: Session | scoped_session,
         transaction: BlobStoreTransaction | None,
-    ):
+    ) -> None:
         if isinstance(session, scoped_session):
             session = session()
 
-        session_id = id(session)
-        self.transactions[session_id] = (weakref.ref(session), transaction)
+        key = self.transaction_key(session)
+        value = (weakref.ref(session), transaction)
+        setattr(g, key, value)
+
+        # session_id = id(session)
+        # self.transactions[session_id] = (weakref.ref(session), transaction)
 
     def create_transaction(self, session: Session, transaction: BlobStoreTransaction):
         if not self.running:
@@ -313,6 +341,10 @@ class SessionBlobStoreService(Service):
         - If parameter is a scoped_session instance, a new session will be
           instaniated.
         """
+        from icecream import ic
+
+        ic("---------------- _session_for()")
+        ic(model_or_session)
         if model_or_session is None:
             return db.session
 
@@ -356,9 +388,16 @@ class SessionBlobStoreService(Service):
         encoding: str = "utf-8",
     ):
         _assert_uuid(uuid)
+        from icecream import ic
 
+        ic("------- SessionBlobStoreService.set()")
         session = self._session_for(session)
-        transaction = self.app_state.get_transaction(session)
+        ic(session)
+        ic(self.app_state)
+        transaction = ic(self.app_state.get_transaction(session))
+        if transaction is None:
+            raise RuntimeError("transaction is None in blob store service")
+        ic("SBS.set() transaction", transaction)
         transaction.set(uuid, content, encoding)
 
     def delete(self, session: Session | Blob, uuid: UUID):
