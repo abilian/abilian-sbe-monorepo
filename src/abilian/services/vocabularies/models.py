@@ -133,7 +133,7 @@ def _before_insert(mapper, connection, target):
 
 
 # this is used to hold a reference to Vocabularies generated from
-# :func:`Vocabulary`. We use BaseVocabulary._decl_class_registry to find
+# :func:`Vocabulary`. We use BaseVocabulary.registry._class_registry to find
 # existing vocabulary, but it's a WeakValueDictionary. When using model
 # generators and reloader the weak ref may be lost, leading to errors such as::
 #

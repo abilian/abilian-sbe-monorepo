@@ -275,7 +275,7 @@ class BaseEntryPresenter:
 
     @staticmethod
     def model(model_name):
-        return db.Model._decl_class_registry.get(model_name)
+        return db.Model.registry._class_registry.get(model_name)
 
     def render(self) -> str:
         raise NotImplementedError

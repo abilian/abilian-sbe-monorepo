@@ -95,7 +95,7 @@ class AuditService(Service):
         BaseModel = db.Model
         all_models = (
             cls
-            for cls in BaseModel._decl_class_registry.values()
+            for cls in BaseModel.registry._class_registry.values()
             if isclass(cls) and self.is_auditable(cls)
         )
         for cls in all_models:

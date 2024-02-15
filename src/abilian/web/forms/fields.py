@@ -682,7 +682,7 @@ class JsonSelect2Field(SelectFieldBase):
         if isinstance(cls, type) and issubclass(cls, db.Model):
             return cls
 
-        reg = db.Model._decl_class_registry
+        reg = db.Model.registry._class_registry
         return reg[cls]
 
     def iter_choices(self):

@@ -360,7 +360,7 @@ class WhooshIndexService(Service):
         state = self.app_state
         classes = (
             cls
-            for cls in db.Model._decl_class_registry.values()
+            for cls in db.Model.registry._class_registry.values()
             if isclass(cls) and issubclass(cls, Indexable) and cls.__indexable__
         )
         for cls in classes:

@@ -20,7 +20,7 @@ def _vocabularies() -> set[type[BaseVocabulary]]:
         cls
         # for cls in BaseVocabulary.registry._class_registry.values().values()
         # for sqlalchemy 1.3.24:
-        for cls in BaseVocabulary._decl_class_registry.values()
+        for cls in BaseVocabulary.registry._class_registry.values()
         if isclass(cls) and issubclass(cls, BaseVocabulary)
     }
 
