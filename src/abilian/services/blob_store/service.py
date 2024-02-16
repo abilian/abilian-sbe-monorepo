@@ -8,6 +8,8 @@ from pathlib import Path
 from typing import IO, Any
 from uuid import UUID, uuid1
 
+from icecream import ic
+
 from flask import g
 import sqlalchemy as sa
 
@@ -176,8 +178,6 @@ class SessionBlobStoreState(ServiceState):
 
     @staticmethod
     def transaction_key(session: Session | scoped_session) -> str:
-        from icecream import ic
-
         if isinstance(session, scoped_session):
             session = session()
         session_id = id(session)
@@ -187,8 +187,6 @@ class SessionBlobStoreState(ServiceState):
     def get_transaction(
         self, session: Session | scoped_session
     ) -> BlobStoreTransaction | None:
-        from icecream import ic
-
         ic("----------- get_transaction()")
         ic(session)
         if isinstance(session, scoped_session):
@@ -220,6 +218,7 @@ class SessionBlobStoreState(ServiceState):
         session: Session | scoped_session,
         transaction: BlobStoreTransaction | None,
     ) -> None:
+        ic("----------- set_transaction()")
         if isinstance(session, scoped_session):
             session = session()
 
@@ -230,7 +229,11 @@ class SessionBlobStoreState(ServiceState):
         # session_id = id(session)
         # self.transactions[session_id] = (weakref.ref(session), transaction)
 
-    def create_transaction(self, session: Session, transaction: BlobStoreTransaction):
+    def create_transaction(
+        self, session: Session, transaction: BlobStoreTransaction
+    ) -> None:
+        ic("----------- create_transaction()")
+
         if not self.running:
             return
 
@@ -239,7 +242,11 @@ class SessionBlobStoreState(ServiceState):
         transaction = BlobStoreTransaction(root_path, parent)
         self.set_transaction(session, transaction)
 
-    def end_transaction(self, session: Session, transaction: BlobStoreTransaction):
+    def end_transaction(
+        self, session: Session, transaction: BlobStoreTransaction
+    ) -> None:
+        ic("----------- end_transaction()")
+
         if not self.running:
             return
 
@@ -249,9 +256,12 @@ class SessionBlobStoreState(ServiceState):
                 # root and nested transactions emit "commit", but
                 # subtransactions don't
                 tr.commit(session)
+            ic("----------- end_transaction() tr._parent", tr._parent)
             self.set_transaction(session, tr._parent)
 
     def begin(self, session: Session):
+        ic("----------- begin()")
+
         if not self.running:
             return
 
@@ -263,6 +273,8 @@ class SessionBlobStoreState(ServiceState):
         tr.begin(session)
 
     def commit(self, session: Session):
+        ic("----------- commit()")
+
         if not self.running:
             return
 
@@ -341,8 +353,6 @@ class SessionBlobStoreService(Service):
         - If parameter is a scoped_session instance, a new session will be
           instaniated.
         """
-        from icecream import ic
-
         ic("---------------- _session_for()")
         ic(model_or_session)
         if model_or_session is None:
@@ -360,6 +370,10 @@ class SessionBlobStoreService(Service):
             return db.session
 
         return session
+
+    def show_g(self, ref: int = 0):
+        ic(f"---> show_g {ref}")
+        ic([(x, getattr(g, x, "xxx")) for x in g])
 
     # Blob store interface
     def get(
@@ -388,8 +402,6 @@ class SessionBlobStoreService(Service):
         encoding: str = "utf-8",
     ):
         _assert_uuid(uuid)
-        from icecream import ic
-
         ic("------- SessionBlobStoreService.set()")
         session = self._session_for(session)
         ic(session)

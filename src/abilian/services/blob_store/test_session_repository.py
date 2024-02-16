@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import uuid
 from pathlib import Path
+import pytest
 
 from sqlalchemy.orm import Session
 
@@ -24,20 +25,26 @@ def test_transaction_lifetime(session: Session):
     assert transaction._parent is root_transaction
 
     session.flush()
-    transaction = state.get_transaction(session)
+    current_transaction = state.get_transaction(session)
 
-    # FIXME
+    # FIXME: fixed, see explanation:
+    # when sqlalchemy is flushing it is done in a sub-transaction,
+    # not the root one. So when calling our 'commit' from here
+    # we are not in our root transaction, so changes will not be
+    # written to repository.
     # assert transaction is root_transaction
-    #
+
+    assert current_transaction is transaction
+
     # # create subtransaction (sqlalchemy)
-    # session.begin(subtransactions=True)
-    # transaction = state.get_transaction(session)
-    # assert isinstance(transaction, RepositoryTransaction)
-    # assert transaction._parent is root_transaction
-    #
-    # session.flush()
-    # transaction = state.get_transaction(session)
-    # assert transaction is root_transaction
+    session.begin(subtransactions=True)
+    current_transaction = state.get_transaction(session)
+    assert isinstance(current_transaction, BlobStoreTransaction)
+    assert current_transaction._parent is transaction
+
+    session.flush()
+    current_transaction = state.get_transaction(session)
+    assert current_transaction._parent is transaction
 
 
 def test_accessors_non_existent_entry(session: Session):
@@ -116,9 +123,14 @@ def test_transaction(session: Session):
 
     session.rollback()
 
+    session_blob_store.show_g(1)
+
     with session.begin(subtransactions=True):
         session_blob_store.delete(session, u)
         assert session_blob_store.get(session, u) is None
+        session_blob_store.show_g(2)
+
+    session_blob_store.show_g(3)
 
     assert session_blob_store.get(session, u) is None
     assert blob_store.get(u) is not None
@@ -127,12 +139,30 @@ def test_transaction(session: Session):
     assert isinstance(path, Path)
     assert path.read_bytes() == b"first draft"
 
+    session_blob_store.show_g(31)
+
     session.commit()
+    session_blob_store.show_g(32)
+    # IMPORTANT: now the transaction stored in g due to the commit.
+    # so the session_blob_store.get will raise
+    with pytest.raises(AttributeError):
+        session_blob_store.get(session, u)
+
     assert blob_store.get(u) is None
 
     # now test 'set'
+
+    session_blob_store.show_g(4)
+
+    state = session_blob_store.app_state
+    state.create_transaction(session, None)
+
+    session_blob_store.show_g(6)
+
     session_blob_store.set(session, u, b"new content")
+    session_blob_store.show_g(61)
     session.commit()
+    session_blob_store.show_g(62)
     assert blob_store.get(u) is not None
 
     # test "set" in two nested transactions. This tests a specific code
