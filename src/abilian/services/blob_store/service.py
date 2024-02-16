@@ -522,29 +522,32 @@ class BlobStoreTransaction:
             content = self.path / str(uuid)
             blob_store.set(uuid, content.open("rb"))
 
-    def _commit_parent(self):
-        p = self._parent
-        assert p
-        p._deleted |= self._deleted
-        p._deleted -= self._set
+    def uuid_path(self, uuid: UUID) -> Path:
+        return self.path / str(uuid)
 
-        p._set |= self._set
-        p._set -= self._deleted
+    def merge_child(self, child: BlobStoreTransaction):
+        self._deleted |= child._deleted
+        self._deleted -= child._set
+
+        self._set |= child._set
+        self._set -= self._deleted
 
         if self._set:
-            p.begin()  # ensure p.path exists
+            self.begin()  # ensure self.path exists
 
-        for uuid in self._set:
-            content_path = self.path / str(uuid)
-            # content_path.replace is not available with python < 3.3.
-            content_path.rename(p.path / str(uuid))
+        for uuid in child._set:
+            child.uuid_path(uuid).replace(self.uuid_path(uuid))
+
+    def _commit_parent(self):
+        parent = self._parent
+        assert parent
+        parent.merge_child(self)
 
     def _add_to(self, uuid: UUID, dest: set[UUID], other: set[UUID]):
         """Add `item` to `dest` set, ensuring `item` is not present in `other`
         set."""
         _assert_uuid(uuid)
-        with contextlib.suppress(KeyError):
-            other.remove(uuid)
+        other.discard(uuid)
         dest.add(uuid)
 
     def delete(self, uuid: UUID):
@@ -565,16 +568,16 @@ class BlobStoreTransaction:
         else:
             mode = "wt"
 
-        dest = self.path / str(uuid)
-        with dest.open(mode, encoding=encoding) as f:
-            f.write(content)
+        dest = self.uuid_path(uuid)
+        with dest.open(mode, encoding=encoding) as file:
+            file.write(content)
 
     def get(self, uuid: UUID) -> Any:
         if uuid in self._deleted:
             raise KeyError(uuid)
 
         if uuid in self._set:
-            path = self.path / str(uuid)
+            path = self.uuid_path(uuid)
             assert path.exists()
             return path
 
