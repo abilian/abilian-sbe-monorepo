@@ -48,23 +48,33 @@ class Blob(Model):
     @property
     def file(self) -> Path | None:
         """Return :class:`pathlib.Path` object used for storing value."""
-        from abilian.services.blob_store import session_blob_store as blob_store
+        from abilian.services.blob_store import session_blob_store
 
-        return blob_store.get(self, self.uuid)
+        return session_blob_store.get(self, self.uuid)
 
     @property
     def size(self) -> int:
         """Return size in bytes of value."""
-        f = self.file
-        return f.stat().st_size if f is not None else 0
+        file = self.file
+        if file is None:
+            return 0
+        return file.stat().st_size
 
     @property
     def value(self) -> bytes | None:
         """Binary value content."""
-        v = self.file
-        if v is None:
+        file = self.file
+        if file is None:
             return None
-        return v.open("rb").read()
+        return file.read_bytes()
+
+    def _md5_hexdigest(self, value: bytes | str | IO) -> str:
+        """Return md5.hexdigest() of value."""
+        if isinstance(value, str):
+            content = value.encode("utf-8")
+        else:
+            content = value
+        return hashlib.md5(content).hexdigest()  # noqa: S324
 
     @value.setter
     def value(self, value: bytes | str | IO):
@@ -77,8 +87,9 @@ class Blob(Model):
         from abilian.services.blob_store import session_blob_store
 
         session_blob_store.set(self, self.uuid, value)
+
         if self.value:
-            self.meta["md5"] = str(hashlib.md5(self.value).hexdigest())  # noqa: S324
+            self.meta["md5"] = self._md5_hexdigest(value)
 
         filename = getattr(value, "filename", None)
         if filename:
@@ -93,16 +104,16 @@ class Blob(Model):
     @value.deleter
     def value(self):
         """Remove value from repository."""
-        from abilian.services.blob_store import session_blob_store as blob_store
+        from abilian.services.blob_store import session_blob_store
 
-        blob_store.delete(self, self.uuid)
+        session_blob_store.delete(self, self.uuid)
 
     @property
-    def md5(self) -> str:
+    def md5(self) -> str | None:
         """Return md5 from meta, or compute it if absent."""
         md5 = self.meta.get("md5")
         if md5 is None and self.value:
-            md5 = str(hashlib.md5(self.value).hexdigest())  # noqa: S324
+            md5 = self._md5_hexdigest(self.value)
 
         return md5
 
