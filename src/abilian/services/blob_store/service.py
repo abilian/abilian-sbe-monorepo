@@ -115,8 +115,8 @@ class BlobStoreService(Service):
             mode = "bw"
             encoding = None
 
-        with dest.open(mode, encoding=encoding) as f:
-            f.write(content)
+        with dest.open(mode, encoding=encoding) as file:
+            file.write(content)
 
     def delete(self, uuid: UUID):
         """Delete file with given uuid.
@@ -153,34 +153,18 @@ class BlobStoreService(Service):
 
 blob_store = BlobStoreService()
 
-_BLOB_STORE_TRANSACTION = "abilian_blob_store_transactions"
-
 
 class SessionBlobStoreState(ServiceState):
     path: Path
 
-    # @property
-    # def transactions(self) -> dict[int, Any]:
-    #     if not hasattr(g, _BLOB_STORE_TRANSACTION):
-    #         reg: dict[int, Any] = {}
-    #         setattr(g, _BLOB_STORE_TRANSACTION, reg)
-    #     return getattr(g, _BLOB_STORE_TRANSACTION)
-    #     # try:
-    #     #     return flask._lookup_app_object(_BLOB_STORE_TRANSACTION)
-    #     # except AttributeError:
-    #     #     reg: dict[int, Any] = {}
-    #     #     setattr(flask._app_ctx_stack.top, _BLOB_STORE_TRANSACTION, reg)
-    #     #     return reg
-
-    # @transactions.setter
-    # def transactions(self, reg: dict[int, Any]):
-    #     setattr(g, _BLOB_STORE_TRANSACTION, reg)
-
     @staticmethod
-    def transaction_key(session: Session | scoped_session) -> str:
+    def actual_session(session: Session | scoped_session) -> Session:
         if isinstance(session, scoped_session):
-            session = session()
-        session_id = id(session)
+            return session()
+        return session
+
+    def transaction_key(self, session: Session | scoped_session) -> str:
+        session_id = id(self.actual_session(session))
         return ic(f"blob_session_{session_id}")
 
     # transaction <-> db session accessors
@@ -189,11 +173,7 @@ class SessionBlobStoreState(ServiceState):
     ) -> BlobStoreTransaction | None:
         ic("----------- get_transaction()")
         ic(session)
-        if isinstance(session, scoped_session):
-            ic("is scoped_session")
-            session = session()
-            ic("actual session", session)
-
+        session = self.actual_session(session)
         key = self.transaction_key(session)
         default = weakref.ref(session), None
         ic(default)
@@ -219,9 +199,7 @@ class SessionBlobStoreState(ServiceState):
         transaction: BlobStoreTransaction | None,
     ) -> None:
         ic("----------- set_transaction()")
-        if isinstance(session, scoped_session):
-            session = session()
-
+        session = self.actual_session(session)
         key = self.transaction_key(session)
         value = (weakref.ref(session), transaction)
         setattr(g, key, value)
@@ -229,35 +207,30 @@ class SessionBlobStoreState(ServiceState):
         # session_id = id(session)
         # self.transactions[session_id] = (weakref.ref(session), transaction)
 
-    def create_transaction(
-        self, session: Session, transaction: BlobStoreTransaction
-    ) -> None:
+    def create_transaction(self, session: Session) -> None:
         ic("----------- create_transaction()")
 
         if not self.running:
             return
 
-        parent = self.get_transaction(session)
-        root_path = self.path
-        transaction = BlobStoreTransaction(root_path, parent)
+        parent_transaction = self.get_transaction(session)
+        transaction = BlobStoreTransaction(self.path, parent_transaction)
         self.set_transaction(session, transaction)
 
-    def end_transaction(
-        self, session: Session, transaction: BlobStoreTransaction
-    ) -> None:
+    def end_transaction(self, session: Session) -> None:
         ic("----------- end_transaction()")
 
         if not self.running:
             return
 
-        tr = self.get_transaction(session)
-        if tr is not None:
-            if not tr.cleared:
+        transaction = self.get_transaction(session)
+        if transaction is not None:
+            if not transaction.cleared:
                 # root and nested transactions emit "commit", but
                 # subtransactions don't
-                tr.commit(session)
-            ic("----------- end_transaction() tr._parent", tr._parent)
-            self.set_transaction(session, tr._parent)
+                transaction.commit()
+            ic("----------- end_transaction() tr._parent", transaction._parent)
+            self.set_transaction(session, transaction._parent)
 
     def begin(self, session: Session):
         ic("----------- begin()")
@@ -265,12 +238,12 @@ class SessionBlobStoreState(ServiceState):
         if not self.running:
             return
 
-        tr = self.get_transaction(session)
-        if tr is None:
+        transaction = self.get_transaction(session)
+        if transaction is None:
             # FIXME: return or create a new one?
             return
 
-        tr.begin(session)
+        transaction.begin()
 
     def commit(self, session: Session):
         ic("----------- commit()")
@@ -278,13 +251,14 @@ class SessionBlobStoreState(ServiceState):
         if not self.running:
             return
 
-        tr = self.get_transaction(session)
-        if tr is None:
+        transaction = self.get_transaction(session)
+        if transaction is None:
             return
 
-        tr.commit(session)
+        transaction.commit()
 
-    def flush(self, session: Session, flush_context: UOWTransaction):
+    def flush(self, session: Session):
+        # def flush(self, session: Session, flush_context: UOWTransaction):
         # when sqlalchemy is flushing it is done in a sub-transaction,
         # not the root one. So when calling our 'commit' from here
         # we are not in our root transaction, so changes will not be
@@ -295,11 +269,11 @@ class SessionBlobStoreState(ServiceState):
         if not self.running:
             return
 
-        tr = self.get_transaction(session)
-        if tr is None:
+        transaction = self.get_transaction(session)
+        if transaction is None:
             return
 
-        tr.rollback(session)
+        transaction.rollback()
 
 
 class SessionBlobStoreService(Service):
@@ -372,6 +346,7 @@ class SessionBlobStoreService(Service):
         return session
 
     def show_g(self, ref: int = 0):
+        """Debug method."""
         ic(f"---> show_g {ref}")
         ic([(x, getattr(g, x, "xxx")) for x in g])
 
@@ -384,6 +359,8 @@ class SessionBlobStoreService(Service):
 
         session = self._session_for(session)
         transaction = self.app_state.get_transaction(session)
+        if transaction is None:
+            return default
         try:
             val = transaction.get(uuid)
         except KeyError:
@@ -423,85 +400,104 @@ class SessionBlobStoreService(Service):
     # session event handlers
     @Service.if_running
     def create_transaction(
-        self, session: Session, transaction: SessionTransaction
-    ) -> Any | None:
-        return self.app_state.create_transaction(session, transaction)
+        self, session: Session, _transaction: SessionTransaction
+    ) -> None:
+        self.app_state.create_transaction(session)
 
     @Service.if_running
     def end_transaction(
-        self, session: Session, transaction: SessionTransaction
-    ) -> Any | None:
-        return self.app_state.end_transaction(session, transaction)
+        self, session: Session, _transaction: SessionTransaction
+    ) -> None:
+        self.app_state.end_transaction(session)
 
     @Service.if_running
     def begin(
-        self, session: Session, transaction: SessionTransaction, connection: Connection
-    ) -> Any | None:
-        return self.app_state.begin(session)
+        self,
+        session: Session,
+        _transaction: SessionTransaction,
+        _connection: Connection,
+    ) -> None:
+        self.app_state.begin(session)
 
     @Service.if_running
-    def commit(self, session: Session):
-        return self.app_state.commit(session)
+    def commit(self, session: Session) -> None:
+        self.app_state.commit(session)
 
     @Service.if_running
-    def flush(self, session: Session, flush_context: UOWTransaction):
-        return self.app_state.flush(session, flush_context)
+    def flush(self, session: Session, _flush_context: UOWTransaction) -> None:
+        self.app_state.flush(session)
 
     @Service.if_running
-    def rollback(self, session: Session):
-        return self.app_state.rollback(session)
+    def rollback(self, session: Session) -> None:
+        self.app_state.rollback(session)
 
 
 session_blob_store = SessionBlobStoreService()
 
 
 class BlobStoreTransaction:
+    """Temporary local storage of file content during a transaction on
+    a Blob (and related child blobs).
+
+    Transaction shall end by either a commit or a rollback.
+
+    Intermediate blob storage lies in self.tmp_folder and is cleared
+    at end of transaction.
+
+    BlobStoreTransaction is used by SessionBlobStoreService and the
+    commit() method triggers final storage through the local "blob_store"
+    service.
+
+    Use the set() method to add actual content to the transaction and get()
+    to retrieve the path of the underlying content.
+    """
+
     def __init__(self, root_path: Path, parent: BlobStoreTransaction | None = None):
-        self.path = root_path / str(uuid1())
+        self.tmp_folder = root_path / str(uuid1())
         # if parent is not None and parent.cleared:
         #   parent = None
 
         self._parent = parent
         self._deleted: set[UUID] = set()
         self._set: set[UUID] = set()
-        self.__cleared = False
+        self._cleared: bool = False
 
     @property
     def cleared(self) -> bool:
-        return self.__cleared
+        return self._cleared
 
     def __del__(self):
-        if not self.cleared:
+        if not self._cleared:
             self._clear()
 
     def _clear(self):
-        if self.__cleared:
+        if self._cleared:
             return
 
         # make sure transaction is not usable anymore
-        if self.path.exists():
-            shutil.rmtree(str(self.path))
+        if self.tmp_folder.exists():
+            shutil.rmtree(self.tmp_folder)
 
-        del self.path
+        del self.tmp_folder
         del self._deleted
         del self._set
-        self.__cleared = True
+        self._cleared = True
 
-    def begin(self, session: Session | None = None):
-        if not self.path.exists():
-            self.path.mkdir(0o700)
+    def begin(self):
+        if not self.tmp_folder.exists():
+            self.tmp_folder.mkdir(0o700)
 
-    def rollback(self, session: Session | None = None):
+    def rollback(self):
         self._clear()
 
-    def commit(self, session: Session | None = None):
+    def commit(self):
         """Merge modified objects into parent transaction.
 
         Once commited a transaction object is not usable anymore
 
         :param:session: current sqlalchemy Session
         """
-        if self.__cleared:
+        if self._cleared:
             return
 
         if self._parent:
@@ -519,11 +515,10 @@ class BlobStoreTransaction:
                 blob_store.delete(uuid)
 
         for uuid in self._set:
-            content = self.path / str(uuid)
-            blob_store.set(uuid, content.open("rb"))
+            blob_store.set(uuid, self.uuid_path(uuid).open("rb"))
 
     def uuid_path(self, uuid: UUID) -> Path:
-        return self.path / str(uuid)
+        return self.tmp_folder / str(uuid)
 
     def merge_child(self, child: BlobStoreTransaction):
         self._deleted |= child._deleted
@@ -554,7 +549,10 @@ class BlobStoreTransaction:
         self._add_to(uuid, self._deleted, self._set)
 
     def set(
-        self, uuid: UUID, content: IO | bytes | str, encoding: str | None = "utf-8"
+        self,
+        uuid: UUID,
+        content: IO | bytes | str,
+        encoding: str | None = "utf-8",
     ):
         self.begin()
         self._add_to(uuid, self._set, self._deleted)
