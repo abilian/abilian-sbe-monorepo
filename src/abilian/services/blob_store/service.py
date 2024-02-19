@@ -8,8 +8,6 @@ from pathlib import Path
 from typing import IO, Any
 from uuid import UUID, uuid1
 
-from icecream import ic
-
 from flask import g
 import sqlalchemy as sa
 
@@ -55,13 +53,6 @@ class BlobStoreService(Service):
 
         with app.app_context():
             self.app_state.path = path.resolve()
-
-    def list_dir(self) -> None:
-        """Debug method."""
-        ic("files:")
-        for file in self.app_state.path.glob("**/*"):
-            if file.is_file():
-                ic(file)
 
     # data management: paths and accessors
     def rel_path(self, uuid: UUID) -> Path:
@@ -172,31 +163,20 @@ class SessionBlobStoreState(ServiceState):
 
     def transaction_key(self, session: Session | scoped_session) -> str:
         session_id = id(self.actual_session(session))
-        return ic(f"blob_session_{session_id}")
+        return f"blob_session_{session_id}"
 
     # transaction <-> db session accessors
     def get_transaction(
         self, session: Session | scoped_session
     ) -> BlobStoreTransaction | None:
-        ic("----------- get_transaction()")
-        ic(session)
         session = self.actual_session(session)
         key = self.transaction_key(session)
         default = weakref.ref(session), None
-        ic(default)
         session_reference, transaction = g.get(key, default)
-        ic(session_reference)
-        ic(transaction)
-        found_session = ic(session_reference())
-
-        # session_id = ic(id(session))
-        # ic(self.transactions)
-        # session_ref, transaction = self.transactions.get(session_id, default)
-        # found_session = ic(session_ref())
-        # ic(transaction)
+        found_session = session_reference()
 
         if found_session is None or found_session is not session:
-            ic("# old session with same id, maybe not yet garbage collected")
+            # old session with same id, maybe not yet garbage collected
             transaction = None
         return transaction
 
@@ -205,18 +185,12 @@ class SessionBlobStoreState(ServiceState):
         session: Session | scoped_session,
         transaction: BlobStoreTransaction | None,
     ) -> None:
-        ic("----------- set_transaction()")
         session = self.actual_session(session)
         key = self.transaction_key(session)
         value = (weakref.ref(session), transaction)
         setattr(g, key, value)
 
-        # session_id = id(session)
-        # self.transactions[session_id] = (weakref.ref(session), transaction)
-
     def create_transaction(self, session: Session) -> None:
-        ic("----------- create_transaction()")
-
         if not self.running:
             return
 
@@ -225,8 +199,6 @@ class SessionBlobStoreState(ServiceState):
         self.set_transaction(session, transaction)
 
     def end_transaction(self, session: Session) -> None:
-        ic("----------- end_transaction()")
-
         if not self.running:
             return
 
@@ -236,12 +208,9 @@ class SessionBlobStoreState(ServiceState):
                 # root and nested transactions emit "commit", but
                 # subtransactions don't
                 transaction.commit()
-            ic("----------- end_transaction() tr._parent", transaction._parent)
             self.set_transaction(session, transaction._parent)
 
     def begin(self, session: Session):
-        ic("----------- begin()")
-
         if not self.running:
             return
 
@@ -253,8 +222,6 @@ class SessionBlobStoreState(ServiceState):
         transaction.begin()
 
     def commit(self, session: Session):
-        ic("----------- commit()")
-
         if not self.running:
             return
 
@@ -334,8 +301,6 @@ class SessionBlobStoreService(Service):
         - If parameter is a scoped_session instance, a new session will be
           instaniated.
         """
-        ic("---------------- _session_for()")
-        ic(model_or_session)
         if model_or_session is None:
             return db.session
 
@@ -351,11 +316,6 @@ class SessionBlobStoreService(Service):
             return db.session
 
         return session
-
-    def show_g(self, ref: int = 0):
-        """Debug method."""
-        ic(f"---> show_g {ref}")
-        ic([(x, getattr(g, x, "xxx")) for x in g])
 
     # Blob store interface
     def get(
@@ -386,14 +346,10 @@ class SessionBlobStoreService(Service):
         encoding: str = "utf-8",
     ):
         _assert_uuid(uuid)
-        ic("------- SessionBlobStoreService.set()")
         session = self._session_for(session)
-        ic(session)
-        ic(self.app_state)
-        transaction = ic(self.app_state.get_transaction(session))
+        transaction = self.app_state.get_transaction(session)
         if transaction is None:
             raise RuntimeError("transaction is None in blob store service")
-        ic("SBS.set() transaction", transaction)
         transaction.set(uuid, content, encoding)
 
     def delete(self, session: Session | Blob, uuid: UUID):
@@ -515,6 +471,8 @@ class BlobStoreTransaction:
         self._clear()
 
     def _commit_blob_store(self):
+        if self._cleared:
+            return
         assert self._parent is None
 
         for uuid in self._deleted:
@@ -527,23 +485,20 @@ class BlobStoreTransaction:
     def uuid_path(self, uuid: UUID) -> Path:
         return self.tmp_folder / str(uuid)
 
-    def merge_child(self, child: BlobStoreTransaction):
-        self._deleted |= child._deleted
-        self._deleted -= child._set
-
-        self._set |= child._set
-        self._set -= self._deleted
-
-        if self._set:
-            self.begin()  # ensure self.path exists
-
-        for uuid in child._set:
-            child.uuid_path(uuid).replace(self.uuid_path(uuid))
-
     def _commit_parent(self):
         parent = self._parent
         assert parent
-        parent.merge_child(self)
+        parent._deleted |= self._deleted
+        parent._deleted -= self._set
+
+        parent._set |= self._set
+        parent._set -= self._deleted
+
+        if self._set:
+            parent.begin()  # ensure p.path exists
+
+        for uuid in self._set:
+            self.uuid_path(uuid).replace(parent.uuid_path(uuid))
 
     def _add_to(self, uuid: UUID, dest: set[UUID], other: set[UUID]):
         """Add `item` to `dest` set, ensuring `item` is not present in `other`
@@ -574,9 +529,7 @@ class BlobStoreTransaction:
             encoding = None
         else:
             mode = "wt"
-        ic(":::::::::::::::::::::")
         dest = self.uuid_path(uuid)
-        ic(dest)
         with dest.open(mode, encoding=encoding) as file:
             file.write(content)
 
