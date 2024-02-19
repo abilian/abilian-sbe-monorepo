@@ -45,6 +45,14 @@ class Blob(Model):
         if value is not None:
             self.value = value
 
+    def _md5_hexdigest(self) -> str:
+        """Return md5.hexdigest() of self.value."""
+        if isinstance(self.value, str):
+            content = self.value.encode("utf-8")
+        else:
+            content = self.value
+        return hashlib.md5(content).hexdigest()  # noqa: S324
+
     @property
     def file(self) -> Path | None:
         """Return :class:`pathlib.Path` object used for storing value."""
@@ -68,14 +76,6 @@ class Blob(Model):
             return None
         return file.read_bytes()
 
-    def _md5_hexdigest(self, value: bytes | str | IO) -> str:
-        """Return md5.hexdigest() of value."""
-        if isinstance(value, str):
-            content = value.encode("utf-8")
-        else:
-            content = value
-        return hashlib.md5(content).hexdigest()  # noqa: S324
-
     @value.setter
     def value(self, value: bytes | str | IO):
         """Store binary content to applications's repository and update
@@ -89,7 +89,7 @@ class Blob(Model):
         session_blob_store.set(self, self.uuid, value)
 
         if self.value:
-            self.meta["md5"] = self._md5_hexdigest(value)
+            self.meta["md5"] = self._md5_hexdigest()
 
         filename = getattr(value, "filename", None)
         if filename:
@@ -113,7 +113,7 @@ class Blob(Model):
         """Return md5 from meta, or compute it if absent."""
         md5 = self.meta.get("md5")
         if md5 is None and self.value:
-            md5 = self._md5_hexdigest(self.value)
+            md5 = self._md5_hexdigest()
 
         return md5
 
