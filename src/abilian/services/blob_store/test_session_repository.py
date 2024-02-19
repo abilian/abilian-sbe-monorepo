@@ -79,11 +79,19 @@ def test_accessors_set_get_delete(session: Session):
 
 
 def test_transaction(session: Session):
+    from icecream import ic
+
     u = uuid.uuid4()
+
+    ic("////////////")
+    ic(u)
+    ic("////////////")
+
     blob_store.set(u, b"first draft")
     path = session_blob_store.get(session, u)
     assert isinstance(path, Path)
     assert path.read_bytes() == b"first draft"
+    ic(path)
 
     # same uuid, changed content
     session_blob_store.set(session, u, b"new content")
@@ -154,14 +162,22 @@ def test_transaction(session: Session):
     session_blob_store.show_g(4)
 
     state = session_blob_store.app_state
-    state.create_transaction(session, None)
+    state.create_transaction(session)
 
     session_blob_store.show_g(6)
 
+    ic("**********************************************")
+
     session_blob_store.set(session, u, b"new content")
     session_blob_store.show_g(61)
+    blob_store.list_dir()
     session.commit()
+    blob_store.list_dir()
     session_blob_store.show_g(62)
+
+    ic(u)
+    ic(blob_store.abs_path(u))
+
     assert blob_store.get(u) is not None
 
     # test "set" in two nested transactions. This tests a specific code

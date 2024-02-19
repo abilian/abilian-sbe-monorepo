@@ -56,6 +56,13 @@ class BlobStoreService(Service):
         with app.app_context():
             self.app_state.path = path.resolve()
 
+    def list_dir(self) -> None:
+        """Debug method."""
+        ic("files:")
+        for file in self.app_state.path.glob("**/*"):
+            if file.is_file():
+                ic(file)
+
     # data management: paths and accessors
     def rel_path(self, uuid: UUID) -> Path:
         """Contruct relative path from blob store top directory to the file
@@ -554,6 +561,8 @@ class BlobStoreTransaction:
         content: IO | bytes | str,
         encoding: str | None = "utf-8",
     ):
+        from icecream import ic
+
         self.begin()
         self._add_to(uuid, self._set, self._deleted)
 
@@ -565,8 +574,9 @@ class BlobStoreTransaction:
             encoding = None
         else:
             mode = "wt"
-
+        ic(":::::::::::::::::::::")
         dest = self.uuid_path(uuid)
+        ic(dest)
         with dest.open(mode, encoding=encoding) as file:
             file.write(content)
 
