@@ -144,9 +144,8 @@ def test_transaction(session: Session):
     session.commit()
     session_blob_store.show_g(32)
     # IMPORTANT: now the transaction stored in g due to the commit.
-    # so the session_blob_store.get will raise
-    with pytest.raises(AttributeError):
-        session_blob_store.get(session, u)
+    # so the session_blob_store.get will return None
+    assert session_blob_store.get(session, u) is None
 
     assert blob_store.get(u) is None
 
