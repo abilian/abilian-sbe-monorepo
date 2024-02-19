@@ -190,15 +190,15 @@ def test_transaction_path(session: Session):
 
     with session.begin(subtransactions=True):
         transaction = state.get_transaction(session)
-        assert not transaction.path.exists()
+        assert not transaction.tmp_folder.exists()
 
         session_blob_store.set(session, u, b"my file content")
-        assert transaction.path.exists()
+        assert transaction.tmp_folder.exists()
 
-    assert root_transaction.path.exists()
+    assert root_transaction.tmp_folder.exists()
 
     path = session_blob_store.get(session, u)
     assert isinstance(path, Path)
     content = path.open("rb").read()
     assert content == b"my file content"
-    assert root_transaction.path.exists()
+    assert root_transaction.tmp_folder.exists()
