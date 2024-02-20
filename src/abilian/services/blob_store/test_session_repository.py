@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import uuid
 from pathlib import Path
-import pytest
 
+import pytest
 from sqlalchemy.orm import Session
 
 from . import blob_store, session_blob_store

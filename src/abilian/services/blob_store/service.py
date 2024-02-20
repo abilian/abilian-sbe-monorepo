@@ -8,8 +8,8 @@ from pathlib import Path
 from typing import IO, Any
 from uuid import UUID, uuid1
 
-from flask import g
 import sqlalchemy as sa
+from flask import g
 
 # import sqlalchemy.event
 from sqlalchemy.engine.base import Connection
