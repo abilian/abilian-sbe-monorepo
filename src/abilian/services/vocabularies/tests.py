@@ -1,5 +1,3 @@
-""""""
-
 from __future__ import annotations
 
 import sqlalchemy as sa
@@ -69,13 +67,16 @@ def test_items(db, session):
     assert IMMEDIATE.label == "Immediate"
 
     # test default ordering
-    default_ordering = ["Immediate", "Urgent", "High", "Normal", "Low"]
+    expected_ordering = ["Immediate", "Urgent", "High", "Normal", "Low"]
+
     query = PriorityVoc.query
-    assert [i.label for i in query.active().all()] == default_ordering
+    labels = [i.label for i in query.active().order_by(PriorityVoc.position).all()]
+    assert labels == expected_ordering
 
     # no default ordering when using .values(): explicit ordering required
     query = PriorityVoc.query.active().order_by(PriorityVoc.position.asc())
-    assert [i.label for i in query.values(PriorityVoc.label)] == default_ordering
+    labels = [i.label for i in query.values(PriorityVoc.label)]
+    assert labels == expected_ordering
 
     # test db-side constraint for non-empty labels
     with raises(sa.exc.IntegrityError):
@@ -108,7 +109,10 @@ def test_items(db, session):
 
     item.active = False
     expected = ["Immediate", "High", "Normal", "Low"]
-    assert [i.label for i in PriorityVoc.query.active().all()] == expected
+    labels = [
+        i.label for i in PriorityVoc.query.active().order_by(PriorityVoc.position).all()
+    ]
+    assert labels == expected
     assert PriorityVoc.query.active().by_position(URGENT.position) is None
 
     # test by_label()

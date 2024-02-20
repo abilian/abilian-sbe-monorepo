@@ -53,16 +53,17 @@ class _VocabularyMeta(_BaseMeta):
         d: dict[str, Any],
     ) -> type[BaseVocabulary]:
         meta = d.get("Meta")
-        tblprefix = "vocabulary_"
-
         group = slugify(meta.group or "", "_")
         if group:
-            tblprefix += f"{group}_"
+            table_prefix = f"vocabulary_{group}_"
+        else:
+            table_prefix = "vocabulary_"
 
         if not hasattr(meta, "name"):
-            vocname = name.lower().replace("vocabulary", "")
-            meta.name = vocname
-        d["__tablename__"] = tblprefix + meta.name
+            meta_name = name.lower().replace("vocabulary", "")
+            meta.name = meta_name
+
+        d["__tablename__"] = table_prefix + meta.name
         return _BaseMeta.__new__(cls, name, bases, d)
 
 
