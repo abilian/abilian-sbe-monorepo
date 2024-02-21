@@ -18,6 +18,9 @@ RATE_LIMITER = []
 # with DISTRIBUTED_MUTEX.acquire():
 #         time.sleep(1)
 def init_dramatiq_engine(app) -> None:
+    if dramatiq.app is not None:
+        # ensure only one initialization, especially during tests
+        return
     logger.debug("Setting up Dramatiq")
     dramatiq.init_app(app)
     _setup_rate_limiter(app)
