@@ -21,6 +21,11 @@ from tests.conftest import TestConfig
 
 
 @fixture()
+def config() -> Any:
+    return TestConfig
+
+
+@fixture()
 def app(config: Any) -> Flask:
     # We currently return a fresh app for each test.
     # Using session-scoped app doesn't currently work.

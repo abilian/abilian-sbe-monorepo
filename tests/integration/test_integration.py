@@ -1,36 +1,18 @@
+from __future__ import annotations
 import warnings
 from collections.abc import Iterator
 
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.routing import Rule
+from flask.testing import FlaskClient
 
 from abilian.app import Application
 from abilian.core.models.subjects import User
 from abilian.services import get_service, security_service
 from abilian.services.security import Admin
 from abilian.web import url_for
-
-PUBLIC_ENDPOINTS = [
-    "login.forgotten_pw_form",
-    "login.login_form",
-    # 'calendar.calendar_ics',
-    # 'calendar.index',
-    # 'home.public',
-    # 'home.legal',
-    # 'evenement_public.list_view',
-    # 'debug.index',
-    # 'calendar.events_feed',
-    # 'api.adherents',
-    # 'api.amis',
-    # 'api.calendar',
-    # 'api.manifestations',
-    # 'api.projets',
-]
-
-ENDPOINTS_TO_IGNORE = [
-    "login.logout",
-    "notifications.debug_social",
-]
+from .conftest import PUBLIC_ENDPOINTS, ENDPOINTS_TO_IGNORE
+from icecream import ic
 
 
 def all_rules_to_test(app: Application) -> Iterator[Rule]:
@@ -46,27 +28,6 @@ def all_rules_to_test(app: Application) -> Iterator[Rule]:
     return sorted(rules, key=lambda r: r.endpoint)
 
 
-def test_public_endpoints_with_no_login(client, app: Application):
-    warnings.simplefilter("ignore")
-    security_service.start(ignore_state=True)
-
-    errors = []
-    for endpoint in PUBLIC_ENDPOINTS:
-        if endpoint in ENDPOINTS_TO_IGNORE:
-            continue
-        try:
-            url = url_for(endpoint)
-            r = client.get(url)
-            assert r.status_code in {200, 302}
-        except Exception as e:
-            errors.append(f"Failed: {endpoint} :\n{e}\n")
-
-    security_service.stop()
-    if errors:
-        print(errors)
-        raise AssertionError("Some public web tests failed")
-
-
 def test_all_simple_endpoints_with_no_login(client, app: Application):
     warnings.simplefilter("ignore")
     security_service.start(ignore_state=True)
@@ -80,7 +41,7 @@ def test_all_simple_endpoints_with_no_login(client, app: Application):
             r = client.get(url)
             assert r.status_code in {200, 302, 403}
         except Exception as e:
-            print("Failed:", rule.endpoint, ":", str(e))
+            print(f"Failed:{url=}, {rule.endpoint=} : {e}")
             raise
 
 

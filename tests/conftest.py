@@ -30,6 +30,21 @@ class TestConfig:
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
 
 
+@fixture(scope="session")
+def config() -> Any:
+    return TestConfig
+
+
+@fixture(scope="session")
+def app(config: Any) -> Flask:
+    # We currently return a fresh app for each test.
+    # Using session-scoped app doesn't currently work.
+    # Note: the impact on speed is minimal.
+    # from abilian.sbe.app import create_app
+
+    return create_app(config=config)
+
+
 @fixture()
 def db(app_context: AppContext) -> Iterator[SQLAlchemy]:
     """Return a fresh db for each test."""
