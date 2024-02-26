@@ -35,6 +35,10 @@ class SubclassEntityIndexable(Entity):
     pass
 
 
+def class_fqn(cls: type) -> str:
+    return f"{cls.__module__}.{cls.__qualname__}"
+
+
 def test_can_adapt():
     assert not SAAdapter.can_adapt(SANotAdaptable)
     assert SAAdapter.can_adapt(SANotIndexable)
@@ -141,8 +145,8 @@ def test_get_document(app, db):
     obj = SubclassEntityIndexable(**expected)
     obj.slug = "entity-name"
 
-    expected["object_type"] = "test_adapter.SubclassEntityIndexable"
-    expected["object_key"] = "test_adapter.SubclassEntityIndexable:2"
+    expected["object_type"] = class_fqn(SubclassEntityIndexable)
+    expected["object_key"] = f"{class_fqn(SubclassEntityIndexable)}:2"
     expected["text"] = "entity name"
     expected["slug"] = "entity-name"
     expected["name_prefix"] = "entity name"
