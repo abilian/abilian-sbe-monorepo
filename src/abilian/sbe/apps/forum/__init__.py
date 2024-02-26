@@ -15,7 +15,11 @@ def register_plugin(app: Application) -> None:
     from .models import ThreadIndexAdapter
     from .views import forum
 
-    forum.record_once(register_actions)
+    # could also test on private attribute _got_registered_once
+    if not any(
+        fct for fct in forum.deferred_functions if fct.__name__ == "register_actions"
+    ):
+        forum.record_once(register_actions)
     app.register_blueprint(forum)
     app.services["indexing"].adapters_cls.insert(0, ThreadIndexAdapter)
     # tasks.init_app(app)
