@@ -39,8 +39,9 @@ def ctx(app: Flask, app_context: AppContext):
 def setup_actions(app: Flask):
     # fix singleton multiple initialization:
     if actions.installed(app):
-        return
-    actions.init_app(app)
+        actions.clear()
+    else:
+        actions.init_app(app)
     for a in ALL_ACTIONS:
         a.enabled = True
     actions.register(*ALL_ACTIONS)

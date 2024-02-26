@@ -582,6 +582,10 @@ class ActionRegistry:
             app = current_app
         return self.__EXTENSION_NAME in app.extensions
 
+    def clear(self) -> None:
+        """Remove all registered actions."""
+        self._state["categories"] = {}
+
     def register(self, *actions: Any):
         """Register `actions` in the current application. All `actions` must be
         an instance of :class:`.Action` or one of its subclasses.
