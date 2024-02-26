@@ -30,12 +30,12 @@ class TestConfig:
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
 
 
-@fixture(scope="session")
+@fixture(scope="module")
 def config() -> Any:
     return TestConfig
 
 
-@fixture(scope="session")
+@fixture(scope="module")
 def app(config: Any) -> Flask:
     # We currently return a fresh app for each test.
     # Using session-scoped app doesn't currently work.
