@@ -49,11 +49,7 @@ def app(config: Any) -> Flask:
 def db(app_context: AppContext) -> Iterator[SQLAlchemy]:
     """Return a fresh db for each test."""
     from abilian.core.extensions import db as _db
-    from tests.util import (
-        cleanup_db,
-        ensure_services_started,
-        stop_all_services,
-    )
+    from tests.util import cleanup_db, ensure_services_started, stop_all_services
 
     stop_all_services(app_context.app)
     ensure_services_started(["blob_store", "session_blob_store"])

@@ -12,6 +12,7 @@ from abilian.core.models.subjects import User
 from abilian.sbe.apps.communities.models import READER, Community
 from abilian.sbe.apps.wiki import views
 from abilian.sbe.apps.wiki.models import WikiPage
+
 from ....util import client_login
 
 

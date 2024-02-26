@@ -9,6 +9,7 @@ from pathlib import Path
 from pytest import fixture
 
 from extranet.app import create_app
+
 from ..conftest import TestConfig
 
 PUBLIC_ENDPOINTS = [

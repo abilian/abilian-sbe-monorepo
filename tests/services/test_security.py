@@ -9,8 +9,6 @@ from abilian.app import Application
 from abilian.core.entities import Entity
 from abilian.core.models.subjects import Group, User, create_root_user
 from abilian.core.sqlalchemy import SQLAlchemy
-from abilian.services.security.models import FolderishModel
-
 from abilian.services.security import (
     READ,
     WRITE,
@@ -28,6 +26,7 @@ from abilian.services.security import (
     Writer,
     security,
 )
+from abilian.services.security.models import FolderishModel
 
 
 def test_singleton():

@@ -115,3 +115,7 @@ def redis_available() -> bool:
     except Exception:
         return False
     return True
+
+
+def class_fqn(cls: type) -> str:
+    return f"{cls.__module__}.{cls.__qualname__}"

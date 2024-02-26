@@ -13,6 +13,7 @@ from abilian.sbe.apps.communities.models import Community
 from abilian.sbe.apps.documents.models import Document, Folder
 from abilian.sbe.apps.documents.views.folders import explore_archive
 from abilian.services import index_service, security_service
+
 from ....util import login, redis_available
 
 

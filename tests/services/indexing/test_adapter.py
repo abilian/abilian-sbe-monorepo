@@ -14,6 +14,8 @@ from abilian.core.models.base import Indexable as CoreIndexable
 from abilian.core.models.base import Model
 from abilian.services.indexing.adapter import SAAdapter
 
+from ...util import class_fqn
+
 
 class SANotAdaptable:
     pass
@@ -33,10 +35,6 @@ class Indexable(IdMixin, CoreIndexable, Model):
 
 class SubclassEntityIndexable(Entity):
     pass
-
-
-def class_fqn(cls: type) -> str:
-    return f"{cls.__module__}.{cls.__qualname__}"
 
 
 def test_can_adapt():

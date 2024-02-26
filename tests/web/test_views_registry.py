@@ -14,6 +14,8 @@ from abilian.core.entities import Entity
 from abilian.web.views import default_view
 from abilian.web.views.registry import Registry
 
+from ..util import class_fqn
+
 
 class RegEntity(Entity):
     name = sa.Column(sa.Unicode, default="")
@@ -64,7 +66,7 @@ def test_register_class(app: Flask, registry: Registry):
         return f"{obj_type}:{obj_id}"
 
     registry.register(obj, url_from_type_and_id)
-    assert registry.url_for(obj) == "test_registry.RegEntity3:1"
+    assert registry.url_for(obj) == f"{class_fqn(RegEntity3)}:1"
 
     # def test_default_url_func(app: Flask, registry: Registry):
     obj = RegEntity4(id=2)

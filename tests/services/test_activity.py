@@ -6,7 +6,6 @@ from pytest import fixture
 
 from abilian.core.entities import Entity
 from abilian.core.models.subjects import User
-
 from abilian.services.activity.service import ActivityService
 
 

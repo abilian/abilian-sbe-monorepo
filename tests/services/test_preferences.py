@@ -10,11 +10,10 @@ from abilian.app import Application as BaseApplication
 from abilian.core.models.subjects import User
 from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.services import get_service, security_service
-from abilian.services.security import SecurityService
-
 from abilian.services.preferences.models import UserPreference
 from abilian.services.preferences.panel import PreferencePanel
 from abilian.services.preferences.service import PreferenceService
+from abilian.services.security import SecurityService
 
 
 class VisiblePanel(PreferencePanel):

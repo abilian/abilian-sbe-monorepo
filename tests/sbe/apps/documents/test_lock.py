@@ -12,6 +12,7 @@ from abilian.core.models.subjects import User
 from abilian.sbe.app import Application
 from abilian.sbe.apps.documents import lock
 from abilian.sbe.apps.documents.lock import Lock
+
 from ....util import redis_available
 
 

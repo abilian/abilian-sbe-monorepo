@@ -13,8 +13,6 @@ from abilian.core.entities import Entity
 from abilian.core.models.subjects import User
 from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.sbe.app import Application
-from abilian.sbe.apps.documents.models import Folder
-from abilian.services import index_service, security_service
 from abilian.sbe.apps.communities import signals, views
 from abilian.sbe.apps.communities.models import (
     MEMBER,
@@ -23,6 +21,8 @@ from abilian.sbe.apps.communities.models import (
     CommunityIdColumn,
     community_content,
 )
+from abilian.sbe.apps.documents.models import Folder
+from abilian.services import index_service, security_service
 
 from ....util import login
 

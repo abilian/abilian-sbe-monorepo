@@ -1,17 +1,19 @@
 from __future__ import annotations
+
 import warnings
 from collections.abc import Iterator
 
+from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.routing import Rule
-from flask.testing import FlaskClient
 
 from abilian.app import Application
 from abilian.core.models.subjects import User
 from abilian.services import get_service, security_service
 from abilian.services.security import Admin
 from abilian.web import url_for
-from .conftest import PUBLIC_ENDPOINTS, ENDPOINTS_TO_IGNORE
+
+from .conftest import ENDPOINTS_TO_IGNORE, PUBLIC_ENDPOINTS
 
 
 def test_public_endpoints_with_no_login(client: FlaskClient, app: Application):

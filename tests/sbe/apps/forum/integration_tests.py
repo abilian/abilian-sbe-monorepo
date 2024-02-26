@@ -9,17 +9,17 @@ from flask_login import login_user
 from flask_sqlalchemy import SQLAlchemy
 
 from abilian.sbe.apps.communities.models import MANAGER, MEMBER
-from abilian.sbe.apps.forum.tasks import send_post_by_email
-from abilian.sbe.apps.forum.views import ThreadCreate
-from abilian.services import security_service
-from ....util import client_login, redis_available
-
 from abilian.sbe.apps.forum.cli import _inject_email
 from abilian.sbe.apps.forum.models import Post, Thread
 from abilian.sbe.apps.forum.tasks import (
     build_reply_email_address,
     extract_email_destination,
+    send_post_by_email,
 )
+from abilian.sbe.apps.forum.views import ThreadCreate
+from abilian.services import security_service
+
+from ....util import client_login, redis_available
 from .util import get_string_from_file
 
 

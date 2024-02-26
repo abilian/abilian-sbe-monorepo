@@ -17,7 +17,6 @@ from abilian.sbe.app import create_app
 from abilian.sbe.apps.communities.models import READER, Community
 from tests.conftest import TestConfig
 
-
 # @fixture(scope="session")
 # def config() -> Any:
 #     return TestConfig

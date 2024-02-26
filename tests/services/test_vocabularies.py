@@ -4,11 +4,11 @@ import sqlalchemy as sa
 import sqlalchemy.exc
 from pytest import mark, raises
 
-from ..util import path_from_url
-from abilian.web import url_for
-
 from abilian.services.vocabularies.models import BaseVocabulary, Vocabulary
 from abilian.services.vocabularies.service import vocabularies
+from abilian.web import url_for
+
+from ..util import path_from_url
 
 # DefaultVoc = Vocabulary('defaultstates', group='', label='States')
 

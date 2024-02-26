@@ -4,6 +4,7 @@ import pytest
 
 from abilian.sbe.apps.forum.models import Post, Thread, ThreadClosedError
 from abilian.sbe.apps.forum.tasks import process
+
 from .util import get_email_message_from_file
 
 

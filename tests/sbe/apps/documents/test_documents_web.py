@@ -18,8 +18,9 @@ from abilian.sbe.apps.communities.models import WRITER, Community
 from abilian.sbe.apps.communities.presenters import CommunityPresenter
 from abilian.sbe.apps.documents.models import Folder
 from abilian.sbe.apps.documents.views import util as view_util
-from ....util import client_login, path_from_url, redis_available
 from abilian.web.util import url_for
+
+from ....util import client_login, path_from_url, redis_available
 
 
 def open_file(filename: str) -> IO[bytes]:

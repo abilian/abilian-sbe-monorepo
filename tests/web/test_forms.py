@@ -11,7 +11,6 @@ from wtforms import Form
 from abilian.app import Application
 from abilian.core.entities import Entity
 from abilian.services.security import READ, WRITE, Anonymous, Owner, Role
-
 from abilian.web.forms import FormPermissions, fields, filters
 
 NNSP = "\u202f"  # narrow no-break space
