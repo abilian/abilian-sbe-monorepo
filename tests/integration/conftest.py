@@ -53,4 +53,4 @@ def instance_path(tmpdir_factory):
 # @fixture(scope="session")
 @fixture(scope="module")
 def app(instance_path):
-    return create_app(TestConfig())
+    return create_app(config=TestConfig())

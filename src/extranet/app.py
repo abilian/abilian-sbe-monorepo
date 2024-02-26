@@ -49,7 +49,11 @@ class Application(BaseApplication):
 
 def create_app(config=None, **kw):
     app = Application(__name__, **kw)
+
     app.config.from_object(BaseConfig)
+
+    if config:
+        app.config.from_object(config)
 
     if not config:
         read_config(app)
@@ -60,9 +64,15 @@ def create_app(config=None, **kw):
 
     if "DATABASE_URL" in os.environ:
         app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
-
     # We must register this before blueprint is registered
-    social.url_value_preprocessor(on_home_blueprint)
+    if not any(
+        url
+        for url in social.url_value_preprocessors.get(None, [])
+        if url.__name__ == "on_home_blueprint"
+    ):
+        if app.config["TESTING"]:
+            social._got_registered_once = False
+        social.url_value_preprocessor(on_home_blueprint)
 
     app.setup(config)
 
