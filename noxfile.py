@@ -16,6 +16,6 @@ def lint(session: nox.Session) -> None:
 @nox.session(python=PYTHON_VERSIONS)
 def pytest(session: nox.Session) -> None:
     session.install("-e", ".")
-    session.install("html5lib", "pytest", "pytest-flask")
+    session.install("html5lib", "pytest", "pytest-flask", "hyperlink")
     session.run("pip", "check")
     session.run("pytest", "--tb=short")

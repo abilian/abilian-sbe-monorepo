@@ -221,6 +221,7 @@ honcho = "*"
 
 # Added later...
 html5lib = "*"
+hyperlink = "*"
 
 # Typing
 types-bleach = "*"
