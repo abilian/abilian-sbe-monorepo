@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import partial
 
 import sqlalchemy as sa
-from flask import Flask, _request_ctx_stack, g, render_template
+from flask import Flask, g, render_template
+from flask.globals import request_ctx
 from loguru import logger
 
 from abilian.core import extensions
@@ -72,9 +73,9 @@ class ErrorManagerMixin(Flask):
             setattr(g, key, session.merge(obj, load=load))
 
         # refresh `current_user`
-        user = getattr(_request_ctx_stack.top, "user", None)
+        user = getattr(request_ctx, "user", None)
         if user is not None and isinstance(user, db.Model):
-            _request_ctx_stack.top.user = session.merge(user, load=load)
+            request_ctx.user = session.merge(user, load=load)
 
     def log_exception(self, exc_info):
         """Log exception only if Sentry is not used (this avoids getting error

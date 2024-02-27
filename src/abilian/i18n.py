@@ -61,7 +61,7 @@ from babel import Locale
 from babel.dates import LOCALTZ, get_timezone, get_timezone_gmt
 from babel.localedata import locale_identifiers
 from babel.support import Translations as BaseTranslations
-from flask import Flask, _request_ctx_stack, current_app, g, render_template, request
+from flask import Flask, current_app, g, render_template, request
 from flask_babel import Babel as BabelBase
 from flask_babel import LazyString, force_locale, gettext, lazy_gettext, ngettext
 
@@ -279,13 +279,12 @@ def _get_translations_multi_paths() -> Translations | None:
     This will never fail and return a dummy translation object if used
     outside of the request or if a translation cannot be found.
     """
-    ctx = _request_ctx_stack.top
-    if ctx is None:
+    if not request:
         return None
 
-    translations = getattr(ctx, "babel_translations", None)
+    translations = getattr(g, "babel_translations", None)
     if translations is None:
-        babel_ext = ctx.app.extensions["babel"]
+        babel_ext = current_app.extensions["babel"]
         translations = None
         trs = None
 
@@ -313,7 +312,7 @@ def _get_translations_multi_paths() -> Translations | None:
         if translations is None:
             translations = trs
 
-        ctx.babel_translations = translations
+        g.babel_translations = translations
 
     return translations
 
@@ -375,7 +374,7 @@ class ensure_request_context:
     _rq_ctx = None
 
     def __enter__(self):
-        if _request_ctx_stack.top is None:
+        if not request:
             ctx = self._rq_ctx = current_app.test_request_context()
             ctx.__enter__()
 

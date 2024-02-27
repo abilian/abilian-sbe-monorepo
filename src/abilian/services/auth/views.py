@@ -15,7 +15,6 @@ from urllib.parse import urljoin, urlparse
 
 from flask import (
     Flask,
-    _request_ctx_stack,
     current_app,
     flash,
     jsonify,
@@ -24,6 +23,7 @@ from flask import (
     request,
     url_for,
 )
+from flask.globals import request_ctx
 from flask_login import login_user, logout_user, user_logged_in, user_logged_out
 from flask_mail import Message
 from itsdangerous import (
@@ -395,11 +395,11 @@ def is_safe_url(target: str) -> bool:
 def check_for_redirect(target: str) -> str:
     target = urljoin(request.url_root, target)
     url = urlparse(target)
-    reqctx = _request_ctx_stack.top
+    ctx = request_ctx
 
     # exceptions may happen if route is not found for example
     with contextlib.suppress(Exception):
-        endpoint, ignored = reqctx.url_adapter.match(url.path, "GET")
+        endpoint, ignored = ctx.url_adapter.match(url.path, "GET")
         if "." in endpoint and endpoint.rsplit(".", 1)[0] == "login":
             # don't redirect to any login view after successful login
             return ""

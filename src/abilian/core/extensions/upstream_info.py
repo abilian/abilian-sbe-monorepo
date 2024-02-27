@@ -5,7 +5,8 @@ from __future__ import annotations
 import typing
 from typing import Any
 
-from flask import Flask, _request_ctx_stack
+from flask import Flask
+from flask.globals import request_ctx
 from flask.signals import request_finished, request_started
 from flask.wrappers import Response
 
@@ -37,10 +38,10 @@ class UpstreamInfo:
             config[key] = val
 
     def request_started(self, app: Flask):
-        _request_ctx_stack.top.upstream_info = {"Username": "Anonymous"}
+        request_ctx.upstream_info = {"Username": "Anonymous"}
 
     def request_finished(self, app: Flask, response: Response):
-        info = _request_ctx_stack.top.upstream_info
+        info = request_ctx.upstream_info
         config = app.config
         default_enabled = bool(config["ABILIAN_UPSTREAM_INFO_ENABLED"])
         disabled = config["ABILIAN_UPSTREAM_INFO_DISCARD"]
@@ -56,7 +57,7 @@ class UpstreamInfo:
             response.headers[header] = val
 
     def user_loaded(self, app: Flask, user: User, *args: Any, **kwargs: Any):
-        _request_ctx_stack.top.upstream_info["Username"] = user.email
+        request_ctx.upstream_info["Username"] = user.email
 
 
 extension = UpstreamInfo()
