@@ -1,14 +1,76 @@
-""""""
-
 from __future__ import annotations
 
+import contextlib
 import os
 import sys
+from importlib.metadata import PackageNotFoundError, distribution
 
-import pkg_resources
+with contextlib.suppress(ImportError):
+    from importlib.metadata import packages_distributions
+
+import collections
+import contextlib
+from operator import itemgetter
+
 from flask import current_app, render_template
 
 from abilian.web.admin import AdminPanel
+
+SHORTLIST_PY39 = [
+    "abilian-devtools",
+    "abilian-sbe",
+    "alembic",
+    "APScheduler",
+    "Babel",
+    "click",
+    "cryptography",
+    "dramatiq",
+    "Flask",
+    "Flask-Assets",
+    "Flask-Babel",
+    "Flask-DebugToolbar",
+    "flask-dramatiq",
+    "Flask-LinkTester",
+    "Flask-Login",
+    "Flask-Mail",
+    "Flask-Migrate",
+    "Flask-SQLAlchemy",
+    "flask-tailwind",
+    "flask-talisman",
+    "Flask-WTF",
+    "Jinja2",
+    "loguru",
+    "lxml",
+    "Mako",
+    "MarkupSafe",
+    "python",
+    "SQLAlchemy",
+    "Werkzeug",
+]
+
+
+def installed_packages() -> list[dict[str, str]]:
+    packages: list[dict[str, str]] = []
+    if sys.version_info >= (3, 10):
+        packages_iterator = iter(packages_distributions())
+    else:
+        packages_iterator = SHORTLIST_PY39
+    for key in packages_iterator:
+        try:
+            dist = distribution(key)
+        except PackageNotFoundError:
+            continue
+        package = {
+            "name": dist.name,
+            "key": key,
+            "vcs": "",
+        }
+        try:
+            package["version"] = dist.version
+        except Exception:
+            package["version"] = "Unknown version"
+        packages.append(package)
+    return sorted(packages, key=itemgetter("key"))
 
 
 class SysinfoPanel(AdminPanel):
@@ -20,41 +82,7 @@ class SysinfoPanel(AdminPanel):
         uname = os.popen("uname -a").read()
         python_version = sys.version.strip()
 
-        packages: list[dict[str, str]] = []
-
-        for dist in pkg_resources.working_set:
-            package = {
-                "name": dist.project_name,
-                "key": dist.key,
-                "vcs": "",
-            }
-            try:
-                package["version"] = dist.version
-            except ValueError:
-                package["version"] = "Unknown version"
-
-            # FIXME: broken by pip 10
-            # location = text_type(Path(dist.location).resolve())
-            # vcs_name = get_backend_name(location)
-            #
-            # if vcs_name:
-            #     vc = vcs.get_backend(vcs_name)()
-            #     try:
-            #         url = vc.get_url(location)
-            #     except pip.exceptions.InstallationError:
-            #         url = 'None'
-            #     try:
-            #         revision = vc.get_revision(location)
-            #     except pip.exceptions.InstallationError:
-            #         revision = 'None'
-            #     package['vcs'] = dict(
-            #         name=vcs_name,
-            #         url=url,
-            #         revision=revision,
-            #     )
-
-            packages.append(package)
-            packages.sort(key=lambda d: d["key"])
+        packages = installed_packages()
 
         config_values = [(k, repr(v)) for k, v in sorted(current_app.config.items())]
 

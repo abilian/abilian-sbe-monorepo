@@ -10,10 +10,10 @@ import mimetypes
 import threading
 import uuid
 from collections.abc import Collection, Iterator
+from importlib import resources as rso
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
-import pkg_resources
 import sqlalchemy as sa
 import whoosh.fields as wf
 from flask import current_app, json, url_for
@@ -65,7 +65,7 @@ __all__ = (
 #: A Whoosh analyzer that folds accents and case.
 accent_folder = RegexTokenizer() | LowercaseFilter() | CharsetFilter(accent_map)
 
-ICONS_FOLDER = pkg_resources.resource_filename("abilian.sbe", "static/fileicons")
+ICONS_FOLDER = rso.files("abilian.sbe") / "static" / "fileicons"
 
 
 def icon_url(filename: str) -> str:
@@ -73,7 +73,7 @@ def icon_url(filename: str) -> str:
 
 
 def icon_exists(filename: str) -> bool:
-    return Path(ICONS_FOLDER, filename).is_file()
+    return ICONS_FOLDER.joinpath(filename).is_file()
 
 
 #

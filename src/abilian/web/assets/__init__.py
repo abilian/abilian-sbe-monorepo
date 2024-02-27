@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import typing
+from importlib import resources as rso
 
-import pkg_resources
 from flask import current_app, url_for
 from flask_assets import Bundle
 from webassets.filter import get_filter
@@ -48,7 +48,7 @@ def requirejs_config():
     config["paths"]["nvd3"] = url_for("abilian_static", filename=nvd3_lib)
 
 
-RESOURCES_DIR = pkg_resources.resource_filename("abilian.web", "resources")
+RESOURCES_DIR = str(rso.files("abilian.web") / "resources")
 
 JQUERY = Bundle("jquery/js/jquery-1.11.3.js")
 

@@ -1,13 +1,18 @@
-""""""
-
 from __future__ import annotations
 
 from flask import url_for
+
+from abilian.web.admin.panels.sysinfo import installed_packages
 
 
 def test_home(client, db_session):
     response = client.get(url_for("admin.dashboard"))
     assert response.status_code == 200
+
+
+def test_list_packages():
+    packages = installed_packages()
+    assert isinstance(packages, list)
 
 
 def test_sysinfo(client, db_session):

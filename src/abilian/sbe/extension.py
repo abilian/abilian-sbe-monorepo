@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import uuid
 from collections.abc import Callable
+from importlib import resources as rso
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-import pkg_resources
 from loguru import logger
 
 from abilian.core.util import fqcn
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from abilian.sbe.app import Application
 
 
-STATIC_DIR = pkg_resources.resource_filename(__name__, "static")
+STATIC_DIR = str(rso.files("abilian.sbe") / "static")
 LESSCSS_FILE = str(Path(STATIC_DIR, "less", "abilian-sbe.less"))
 JS = (
     "js/sbe-datatable.js",

@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import colorsys
 import hashlib
+from importlib import resources as rso
 from pathlib import Path
 from typing import Any
 
-import pkg_resources
 import sqlalchemy as sa
 import sqlalchemy.orm
 from flask import Blueprint, make_response, render_template, request
@@ -23,12 +23,8 @@ from .files import BaseFileDownload
 blueprint = Blueprint("images", __name__, url_prefix="/images")
 route = blueprint.route
 
-DEFAULT_AVATAR = Path(
-    pkg_resources.resource_filename("abilian.web", "resources/img/avatar-default.png")
-)
-DEFAULT_AVATAR_MD5 = hashlib.md5(  # noqa: S324
-    DEFAULT_AVATAR.open("rb").read()
-).hexdigest()
+DEFAULT_AVATAR = rso.files("abilian.web") / "resources" / "img" / "avatar-default.png"
+DEFAULT_AVATAR_MD5 = hashlib.md5(DEFAULT_AVATAR.read_bytes()).hexdigest()  # noqa: S324
 
 
 class BaseImageView(BaseFileDownload):
