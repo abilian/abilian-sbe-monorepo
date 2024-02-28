@@ -27,7 +27,8 @@ def init_app(app: Application):
         "abilian", RESOURCES_DIR, endpoint="abilian_static", roles=Anonymous
     )
 
-    app.before_first_request(requirejs_config)
+    with app.app_context():
+        requirejs_config()
 
 
 def requirejs_config():
