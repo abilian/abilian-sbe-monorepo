@@ -6,7 +6,7 @@ from collections.abc import Callable
 from typing import Any
 
 from flask import Blueprint, Flask, g
-from flask.scaffold import _endpoint_from_view_func
+from flask.sansio.scaffold import _endpoint_from_view_func
 from flask_login import current_user
 from loguru import logger
 from werkzeug.exceptions import Forbidden
