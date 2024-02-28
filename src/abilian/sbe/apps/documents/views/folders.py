@@ -20,7 +20,6 @@ from zipfile import ZipFile, is_zipfile
 import sqlalchemy as sa
 import whoosh.query as wq
 from flask import (
-    Markup,
     current_app,
     flash,
     g,
@@ -35,6 +34,7 @@ from flask import (
 )
 from flask_login import current_user
 from loguru import logger
+from markupsafe import Markup
 from sqlalchemy import func
 from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import InternalServerError
