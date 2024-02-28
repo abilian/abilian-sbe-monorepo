@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 import os
+from functools import cached_property
 from pathlib import Path
 from typing import Any
 
 import jinja2
 from flask import Flask, current_app
-from flask.helpers import locked_cached_property
 from flask.templating import Environment
 from flask_babel import get_locale as babel_get_locale
 from jinja2.loaders import ChoiceLoader, FileSystemLoader, PackageLoader
@@ -43,7 +43,7 @@ class JinjaManagerMixin(Flask):
         init_filters(env)
         return env
 
-    @locked_cached_property
+    @cached_property
     def jinja_options(self) -> dict[str, Any]:
         options = dict(Flask.jinja_options)
 
@@ -87,7 +87,7 @@ class JinjaManagerMixin(Flask):
 
         self._jinja_loaders.extend(loaders)
 
-    @locked_cached_property
+    @cached_property
     def jinja_loader(self) -> ChoiceLoader:
         """Search templates in custom app templates dir (default Flask
         behaviour), fallback on abilian templates."""

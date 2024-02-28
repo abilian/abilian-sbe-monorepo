@@ -32,7 +32,7 @@ import os
 import sys
 import warnings
 from collections.abc import Callable, Collection
-from functools import partial
+from functools import cached_property, partial
 from itertools import chain, count
 from pathlib import Path
 from typing import Any
@@ -51,7 +51,6 @@ from flask import (
     request_started,
 )
 from flask.config import Config, ConfigAttribute
-from flask.helpers import locked_cached_property
 from flask_migrate import Migrate
 from flask_tailwind import Tailwind
 from flask_talisman import DEFAULT_CSP_POLICY, Talisman
@@ -324,7 +323,7 @@ class Application(
         if err:
             raise OSError(eno, err, str(path))
 
-    @locked_cached_property
+    @cached_property
     def data_dir(self) -> Path:
         path = Path(self.instance_path, "data")
         if not path.exists():

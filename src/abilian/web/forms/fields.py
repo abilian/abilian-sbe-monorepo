@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import operator
 from datetime import datetime
-from functools import partial
+from functools import cached_property, partial
 from typing import Any
 
 import babel
@@ -13,7 +13,6 @@ import sqlalchemy as sa
 import sqlalchemy.exc
 from babel.core import Locale
 from flask import current_app
-from flask.helpers import locked_cached_property
 from flask_babel import format_date, format_datetime, get_locale, get_timezone
 from flask_login import current_user
 from flask_wtf.file import FileField as BaseFileField
@@ -676,7 +675,7 @@ class JsonSelect2Field(SelectFieldBase):
         self.allow_blank = not self.flags.required
         self.blank_text = blank_text
 
-    @locked_cached_property
+    @cached_property
     def model_class(self):
         cls = self._model_class
         if isinstance(cls, type) and issubclass(cls, db.Model):
