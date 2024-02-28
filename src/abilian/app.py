@@ -84,7 +84,6 @@ from abilian.web.admin import Admin
 from abilian.web.assets import AssetManagerMixin
 from abilian.web.blueprints import allow_access_for_roles
 from abilian.web.errors import ErrorManagerMixin
-from abilian.web.hooks import init_hooks
 from abilian.web.jinja import JinjaManagerMixin
 from abilian.web.nav import BreadcrumbItem
 from abilian.web.util import send_file_from_directory
@@ -239,7 +238,6 @@ class Application(
         signals.components_registered.send(self)
 
         request_started.connect(self.setup_nav_and_breadcrumbs)
-        init_hooks(self)
 
         # Initialize Abilian core services.
         # Must come after all entity classes have been declared.
