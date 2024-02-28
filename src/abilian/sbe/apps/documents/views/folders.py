@@ -768,9 +768,10 @@ def download_multiple(folder: Folder) -> Response:
     # if using upstream send file: just create a temps file.
     # if app is streaming itself: use NamedTemporaryFile so that file is removed
     # on close()
-    temp_factory = (
-        tempfile.mktemp if current_app.use_x_sendfile else tempfile.NamedTemporaryFile
-    )
+    # temp_factory = (
+    #     tempfile.mktemp if current_app.use_x_sendfile else tempfile.NamedTemporaryFile
+    # )
+    temp_factory = tempfile.NamedTemporaryFile
     zip_fn = temp_factory(prefix=f"tmp-{current_app.name}-", suffix=".zip")
     with ZipFile(zip_fn, "w") as zipfile:
         for doc in docs:
