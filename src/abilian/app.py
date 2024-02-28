@@ -16,10 +16,6 @@ from markupsafe import Markup, escape
 
 from .backports import safe_str_cmp
 
-# Monkey patching werkzeug, jinja2 and flask to keep working with old version
-# of some libraries.
-werkzeug.FileStorage = werkzeug.datastructures.FileStorage
-
 # Is this still needed? Tests seem to pass without them:
 werkzeug.security.safe_str_cmp = safe_str_cmp
 jinja2.escape = escape

@@ -8,10 +8,6 @@
 # Temps monkey patches
 import werkzeug.datastructures
 import werkzeug.urls
-
-werkzeug.FileStorage = werkzeug.datastructures.FileStorage
-
-# Normal bootstrap
 from flask.cli import load_dotenv
 
 from .app import create_app
