@@ -3,23 +3,14 @@ applications."""
 
 from __future__ import annotations
 
-# Temps monkey patches
-import json
-import urllib.parse
-
-import flask.json
-import jinja2
-import werkzeug.datastructures
-import werkzeug.security
-import werkzeug.urls
-
-flask.json.JSONEncoder = json.JSONEncoder
-
-# Rest of the imports
 import errno
 import importlib
+
+# Temps monkey patches
+import json
 import os
 import sys
+import urllib.parse
 import warnings
 from collections.abc import Callable, Collection
 from functools import cached_property, partial
@@ -28,6 +19,7 @@ from pathlib import Path
 from typing import Any
 
 import defusedxml
+import flask.json
 import jinja2
 import sqlalchemy as sa
 import sqlalchemy.exc
