@@ -1553,13 +1553,13 @@ six = "*"
 
 [[package]]
 name = "flask"
-version = "2.3.3"
+version = "3.0.2"
 description = "A simple framework for building complex web applications."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "flask-2.3.3-py3-none-any.whl", hash = "sha256:f69fcd559dc907ed196ab9df0e48471709175e696d6e698dd4dbe940f96ce66b"},
-    {file = "flask-2.3.3.tar.gz", hash = "sha256:09c347a92aa7ff4a8e7f3206795f30d826654baf38b873d0744cd571ca609efc"},
+    {file = "flask-3.0.2-py3-none-any.whl", hash = "sha256:3232e0e9c850d781933cf0207523d1ece087eb8d87b23777ae38456e2fbe7c6e"},
+    {file = "flask-3.0.2.tar.gz", hash = "sha256:822c03f4b799204250a7ee84b1eddc40665395333973dfb9deebfe425fefcb7d"},
 ]
 
 [package.dependencies]
@@ -1568,7 +1568,7 @@ click = ">=8.1.3"
 importlib-metadata = {version = ">=3.6.0", markers = "python_version < \"3.10\""}
 itsdangerous = ">=2.1.2"
 Jinja2 = ">=3.1.2"
-Werkzeug = ">=2.3.7"
+Werkzeug = ">=3.0.0"
 
 [package.extras]
 async = ["asgiref (>=3.2)"]
@@ -4282,13 +4282,13 @@ files = [
 
 [[package]]
 name = "types-html5lib"
-version = "1.1.11.20240222"
+version = "1.1.11.20240228"
 description = "Typing stubs for html5lib"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types-html5lib-1.1.11.20240222.tar.gz", hash = "sha256:d9517ec6ba2fa1f63113e2930a59b60722a976cc983b94d7fd772f14865e1152"},
-    {file = "types_html5lib-1.1.11.20240222-py3-none-any.whl", hash = "sha256:86b2dcbbebca846e68d2eac46b2717980e632de4b5d8f62ccd23d8333d2e7647"},
+    {file = "types-html5lib-1.1.11.20240228.tar.gz", hash = "sha256:22736b7299e605ec4ba539d48691e905fd0c61c3ea610acc59922232dc84cede"},
+    {file = "types_html5lib-1.1.11.20240228-py3-none-any.whl", hash = "sha256:af5de0125cb0fe5667543b158db83849b22e25c0e36c9149836b095548bf1020"},
 ]
 
 [[package]]
@@ -4304,13 +4304,13 @@ files = [
 
 [[package]]
 name = "types-pyopenssl"
-version = "24.0.0.20240130"
+version = "24.0.0.20240228"
 description = "Typing stubs for pyOpenSSL"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types-pyOpenSSL-24.0.0.20240130.tar.gz", hash = "sha256:c812e5c1c35249f75ef5935708b2a997d62abf9745be222e5f94b9595472ab25"},
-    {file = "types_pyOpenSSL-24.0.0.20240130-py3-none-any.whl", hash = "sha256:24a255458b5b8a7fca8139cf56f2a8ad5a4f1a5f711b73a5bb9cb50dc688fab5"},
+    {file = "types-pyOpenSSL-24.0.0.20240228.tar.gz", hash = "sha256:cd990717d8aa3743ef0e73e0f462e64b54d90c304249232d48fece4f0f7c3c6a"},
+    {file = "types_pyOpenSSL-24.0.0.20240228-py3-none-any.whl", hash = "sha256:a472cf877a873549175e81972f153f44e975302a3cf17381eb5f3d41ccfb75a4"},
 ]
 
 [package.dependencies]
@@ -4615,13 +4615,13 @@ files = [
 
 [[package]]
 name = "werkzeug"
-version = "2.3.7"
+version = "3.0.1"
 description = "The comprehensive WSGI web application library."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "werkzeug-2.3.7-py3-none-any.whl", hash = "sha256:effc12dba7f3bd72e605ce49807bbe692bd729c3bb122a3b91747a6ae77df528"},
-    {file = "werkzeug-2.3.7.tar.gz", hash = "sha256:2b8c0e447b4b9dbcc85dd97b6eeb4dcbaf6c8b6c3be0bd654e25553e0a2157d8"},
+    {file = "werkzeug-3.0.1-py3-none-any.whl", hash = "sha256:90a285dc0e42ad56b34e696398b8122ee4c681833fb35b8334a095d82c56da10"},
+    {file = "werkzeug-3.0.1.tar.gz", hash = "sha256:507e811ecea72b18a404947aded4b3390e1db8f826b494d76550ef45bb3b1dcc"},
 ]
 
 [package.dependencies]
@@ -4845,4 +4845,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9,<3.13"
-content-hash = "98469ed99cdf14ed977e13517e5592d709679f3d30cb6f580cf03f78b21792b6"
+content-hash = "71ebd3594173f37b231359233c1b67b31ff4ac0b42c066213b76bbbe37eabddd"
