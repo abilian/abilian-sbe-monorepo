@@ -14,10 +14,6 @@ import werkzeug.security
 import werkzeug.urls
 from markupsafe import Markup, escape
 
-from .backports import safe_str_cmp
-
-# Is this still needed? Tests seem to pass without them:
-werkzeug.security.safe_str_cmp = safe_str_cmp
 jinja2.escape = escape
 flask.json.JSONEncoder = json.JSONEncoder
 
