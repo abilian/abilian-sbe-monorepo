@@ -1576,17 +1576,18 @@ dotenv = ["python-dotenv"]
 
 [[package]]
 name = "flask-assets"
-version = "0.12"
+version = "2.1.0"
 description = "Asset management for Flask, to compress and merge CSS and Javascript files."
 optional = false
 python-versions = "*"
 files = [
-    {file = "Flask-Assets-0.12.tar.gz", hash = "sha256:6031527b89fb3509d1581d932affa5a79dd348cfffb58d0aef99a43461d47847"},
+    {file = "Flask-Assets-2.1.0.tar.gz", hash = "sha256:f84d6532ffe59c9ff352885e8740ff4da25c0bcfacd805f0a806815e44354813"},
+    {file = "Flask_Assets-2.1.0-py3-none-any.whl", hash = "sha256:a56c476b15f84701712cc3b4b4a001ebbe62b1dcbe81c23f96fbe6f261b75324"},
 ]
 
 [package.dependencies]
 Flask = ">=0.8"
-webassets = ">=0.11.1"
+webassets = ">=2.0"
 
 [[package]]
 name = "flask-babel"
@@ -3825,13 +3826,13 @@ python-debian = ">=0.1.34,<0.1.45 || >0.1.45,<0.1.46 || >0.1.46,<0.1.47 || >0.1.
 
 [[package]]
 name = "rich"
-version = "13.7.0"
+version = "13.7.1"
 description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
 optional = false
 python-versions = ">=3.7.0"
 files = [
-    {file = "rich-13.7.0-py3-none-any.whl", hash = "sha256:6da14c108c4866ee9520bbffa71f6fe3962e193b7da68720583850cd4548e235"},
-    {file = "rich-13.7.0.tar.gz", hash = "sha256:5cb5123b5cf9ee70584244246816e9114227e0b98ad9176eede6ad54bf5403fa"},
+    {file = "rich-13.7.1-py3-none-any.whl", hash = "sha256:4edbae314f59eb482f54e9e30bf00d33350aaa94f4bfcd4e9e3110e64d0d7222"},
+    {file = "rich-13.7.1.tar.gz", hash = "sha256:9be308cb1fe2f1f57d67ce99e95af38a1e2bc71ad9813b0e247cf7ffbcc3a432"},
 ]
 
 [package.dependencies]
@@ -4594,12 +4595,13 @@ watchmedo = ["PyYAML (>=3.10)"]
 
 [[package]]
 name = "webassets"
-version = "0.12.1"
+version = "2.0"
 description = "Media asset management for Python, with glue code for various web frameworks"
 optional = false
 python-versions = "*"
 files = [
-    {file = "webassets-0.12.1.tar.gz", hash = "sha256:e7d9c8887343123fd5b32309b33167428cb1318cdda97ece12d0907fd69d38db"},
+    {file = "webassets-2.0-py3-none-any.whl", hash = "sha256:a31a55147752ba1b3dc07dee0ad8c8efff274464e08bbdb88c1fd59ffd552724"},
+    {file = "webassets-2.0.tar.gz", hash = "sha256:167132337677c8cedc9705090f6d48da3fb262c8e0b2773b29f3352f050181cd"},
 ]
 
 [[package]]
@@ -4845,4 +4847,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9,<3.13"
-content-hash = "71ebd3594173f37b231359233c1b67b31ff4ac0b42c066213b76bbbe37eabddd"
+content-hash = "48be13a0026a941856b7af04368f7f6b9c6ad2ea35c2def194402d5d74fd1df0"

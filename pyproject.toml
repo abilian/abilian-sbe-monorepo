@@ -29,7 +29,7 @@ flask-babel = "1.0.0"
 # flask-babel = "~4.0.0"  # last 2 oct. 2023
 
 # flask-assets = ">=0.12" #0.12: 2016-08-18
-flask-assets = ">=0.12" #0.12: 2016-08-18  see webassets
+flask-assets = "2.1.0" #0.12: 2016-08-18  see webassets, v2.1.0 last 22 oct 2023
 # Flask-Assets==0.12
 
 flask-mail = ">=0.9.1" # last 29 sept. 2014
@@ -86,8 +86,9 @@ wtforms-sqlalchemy = "0.3"
 # WTForms-SQLAlchemy==0.3
 
 # Currently broken w/ 2.0
-webassets = "< 2"
+# webassets = "< 2"
 # webassets==0.12.1  (2017-01-08)
+webassets = "2.0" # requirement of flask-assets 2.1
 
 # can parse isoformat / used in a jinja filter
 python-dateutil = "^2.8.2" # last 14 juil. 2021
