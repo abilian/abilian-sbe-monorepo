@@ -12,9 +12,7 @@ import jinja2
 import werkzeug.datastructures
 import werkzeug.security
 import werkzeug.urls
-from markupsafe import Markup, escape
 
-jinja2.escape = escape
 flask.json.JSONEncoder = json.JSONEncoder
 
 # Rest of the imports
