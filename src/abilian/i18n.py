@@ -83,7 +83,6 @@ __all__ = [
 
 #: gettext alias
 _ = gettext
-
 #: lazy_gettext alias
 _l = lazy_gettext
 #: ngettext alias
@@ -91,7 +90,7 @@ _n = ngettext
 
 #: accepted languages codes
 VALID_LANGUAGES_CODE = frozenset(
-    lang for lang in locale_identifiers() if len(lang) == 2
+    _lang for _lang in locale_identifiers() if len(_lang) == 2
 )
 
 
@@ -106,19 +105,19 @@ def _get_locale() -> Locale:
     return locale
 
 
-def __gettext_territory(code):
+def _gettext_territory(code):
     locale = _get_locale()
     return locale.territories.get(code) or get_default_locale().territories.get(code)
 
 
 #: get localized territory name
 def country_name(code):
-    return __gettext_territory(code)
+    return _gettext_territory(code)
 
 
 #: lazy version of :func:`country_name`
 def lazy_country_name(code):
-    return LazyString(__gettext_territory, code)
+    return LazyString(_gettext_territory, code)
 
 
 def default_country() -> str:
