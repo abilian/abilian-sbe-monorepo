@@ -27,7 +27,7 @@ class IndexedContact(Entity):
 def svc(app: Application) -> Iterator[WhooshIndexService]:
     _svc = cast(WhooshIndexService, get_service("indexing"))
     with app.app_context():
-        _svc.start()
+        _svc.start(ignore_state=True)
         yield _svc
 
 
