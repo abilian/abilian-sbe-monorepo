@@ -106,7 +106,7 @@ class AuditEntry(db.Model):
 
     changes_pickle = Column(LargeBinary)
 
-    query: BaseQuery
+    # query: BaseQuery
 
     def __repr__(self):
         return "<AuditEntry id={} op={} user={} {}entity=<{} id={}>>".format(

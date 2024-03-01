@@ -423,7 +423,7 @@ class SecurityAudit(db.Model):
     object_type = Column(String(1000))
     object_name = Column(UnicodeText)
 
-    query: BaseQuery
+    # query: BaseQuery
 
 
 class InheritSecurity:

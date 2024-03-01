@@ -6,7 +6,7 @@ from flask import request
 from flask_login import current_user
 from flask_sqlalchemy import BaseQuery
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
-from sqlalchemy.orm import relation
+from sqlalchemy.orm import relationship
 
 from abilian.core.extensions import db
 from abilian.core.models.subjects import User
@@ -56,7 +56,7 @@ class LoginSessionQuery(BaseQuery):
 class LoginSession(db.Model):
     __tablename__ = "login_session"
     query_class = LoginSessionQuery
-    query: LoginSessionQuery
+    # query: LoginSessionQuery
 
     id = Column(Integer, primary_key=True, autoincrement=True)
 
@@ -65,7 +65,7 @@ class LoginSession(db.Model):
     ended_at = Column(DateTime)
 
     user_id = Column(ForeignKey(User.id), nullable=False)
-    user = relation(User)
+    user = relationship(User)
 
     #: IP addres, should work with both IPv4 and IPv6.
     # FIXME: define a custom type to use postgres inet when on postgres
