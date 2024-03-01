@@ -11,7 +11,7 @@ all: default
 ## Run tests
 test:
 	# pytest --ff -x -n auto
-	pytest --ff -x
+	pytest -x
 
 test-with-coverage:
 	pytest \
