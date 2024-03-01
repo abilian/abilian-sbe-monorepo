@@ -103,7 +103,6 @@ loguru = "^0.7.2"
 dramatiq = "^1.15.0"
 redis = ">=4.6.0,<5.0"
 flask-dramatiq = "^0.6.0"
-# flask-dramatiq==0.6.0
 filelock = "~3.13.1"
 
 # Security
@@ -119,7 +118,7 @@ lxml = "*"
 # Configuration
 toml = "*"
 
-# Used by the connection audit
+# Used by the session audit
 maxminddb = "*"
 
 # Progres bar, used by some scripts
@@ -179,7 +178,6 @@ devtools = "*"
 
 # Additional stuff
 python-dotenv = "^1.0.1" # last 1.0.1 23 janv. 2024
-# python-dotenv==1.0.1
 
 #flask-env = "*"
 defusedxml = "^0.7.1"
@@ -197,6 +195,8 @@ abilian-devtools = "^0.5.17"
 mypy = "^1.5.1"
 
 # Testing
+pytest = "^7.2.2"
+tox = "^4.5.1"
 pytest-flask = "*"
 # pytest-testmon = "^1.2.0"
 Flask-LinkTester = "*"
@@ -204,11 +204,10 @@ Flask-DebugToolbar = "*"
 # used by the DTB
 sqlparse = "^0.4.4"
 
-# Deploy
-plumbum = "*"
+# Rund dev server
 honcho = "*"
 
-# Added later...
+# Used for testing
 html5lib = "*"
 hyperlink = "*"
 
@@ -229,8 +228,6 @@ pyanalyze = "*"
 
 # Tools
 pyupgrade = "*"
-pytest = "^7.2.2"
-tox = "^4.5.1"
 deptry = "^0.12.0"
 
 # Replaces watchgod. Not sure it's needed.
@@ -238,7 +235,6 @@ deptry = "^0.12.0"
 
 # Documentation
 mkdocs-material = "^9.5.4"
-shed = "^2023.6.1"
 
 [build-system]
 requires = ["poetry-core>=1.2.0"]
