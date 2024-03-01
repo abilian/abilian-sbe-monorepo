@@ -6,7 +6,7 @@ from functools import wraps
 from flask import Blueprint, config, current_app, request
 from flask_wtf import FlaskForm
 from werkzeug.exceptions import Forbidden
-from wtforms.ext.csrf.fields import CSRFTokenField
+from wtforms.csrf.core import CSRFTokenField
 
 blueprint = Blueprint("csrf", __name__, url_prefix="/csrf")
 
@@ -16,6 +16,19 @@ def json_token_view():
     return {"token": token()}
 
 
+def token() -> str:
+    """Value of current csrf token.
+
+    Useful for passing it to JavaScript for instance.
+    """
+    if csrf_token := field() is None:
+        return ""
+
+    # We still need to find the proper way to get the current token
+    return "FIXME"
+    # return csrf_token.current_token
+
+
 def field() -> CSRFTokenField | None:
     """Return an instance of `wtforms.ext.csrf.fields.CSRFTokenField`, suitable
     for rendering.
@@ -23,7 +36,7 @@ def field() -> CSRFTokenField | None:
     Renders an empty string if `config.WTF_CSRF_ENABLED` is not set.
     """
     if current_app.config.get("WTF_CSRF_ENABLED"):
-        return FlaskForm().csrf_token
+        return CSRFTokenField()
     else:
         return None
 
@@ -39,16 +52,6 @@ def name() -> str:
     Useful for passing it to JavaScript for instance.
     """
     return "csrf_token"
-
-
-def token() -> str:
-    """Value of current csrf token.
-
-    Useful for passing it to JavaScript for instance.
-    """
-    if csrf_token := field() is None:
-        return ""
-    return csrf_token.current_token
 
 
 def support_graceful_failure(view: Callable) -> Callable:
