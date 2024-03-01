@@ -11,7 +11,7 @@ all: default
 ## Run tests
 test:
 	# pytest --ff -x -n auto
-	pytest -x
+	pytest -ff
 
 test-with-coverage:
 	pytest \
@@ -44,7 +44,7 @@ lint: lint-py
 
 .PHONY: lint-py
 lint-py:
-	ruff src tests
+	ruff check src tests
 	flake8 src tests
 	deptry src
 	python -m pyanalyze --config-file pyproject.toml
@@ -72,7 +72,7 @@ format:
 .PHONY: run
 ## Run dev server
 run:
-	honcho start
+	honcho -f Procfile.dev start
 
 .PHONY:
 run-ssl: run-ssl
