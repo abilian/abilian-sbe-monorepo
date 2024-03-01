@@ -10,9 +10,7 @@ from abilian.sbe.app import Application
 from abilian.sbe.apps.communities.models import Community
 from abilian.services import security_service
 from abilian.services.security import Admin
-
-# from abilian.testing.util import client_login
-from ....util import client_login
+from tests.util import client_login
 
 
 def test_index(

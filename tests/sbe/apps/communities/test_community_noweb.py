@@ -23,8 +23,7 @@ from abilian.sbe.apps.communities.models import (
 )
 from abilian.sbe.apps.documents.models import Folder
 from abilian.services import index_service, security_service
-
-from ....util import login
+from tests.util import login
 
 # from .. import signals, views
 # from ..models import MEMBER, READER, Community, CommunityIdColumn, community_content

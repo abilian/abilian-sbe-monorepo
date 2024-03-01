@@ -13,8 +13,7 @@ from abilian.core.models.base import SEARCHABLE, IdMixin
 from abilian.core.models.base import Indexable as CoreIndexable
 from abilian.core.models.base import Model
 from abilian.services.indexing.adapter import SAAdapter
-
-from ...util import class_fqn
+from tests.util import class_fqn
 
 
 class SANotAdaptable:

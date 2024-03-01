@@ -13,8 +13,7 @@ from abilian.app import Application
 from abilian.core.entities import Entity
 from abilian.services import get_service
 from abilian.services.indexing.service import WhooshIndexService
-
-from ...util import redis_available
+from tests.util import redis_available
 
 
 class IndexedContact(Entity):

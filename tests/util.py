@@ -18,11 +18,13 @@ from abilian.services import get_service
 from abilian.web import url_for
 
 __all__ = (
+    "class_fqn",
     "cleanup_db",
     "client_login",
     "ensure_services_started",
     "login",
     "path_from_url",
+    "redis_available",
     "stop_all_services",
 )
 

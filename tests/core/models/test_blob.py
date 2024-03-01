@@ -2,10 +2,6 @@ from __future__ import annotations
 
 import uuid
 from io import StringIO
-
-#
-# Unit tests
-#
 from pathlib import Path
 
 from flask import Flask

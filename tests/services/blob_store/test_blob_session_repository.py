@@ -5,7 +5,6 @@ from __future__ import annotations
 import uuid
 from pathlib import Path
 
-import pytest
 from sqlalchemy.orm import Session
 
 from abilian.services.blob_store import blob_store, session_blob_store
