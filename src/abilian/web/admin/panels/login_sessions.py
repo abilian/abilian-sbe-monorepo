@@ -30,16 +30,13 @@ class LoginSessionsPanel(AdminPanel):
 
         def update_country(session):
             if session.ip_address:
-                ip_address = session.ip_address
-                multiple = ip_address.split(",")
-                if multiple:
-                    # only use last ip in the list, most likely the public
-                    # address
-                    ip_address = multiple[-1]
-                for g in geoips:
+                # if several IPs, only use last IP in the list, most likely the
+                # public address
+                ip_address = session.ip_address.rpartition(",")[-1]
+                for geo_data in geoips:
                     try:
-                        country = g.country_name_by_addr(ip_address)
-                    except:  # noqa
+                        country = geo_data.country_name_by_addr(ip_address)
+                    except Exception:  # noqa
                         continue
 
                     if country:
