@@ -180,10 +180,11 @@ class Pagination:
 _NOT_WORD_RE = re.compile(r"[^\w\s]+", flags=re.UNICODE)
 
 
-def slugify(value, separator="-"):
+def slugify(value: str, separator: str = "-") -> str:
     """Slugify an Unicode string, to make it URL friendly."""
     if not isinstance(value, str):
-        raise ValueError("value must be a Unicode string")
+        raise TypeError("value must be a Unicode string")
+
     value = _NOT_WORD_RE.sub(" ", value)
     value = unicodedata.normalize("NFKD", value)
     value = value.encode("ascii", "ignore")

@@ -1,5 +1,3 @@
-""""""
-
 from __future__ import annotations
 
 import abc
@@ -100,6 +98,7 @@ class Comment(Entity):
         class_ = self.__class__
         mod_ = class_.__module__
         classname = class_.__name__
-        return "<{}.{} instance at 0x{:x} entity id={!r} date={}".format(
-            mod_, classname, id(self), self.entity_id, self.created_at
+        return (
+            f"<{mod_}.{classname} instance at 0x{id(self):x} "
+            f"entity id={self.entity_id!r} date={self.created_at}"
         )

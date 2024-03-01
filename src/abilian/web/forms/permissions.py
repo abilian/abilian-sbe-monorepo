@@ -56,7 +56,7 @@ class FormPermissions:
         elif callable(default):
             default_dict = {"default": default}
         else:
-            raise ValueError(
+            raise TypeError(
                 "No valid value for `default`. Use a Role, an iterable "
                 "of Roles, a callable, or a dict."
             )

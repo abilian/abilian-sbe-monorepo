@@ -33,7 +33,7 @@ def register(cls):
           ....
     """
     if not issubclass(cls, Entity):
-        raise ValueError("Class must be a subclass of abilian.core.entities.Entity")
+        raise TypeError("Class must be a subclass of abilian.core.entities.Entity")
 
     SupportsAttachment.register(cls)
     return cls
