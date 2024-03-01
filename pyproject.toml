@@ -120,7 +120,7 @@ lxml = "*"
 toml = "*"
 
 # Used by the connection audit
-pygeoip = "*"
+maxminddb = "*"
 
 # Progres bar, used by some scripts
 tqdm = "*"
