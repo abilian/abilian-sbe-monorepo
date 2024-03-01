@@ -40,7 +40,7 @@ def get_object_or_404(cls, *args):
     return cls.query.filter(*args).first_or_404()
 
 
-def send_file_from_directory(filename, directory, app=None):
+def send_file_from_directory(filename, directory):
     """Helper to add static rules, like in `abilian.app`.app.
 
     Example use::
@@ -51,7 +51,4 @@ def send_file_from_directory(filename, directory, app=None):
           view_func=partial(send_file_from_directory,
                             directory='/path/to/static/files/dir'))
     """
-    if app is None:
-        app = current_app
-    cache_timeout = app.get_send_file_max_age(filename)
-    return send_from_directory(directory, filename, cache_timeout=cache_timeout)
+    return send_from_directory(directory, filename)
