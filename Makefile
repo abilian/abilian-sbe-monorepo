@@ -10,8 +10,8 @@ all: default
 
 ## Run tests
 test:
-	# pytest --ff -x -n auto
-	pytest -ff
+	# pytest -n auto
+	pytest
 
 test-with-coverage:
 	pytest \
