@@ -86,7 +86,7 @@ def create_app(config=None, **kw):
 
     register_cli(app)
 
-    # init_dramatiq_engine(app)
+    init_dramatiq_engine(app)
 
     # Done
     return app
