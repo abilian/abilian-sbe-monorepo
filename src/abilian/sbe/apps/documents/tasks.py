@@ -32,7 +32,7 @@ def get_document(
     )
 
     if session is None:
-        doc_session = db.create_scoped_session()
+        doc_session = db.session()
     else:
         doc_session = session
 
