@@ -132,9 +132,11 @@ class _EntityInherit:
 
     __indexable__ = True
 
-    @declared_attr
-    def __tablename__(cls) -> str:
-        return cls.__name__.lower()
+    # this feature breask on sqlalchemy 1.3 with :
+    # "table name "entity" specified more than once""
+    # @declared_attr
+    # def __tablename__(cls) -> str:
+    #     return cls.__name__.lower()
 
     @declared_attr
     def id(cls) -> Column:
