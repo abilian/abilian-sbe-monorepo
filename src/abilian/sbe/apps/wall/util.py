@@ -26,29 +26,31 @@ def get_recent_entries(
     user: User | None = None,
     community: CommunityPresenter | None = None,
 ) -> list[Any]:
-    AE = ActivityEntry
-
     # Check just in case
     if not current_user.has_role(Admin):
         if community and not community.has_member(current_user):
             raise Forbidden
 
-    query = AE.query.options(sa.orm.joinedload(AE.object))
+    query = ActivityEntry.query.options(sa.orm.joinedload(ActivityEntry.object))
 
     if community:
-        query = query.filter(sa.or_(AE.target == g.community, AE.object == g.community))
+        query = query.filter(
+            sa.or_(
+                ActivityEntry.target == g.community,
+                ActivityEntry.object == g.community,
+            )
+        )
     if user:
-        query = query.filter(AE.actor == user)
+        query = query.filter(ActivityEntry.actor == user)
 
     # Security check
     #
     # we use communities ids instead of object because as of sqlalchemy 0.8 the
     # 'in_' operator cannot be used with relationships, only foreign keys values
     if not community and not current_user.has_role(Admin):
-        M = Membership
-        community_ids = M.query.filter(M.user_id == current_user.id).values(
-            M.community_id
-        )
+        community_ids = Membership.query.filter(
+            Membership.user_id == current_user.id
+        ).values(Membership.community_id)
 
         # convert generator to list: we'll need it twice during query filtering
         community_ids = list(community_ids)
@@ -56,10 +58,13 @@ def get_recent_entries(
             return []
 
         query = query.filter(
-            sa.or_(AE.target_id.in_(community_ids), AE.object_id.in_(community_ids))
+            sa.or_(
+                ActivityEntry.target_id.in_(community_ids),
+                ActivityEntry.object_id.in_(community_ids),
+            )
         )
 
-    query = query.order_by(AE.happened_at.desc()).limit(1000)
+    query = query.order_by(ActivityEntry.happened_at.desc()).limit(1000)
     # get twice entries as needed, but ceil to 100
     limit = min(num * 2, 100)
     entries: list[ActivityEntry] = []
