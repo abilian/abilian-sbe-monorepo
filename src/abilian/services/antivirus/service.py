@@ -83,8 +83,12 @@ class AntiVirusService(Service):
     def _scan(self, file_or_stream):
         content = file_or_stream
         if isinstance(file_or_stream, Blob):
-            # py3 compat: bytes == py2 str(). Pathlib uses os.fsencode()
-            file_or_stream = bytes(file_or_stream.file)
+            try:
+                file_or_stream = bytes(file_or_stream.file)
+            except TypeError as e:
+                self.logger.warning("Error during content scan: {error}", error=str(e))
+                return None
+
         elif isinstance(file_or_stream, str):
             file_or_stream = file_or_stream.encode(os.fsencode)
 
