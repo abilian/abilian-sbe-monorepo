@@ -133,6 +133,10 @@ class _EntityInherit:
     __indexable__ = True
 
     @declared_attr
+    def __tablename__(cls) -> str:
+        return cls.__name__.lower()
+
+    @declared_attr
     def id(cls) -> Column:
         return Column(
             Integer,
