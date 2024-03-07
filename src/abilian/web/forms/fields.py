@@ -22,7 +22,6 @@ from wtforms import Field
 from wtforms import FieldList as BaseFieldList
 from wtforms import FormField as BaseFormField
 from wtforms import SelectField, SelectFieldBase, SelectMultipleField, ValidationError
-from wtforms.compat import text_type
 from wtforms.ext.csrf import SecureForm
 from wtforms.validators import DataRequired, Optional
 from wtforms_alchemy import ModelFieldList as BaseModelFieldList
@@ -539,7 +538,7 @@ class QuerySelect2Field(SelectFieldBase):
         from sqlalchemy.orm.util import identity_key
 
         cls, key = identity_key(instance=obj)[0:2]
-        return ":".join(text_type(x) for x in key)
+        return ":".join(str(x) for x in key)
 
     def _get_data(self):
         formdata = self._formdata
@@ -571,7 +570,7 @@ class QuerySelect2Field(SelectFieldBase):
         if self._object_list is None:
             query = self.query or self.query_factory()
             get_pk = self.get_pk
-            self._object_list = [(text_type(get_pk(obj)), obj) for obj in query]
+            self._object_list = [(str(get_pk(obj)), obj) for obj in query]
         return self._object_list
 
     def iter_choices(self):
