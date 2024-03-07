@@ -77,9 +77,9 @@ Flask-WTF = "1.2.0"
 # Flask-WTF==0.12
 # wtforms = "<2.2"
 #wtforms = "~2.1"
-wtforms = "2.1"
-WTForms-Alchemy = "0.17.0"
-wtforms-sqlalchemy = "0.3"
+wtforms = "3.1.2"
+WTForms-Alchemy = "0.18.0"
+wtforms-sqlalchemy = "0.4.1"
 # WTForms==2.1
 # WTForms-Alchemy==0.17.0
 # WTForms-Components==0.10.5
