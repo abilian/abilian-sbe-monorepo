@@ -71,7 +71,7 @@ flask-sqlalchemy = "3.0.1"
 psycopg2 = "^2.9.9"
 
 # Currently broken w/ 0.13
-Flask-WTF = "1.1.2"
+Flask-WTF = "1.2.0"
 # https://flask-wtf.readthedocs.io/en/1.2.x/changes/#version-0-13
 
 # Flask-WTF==0.12
