@@ -4665,32 +4665,36 @@ files = [
 
 [[package]]
 name = "wtforms"
-version = "2.1"
-description = "A flexible forms validation and rendering library for python web development."
+version = "3.1.2"
+description = "Form validation and rendering for Python web development."
 optional = false
-python-versions = "*"
+python-versions = ">=3.8"
 files = [
-    {file = "WTForms-2.1.zip", hash = "sha256:ffdf10bd1fa565b8233380cb77a304cd36fd55c73023e91d4b803c96bc11d46f"},
+    {file = "wtforms-3.1.2-py3-none-any.whl", hash = "sha256:bf831c042829c8cdbad74c27575098d541d039b1faa74c771545ecac916f2c07"},
+    {file = "wtforms-3.1.2.tar.gz", hash = "sha256:f8d76180d7239c94c6322f7990ae1216dae3659b7aa1cee94b6318bdffb474b9"},
 ]
 
+[package.dependencies]
+markupsafe = "*"
+
 [package.extras]
-locale = ["Babel (>=1.3)"]
+email = ["email-validator"]
 
 [[package]]
 name = "wtforms-alchemy"
-version = "0.17.0"
+version = "0.18.0"
 description = "Generates WTForms forms from SQLAlchemy models."
 optional = false
 python-versions = "*"
 files = [
-    {file = "WTForms-Alchemy-0.17.0.tar.gz", hash = "sha256:b689314354d7405616402fa2c86f90f027e28ae067e09b5477aac815639053b9"},
+    {file = "WTForms-Alchemy-0.18.0.tar.gz", hash = "sha256:7748494056bdd96a7566186b8f422180465c337b2e892ad8e82a063cd6c76ca7"},
+    {file = "WTForms_Alchemy-0.18.0-py3-none-any.whl", hash = "sha256:c14cec7f76e27351a5777182ff39fcba64b7c46a561401835426605e6c83f216"},
 ]
 
 [package.dependencies]
-six = ">=1.4.1"
 SQLAlchemy = ">=1.0"
 SQLAlchemy-Utils = ">=0.32.6"
-WTForms = ">=1.0.4"
+WTForms = ">=2.2"
 WTForms-Components = ">=0.9.2"
 
 [package.extras]
@@ -4729,18 +4733,18 @@ timezone = ["python-dateutil"]
 
 [[package]]
 name = "wtforms-sqlalchemy"
-version = "0.3"
+version = "0.4.1"
 description = "SQLAlchemy tools for WTForms"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 files = [
-    {file = "WTForms-SQLAlchemy-0.3.tar.gz", hash = "sha256:7ca42824ad7c453a036f502b42d9c17d4ad8398ff9248a62ed538d1ce0bc41c3"},
-    {file = "WTForms_SQLAlchemy-0.3-py3-none-any.whl", hash = "sha256:90195d7592bf256d82498c42c79d416832e4a4e6fbca4f1e745a018f66d26c47"},
+    {file = "WTForms-SQLAlchemy-0.4.1.tar.gz", hash = "sha256:370f52b738527cf6d8ab78d3488afb9342666144da2637e0cf8b5ae522e8a4db"},
+    {file = "WTForms_SQLAlchemy-0.4.1-py3-none-any.whl", hash = "sha256:df3965015b60de172f4b35e691a47d9913d56bb0abb62c620edd04c1376979e3"},
 ]
 
 [package.dependencies]
-SQLAlchemy = ">=0.7.10"
-WTForms = ">=1.0.5"
+SQLAlchemy = ">=1.4"
+WTForms = ">=3.1"
 
 [[package]]
 name = "xlwt"
@@ -4771,4 +4775,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9,<3.13"
-content-hash = "5697b7b273fab44abe955bc42b18eaf6d5981cee9529e2b62e48fc1265f1a35f"
+content-hash = "fae9380660ef61987b8739935fa44101f8c89791d3bbd119b51a512765c7ac2a"
