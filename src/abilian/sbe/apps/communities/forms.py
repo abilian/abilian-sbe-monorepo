@@ -20,6 +20,9 @@ from .models import Community
 
 
 def strip(s: str) -> str:
+    if s is None:
+        # FIXME: this should not happen, but currently it does
+        return ""
     return s.strip()
 
 
