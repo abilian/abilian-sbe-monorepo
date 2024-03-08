@@ -190,6 +190,8 @@ mmdb_writer = "*"
 netaddr = "*"
 
 [tool.poetry.group.dev.dependencies]
+qcore = "1.10.0"
+
 # Generic dev deps
 abilian-devtools = "^0.5.17"
 mypy = "^1.5.1"
