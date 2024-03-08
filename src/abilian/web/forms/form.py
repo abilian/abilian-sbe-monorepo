@@ -157,7 +157,7 @@ class Form(FlaskForm):
                 fields = field_names
                 break
         else:
-            msg = "Group %s not found" % repr(group)
+            msg = f"Group {group!r} not found"
             raise ValueError(msg)
         return fields
 

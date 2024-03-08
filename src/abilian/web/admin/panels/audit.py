@@ -269,9 +269,7 @@ class BaseEntryPresenter:
         return self.date < other.date
 
     def __repr__(self):
-        return "{}({}, {} @ {})".format(
-            self.__class__.__name__, repr(self.user), repr(self.date), id(self)
-        )
+        return f"{self.__class__.__name__}({self.user!r}, {self.date!r} @ {id(self)})"
 
     @staticmethod
     def model(model_name):

@@ -68,9 +68,11 @@ class Membership(db.Model):
     __table_args__ = (UniqueConstraint("user_id", "community_id"),)
 
     def __repr__(self):
-        return "<Membership user={}, community={}, role={}>".format(
-            repr(self.user), repr(self.community), str(self.role)
-        ).encode("utf-8")
+        return (
+            f"<Membership user={self.user!r}, "
+            f"community={self.community!r}, "
+            f"role={self.role!s}>"
+        ).encode()
 
 
 def community_content(cls: type) -> Any:

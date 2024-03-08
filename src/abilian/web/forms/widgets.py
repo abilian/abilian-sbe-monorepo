@@ -713,8 +713,8 @@ class TextArea(BaseTextArea):
 
         if resizeable not in self._resizeable_valid:
             raise ValueError(
-                "Invalid value for resizeable: {}, valid values are: {!r}"
-                "".format(resizeable, self._resizeable_valid)
+                f"Invalid value for resizeable: {resizeable}, "
+                f"valid values are: {self._resizeable_valid!r}"
             )
         if resizeable:
             self.resizeable = f"resizeable-{resizeable}"
@@ -1002,8 +1002,9 @@ class DateInput(Input):
 
         s = f"<div {html_params(**attributes)}>\n"
 
-        s += '  <input size="13" type="text" {} />\n'.format(
-            html_params(name=field_name, id=field_id, value=value, **kwargs)
+        s += (
+            f'  <input size="13" type="text" '
+            f"{html_params(name=field_name, id=field_id, value=value, **kwargs)} />\n"
         )
         s += '  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>\n'
         s += "</div>\n"
