@@ -24,8 +24,7 @@ from flask_login import current_user
 from flask_wtf.file import FileField
 from markupsafe import Markup
 from sqlalchemy.orm.mapper import Mapper
-from wtforms.fields import Field, IntegerField, Label, StringField
-from wtforms.form import Form
+from wtforms import Field, FieldList, Form, FormField, IntegerField, Label, StringField
 from wtforms.widgets import Input
 from wtforms.widgets import PasswordInput as BasePasswordInput
 from wtforms.widgets import Select
@@ -1312,7 +1311,7 @@ class EmailWidget(TextInput):
 
     def render_view(self, field: StringField, **kwargs: Any) -> str:
         links = ""
-        if isinstance(field, wtforms.fields.FieldList):
+        if isinstance(field, FieldList):
             for entry in field.entries:
                 link = bleach.linkify(entry.data, parse_email=True)
                 if link:
@@ -1425,11 +1424,11 @@ class FieldListWidget:
             self.view_template = view_template
 
     def __call__(self, field, **kwargs):
-        assert isinstance(field, wtforms.fields.FieldList)
+        assert isinstance(field, FieldList)
         return Markup(render_template(self.template, field=field))
 
     def render_view(self, field, **kwargs):
-        assert isinstance(field, wtforms.fields.FieldList)
+        assert isinstance(field, FieldList)
         value = field.object_data
         if not value:
             return ""
@@ -1451,11 +1450,11 @@ class TabularFieldListWidget:
         self.template = template
 
     def __call__(self, field, **kwargs):
-        assert isinstance(field, wtforms.fields.FieldList)
+        assert isinstance(field, FieldList)
         labels = None
 
         if len(field):
-            assert isinstance(field[0], wtforms.fields.FormField)
+            assert isinstance(field[0], FormField)
             field_names = [f.short_name for f in field[0] if not f.is_hidden]
             data_type = f"{field.entries[0].__class__.__name__}Data"
             Data = namedtuple(data_type, field_names)

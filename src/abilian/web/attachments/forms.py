@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from wtforms.fields import StringField
+from wtforms import StringField
 
 from abilian.core.models.attachment import Attachment
 from abilian.i18n import _l

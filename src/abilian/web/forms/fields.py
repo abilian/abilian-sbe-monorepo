@@ -22,7 +22,6 @@ from wtforms import Field
 from wtforms import FieldList as BaseFieldList
 from wtforms import FormField as BaseFormField
 from wtforms import SelectField, SelectFieldBase, SelectMultipleField, ValidationError
-from wtforms.ext.csrf import SecureForm
 from wtforms.validators import DataRequired, Optional
 from wtforms_alchemy import ModelFieldList as BaseModelFieldList
 from wtforms_alchemy import ModelFormField as BaseModelFormField
@@ -61,22 +60,25 @@ class FormField(BaseFormField):
 
     def process(self, *args, **kwargs):
         super().process(*args, **kwargs)
-        if isinstance(self.form, SecureForm):
-            # don't create errors because of subtoken
-            self._subform_csrf = self.form["csrf_token"]
-            del self.form["csrf_token"]
+        # FIXME
+        # if isinstance(self.form, SecureForm):
+        #     # don't create errors because of subtoken
+        #     self._subform_csrf = self.form["csrf_token"]
+        #     del self.form["csrf_token"]
 
     @property
     def data(self):
-        if not isinstance(self.form, SecureForm):
-            return self.form.data
+        # FIXME
+        # if not isinstance(self.form, SecureForm):
+        #     return self.form.data
+        return self.form.data
 
         # SecureForm will try to pop 'csrf_token', but we removed it during
         # process
-        self.form._fields["csrf_token"] = self._subform_csrf
-        data = self.form.data
-        del self.form["csrf_token"]
-        return data
+        # self.form._fields["csrf_token"] = self._subform_csrf
+        # data = self.form.data
+        # del self.form["csrf_token"]
+        # return data
 
 
 class ModelFormField(FormField, BaseModelFormField):

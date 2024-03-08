@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from wtforms.fields import TextAreaField
+from wtforms import TextAreaField
 
 from abilian.core.models.comment import Comment
 from abilian.i18n import _l

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import sqlalchemy as sa
-from wtforms.fields import BooleanField, StringField
+from wtforms import BooleanField, StringField
 from wtforms.validators import ValidationError
 
 from abilian.core.models.subjects import Group

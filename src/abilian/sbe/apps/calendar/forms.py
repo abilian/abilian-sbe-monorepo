@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import bleach
-from wtforms import StringField, TextAreaField, ValidationError
-from wtforms.fields.html5 import URLField
+from wtforms import StringField, TextAreaField, URLField
+from wtforms.validators import ValidationError
 
 from abilian.i18n import _l
 from abilian.web.forms import Form

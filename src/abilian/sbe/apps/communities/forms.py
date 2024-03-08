@@ -7,9 +7,7 @@ from flask import request
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as _l
 from PIL import Image
-from wtforms.fields import BooleanField
-from wtforms.fields.core import StringField
-from wtforms.fields.simple import TextAreaField
+from wtforms import BooleanField, StringField, TextAreaField
 from wtforms.validators import ValidationError, data_required, optional
 
 from abilian.core.models.subjects import Group

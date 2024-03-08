@@ -13,7 +13,7 @@ from abilian.core.models.blob import Blob
 from ..base import Service
 
 try:
-    from clamd import ClamdUnixSocket, ClamdError
+    from clamd import ClamdError, ClamdUnixSocket
 
     clamd = ClamdUnixSocket()
 except ImportError:

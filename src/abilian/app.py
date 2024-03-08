@@ -351,7 +351,12 @@ class Application(
 
         # CSRF by default
         if self.config.get("WTF_CSRF_ENABLED"):
-            extensions.csrf.init_app(self)
+            # extensions.csrf IS original wtf_csrf
+            # abilian_csrf is
+            # from .csrf import abilian_csrf
+            # from .csrf import wtf_csrf as csrf
+
+            extensions.csrf.init_app(self)  # double initialization
             self.extensions["csrf"] = extensions.csrf
             extensions.abilian_csrf.init_app(self)
 

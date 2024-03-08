@@ -4,7 +4,7 @@ from collections.abc import Callable, Collection
 from typing import Any, cast
 
 from flask_login import current_user
-from wtforms.fields import Field
+from wtforms import Field
 
 from abilian.core.entities import Entity
 from abilian.core.models.subjects import User

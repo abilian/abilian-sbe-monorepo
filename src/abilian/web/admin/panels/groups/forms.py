@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from wtforms.fields import BooleanField, StringField
+from wtforms import BooleanField, StringField
 
 from abilian.i18n import _l
 from abilian.services.security.models import Role

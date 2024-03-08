@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import bleach
-from wtforms.fields import BooleanField, IntegerField, StringField
+from wtforms import BooleanField, IntegerField, StringField
 from wtforms.widgets import HiddenInput
 
 from abilian.i18n import _l
