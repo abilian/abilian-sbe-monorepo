@@ -78,6 +78,7 @@ lint.extend-ignore = [
     "TCH002", # Move import into a type-checking block
     "TCH003", # Move import into a type-checking block
     # Fix these (if possible / reasonable)
+    "UP032", # Use f-strings
     "A001", # Variable `...` is shadowing a python builtin
     "A002", # Argument `...` is shadowing a python builtin
     "A003", # Class attribute ... is shadowing a python builtin
