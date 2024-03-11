@@ -48,16 +48,16 @@ from .util import (
     get_folder,
     match,
 )
-from .views import blueprint
+from .views import community_blueprint
 
-route = blueprint.route
+route = community_blueprint.route
 
 MAX_PREVIEW_SIZE = 1000
 
 __all__ = ()
 
 
-@default_view(blueprint, Document, id_attr="doc_id", kw_func=default_view_kw)
+@default_view(community_blueprint, Document, id_attr="doc_id", kw_func=default_view_kw)
 @route("/doc/<int:doc_id>")
 def document_view(doc_id: int) -> str:
     doc = get_document(doc_id)
