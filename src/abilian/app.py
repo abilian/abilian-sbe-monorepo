@@ -363,7 +363,7 @@ class Application(
         # self.register_blueprint(csrf.blueprint)
 
         # images blueprint
-        from .web.views.images import blueprint as images_bp
+        from .web.views.images import csrf_blueprint as images_bp
 
         self.register_blueprint(images_bp)
 

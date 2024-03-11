@@ -20,8 +20,8 @@ from abilian.web.util import url_for
 
 from .files import BaseFileDownload
 
-blueprint = Blueprint("images", __name__, url_prefix="/images")
-route = blueprint.route
+csrf_blueprint = Blueprint("images", __name__, url_prefix="/images")
+route = csrf_blueprint.route
 
 DEFAULT_AVATAR = rso.files("abilian.web") / "resources" / "img" / "avatar-default.png"
 DEFAULT_AVATAR_MD5 = hashlib.md5(DEFAULT_AVATAR.read_bytes()).hexdigest()  # noqa: S324
