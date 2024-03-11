@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Callable, Collection
 from typing import Any, cast
 
-from flask import Blueprint as BaseBlueprint
+from flask import Blueprint
 
 from abilian.core.models.subjects import User
 from abilian.services.security import Anonymous, Role
@@ -36,7 +36,7 @@ def allow_access_for_roles(roles: Collection[Role] | Role) -> Callable:
     return check_role
 
 
-class Blueprint(BaseBlueprint):
+class AccessControlBlueprint(Blueprint):
     """An enhanced :class:`flask.blueprints.Blueprint` with access control
     helpers."""
 

@@ -13,7 +13,7 @@ from werkzeug.utils import secure_filename
 from abilian.core.models.subjects import User
 from abilian.core.util import unwrap
 from abilian.web import csrf, url_for
-from abilian.web.blueprints import Blueprint
+from abilian.web.blueprints import AccessControlBlueprint
 from abilian.web.forms import Form
 from abilian.web.views import JSONView, View
 
@@ -21,7 +21,7 @@ if typing.TYPE_CHECKING:
     from abilian.web.uploads import FileUploadsExtension
 
 
-bp = Blueprint("uploads", __name__, url_prefix="/upload")
+bp = AccessControlBlueprint("uploads", __name__, url_prefix="/upload")
 
 
 class UploadForm(Form):

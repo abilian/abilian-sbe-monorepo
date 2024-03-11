@@ -43,13 +43,13 @@ from abilian.core.signals import auth_failed
 from abilian.core.util import md5, unwrap
 from abilian.i18n import _, render_template_i18n
 from abilian.services.security import Anonymous
-from abilian.web.blueprints import Blueprint
+from abilian.web.blueprints import AccessControlBlueprint
 
 from .models import LoginSession
 
 __all__ = ("login",)
 
-login = Blueprint(
+login = AccessControlBlueprint(
     "login",
     __name__,
     url_prefix="/user",

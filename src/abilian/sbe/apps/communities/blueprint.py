@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from flask import Blueprint as BaseBlueprint
-from flask import g
+from flask import Blueprint, g
 from werkzeug.exceptions import NotFound
 
 from abilian.i18n import _l
@@ -15,7 +14,7 @@ from .models import Community
 from .presenters import CommunityPresenter
 
 
-class CommunityBlueprint(BaseBlueprint):
+class CommunityBlueprint(Blueprint):
     """Blueprint for community based views.
 
     It sets g.community and perform access verification for the

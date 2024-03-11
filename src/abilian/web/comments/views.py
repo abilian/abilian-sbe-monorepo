@@ -16,7 +16,7 @@ from abilian.core.util import utc_dt
 from abilian.i18n import _, _l
 from abilian.web import nav, url_for
 from abilian.web.action import ButtonAction, actions
-from abilian.web.blueprints import Blueprint
+from abilian.web.blueprints import AccessControlBlueprint
 from abilian.web.views.object import (
     CANCEL_BUTTON,
     ObjectCreate,
@@ -26,7 +26,7 @@ from abilian.web.views.object import (
 
 from .forms import CommentForm
 
-bp = Blueprint("comments", __name__, url_prefix="/comments")
+bp = AccessControlBlueprint("comments", __name__, url_prefix="/comments")
 
 
 def _default_comment_view(obj, obj_type, obj_id, **kwargs):
