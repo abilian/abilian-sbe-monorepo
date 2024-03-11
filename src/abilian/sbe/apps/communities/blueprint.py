@@ -15,7 +15,7 @@ from .models import Community
 from .presenters import CommunityPresenter
 
 
-class Blueprint(BaseBlueprint):
+class CommunityBlueprint(BaseBlueprint):
     """Blueprint for community based views.
 
     It sets g.community and perform access verification for the

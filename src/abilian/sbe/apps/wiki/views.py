@@ -27,7 +27,7 @@ from abilian.core.extensions import db
 from abilian.core.signals import activity
 from abilian.core.util import unwrap
 from abilian.i18n import _, _l, _n
-from abilian.sbe.apps.communities.blueprint import Blueprint
+from abilian.sbe.apps.communities.blueprint import CommunityBlueprint
 from abilian.sbe.apps.communities.common import object_viewers
 from abilian.sbe.apps.communities.models import Community
 from abilian.sbe.apps.communities.presenters import CommunityPresenter
@@ -44,7 +44,9 @@ from abilian.web.views.base import Redirect
 from .forms import WikiPageForm
 from .models import WikiPage, WikiPageAttachment, WikiPageRevision
 
-wiki = Blueprint("wiki", __name__, url_prefix="/wiki", template_folder="templates")
+wiki = CommunityBlueprint(
+    "wiki", __name__, url_prefix="/wiki", template_folder="templates"
+)
 route = wiki.route
 
 

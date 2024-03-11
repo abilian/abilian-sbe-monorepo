@@ -5,7 +5,7 @@ from __future__ import annotations
 from flask import g
 
 from abilian.i18n import _l
-from abilian.sbe.apps.communities.blueprint import Blueprint
+from abilian.sbe.apps.communities.blueprint import CommunityBlueprint
 from abilian.sbe.apps.communities.security import is_manager
 from abilian.sbe.apps.documents.actions import register_actions
 from abilian.web.action import Endpoint
@@ -13,7 +13,7 @@ from abilian.web.nav import BreadcrumbItem
 
 __all__ = ["blueprint"]
 
-blueprint = Blueprint(
+blueprint = CommunityBlueprint(
     "documents", __name__, url_prefix="/docs", template_folder="../templates"
 )
 route = blueprint.route

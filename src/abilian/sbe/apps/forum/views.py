@@ -23,7 +23,7 @@ from abilian.web.action import ButtonAction, Endpoint
 from abilian.web.nav import BreadcrumbItem
 from abilian.web.views import default_view
 
-from ..communities.blueprint import Blueprint
+from ..communities.blueprint import CommunityBlueprint
 from ..communities.common import activity_time_format, object_viewers
 from ..communities.views import default_view_kw
 from .forms import PostEditForm, PostForm, ThreadForm
@@ -33,7 +33,9 @@ from .tasks import send_post_by_email
 # TODO: move to config
 MAX_THREADS = 30
 
-forum = Blueprint("forum", __name__, url_prefix="/forum", template_folder="templates")
+forum = CommunityBlueprint(
+    "forum", __name__, url_prefix="/forum", template_folder="templates"
+)
 route = forum.route
 
 
