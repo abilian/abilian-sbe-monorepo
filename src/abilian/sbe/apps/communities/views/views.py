@@ -60,13 +60,10 @@ from abilian.web.views import images as image_views
 __all__ = ["BaseCommunityView", "communities", "default_view_kw", "route", "tab"]
 
 
-EPOCH = datetime.fromtimestamp(0.0, tz=pytz.utc)
-
-
 def seconds_since_epoch(dt: datetime | None) -> int:
     if not dt:
         return 0
-    return int((utc_dt(dt) - EPOCH).total_seconds())
+    return int(dt.timestamp())
 
 
 communities = CommunityBlueprint(
