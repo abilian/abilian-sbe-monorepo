@@ -13,8 +13,8 @@ from abilian.core.entities import Entity
 from abilian.core.models.attachment import Attachment, supports_attachments
 from abilian.i18n import _, _l
 from abilian.web import nav, url_for
+from abilian.web.access_blueprint import AccessControlBlueprint
 from abilian.web.action import ButtonAction, actions
-from abilian.web.blueprints import AccessControlBlueprint
 from abilian.web.views import BaseObjectView, ObjectCreate, ObjectDelete, ObjectEdit
 
 from .forms import AttachmentForm

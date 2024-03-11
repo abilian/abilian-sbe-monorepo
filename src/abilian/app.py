@@ -60,10 +60,10 @@ from abilian.services import (
 from abilian.services.security import Anonymous
 from abilian.services.security.models import Role
 from abilian.web import csrf
+from abilian.web.access_blueprint import allow_access_for_roles
 from abilian.web.action import actions
 from abilian.web.admin import Admin
 from abilian.web.assets import AssetManagerMixin
-from abilian.web.blueprints import allow_access_for_roles
 from abilian.web.errors import ErrorManagerMixin
 from abilian.web.jinja import JinjaManagerMixin
 from abilian.web.nav import BreadcrumbItem
@@ -363,7 +363,7 @@ class Application(
         # self.register_blueprint(csrf.blueprint)
 
         # images blueprint
-        from .web.views.images import csrf_blueprint as images_bp
+        from .web.views.images import images_bp
 
         self.register_blueprint(images_bp)
 

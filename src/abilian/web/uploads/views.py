@@ -13,7 +13,7 @@ from werkzeug.utils import secure_filename
 from abilian.core.models.subjects import User
 from abilian.core.util import unwrap
 from abilian.web import csrf, url_for
-from abilian.web.blueprints import AccessControlBlueprint
+from abilian.web.access_blueprint import AccessControlBlueprint
 from abilian.web.forms import Form
 from abilian.web.views import JSONView, View
 
@@ -21,7 +21,7 @@ if typing.TYPE_CHECKING:
     from abilian.web.uploads import FileUploadsExtension
 
 
-bp = AccessControlBlueprint("uploads", __name__, url_prefix="/upload")
+ac_blueprint = AccessControlBlueprint("uploads", __name__, url_prefix="/upload")
 
 
 class UploadForm(Form):
@@ -69,7 +69,7 @@ class NewUploadView(BaseUploadsView, JSONView):
         return self.post(*args, **kwargs)
 
 
-bp.add_url_rule("/", view_func=NewUploadView.as_view("new_file"))
+ac_blueprint.add_url_rule("/", view_func=NewUploadView.as_view("new_file"))
 
 
 class UploadView(BaseUploadsView, View):
@@ -105,4 +105,4 @@ class UploadView(BaseUploadsView, View):
         return {"success": True}
 
 
-bp.add_url_rule("/<string:handle>", view_func=UploadView.as_view("handle"))
+ac_blueprint.add_url_rule("/<string:handle>", view_func=UploadView.as_view("handle"))

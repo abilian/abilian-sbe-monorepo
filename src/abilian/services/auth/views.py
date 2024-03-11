@@ -43,7 +43,7 @@ from abilian.core.signals import auth_failed
 from abilian.core.util import md5, unwrap
 from abilian.i18n import _, render_template_i18n
 from abilian.services.security import Anonymous
-from abilian.web.blueprints import AccessControlBlueprint
+from abilian.web.access_blueprint import AccessControlBlueprint
 
 from .models import LoginSession
 

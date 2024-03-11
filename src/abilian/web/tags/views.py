@@ -9,7 +9,7 @@ from abilian.core.entities import Entity
 from abilian.core.models.tag import Tag
 from abilian.i18n import _l
 from abilian.web import url_for
-from abilian.web.blueprints import AccessControlBlueprint
+from abilian.web.access_blueprint import AccessControlBlueprint
 from abilian.web.views import (
     BaseObjectView,
     JSONView,
