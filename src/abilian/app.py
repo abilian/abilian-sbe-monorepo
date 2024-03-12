@@ -360,7 +360,7 @@ class Application(
             self.extensions["csrf"] = extensions.csrf
             extensions.abilian_csrf.init_app(self)
 
-        # self.register_blueprint(csrf.blueprint)
+        self.register_blueprint(csrf.csrf_blueprint)
 
         # images blueprint
         from .web.views.images import images_bp

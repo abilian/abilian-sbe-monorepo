@@ -16,19 +16,6 @@ def json_token_view():
     return {"token": token()}
 
 
-def token() -> str:
-    """Value of current csrf token.
-
-    Useful for passing it to JavaScript for instance.
-    """
-    if csrf_token := field() is None:
-        return ""
-
-    # We still need to find the proper way to get the current token
-    return "FIXME"
-    # return csrf_token.current_token
-
-
 def field() -> CSRFTokenField | None:
     """Return an instance of `wtforms.ext.csrf.fields.CSRFTokenField`, suitable
     for rendering.
@@ -36,7 +23,8 @@ def field() -> CSRFTokenField | None:
     Renders an empty string if `config.WTF_CSRF_ENABLED` is not set.
     """
     if current_app.config.get("WTF_CSRF_ENABLED"):
-        return CSRFTokenField()
+        form = FlaskForm()
+        return form.csrf_token
     else:
         return None
 
@@ -52,6 +40,19 @@ def name() -> str:
     Useful for passing it to JavaScript for instance.
     """
     return "csrf_token"
+
+
+def token() -> str:
+    """Value of current csrf token.
+
+    Useful for passing it to JavaScript for instance.
+    """
+    csrf_token = field()
+    if csrf_token is None:
+        return ""
+    # csrf_token is a CSRFTokenField
+    # csrf_token.current_token is the current token str content
+    return csrf_token.current_token
 
 
 def support_graceful_failure(view: Callable) -> Callable:
