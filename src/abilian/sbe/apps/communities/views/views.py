@@ -40,7 +40,7 @@ from abilian.core.signals import activity
 from abilian.core.util import unwrap, utc_dt
 from abilian.i18n import _, _l
 from abilian.sbe.apps.communities.actions import register_actions
-from abilian.sbe.apps.communities.blueprint import Blueprint
+from abilian.sbe.apps.communities.blueprint import CommunityBlueprint
 from abilian.sbe.apps.communities.forms import CommunityForm
 from abilian.sbe.apps.communities.models import Community, Membership
 from abilian.sbe.apps.communities.presenters import CommunityPresenter
@@ -60,16 +60,13 @@ from abilian.web.views import images as image_views
 __all__ = ["BaseCommunityView", "communities", "default_view_kw", "route", "tab"]
 
 
-EPOCH = datetime.fromtimestamp(0.0, tz=pytz.utc)
-
-
 def seconds_since_epoch(dt: datetime | None) -> int:
     if not dt:
         return 0
-    return int((utc_dt(dt) - EPOCH).total_seconds())
+    return int(dt.timestamp())
 
 
-communities = Blueprint(
+communities = CommunityBlueprint(
     "communities",
     __name__,
     set_community_id_prefix=False,

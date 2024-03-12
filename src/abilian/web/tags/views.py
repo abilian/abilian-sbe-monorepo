@@ -9,7 +9,7 @@ from abilian.core.entities import Entity
 from abilian.core.models.tag import Tag
 from abilian.i18n import _l
 from abilian.web import url_for
-from abilian.web.blueprints import Blueprint
+from abilian.web.access_blueprint import AccessControlBlueprint
 from abilian.web.views import (
     BaseObjectView,
     JSONView,
@@ -20,7 +20,9 @@ from abilian.web.views import (
 
 from .forms import TagForm
 
-bp = Blueprint("tags", __name__, url_prefix="/tags", template_folder="templates")
+bp = AccessControlBlueprint(
+    "tags", __name__, url_prefix="/tags", template_folder="templates"
+)
 
 
 class BaseTagView:
@@ -58,7 +60,7 @@ delete_view = TagDelete.as_view("delete")
 bp.route("/manage/<int:object_id>/delete")(delete_view)
 
 # Tags on entities
-entity_bp = Blueprint("entity_tags", __name__, url_prefix="/tags/entity")
+entity_bp = AccessControlBlueprint("entity_tags", __name__, url_prefix="/tags/entity")
 
 
 class BaseEntityTagView(BaseTagView):

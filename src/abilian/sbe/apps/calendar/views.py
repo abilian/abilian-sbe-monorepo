@@ -11,12 +11,12 @@ from abilian.i18n import _l
 from abilian.web import url_for, views
 from abilian.web.action import ButtonAction
 
-from ..communities.blueprint import Blueprint
+from ..communities.blueprint import CommunityBlueprint
 from ..communities.views import default_view_kw
 from .forms import EventForm
 from .models import Event
 
-blueprint = Blueprint(
+blueprint = CommunityBlueprint(
     "calendar", __name__, url_prefix="/calendar", template_folder="templates"
 )
 route = blueprint.route

@@ -8,10 +8,10 @@ from flask_wtf import FlaskForm
 from werkzeug.exceptions import Forbidden
 from wtforms.csrf.core import CSRFTokenField
 
-blueprint = Blueprint("csrf", __name__, url_prefix="/csrf")
+csrf_blueprint = Blueprint("csrf", __name__, url_prefix="/csrf")
 
 
-@blueprint.route("/token", endpoint="json_token")
+@csrf_blueprint.route("/token", endpoint="json_token")
 def json_token_view():
     return {"token": token()}
 

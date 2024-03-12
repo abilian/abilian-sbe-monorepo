@@ -12,9 +12,9 @@ def register_plugin(app: Application) -> None:
     from . import lock, signals
     from .cli import antivirus
     from .models import setup_listener
-    from .views import blueprint
+    from .views import community_blueprint
 
-    app.register_blueprint(blueprint)
+    app.register_blueprint(community_blueprint)
     setup_listener()
 
     # set default lock lifetime

@@ -10,7 +10,7 @@ from flask import current_app, g, render_template
 from flask_babel import format_date
 from sqlalchemy.orm import joinedload
 
-from abilian.sbe.apps.communities.blueprint import Blueprint
+from abilian.sbe.apps.communities.blueprint import CommunityBlueprint
 from abilian.sbe.apps.documents.models import Document, icon_for
 from abilian.sbe.apps.forum.models import Thread
 from abilian.services import get_service
@@ -20,7 +20,9 @@ from abilian.web.action import actions
 from .presenters import ActivityEntryPresenter
 from .util import get_recent_entries
 
-wall = Blueprint("wall", __name__, url_prefix="/wall", template_folder="templates")
+wall = CommunityBlueprint(
+    "wall", __name__, url_prefix="/wall", template_folder="templates"
+)
 route = wall.route
 
 

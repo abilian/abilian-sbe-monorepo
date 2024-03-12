@@ -19,7 +19,7 @@ from abilian.core.dramatiq.singleton import dramatiq
 from abilian.core.models.subjects import User
 from abilian.web import url_for
 
-from .views import bp as blueprint
+from .views import ac_blueprint
 
 CHUNK_SIZE = 64 * 1024
 
@@ -56,7 +56,7 @@ class FileUploadsExtension:
     def __init__(self, app: Application):
         app.extensions["uploads"] = self
         app.add_template_global(self, "uploads")
-        app.register_blueprint(blueprint)
+        app.register_blueprint(ac_blueprint)
         signals.register_js_api.connect(self._do_register_js_api)
 
         self.config: dict[str, Any] = {}

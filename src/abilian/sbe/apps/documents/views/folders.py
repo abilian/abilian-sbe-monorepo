@@ -68,9 +68,9 @@ from .util import (
     get_new_filename,
     get_selected_objects,
 )
-from .views import blueprint
+from .views import community_blueprint
 
-route = blueprint.route
+route = community_blueprint.route
 
 __all__ = ()
 
@@ -95,7 +95,7 @@ def index() -> Response:
     return redirect(url)
 
 
-@default_view(blueprint, Folder, id_attr="folder_id", kw_func=default_view_kw)
+@default_view(community_blueprint, Folder, id_attr="folder_id", kw_func=default_view_kw)
 @route("/folder/<int:folder_id>")
 def folder_view(folder_id):
     folder = get_folder(folder_id)
