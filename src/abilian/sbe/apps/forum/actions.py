@@ -24,10 +24,7 @@ class ForumAction(Action):
         if filter not in filter_keys:
             return False
 
-        if self.url() == "#filter":
-            return True
-
-        return False
+        return self.url() == "#filter"
 
     def url(self, context=None):
         if self._url or self.endpoint:

@@ -45,10 +45,7 @@ def is_commentable(obj_or_class: Any) -> bool:
     if not isinstance(obj_or_class, Commentable):
         return False
 
-    if obj_or_class.id is None:
-        return False
-
-    return True
+    return obj_or_class.id is not None
 
 
 def for_entity(obj, check_commentable=False):

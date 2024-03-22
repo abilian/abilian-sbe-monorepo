@@ -93,7 +93,4 @@ def is_manager(context: dict[str, Any] | None = None, user: User | None = None) 
     if community.has_permission(user, MANAGE) or user == community.creator:
         return True
 
-    if security_service.has_role(user, "admin"):
-        return True
-
-    return False
+    return security_service.has_role(user, "admin")

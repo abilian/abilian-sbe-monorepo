@@ -312,12 +312,9 @@ class Community(Entity):
 
         if user.has_role(Admin):
             return True
+
         role = self.get_role(user)
-        if role == MANAGER:
-            return True
-        if role == MEMBER and permission in (READ, WRITE):
-            return True
-        return False
+        return role == MANAGER or (role == MEMBER and permission in (READ, WRITE))
 
     def touch(self) -> None:
         self.last_active_at = datetime.utcnow()

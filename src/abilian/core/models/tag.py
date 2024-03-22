@@ -48,10 +48,7 @@ def supports_tagging(obj) -> bool:
     if not isinstance(obj, SupportTagging):
         return False
 
-    if obj.id is None:
-        return False
-
-    return True
+    return obj.id is not None
 
 
 entity_tag_tbl = db.Table(

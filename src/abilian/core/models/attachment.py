@@ -51,10 +51,7 @@ def supports_attachments(obj):
     if not isinstance(obj, SupportsAttachment):
         return False
 
-    if obj.id is None:
-        return False
-
-    return True
+    return obj.id is not None
 
 
 def for_entity(obj, check_support_attachments=False):
