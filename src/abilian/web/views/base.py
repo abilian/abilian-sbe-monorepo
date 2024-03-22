@@ -6,6 +6,7 @@ from collections.abc import Callable
 from typing import Any
 
 from flask import g, json, jsonify, redirect, render_template_string, request
+from flask.typing import ResponseReturnValue
 from flask.views import MethodView as BaseView
 from werkzeug.exceptions import HTTPException
 
@@ -27,15 +28,18 @@ class View(BaseView):
     def as_view(cls, name: str, *class_args: Any, **class_kwargs: Any) -> Callable:
         return super().as_view(name, *class_args, **class_kwargs)
 
-    def dispatch_request(self, *args: Any, **kwargs: Any) -> str:
+    def dispatch_request(self, *args: Any, **kwargs: Any) -> ResponseReturnValue:
+        g.view = actions.context["view"] = self
+
         meth = getattr(self, request.method.lower(), None)
+
         # if the request method is HEAD and we don't have a handler for it
         # retry with GET
         if meth is None and request.method == "HEAD":
             meth = getattr(self, "get", None)
-            assert meth is not None, f"Unimplemented method {request.method!r}"
 
-        g.view = actions.context["view"] = self
+        assert meth is not None, f"Unimplemented method {request.method!r}"
+
         try:
             args, kwargs = self.prepare_args(args, kwargs)
             return meth(*args, **kwargs)
@@ -49,6 +53,7 @@ class View(BaseView):
         object instance and maybe store it on view instance and/or
         replace identifier by object in arguments.
         """
+        assert not args
         return args, kwargs
 
     def redirect(self, url):
@@ -100,7 +105,7 @@ class JSONView(View):
         """This method should return data to be serialized using JSON."""
         raise NotImplementedError
 
-    def get(self, *args: Any, **kwargs: Any) -> str:
+    def get(self, *args: Any, **kwargs: Any) -> ResponseReturnValue:
         data = self.data(*args, **kwargs)
         best_mime = request.accept_mimetypes.best_match(
             ["text/html", "application/json"]

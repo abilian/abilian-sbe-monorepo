@@ -13,7 +13,6 @@ from loguru import logger
 import abilian.cli
 from abilian.app import Application as BaseApplication
 from abilian.core.dramatiq.setup import init_dramatiq_engine
-from abilian.core.extensions import csrf
 from abilian.core.logging import init_logging
 from abilian.i18n import _l
 from abilian.sbe.apps.social.views.social import social
