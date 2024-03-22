@@ -3,7 +3,7 @@ Special loggers
 ---------------
 
 Changing `patch_logger` logging level must be done very early, because it may
-emit logging during imports. Ideally, it's should be the very first action in
+emit logging during imports. Ideally, it should be the very first action in
 your entry point before anything has been imported:
 
 .. code-block:: python
