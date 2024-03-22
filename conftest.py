@@ -3,7 +3,6 @@
 Reuses fixtures defined in abilian-core.
 """
 
-import typing
 from collections.abc import Iterator
 from typing import Any
 
