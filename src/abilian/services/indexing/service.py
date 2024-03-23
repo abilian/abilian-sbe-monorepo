@@ -19,7 +19,6 @@ from inspect import isclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
-import flask
 import sqlalchemy as sa
 from flask import Flask, appcontext_pushed, current_app, g
 from flask_login import current_user

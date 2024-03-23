@@ -7,10 +7,8 @@ import errno
 import importlib
 
 # Temps monkey patches
-import json
 import os
 import sys
-import urllib.parse
 import warnings
 from collections.abc import Callable, Collection
 from functools import cached_property, partial
@@ -19,7 +17,6 @@ from pathlib import Path
 from typing import Any
 
 import defusedxml
-import flask.json
 import jinja2
 import sqlalchemy as sa
 import sqlalchemy.exc

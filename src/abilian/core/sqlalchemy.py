@@ -4,14 +4,12 @@ from __future__ import annotations
 
 import contextlib
 import json
-import sys
 import uuid
 from sqlite3 import Connection
 from typing import Any
 
 import babel
 import babel.dates
-import flask_sqlalchemy as flask_sa
 import pytz
 import sqlalchemy as sa
 import sqlalchemy.dialects
@@ -25,8 +23,6 @@ from sqlalchemy.engine.url import URL
 from sqlalchemy.event import listens_for
 from sqlalchemy.ext.mutable import Mutable
 from sqlalchemy.sql.sqltypes import CHAR
-
-from .logger_patch import patch_logger
 
 
 @listens_for(sa.pool.Pool, "checkout")

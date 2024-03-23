@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [1.1.1] - UNRELEASED
 
 - Cleanup "sysinfo" code.
+- Cleanup imports
 
 
 ## [1.1.0] - 2024-03-23

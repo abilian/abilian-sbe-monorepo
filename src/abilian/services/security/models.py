@@ -6,7 +6,6 @@ from datetime import datetime
 from functools import total_ordering
 
 from flask_babel import LazyString
-from flask_sqlalchemy import BaseQuery
 from sqlalchemy import sql
 from sqlalchemy.orm import backref, relationship
 from sqlalchemy.schema import (

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from abc import ABC, ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from operator import attrgetter
 from typing import Any
 

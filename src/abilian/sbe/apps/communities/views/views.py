@@ -13,7 +13,6 @@ from time import gmtime, strftime
 from typing import Any
 
 import openpyxl
-import pytz
 import sqlalchemy as sa
 import sqlalchemy.sql.functions
 from flask import (
@@ -37,7 +36,7 @@ from whoosh.searching import Hit
 from abilian.core.extensions import db
 from abilian.core.models.subjects import Group, User, UserQuery
 from abilian.core.signals import activity
-from abilian.core.util import unwrap, utc_dt
+from abilian.core.util import unwrap
 from abilian.i18n import _, _l
 from abilian.sbe.apps.communities.actions import register_actions
 from abilian.sbe.apps.communities.blueprint import CommunityBlueprint

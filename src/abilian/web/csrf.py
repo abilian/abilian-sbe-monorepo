@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from functools import wraps
 
-from flask import Blueprint, config, current_app, request
+from flask import Blueprint, current_app, request
 from flask_wtf import FlaskForm
 from werkzeug.exceptions import Forbidden
 from wtforms.csrf.core import CSRFTokenField

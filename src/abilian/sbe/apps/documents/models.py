@@ -11,7 +11,6 @@ import threading
 import uuid
 from collections.abc import Collection, Iterator
 from importlib import resources as rso
-from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa

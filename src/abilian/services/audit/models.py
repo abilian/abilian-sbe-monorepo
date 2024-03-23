@@ -15,7 +15,6 @@ from datetime import datetime
 from typing import Any
 
 from flask import current_app
-from flask_sqlalchemy import BaseQuery
 from loguru import logger
 from sqlalchemy import LargeBinary
 from sqlalchemy.orm import relationship

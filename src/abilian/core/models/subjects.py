@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import random
 import string
-from abc import ABC, ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
 
 import bcrypt
