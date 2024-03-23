@@ -197,7 +197,7 @@ abilian-devtools = "^0.5.17"
 mypy = "^1.5.1"
 
 # Testing
-pytest = "^7.2.2"
+pytest = "^8"
 tox = "^4.5.1"
 pytest-flask = "*"
 # pytest-testmon = "^1.2.0"
