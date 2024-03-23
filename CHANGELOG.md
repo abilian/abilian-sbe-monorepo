@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0]
+
+- Upgrade many dependencies
+- Switch from Celery to Dramatiq
+
 ## [1.0.5]
 
 ### Bug Fixes
