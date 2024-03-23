@@ -49,8 +49,6 @@ def instance_path(tmpdir_factory):
     shutil.rmtree(str(instance_path))
 
 
-# @fixture(scope="function")
-# @fixture(scope="session")
 @fixture(scope="module")
 def app(instance_path):
     return create_app(config=TestConfig())

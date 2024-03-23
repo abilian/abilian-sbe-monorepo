@@ -3,9 +3,7 @@ from __future__ import annotations
 import warnings
 from collections.abc import Iterator
 
-from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
-from icecream import ic
 from werkzeug.routing import Rule
 
 from abilian.app import Application
@@ -14,7 +12,7 @@ from abilian.services import get_service, security_service
 from abilian.services.security import Admin
 from abilian.web import url_for
 
-from .conftest import ENDPOINTS_TO_IGNORE, PUBLIC_ENDPOINTS
+from .conftest import ENDPOINTS_TO_IGNORE
 
 
 def all_rules_to_test(app: Application) -> Iterator[Rule]:

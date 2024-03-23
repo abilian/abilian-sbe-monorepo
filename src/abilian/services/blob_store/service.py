@@ -516,8 +516,6 @@ class BlobStoreTransaction:
         content: IO | bytes | str,
         encoding: str | None = "utf-8",
     ):
-        from icecream import ic
-
         self.begin()
         self._add_to(uuid, self._set, self._deleted)
 

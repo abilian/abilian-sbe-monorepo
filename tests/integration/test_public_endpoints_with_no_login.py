@@ -1,25 +1,17 @@
 from __future__ import annotations
 
 import warnings
-from collections.abc import Iterator
 
 from flask.testing import FlaskClient
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.routing import Rule
 
 from abilian.app import Application
-from abilian.core.models.subjects import User
-from abilian.services import get_service, security_service
-from abilian.services.security import Admin
+from abilian.services import security_service
 from abilian.web import url_for
 
 from .conftest import ENDPOINTS_TO_IGNORE, PUBLIC_ENDPOINTS
 
 
 def test_public_endpoints_with_no_login(client: FlaskClient, app: Application):
-    from icecream import ic
-
-    ic(app)
     warnings.simplefilter("ignore")
     security_service.start(ignore_state=True)
 
@@ -29,7 +21,6 @@ def test_public_endpoints_with_no_login(client: FlaskClient, app: Application):
             continue
         try:
             url = url_for(endpoint)
-            ic(url)
             response = client.get(url)
             assert response.status_code in {200, 302}
         except Exception as e:
