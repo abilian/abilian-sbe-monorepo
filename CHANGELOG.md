@@ -2,12 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.1.1]
+## [1.1.1] - UNRELEASED
 
 - Cleanup "sysinfo" code.
 
 
-## [1.1.0]
+## [1.1.0] - 2024-03-23
 
 - Dropped support for Python < 3.10
 - Upgrade many dependencies
