@@ -2,8 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1]
+
+- Cleanup "sysinfo" code.
+
+
 ## [1.1.0]
 
+- Dropped support for Python < 3.10
 - Upgrade many dependencies
 - Switch from Celery to Dramatiq
 
