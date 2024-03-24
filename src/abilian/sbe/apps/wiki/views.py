@@ -422,9 +422,6 @@ def attachment_upload() -> Response:
 
     for f in files:
         name = f.filename
-        if not isinstance(name, str):
-            name = str(f.filename, encoding="utf-8", errors="ignore")
-
         # FIXME: do something instead of just skipping the attachement
         if not name:
             continue

@@ -263,7 +263,7 @@ def wizard_saving() -> Response:
     community = g.community._model
     existing_accounts = request.form["existing_account"]
     existing_accounts = json.loads(existing_accounts)
-    new_accounts = request.form.get("new_accounts")
+    new_accounts = request.form.get("new_accounts", "[]")
     new_accounts = json.loads(new_accounts)
 
     if not (existing_accounts or new_accounts):
