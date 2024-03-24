@@ -187,8 +187,8 @@ def slugify(value: str, separator: str = "-") -> str:
 
     value = _NOT_WORD_RE.sub(" ", value)
     value = unicodedata.normalize("NFKD", value)
-    value = value.encode("ascii", "ignore")
-    value = value.decode("ascii")
+    bytes_value = value.encode("ascii", "ignore")
+    value = bytes_value.decode("ascii")
     value = value.strip().lower()
     value = re.sub(rf"[{separator}_\s]+", separator, value)
     return value
