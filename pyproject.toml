@@ -1,8 +1,11 @@
 [tool.poetry]
 name = "abilian-sbe"
 version = "1.1.0"
-description = ""
-authors = ["Abilian SAS <contact@abilian.com>"]
+description = "Social Business platform (entreprise collaboration and information management)"
+authors = ["Abilian SAS"]
+license = "LGPL-2.0-or-later"
+readme = "README.md"
+repository = "https://github.com/abilian/abilian-sbe"
 
 packages = [
         { include = "extranet", from = "src" },
