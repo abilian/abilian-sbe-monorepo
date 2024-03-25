@@ -2,10 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.1.1] - UNRELEASED
+## [1.1.1] - 2024-03-25
 
 - Cleanup "sysinfo" code.
 - Cleanup imports
+- Update PyPI metadata
 
 
 ## [1.1.0] - 2024-03-23
