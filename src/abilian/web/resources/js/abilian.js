@@ -182,5 +182,5 @@ require(["AbilianNS", "jquery", "Hogan"], function (Abilian, $, Hogan) {
     $(".tt-hint").addClass("form-control");
   }
 
-  // Abilian.fn.onAppInit(initLiveSearch);
+  Abilian.fn.onAppInit(initLiveSearch);
 });
