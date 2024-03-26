@@ -15,6 +15,9 @@ class DefaultConfig:
     # Need to be explicitly defined in production configs
     PRODUCTION = False
 
+    # force to https://
+    PREFERRED_URL_SCHEME = "https"
+
     # Security (see
     # https://blog.miguelgrinberg.com/post/cookie-security-for-flask-applications)
     # NB: SESSION_COOKIE_* are now set up by Talisman
