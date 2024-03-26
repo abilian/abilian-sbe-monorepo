@@ -73,7 +73,8 @@ def create_app(config=None, **kw):
             social._got_registered_once = False
         social.url_value_preprocessor(on_home_blueprint)
 
-    app.setup(config)
+    with app.app_context():
+        app.setup(config)
 
     with app.app_context():
         actions.register(HOME_ACTION)
