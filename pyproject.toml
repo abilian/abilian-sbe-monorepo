@@ -29,9 +29,9 @@ flask-babel = "~1.0.0"
 # flask-assets = ">=0.12" #0.12: 2016-08-18
 flask-assets = "2.1.0" #0.12: 2016-08-18  see webassets, v2.1.0 last 22 oct 2023
 
-flask-mail = ">=0.9.1" # last 29 sept. 2014
+flask-mail = ">=0.9.1"   # last 29 sept. 2014
 flask-migrate = "~4.0.5" # last 12 sept. 2023
-flask-login = "~0.6.3" # last 30 oct. 2023
+flask-login = "~0.6.3"   # last 30 oct. 2023
 
 # flask-talisman = ">=1.0.0"
 flask-talisman = "~1.1.0" # last  3 août 2023
@@ -48,7 +48,7 @@ numpy = "^1.26.3"        # last  2 janv. 2024
 pytz = "*"
 
 # Databases / persistence
-sqlalchemy = "1.4.18"
+sqlalchemy = "1.4.35"
 flask-sqlalchemy = "3.0.1"
 psycopg2 = "^2.9.9"
 
