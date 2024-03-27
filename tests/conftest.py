@@ -19,6 +19,7 @@ class TestConfig:
     SERVER_NAME = "localhost.localdomain"
     MAIL_SENDER = "tester@example.com"
     SITE_NAME = "Abilian Test"
+    PREFERRED_URL_SCHEME = "http"
     # WTF_CSRF_ENABLED = True
     WTF_CSRF_ENABLED = False
     BABEL_ACCEPT_LANGUAGES = ["en", "fr"]
