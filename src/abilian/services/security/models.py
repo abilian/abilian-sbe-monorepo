@@ -434,4 +434,4 @@ class InheritSecurity:
 
 
 class FolderishModel(Entity, InheritSecurity):
-    __tablename__ = "folderish_model"
+    __abstract__ = True
