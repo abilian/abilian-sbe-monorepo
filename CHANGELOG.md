@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.1.2, 1.1.3 and 1.1.4] - 2024-03-26
+## [1.1.2, 1.1.3, 1.1.4 and 1.1.5] - 2024-03-26
 
 - Bugfix: fix live-search
 
