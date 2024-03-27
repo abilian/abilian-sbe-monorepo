@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.2] - 2024-03-26
+
+- Bugfix: fix live-search
+
 ## [1.1.2] - 2024-03-25
 
 - Temp fix: deactivate live-search to fix issue on rich text editor
