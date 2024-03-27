@@ -217,7 +217,8 @@ class Application(
 
         request_started.connect(self.setup_nav_and_breadcrumbs)
 
-        signals.register_js_api.send(self)
+        if not self.testing:
+            signals.register_js_api.send(self)
 
         # Initialize Abilian core services.
         # Must come after all entity classes have been declared.
