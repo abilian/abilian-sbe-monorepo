@@ -10,19 +10,19 @@ all: default
 
 ## Run tests
 test:
-	# pytest -n auto tests
+	# pytest -n auto
 	pytest tests
 
 test-with-coverage:
-	pytest tests \
+	pytest \
 		--cov extranet --cov abilian \
 	  	--cov-report term-missing
 
 test-with-validator:
-	VALIDATOR_URL=http://html5.validator.nu/ pytest tests
+	VALIDATOR_URL=http://html5.validator.nu/ pytest
 
 test-long:
-	RUN_SLOW_TESTS=True pytest -x tests
+	RUN_SLOW_TESTS=True pytest -x
 
 test-assets:
 	@(if flask assets -v --parse-templates build 2>&1 \
