@@ -50,6 +50,7 @@ class Application(BaseApplication):
 
 def create_app(config: type | None = None, **kw) -> Application:
     app = Application(**kw)
-    app.setup(config)
+    with app.app_context():
+        app.setup(config)
     init_dramatiq_engine(app)
     return app
