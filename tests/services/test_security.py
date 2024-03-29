@@ -9,6 +9,7 @@ from abilian.app import Application
 from abilian.core.entities import Entity
 from abilian.core.models.subjects import Group, User, create_root_user
 from abilian.core.sqlalchemy import SQLAlchemy
+from abilian.sbe.apps.documents.models import Folder
 from abilian.services.security import (
     READ,
     WRITE,
@@ -26,7 +27,8 @@ from abilian.services.security import (
     Writer,
     security,
 )
-from abilian.services.security.models import FolderishModel
+
+# from abilian.services.security.models import FolderishModel
 
 
 def test_singleton():
@@ -267,7 +269,8 @@ def test_grant_roles_unique(session: Session):
 
 
 def test_inherit(session: Session):
-    folder = FolderishModel()
+    # folder = FolderishModel()
+    folder = Folder()
     session.add(folder)
     session.flush()
     assert SecurityAudit.query.count() == 0
