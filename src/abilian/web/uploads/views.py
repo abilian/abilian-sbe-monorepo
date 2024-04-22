@@ -57,7 +57,7 @@ class NewUploadView(BaseUploadsView, JSONView):
         if not form.validate():
             raise BadRequest("File is missing.")
 
-        uploaded = form["file"].data
+        uploaded = form["file"].data[0]
         filename = secure_filename(uploaded.filename)
         mimetype = uploaded.mimetype
         self.handle = self.uploads.add_file(
