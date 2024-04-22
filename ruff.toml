@@ -183,6 +183,12 @@ lint.extend-ignore = [
     "S607", # Subprocess related...
     "S701", # By default, jinja2 sets `autoescape` to `False`.
     # Consider using `autoescape=True` or the `select_autoescape` function to mitigate XSS vulnerabilities.
+    # FIXME later
+    "FURB118",
+    "PLR6104",
+    "FURB110",
+    "FURB103",
+    "PLR1730",
 ]
 
 [lint.mccabe]

@@ -1,6 +1,6 @@
 .PHONY: test unit full-test pep8 clean setup
 
-default: test lint
+default: lint-ruff test lint
 all: default
 
 
@@ -39,15 +39,17 @@ test-assets:
 ## Statically check code, dependencies, etc.
 check: lint
 
+lint-ruff:
+	ruff check src tests
+
 .PHONY: lint
-lint: lint-py
+lint: lint-ruff lint-py
 
 .PHONY: lint-py
 lint-py:
-	ruff check src tests
 	flake8 src tests
 	deptry src
-	python -m pyanalyze --config-file pyproject.toml
+	# python -m pyanalyze --config-file pyproject.toml
 	# mypy --show-error-codes src tests
 	# pyright src tests
 

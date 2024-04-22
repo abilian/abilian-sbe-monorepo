@@ -202,9 +202,9 @@ types-chardet = "*"
 types-Markdown = "*"
 
 # Keep for now
-pyanalyze = "*"
+# pyanalyze = "*"
 # Dependency of pyanalzye. Pinned because issue w/ 1.10.1
-qcore = "1.10.0"
+# qcore = "1.10.0"
 
 # Tools
 pyupgrade = "*"
