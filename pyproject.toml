@@ -37,7 +37,7 @@ flask-login = "~0.6.3"   # last 30 oct. 2023
 flask-talisman = "~1.1.0" # last  3 août 2023
 
 # TODO: replace by flask-vite which is maintained
-flask-tailwind = "^0.2.2" # last 15 nov. 2023
+# flask-tailwind = "^0.2.2" # last 15 nov. 2023
 
 # Transitive dependencies, but called explicitly in our code
 Babel = "*"
