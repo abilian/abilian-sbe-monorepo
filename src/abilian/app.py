@@ -31,7 +31,8 @@ from flask import (
 )
 from flask.config import Config, ConfigAttribute
 from flask_migrate import Migrate
-from flask_tailwind import Tailwind
+
+# from flask_tailwind import Tailwind
 from flask_talisman import DEFAULT_CSP_POLICY, Talisman
 from loguru import logger
 
@@ -480,7 +481,7 @@ def setup(app: Flask):
         csp = config.get("CONTENT_SECURITY_POLICY", DEFAULT_CSP_POLICY)
         Talisman(app, content_security_policy=csp)
 
-    Tailwind(app)
+    # Tailwind(app)
 
     # Debug Toolbar
     init_debug_toolbar(app)
