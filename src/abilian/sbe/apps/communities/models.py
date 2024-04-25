@@ -20,7 +20,7 @@ from sqlalchemy import (
     and_,
 )
 from sqlalchemy.event import listens_for
-from sqlalchemy.orm import backref, relation, relationship
+from sqlalchemy.orm import backref, relationship
 from sqlalchemy.orm.attributes import OP_APPEND, OP_REMOVE, Event
 from sqlalchemy.sql.schema import Column
 from werkzeug.local import LocalProxy
@@ -131,7 +131,7 @@ class Community(Entity):
         ForeignKey(Folder.id, use_alter=True, name="fk_community_root_folder"),
         unique=True,
     )
-    folder = relation(
+    folder = relationship(
         Folder,
         single_parent=True,  # required for delete-orphan
         primaryjoin=(folder_id == Folder.id),
@@ -142,7 +142,7 @@ class Community(Entity):
     #: The group this community is linked to, if any. Memberships are then
     #: reflected
     group_id = Column(ForeignKey(Group.id), nullable=True, unique=True)
-    group = relation(Group, foreign_keys=group_id, lazy="select")
+    group = relationship(Group, foreign_keys=group_id, lazy="select")
 
     #: Memberships for this community.
     memberships = relationship(Membership, cascade="all, delete-orphan")

@@ -172,7 +172,7 @@ def test_community_content_decorator(community: Community, db: SQLAlchemy) -> No
     @community_content
     class CommunityContent(Entity):
         community_id = CommunityIdColumn()
-        community = sa.orm.relation(Community, foreign_keys=[community_id])
+        community = sa.orm.relationship(Community, foreign_keys=[community_id])
 
     sa.orm.configure_mappers()
     conn = db.session.connection()
