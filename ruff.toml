@@ -71,6 +71,7 @@ lint.extend-ignore = [
     "E713", # Test for membership should be `not in`
     "PLR2044", # Line with empty comment
     "PT012", # `pytest.raises()` block should contain a single simple statement
+    "PT001", # use @pytest.fixture over @pytest.fixture()
     "RUF027", # Possible f-string without an `f` prefix
     "S101", # Use of `assert` detected
     "S320", # OK, we're using defusedxml
