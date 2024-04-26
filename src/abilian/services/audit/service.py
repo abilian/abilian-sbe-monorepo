@@ -15,7 +15,7 @@ from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
 from flask import current_app, g
-from flask_sqlalchemy import Model
+from flask_sqlalchemy.model import Model
 from loguru import logger
 from sqlalchemy import event, extract
 from sqlalchemy.orm import Query, Session

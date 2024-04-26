@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from flask_sqlalchemy import BaseQuery
 from sqlalchemy import Column, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import backref, relationship
 
@@ -31,5 +30,3 @@ class UserPreference(db.Model):
 
     #: The value
     value = Column(JSON, nullable=False)
-
-    # query: BaseQuery

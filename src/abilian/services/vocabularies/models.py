@@ -6,10 +6,9 @@ from typing import Any
 
 import sqlalchemy as sa
 import sqlalchemy.event
-import sqlalchemy.ext
-import sqlalchemy.ext.declarative
 import sqlalchemy.orm
-from flask_sqlalchemy import BaseQuery, Model
+from flask_sqlalchemy.model import Model
+from flask_sqlalchemy.query import Query
 from sqlalchemy import Column
 
 from abilian.core.extensions import db
@@ -18,7 +17,7 @@ from abilian.core.util import slugify
 _BaseMeta = db.Model.__class__
 
 
-class VocabularyQuery(BaseQuery):
+class VocabularyQuery(Query):
     def active(self) -> VocabularyQuery:
         """Returns only valid vocabulary items."""
         return self.filter_by(active=True)

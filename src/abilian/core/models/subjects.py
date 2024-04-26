@@ -16,7 +16,7 @@ from datetime import datetime, timedelta
 import bcrypt
 import sqlalchemy as sa
 from flask_login import UserMixin
-from flask_sqlalchemy import BaseQuery
+from flask_sqlalchemy.query import Query
 from sqlalchemy.event import listens_for
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import backref, deferred, relationship
@@ -148,7 +148,7 @@ class BcryptPasswordStrategy(PasswordStrategy):
         return bcrypt.hashpw(password, bcrypt.gensalt()).decode("utf-8")
 
 
-class UserQuery(BaseQuery):
+class UserQuery(Query):
     def get_by_email(self, email):
         return self.filter_by(email=email).one()
 

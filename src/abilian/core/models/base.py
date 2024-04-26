@@ -3,7 +3,6 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any
 
-from flask_sqlalchemy import BaseQuery
 from sqlalchemy.schema import Column
 from sqlalchemy.types import DateTime, Integer
 from whoosh.fields import ID
@@ -15,7 +14,6 @@ from abilian.core.util import fqcn
 #: Base Model class.
 class Model(db.Model):
     __abstract__ = True
-    query: BaseQuery
 
 
 class Info(dict):
