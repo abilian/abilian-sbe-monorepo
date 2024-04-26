@@ -576,7 +576,7 @@ class Document(BaseContent, PathAndSecurityIndexable):
         # task_id = self.content_blob.meta.get("antivirus_task_id")
         task_id = self.id
         if task_id is not None:
-            # if fail, the task will we tried again 20 times
+            # if it fails, the task will we tried again 20 times
             tasks.process_document.send(task_id)
 
     @property
