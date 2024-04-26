@@ -145,7 +145,7 @@ openpyxl = "*"
 # Better FP library than itertools IMHO.
 toolz = "*"
 
-html2text = "^2020.1.16"
+html2text = "^2024"
 
 # Production
 gunicorn = "*"
