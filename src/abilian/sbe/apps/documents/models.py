@@ -125,7 +125,7 @@ class CmisObject(InheritSecurity, Entity):
 
         Entity.__init__(self, *args, **kwargs)
 
-    # title is defined has an hybrid property to allow 2 way sync name <->
+    # title is defined has a hybrid property to allow 2 way sync name <->
     # title
     @hybrid_property
     def title(self: str) -> str:

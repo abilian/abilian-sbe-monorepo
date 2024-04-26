@@ -32,4 +32,4 @@ class UserPreference(db.Model):
     #: The value
     value = Column(JSON, nullable=False)
 
-    query: BaseQuery
+    # query: BaseQuery
