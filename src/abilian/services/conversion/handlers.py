@@ -475,7 +475,6 @@ class LibreOfficePdfHandler(Handler):
                     raise ConversionError(f"Conversion timeout ({timeout})")
 
                 out_fn = f"{os.path.splitext(in_fn)[0]}.pdf"
-                debug(in_fn, out_fn)
                 converted = open(out_fn, "rb").read()
                 return converted
             finally:
