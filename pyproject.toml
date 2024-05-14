@@ -208,7 +208,7 @@ types-Markdown = "*"
 
 # Tools
 pyupgrade = "*"
-deptry = "^0.14.2"
+deptry = "*"
 
 # Documentation
 mkdocs-material = "^9.5.4"
