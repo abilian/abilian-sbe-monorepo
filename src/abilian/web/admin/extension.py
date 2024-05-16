@@ -77,7 +77,7 @@ class Admin:
         if not self.panels:
 
             @self.blueprint.route("", endpoint="no_panel")
-            def no_panels_view():
+            def no_panels_view() -> str:
                 return "No panels registered"
 
             self.nav_root.endpoint = "admin.no_panel"

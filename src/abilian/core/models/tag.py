@@ -102,7 +102,7 @@ class Tag(IdMixin, Model):
     def __lt__(self, other):
         return str(self).lower().__lt__(str(other).lower())
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         cls = self.__class__
         return (
             f"<{cls.__module__}.{cls.__name__} id={self.id!r} ns={self.ns!r} "

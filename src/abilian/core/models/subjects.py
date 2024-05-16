@@ -111,7 +111,7 @@ class ClearPasswordStrategy(PasswordStrategy):
     """
 
     @property
-    def name(self):
+    def name(self) -> str:
         return "clear"
 
     def authenticate(self, user, password):
@@ -127,7 +127,7 @@ class BcryptPasswordStrategy(PasswordStrategy):
     """Hash passwords using bcrypt."""
 
     @property
-    def name(self):
+    def name(self) -> str:
         return "bcrypt"
 
     def authenticate(self, user: User, password: str) -> bool:
@@ -253,13 +253,13 @@ class User(Principal, UserMixin, db.Model):
     #
     # Boolean properties
     #
-    def is_following(self, other):
+    def is_following(self, other) -> bool:
         return other in self.followees
 
-    def is_member_of(self, group):
+    def is_member_of(self, group) -> bool:
         return self in group.members
 
-    def is_admin_of(self, group):
+    def is_admin_of(self, group) -> bool:
         return self in group.admins
 
     @property
@@ -286,7 +286,7 @@ class User(Principal, UserMixin, db.Model):
     def __str__(self) -> str:
         return self.name
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         cls = self.__class__
         return "<{mod}.{cls} id={id!r} email={email!r} at 0x{addr:x}>".format(
             mod=cls.__module__,

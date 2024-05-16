@@ -38,7 +38,7 @@ def crontab_from_config(config: dict, job: Job) -> str:
     return schedule
 
 
-def run_scheduler(config: dict):
+def run_scheduler(config: dict) -> int:
     scheduler = BlockingScheduler()
     scheduler.remove_all_jobs()
 

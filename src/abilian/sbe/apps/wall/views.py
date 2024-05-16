@@ -142,7 +142,7 @@ def group_monthly(objects):
     def grouper(entity):
         return entity.date.year, entity.date.month
 
-    def format_month(year, month):
+    def format_month(year, month) -> str:
         month = format_date(date(year, month, 1), "MMMM").capitalize()
         return f"{month} {year}"
 

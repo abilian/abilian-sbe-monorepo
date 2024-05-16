@@ -110,7 +110,7 @@ class Role(UniqueName):
     def __str__(self) -> str:
         return str(self.name)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.name}, {self.label})"
 
     def __lt__(self, other: Role) -> bool:
@@ -327,10 +327,10 @@ class PermissionAssignment(db.Model):
             and self.object == other.object
         )
 
-    def __neq__(self, other):
+    def __neq__(self, other) -> bool:
         return not self.__eq__(other)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         class_ = self.__class__
         classname = class_.__name__
         return (

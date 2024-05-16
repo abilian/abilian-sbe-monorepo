@@ -496,7 +496,7 @@ def wiki_help():
 
 
 @route("/export")
-def wiki_export():
+def wiki_export() -> str:
     # TODO
     return "Not done yet"
 

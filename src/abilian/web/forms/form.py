@@ -197,7 +197,7 @@ if not _PATCHED:
     Field.__init__ = _core_field_init
     del _core_field_init
 
-    def _core_field_repr(self):
+    def _core_field_repr(self) -> str:
         """`__repr__` that shows the name of the field instance.
 
         Useful for tracing field errors (like in Sentry).

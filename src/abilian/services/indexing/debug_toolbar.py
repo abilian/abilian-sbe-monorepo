@@ -51,7 +51,7 @@ class IndexedTermsDebugPanel(DebugPanel):
     def title(self):
         return _("Indexed Terms")
 
-    def url(self):
+    def url(self) -> str:
         return ""
 
     def content(self):

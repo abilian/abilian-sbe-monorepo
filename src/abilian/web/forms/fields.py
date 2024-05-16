@@ -192,7 +192,7 @@ class FileField(BaseFileField):
         super().__init__(*args, **kwargs)
 
     @property
-    def allow_delete(self):
+    def allow_delete(self) -> bool:
         """Property for legacy code.
 
         Test `field.flags.required` instead.

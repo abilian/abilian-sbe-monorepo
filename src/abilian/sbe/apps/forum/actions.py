@@ -44,7 +44,7 @@ def is_admin(context):
     return security.has_role(current_user, Admin, object=context.get("object"))
 
 
-def is_in_thread(context):
+def is_in_thread(context) -> bool:
     thread = context.get("object")
     return not thread
 
@@ -54,7 +54,7 @@ def is_closed(context):
     return thread.closed
 
 
-def not_closed(context):
+def not_closed(context) -> bool:
     return not is_closed(context)
 
 

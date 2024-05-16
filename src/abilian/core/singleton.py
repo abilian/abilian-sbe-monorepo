@@ -53,7 +53,7 @@ class UniqueName(metaclass=ValueSingletonMeta):
     def name(self) -> str:
         return self.__name
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.name!r})"
 
     def __str__(self) -> str:

@@ -113,7 +113,7 @@ class DocumentModalAction(ModalActionMixin, DocumentAction):
 class RootFolderAction(CmisContentAction):
     """Apply only for root folder."""
 
-    def pre_condition(self, ctx):
+    def pre_condition(self, ctx) -> bool:
         return ctx["object"] is content_repository.root_folder
 
 

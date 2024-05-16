@@ -17,13 +17,13 @@ class ActionDebugPanel(DebugPanel):
     user_enable = True
     has_content = True
 
-    def nav_title(self):
+    def nav_title(self) -> str:
         return "Actions"
 
-    def title(self):
+    def title(self) -> str:
         return "Actions"
 
-    def url(self):
+    def url(self) -> str:
         return ""
 
     def content(self) -> str:
@@ -65,13 +65,13 @@ class SignalsDebugPanel(DebugPanel):
 
     events: list[dict] = []
 
-    def nav_title(self):
+    def nav_title(self) -> str:
         return "Signals"
 
-    def title(self):
+    def title(self) -> str:
         return "Signals"
 
-    def url(self):
+    def url(self) -> str:
         return ""
 
     def content(self) -> str:

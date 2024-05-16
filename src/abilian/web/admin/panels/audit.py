@@ -268,7 +268,7 @@ class BaseEntryPresenter:
     def __lt__(self, other):
         return self.date < other.date
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.user!r}, {self.date!r} @ {id(self)})"
 
     @staticmethod

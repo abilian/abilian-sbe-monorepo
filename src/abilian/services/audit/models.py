@@ -107,7 +107,7 @@ class AuditEntry(db.Model):
 
     # query: BaseQuery
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "<AuditEntry id={} op={} user={} {}entity=<{} id={}>>".format(
             repr(self.id),
             {CREATION: "CREATION", DELETION: "DELETION", UPDATE: "UPDATE"}[self.op],

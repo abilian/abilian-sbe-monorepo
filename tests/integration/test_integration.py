@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Iterator
+from typing import cast
 
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.routing import Rule
@@ -9,7 +10,7 @@ from werkzeug.routing import Rule
 from abilian.app import Application
 from abilian.core.models.subjects import User
 from abilian.services import get_service, security_service
-from abilian.services.security import Admin
+from abilian.services.security import Admin, SecurityService
 from abilian.web import url_for
 
 from .conftest import ENDPOINTS_TO_IGNORE
@@ -102,7 +103,7 @@ def login_as_admin(client, db: SQLAlchemy):
     # Needed for grant_role to not raise an exception
     db.session.add(user)
 
-    security = get_service("security")
+    security = cast(SecurityService, get_service("security"))
     security.grant_role(user, Admin)
 
     db.session.add(user)

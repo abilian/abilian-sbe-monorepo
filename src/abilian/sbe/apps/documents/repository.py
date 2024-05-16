@@ -150,7 +150,7 @@ class ContentRepository:
     def can_unlock(self, obj) -> bool:
         return True
 
-    def lock(self, obj):
+    def lock(self, obj) -> str:
         return "???"
 
     def unlock(self, obj):
@@ -165,7 +165,7 @@ class ContentRepository:
         assert isinstance(permission, Permission)
         return security.has_permission(user, permission, obj, inherit=True)
 
-    def has_access(self, user: User, obj: BaseContent):
+    def has_access(self, user: User, obj: BaseContent) -> bool:
         """Checks that user has actual right to reach this object, 'read'
         permission on each of object's parents."""
         current = obj

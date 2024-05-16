@@ -174,7 +174,7 @@ def group_monthly(entities_list):
     def grouper(entity):
         return entity.created_at.year, entity.created_at.month
 
-    def format_month(year, month):
+    def format_month(year, month) -> str:
         month = format_date(date(year, month, 1), "MMMM").capitalize()
         return f"{month} {year}"
 
@@ -436,7 +436,7 @@ class ThreadPostEdit(BaseThreadView, views.ObjectEdit):
     Model = Post
     pk = "object_id"
 
-    def can_send_by_mail(self):
+    def can_send_by_mail(self) -> bool:
         # post edit: don't notify every time
         return False
 

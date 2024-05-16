@@ -60,7 +60,7 @@ def send_daily_social_digest():
             )
 
 
-def send_daily_social_digest_to(user: User):
+def send_daily_social_digest_to(user: User) -> int:
     """Send to a given user a daily digest of activities in its communities.
 
     Return 1 if mail sent, 0 otherwise.
@@ -177,7 +177,7 @@ class CommunityDigest:
         self.new_wiki_pages: list[WikiPage] = []
         self.updated_wiki_pages: dict[WikiPage, dict] = {}
 
-    def is_empty(self):
+    def is_empty(self) -> bool:
         return (
             not self.new_members
             and not self.new_documents

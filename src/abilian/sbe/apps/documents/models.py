@@ -342,7 +342,7 @@ class Folder(PathAndSecurityIndexable, CmisObject):
         except IndexError:
             return None
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (
             f"<{self.__class__.__module__}.{self.__class__.__name__} "
             f"id={self.id!r} "
@@ -665,7 +665,7 @@ class Document(BaseContent, PathAndSecurityIndexable):
     def file_name(self) -> str:
         return self.title
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "<Document id={!r} name={!r} path={!r} content_length={:d} at 0x{:x}>".format(
             self.id, self.title, self.path, self.content_length, id(self)
         )

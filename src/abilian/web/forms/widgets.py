@@ -895,7 +895,7 @@ class ImageInput(FileInput):
             return ""
         return image.resize(data, width, height, mode=self.resize_mode)
 
-    def get_b64_thumb_url(self, img):
+    def get_b64_thumb_url(self, img) -> str:
         if not img:
             return ""
         try:
@@ -1219,7 +1219,7 @@ class PasswordInput(BasePasswordInput):
         kwargs.setdefault("autocomplete", self.autocomplete)
         return super().__call__(field, **kwargs)
 
-    def render_view(self, field, **kwargs):
+    def render_view(self, field, **kwargs) -> str:
         return "*****"
 
 
@@ -1268,7 +1268,7 @@ class HoursWidget(TextInput):
     post_icon = _l("hour(s)")
     input_type = "number"
 
-    def render_view(self, field, **kwargs):
+    def render_view(self, field, **kwargs) -> str:
         val = field.object_data
         unit = "h"
 
@@ -1288,7 +1288,7 @@ class MoneyWidget(TextInput):
     post_icon = "€"
     input_type = "number"
 
-    def render_view(self, field, **kwargs):
+    def render_view(self, field, **kwargs) -> str:
         val = field.object_data
         unit = "€"
 

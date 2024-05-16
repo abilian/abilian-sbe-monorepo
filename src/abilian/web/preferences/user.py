@@ -90,7 +90,7 @@ class UserPreferencesPanel(PreferencePanel):
     id = "user"
     label = _l("About me")
 
-    def is_accessible(self):
+    def is_accessible(self) -> bool:
         return True
 
     def get(self):

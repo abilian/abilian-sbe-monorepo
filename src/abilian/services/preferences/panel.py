@@ -15,7 +15,7 @@ class PreferencePanel:
     id: str
     label: Any
 
-    def is_accessible(self):
+    def is_accessible(self) -> bool:
         return True
 
     def get(self):

@@ -75,7 +75,7 @@ route = community_blueprint.route
 __all__ = ()
 
 
-def tracing_formatter(record: dict):
+def tracing_formatter(record: dict) -> str:
     """Add trace to the logger.
 
     Taken from loguru documentation."""

@@ -150,7 +150,7 @@ class UserEdit(UserBase, views.ObjectEdit):
         kw["roles"] = [r.name for r in roles if r.assignable]
         return kw
 
-    def validate(self):
+    def validate(self) -> bool:
         if not super().validate():
             return False
 

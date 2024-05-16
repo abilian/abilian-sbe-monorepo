@@ -46,7 +46,7 @@ class SecurityInfoDebugPanel(DebugPanel):
     def title(self):
         return self.nav_title()
 
-    def url(self):
+    def url(self) -> str:
         return ""
 
     def content(self):

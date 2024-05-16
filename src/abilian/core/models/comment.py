@@ -91,7 +91,7 @@ class Comment(Entity):
     def history(self):
         return self.meta.get("abilian.core.models.comment", {}).get("history", [])
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         class_ = self.__class__
         mod_ = class_.__module__
         classname = class_.__name__

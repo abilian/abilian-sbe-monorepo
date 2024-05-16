@@ -154,7 +154,7 @@ class ActivityEntryPresenter(BasePresenter):
 
 
 @singledispatch
-def get_body(object):
+def get_body(object) -> str:
     return ""
 
 

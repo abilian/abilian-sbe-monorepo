@@ -45,10 +45,10 @@ _transformers = TransformerRegistry()
 
 
 class _EmptyValue:
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return False
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "<Empty Value>"
 
 

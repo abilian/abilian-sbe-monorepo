@@ -302,7 +302,7 @@ class Community(Entity):
 
         return membership.role if membership else None
 
-    def has_member(self, user):
+    def has_member(self, user) -> bool:
         return self.get_role(user) is not None
 
     def has_permission(self, user: LocalProxy, permission: Permission) -> bool:
