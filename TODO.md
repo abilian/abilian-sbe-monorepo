@@ -1,20 +1,32 @@
+# TODO
 
-## Urgent
+## P1
 
 - [x] Fix and unskip tests in `tests/`
-- [ ] Make a default app
-- [ ] Make it work on Heroku and Clever Cloud
-- [ ] Migrate existing customers
-- [ ] Migrate Flask-Tailwind to Flask-Vite
 - [x] Make it work under Python 3.12 (for this, we need to upgrade Celery or get rid of it).
+- [ ] Make a default app
+- [ ] Make it work on Hop3 and Nua
+- [ ] Migrate Flask-Tailwind to Flask-Vite
 
 
-# Less urgent
+## P2
 
+- [x] Remove Celery -> Dramatiq
+- [ ] Replace "get_service" (and the service framework) with svcs
 - [ ] Tailwind design
-- [ ] Vuejs front-end
-- [ ] Upgrade SQLAlchemy (cf. https://github.com/abrt/faf/issues/764 )
-- [x] Remove Celery
-- [ ] Simplify design: 1 group <-> 1 community
-- [ ] Simplify permission system (use OSO)
-- [ ] Replace Flask
+- [ ] Upgrade to SQLAlchemy 2
+- [ ] Use SQLA 2 API
+
+## P3
+
+- [ ] Simplify design: 1 group <-> 1 community (?)
+- [ ] Simplify permission system (use OSO or similar)
+- [ ] Replace Flask (?)
+
+
+## Fixes
+
+### Typing issues
+
+mypy: Found 443 errors in 122 files (checked 335 source files)
+pyright: 1073 errors, 1 warning, 0 informations
