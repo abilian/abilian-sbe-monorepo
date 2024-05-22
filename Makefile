@@ -121,6 +121,8 @@ update-deps:  ## Update dependencies
 	pip install -qU pip setuptools wheel
 	poetry update
 	poetry export -o requirements.txt --without-hashes
+	pre-commit autoupdate
+	poetry show -o
 
 
 .PHONY: help
