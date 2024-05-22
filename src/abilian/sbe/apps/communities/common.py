@@ -24,7 +24,10 @@ def object_viewers(entity: Document | WikiPage) -> list:
         for view in views:
             if view.user_id in set(community_members_id):
                 viewers.append(
-                    {"user": view.user, "viewed_at": view.hits[-1].viewed_at}
+                    {
+                        "user": view.user,
+                        "viewed_at": view.hits[-1].viewed_at,
+                    }
                 )
         return viewers
     return []

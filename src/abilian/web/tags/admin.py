@@ -256,7 +256,10 @@ class TagPanel(AdminPanel):
     def get(self):
         obj_count = (
             sa.sql.select(
-                [Tag.ns, func.count(entity_tag_tbl.c.entity_id).label("obj_count")]
+                [
+                    Tag.ns,
+                    func.count(entity_tag_tbl.c.entity_id).label("obj_count"),
+                ]
             )
             .select_from(Tag.__table__.join(entity_tag_tbl))
             .group_by(Tag.ns)

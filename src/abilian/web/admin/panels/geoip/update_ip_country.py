@@ -3,6 +3,7 @@
 
 Resulting file file is written in curent working directory.
 """
+
 import csv
 import ssl
 import urllib.request

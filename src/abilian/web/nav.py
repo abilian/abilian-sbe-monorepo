@@ -123,7 +123,7 @@ class BreadcrumbItem:
 
     template_string = (
         '{%- if url %}<a href="{{ url }}">{%- endif %}'
-        "{%- if item.icon %}{{ item.icon }}\u00A0{%- endif %}"
+        "{%- if item.icon %}{{ item.icon }}\u00a0{%- endif %}"
         "{{ item.label }}"
         "{%- if url %}</a>{%- endif %}"
     )

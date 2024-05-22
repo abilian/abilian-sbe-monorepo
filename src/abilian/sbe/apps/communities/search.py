@@ -66,7 +66,10 @@ def filter_user_communities() -> Or | Term:
 
         if communities:
             communities = wq.And(
-                [wq.Term(_COMMUNITY_CONTENT_FIELDNAME, True), wq.Or(communities)]
+                [
+                    wq.Term(_COMMUNITY_CONTENT_FIELDNAME, True),
+                    wq.Or(communities),
+                ]
             )
             filter_q = wq.Or([filter_q, communities])
 

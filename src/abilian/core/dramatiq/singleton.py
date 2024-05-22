@@ -1,5 +1,4 @@
-"""Singleton for Dramatiq task manager, to permit lazy declaration of actors.
-"""
+"""Singleton for Dramatiq task manager, to permit lazy declaration of actors."""
 
 from __future__ import annotations
 
