@@ -128,15 +128,17 @@ lint.extend-ignore = [
     "T201", # `print` found
     "TRY003", # Avoid specifying long messages outside the exception class
     #
+    "PLC0206", # Extracting value from dictionary without calling `.items()`
+    "PLC2701", # Private name import `_...` from external module
+    "PLC2801", # Unnecessary dunder call
     "PLR0904", # Too many public methods (22 > 20)
     "PLR0911", # Too many return statements
     "PLR0912", # Too many branches
     "PLR0913", # Too many arguments in function definition
+    "PLR0914", # Too many local variables
     "PLR0915", # Too many statements
     "PLR0917", # Too many positional arguments
-    "PLR0914", # Too many local variables
     "PLR6201", # Use a `set` literal when testing for membership
-    #
     "PLW1514", # `open` in text mode without explicit `encoding` argument
     "PLW2901", # `for` loop variable overwritten by assignment target
     "PLW3201", # Bad or misspelled dunder method name. (bad-dunder-name)
@@ -170,8 +172,6 @@ lint.extend-ignore = [
     "TRY004", # Prefer `TypeError` exception for invalid type
     "TRY300", # Consider moving this statement to an `else` block
     "TRY400", # Use `logging.exception` instead of `logging.error`
-    "PLC2801", # Unnecessary dunder call
-    "PLC2701", # Private name import `_...` from external module
     # FIXME:
     "S104", # Possible binding to all interfaces
     "S301", # `pickle`...

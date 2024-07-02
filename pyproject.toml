@@ -85,7 +85,7 @@ loguru = "^0.7.2"
 dramatiq = "^1.15.0"
 redis = ">=4.6.0,<5.0"
 flask-dramatiq = "^0.6.0"
-filelock = "~3.13.1"
+filelock = "^3.15"
 
 # Security
 bleach = { version = "^6.1.0", extras = ["css"] }
