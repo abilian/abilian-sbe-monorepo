@@ -83,7 +83,7 @@ lint.extend-ignore = [
     "A001", # Variable `...` is shadowing a python builtin
     "A002", # Argument `...` is shadowing a python builtin
     "A003", # Class attribute ... is shadowing a python builtin
-    "A003", # Class attribute `...` is shadowing a python builtin
+    "A005", # Module ... is shadowing a Python builtin module
     "B024", # `...` is an abstract base class, but it has no abstract methods
     "B027", # `...` is an empty method in an abstract base class, but has no abstract decorator
     "B028", # No explicit `...` keyword argument found
