@@ -167,7 +167,7 @@ netaddr = "*"
 [tool.poetry.group.dev.dependencies]
 
 # Generic dev deps
-abilian-devtools = "^0.5.17"
+abilian-devtools = "^0.6"
 mypy = "^1.5.1"
 
 # Testing
