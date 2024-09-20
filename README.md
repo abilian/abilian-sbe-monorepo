@@ -137,3 +137,22 @@ Click on the button:
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/abilian/abilian-sbe-monorepo)
 
 (Doesn't fully work - needs to be debugged).
+
+
+## License compliance
+
+This project is compliant with the REUSE Specification version 3.2.
+
+```
+* Bad licenses: 0
+* Deprecated licenses: 0
+* Licenses without file extension: 0
+* Missing licenses: 0
+* Unused licenses: 0
+* Used licenses: CC-BY-4.0, LGPL-3.0-only
+* Read errors: 0
+* Files with copyright information: 1692 / 1692
+* Files with license information: 1692 / 1692
+
+Congratulations! Your project is compliant with version 3.2 of the REUSE Specification :-)
+```

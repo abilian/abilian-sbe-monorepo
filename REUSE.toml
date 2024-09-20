@@ -1,0 +1,31 @@
+version = 1
+SPDX-PackageName = "Abilian SBE"
+SPDX-PackageSupplier = "Abilian SAS <contact@abilian.com>"
+SPDX-PackageDownloadLocation = "https://github.com/abilian/abilian-sbe-monorepo/"
+
+[[annotations]]
+path = ["**/*.py", "**/Makefile"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2011-2024 Abilian SAS <contact@abilian.com>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+SPDX-FileComment = "Directory may also includes code with other licenses and other copyright holders but those are clearly identified in the source code with prefixed comments. Only the not-explicitly licensed portions are licensed with information described here."
+
+[[annotations]]
+path = ["**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2011-2024 Abilian SAS <contact@abilian.com>"
+SPDX-License-Identifier = "LGPL-3.0-only"
+SPDX-FileComment = "Directory may also includes code with other licenses and other copyright holders but those are clearly identified in the source code with prefixed comments. Only the not-explicitly licensed portions are licensed with information described here."
+
+[[annotations]]
+path = ["DCO.txt", "CODE_OF_CONDUCT.md"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2011-2024 Abilian SAS <contact@abilian.com>"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = ["docs/**", "notes/**", "*.md"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2011-2024 Abilian SAS <contact@abilian.com>"
+SPDX-License-Identifier = "CC-BY-4.0"
+SPDX-FileComment = "Directory may also includes code with other licenses and other copyright holders but those are clearly identified in the source code with prefixed comments. Only the not-explicitly licensed portions are licensed with information described here."
