@@ -1,4 +1,4 @@
-image: ubuntu/lts
+image: ubuntu/24.04
 
 packages:
   # Build tools
