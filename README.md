@@ -4,19 +4,30 @@
 
 Abilian SBE (Social Business Engine) is a versatile platform designed for social business applications, particularly in the realm of collaborative or enterprise 2.0 business applications. It is ideal for creating enterprise social networks (ESN) and similar applications.
 
-### Key Features
+## Key Features
 
 - **Community-Centric:** Focuses on 'communities' as collaborative spaces, offering services like document management, discussions, wikis, and user timelines.
 - **Robust Foundation:** Built upon the `Abilian Core` project, which integrates Flask and SQLAlchemy, providing essential services.
 - **Proven Track Record:** Reliably used by several major customers in production environments since mid-2013.
+- **User-Centric Design:** Provides an intuitive and user-friendly interface, supporting rich profiles, conversation threads, and a social and content graph.
+- **Extensibility and Flexibility:** Built with a platform approach, allowing for customization and easy extension through APIs, making it suitable for a wide range of business applications such as CRM, knowledge management, and e-learning.
+- **Enterprise 2.0 Tools:** Incorporates core components of Enterprise 2.0, such as wikis, forums, mailing lists, document repositories, and activity streams, promoting collaboration and innovation within organizations.
+- **Standards-Based Interoperability:** Supports ActivityStreams, OASIS CMIS (via Apache cmislib) for document management, and semantic web standards like JSON-LD, ensuring compatibility with existing enterprise systems and open standards.
+- **Advanced Search and Tagging:** Features robust tagging and search capabilities to help users quickly find relevant content, improving knowledge sharing and capitalizing on collective intelligence.
+- **Microservices Architecture:** Can be deployed as microservices, providing scalability and flexibility for modern enterprise environments.
+- **Security and Identity Management:** Includes built-in services for identity management, security, and audit logging, ensuring compliance with enterprise-grade security requirements.
+- **Document Management System (DMS):** Offers a simple yet effective DMS for organizations, integrated with collaboration tools such as forums and wikis, facilitating seamless document sharing and collaboration.
 
-## Installation
+
+## Installation and Deployment
+
+See also: [Installation Guide](docs/installation.md)
 
 ### Local (development)
 
 You will need:
 
-- Python 3.9 or more
+- Python 3.10 or more
 - A running postgresql database (e.g. `createdb sbe-demo`)
 - A redis server
 - ImageMagick (for image processing)
@@ -88,7 +99,7 @@ flask run
 ```
 
 
-## Production
+### Production
 
 In production, you will need additionally:
 
@@ -126,17 +137,27 @@ gunicorn 'abilian.sbe.app.create_app()'
 
 If you are using a web server as a reverse proxy, for instance nginx, you can use the `proxy_pass` option to forward requests to the gunicorn server.
 
-## Configuration example
+### Configuration example
 
 A step by step configuration example using `honcho`, `.env` and `Python 3.12` is available in the `example_config` folder.
 
-## On Heroku
+### On Heroku
 
 Click on the button:
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/abilian/abilian-sbe-monorepo)
 
 (Doesn't fully work - needs to be debugged).
+
+## Development
+
+See:
+
+- [Development Guide](docs/development.md)
+- [Contributing Guidelines](docs/contributing.md)
+- [Roadmap](docs/roadmap.md)
+- [Architecture Decision Records](notes/adrs)
+- [Changelog](CHANGELOG.md)
 
 
 ## License compliance
