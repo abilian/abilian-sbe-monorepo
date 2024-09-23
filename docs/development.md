@@ -4,7 +4,9 @@
 
 - TODO
 
-## Running Tests
+## Testing and QA
+
+### Running Tests
 
 Once the development environment is set up, you can run the tests using the following command:
 
@@ -24,16 +26,28 @@ Using `nox` is another option, to run tests and linters in clean and isolated en
 nox
 ```
 
+### Continuous Integration Builds
+
+Abilian SBE uses SourceHut for continuous integration. The CI configuration is in the `.builds` directory.
+
 
 ## Contribution Guidelines
 
 See [contributing.md](./contributing.md).
 
-## License Information
+
+## Roadmap or Future Plans
+
+See [roadmap.md](./roadmap.md).
+
+
+## Legal Information and Credits
+
+### License Information
 
 Abilian SBE is free/libre/open source software, licensed under the terms of the GNU Lesser General Public License (LGPL), version 3.
 
-## Credits and Acknowledgments
+### Credits and Acknowledgments
 
 Abilian SBE is developed by Abilian SAS, a French company specialized in open source software development and consulting.
 
@@ -47,7 +61,3 @@ The main authors of Abilian SBE are:
 - Vincent Dardel - past developer
 - Yvon Bourbotte - past developer
 - Ahmed Amine Hamrouni - past developer
-
-## Roadmap or Future Plans
-
-See [roadmap.md](./roadmap.md).
