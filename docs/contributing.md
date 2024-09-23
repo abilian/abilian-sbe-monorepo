@@ -1,39 +1,43 @@
 # Contribution Guidelines for Abilian SBE
 
-Thank you for your interest in contributing to Abilian SBE! We value the participation of each member of the Python community and want everyone to have an enjoyable and fulfilling experience. Accordingly, everyone who participates in Abilian SBE is expected to show respect and courtesy to other community members at all times.
+Thank you for your interest in contributing to Abilian SBE! We value the contributions of each member of the community and strive to create an environment where everyone can engage productively and respectfully. As part of the Abilian SBE community, all participants are expected to act with courtesy and professionalism at all times.
 
 ## Ways to Contribute
 
-There are many ways to contribute to this project:
+There are many ways to get involved and contribute to the project:
 
-- **Submitting bug reports and feature requests:** Please use the [GitHub Issues](https://github.com/abilian/abilian-sbe-monorepo/issues) page to report issues and suggest features.
-- **Improving [the documentation](https://github.com/abilian/abilian-sbe-monorepo/tree/main/docs):** Enhance or clarify documentation to make it more understandable.
-- **Submitting [pull requests](https://github.com/abilian/abilian-sbe-monorepo/pulls):** Changes to the codebase or documentation can be proposed using pull requests (PRs).
+- **Submit Bug Reports and Feature Requests:** Use the [GitHub Issues page](https://github.com/abilian/abilian-sbe-monorepo/issues) to report bugs or propose new features. Please ensure your reports are clear and detailed.
+- **Improve [Documentation](https://github.com/abilian/abilian-sbe-monorepo/tree/main/docs):** Help us enhance and clarify the documentation to ensure it is accurate and easy to understand.
+- **Submit [Pull Requests](https://github.com/abilian/abilian-sbe-monorepo/pulls):** Propose changes to the codebase or documentation by submitting pull requests (PRs).
+
+## Architecture Decision Records (ADRs)
+
+A significant part of shaping the future of Abilian SBE involves participating in the review and creation of **[Architecture Decision Records](../notes/adrs) (ADRs)**. These documents capture major architectural decisions and guide the project’s long-term technical direction. Contributions that involve new features or significant changes should refer to, or propose, an ADR to ensure structured and transparent decision-making. Please consult the existing ADRs before suggesting changes that may affect the project’s architecture.
 
 ## Pull Request Process
 
-1. **Fork and Clone the Repository:** Start by forking the repository and then clone it locally to make changes.
+1. **Fork and Clone the Repository:** Begin by forking the repository and cloning it to your local environment for development.
 
-2. **Create a New Branch:** Make a new branch for your changes. Branch names should be descriptive and reflect the issue/feature being addressed.
+2. **Create a New Branch:** Work on a dedicated branch for your changes. Use a descriptive branch name that reflects the issue or feature you are addressing.
 
-3. **Code Conventions:** Follow the existing coding conventions in the project. This includes style, formatting, and writing clean, readable code.
+3. **Follow Code Conventions:** Adhere to the project’s coding standards, including style, formatting, and clean code practices.
 
-4. **Add Tests:** If you are adding new functionality, write tests that cover the new code.
+4. **Add Tests:** If your contribution adds new functionality, include tests to ensure the code behaves as expected.
 
-5. **Check for Existing Issues or PRs:** Before submitting your own, check if there's an existing issue or PR addressing the same problem.
+5. **Check Existing Issues and PRs:** Before submitting your changes, verify if there are any existing issues or PRs related to the same problem to avoid duplication.
 
-6. **Write Meaningful Commit Messages:** Commit messages should clearly describe what the commit does. Reference related issues or PRs if applicable.
+6. **Write Meaningful Commit Messages:** Ensure your commit messages clearly describe the changes made. Reference any relevant issue or PR numbers.
 
-7. **Run Tests and Linting:** Ensure that all tests pass and that your code adheres to the project's linting standards.
+7. **Run Tests and Linting:** Make sure that all tests pass and that your code complies with the project’s linting standards.
 
-8. **Update Documentation:** If you make changes to any code that affects how users interact with the project, update the relevant documentation.
+8. **Update Documentation:** If your changes affect the user-facing aspects of the project, update the corresponding documentation.
 
-9. **Submit the PR:** Push your changes to your fork and submit a pull request back to the main repository. In the PR, describe what the changes do and mention any relevant issue numbers.
+9. **Submit the PR:** Push your changes to your fork and open a pull request. In your PR description, explain the purpose of the changes and include any relevant issue numbers.
 
-10. **Code Review:** Once a PR is submitted, maintainers will review it. Be open to feedback and make necessary adjustments.
+10. **Engage in Code Review:** Once your PR is submitted, maintainers will review your changes. Be open to feedback and be prepared to make revisions if necessary.
 
 ## Questions or Suggestions
 
-Feel free to open an issue in the repository if you have any questions, suggestions, or need guidance regarding contributing.
+If you have questions, suggestions, or need help contributing, feel free to open an issue in the repository. We're happy to assist.
 
-Again, thanks for your interest in contributing to Abilian SBE. We look forward to your contributions!
+Thank you again for your interest in contributing to Abilian SBE. Your input helps make the project better, and we look forward to collaborating with you!

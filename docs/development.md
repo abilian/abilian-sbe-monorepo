@@ -6,7 +6,24 @@
 
 ## Running Tests
 
-- TODO: Explain how to run the project's test suite.
+Once the development environment is set up, you can run the tests using the following command:
+
+```bash
+make test
+```
+
+You can additionally run several linters and checkers, using the following command:
+
+```bash
+make
+```
+
+Using `nox` is another option, to run tests and linters in clean and isolated environments:
+
+```bash
+nox
+```
+
 
 ## Contribution Guidelines
 
