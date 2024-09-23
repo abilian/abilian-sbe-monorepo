@@ -27,7 +27,7 @@ nox
 
 ## Contribution Guidelines
 
-See [contributing.md](/contributing.md).
+See [contributing.md](./contributing.md).
 
 ## License Information
 
@@ -50,4 +50,4 @@ The main authors of Abilian SBE are:
 
 ## Roadmap or Future Plans
 
-See [roadmap.md](/roadmap.md).
+See [roadmap.md](./roadmap.md).

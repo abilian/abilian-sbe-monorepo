@@ -19,7 +19,7 @@ Abilian SBE (Social Business Engine) is a versatile platform designed for social
 - **Document Management System (DMS):** Offers a simple yet effective DMS for organizations, integrated with collaboration tools such as forums and wikis, facilitating seamless document sharing and collaboration.
 
 > [!NOTE]
-> Join the Abilian SBE developer community and help shape the future of open-source enterprise collaboration! A first step would be to look at our **Architecture Decision Records (ADRs)**—a collection of enhancement proposals where your expertise can make a real impact. Explore, discuss, and contribute your ideas and code enhancements to build the next generation of social business apps.
+> Join the Abilian SBE developer community and help shape the future of open-source enterprise collaboration! A first step would be to look at our **[Architecture Decision Records](notes/adrs) (ADRs)**—a collection of enhancement proposals where your expertise can make a real impact. Explore, discuss, and contribute your ideas and code enhancements to build the next generation of social business apps.
 
 
 ## Installation and Deployment
