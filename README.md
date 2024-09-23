@@ -1,5 +1,8 @@
 # About Abilian SBE
 
+Build status: [![builds.sr.ht status](https://builds.sr.ht/~sfermigier/abilian-sbe/commits/main/ubuntu-lts.yml.svg)](https://builds.sr.ht/~sfermigier/abilian-sbe/commits/main/ubuntu-lts.yml?)
+
+
 ## Introduction to Abilian SBE
 
 Abilian SBE (Social Business Engine) is a versatile platform designed for social business applications, particularly in the realm of collaborative or enterprise 2.0 business applications. It is ideal for creating enterprise social networks (ESN) and similar applications.
