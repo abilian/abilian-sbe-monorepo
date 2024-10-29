@@ -143,9 +143,10 @@ class AbiwordTextHandler(Handler):
 
     def convert(self, blob: bytes, **kw):
         tmp_dir = self.tmp_dir
-        with make_temp_file(blob, suffix=".doc") as in_fn, make_temp_file(
-            suffix=".txt"
-        ) as out_fn:
+        with (
+            make_temp_file(blob, suffix=".doc") as in_fn,
+            make_temp_file(suffix=".txt") as out_fn,
+        ):
             try:
                 subprocess.check_call(
                     [
@@ -185,9 +186,10 @@ class AbiwordPDFHandler(Handler):
     produces_mime_types = ["application/pdf"]
 
     def convert(self, blob: bytes, **kw):
-        with make_temp_file(blob, suffix=".doc") as in_fn, make_temp_file(
-            suffix=".pdf"
-        ) as out_fn:
+        with (
+            make_temp_file(blob, suffix=".doc") as in_fn,
+            make_temp_file(suffix=".pdf") as out_fn,
+        ):
             try:
                 subprocess.check_call(
                     [
@@ -320,9 +322,10 @@ class UnoconvPdfHandler(Handler):
     def convert(self, blob, **kw):
         """Convert using unoconv converter."""
         timeout = self.run_timeout
-        with make_temp_file(blob) as in_fn, make_temp_file(
-            prefix="tmp-unoconv-", suffix=".pdf"
-        ) as out_fn:
+        with (
+            make_temp_file(blob) as in_fn,
+            make_temp_file(prefix="tmp-unoconv-", suffix=".pdf") as out_fn,
+        ):
             args = ["-f", "pdf", "-o", out_fn, in_fn]
             # Hack for my Mac, FIXME later
             if Path("/Applications/LibreOffice.app/Contents/program/python").exists():
