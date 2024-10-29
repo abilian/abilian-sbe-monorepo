@@ -11,6 +11,8 @@ def lint(session: nox.Session) -> None:
     session.run("uv", "sync", "--inexact")
     session.run("uv", "pip", "check")
     session.run("uv", "run", "make", "lint")
+    session.run("uv", "pip", "install", "safety", "pip-audit")
+    session.run("uv", "run", "adt", "audit")
 
 
 @nox.session(python=PYTHON_VERSIONS)
