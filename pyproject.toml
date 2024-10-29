@@ -89,6 +89,8 @@ dependencies = [
     "certifi",
     "mmdb_writer",
     "netaddr",
+    "safety>=2.3.4",
+    "pip-audit>=2.7.3",
 ]
 
 [project.urls]

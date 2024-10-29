@@ -35,17 +35,9 @@ packages:
 
 tasks:
   - setup: |
-      sudo pip install -U pip setuptools wheel tox poetry nox
+      sudo pip install -U uv nox
       cd abilian-sbe
       npm install
-
-  - lint-tox: |
-      cd abilian-sbe
-      tox -e lint
-
-  - test-tox: |
-      cd abilian-sbe
-      tox -e py310
 
   - lint-nox: |
       cd abilian-sbe
