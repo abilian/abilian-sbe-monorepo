@@ -1,230 +1,149 @@
-[tool.poetry]
+[project]
 name = "abilian-sbe"
 version = "1.1.12"
 description = "Social Business platform (entreprise collaboration and information management)"
-authors = ["Abilian SAS"]
-license = "LGPL-2.0-or-later"
 readme = "README.md"
-repository = "https://github.com/abilian/abilian-sbe"
-
-packages = [
-        { include = "extranet", from = "src" },
-        { include = "abilian", from = "src" },
+requires-python = ">=3.10,<3.13"
+license = "LGPL-2.0-or-later"
+authors = [
+    { name = "Abilian SAS", email = "sales@abilian.com" },
+]
+dependencies = [
+    # Flask and friends
+    "flask>=3.0.2,<3.1.0",
+    "jinja2>=3.1.3,<3.2.0",
+    "werkzeug>=3.0.1,<3.1.0",
+    "markupSafe>=2.1.4,<2.2.0",
+    # Flask extensions
+    "flask-babel>=1.0.0,<1.1.0",
+    "flask-assets==2.1.0",
+    "flask-mail>=0.9.1",
+    "flask-migrate>=4.0.5,<4.1.0",
+    "flask-login>=0.6.3,<0.7.0",
+    "flask-talisman>=1.1.0,<1.2.0",
+    # Transitive dependencies, but called explicitly in our code
+    "Babel",
+    "blinker>=1.6.2",
+    "click>=8.1.3",
+    "itsdangerous>=2.1.2",
+    "numpy>=1.26.3,<2.0.0",
+    "pytz",
+    # Persistence
+    "sqlalchemy==1.4.35",
+    "flask-sqlalchemy==3.0.1",
+    "psycopg2>=2.9.9,<3.0.0",
+    # Forms
+    "flask-wtf==1.2.0",
+    "wtforms==3.1.2",
+    "WTForms-Alchemy==0.18.0",
+    "wtforms-sqlalchemy==0.4.1",
+    # Web assets
+    "webassets==2.0",
+    "jsmin",
+    "cssmin",
+    "closure==20161201",
+    #
+    "python-dateutil>=2.8.2,<3.0.0",
+    # Search
+    "whoosh-reloaded>=2.7.5,<3.0.0",
+    # task queue
+    "dramatiq>=1.15.0,<2.0.0",
+    "redis>=4.6.0,<5.0",
+    "flask-dramatiq>=0.6.0,<0.7.0",
+    "dramatiq-abort>=1.1.0,<2.0.0",
+    "apscheduler>=3.10.4,<4.0.0",
+    # Infra
+    "loguru>=0.7.2,<0.8.0",
+    "filelock>=3.15,<4.0",
+    # Security
+    "bleach[css]>=6.1.0,<7.0.0",
+    "bcrypt",
+    "defusedxml>=0.7.1,<0.8.0",
+    "clamd",
+    # Various libs
+    "deprecated",
+    "lxml",
+    "toml",
+    "tqdm",
+    "python-magic",
+    "pillow",
+    "pandas>=2.2.0",
+    "validate_email",
+    "toolz",
+    "html2text>=2024,<2025",
+    "devtools",
+    "python-dotenv>=1.0.1,<2.0.0",
+    # Markdown support for Wiki
+    "markdown>=3,<4",
+    # Language and charset detection
+    "langid>=1.1.6",
+    "chardet",
+    # XLSX support
+    "xlwt",
+    "openpyxl",
+    # Dev and prod server
+    "gunicorn",
+    "sentry-sdk[flask]",
+    # Geoip DB
+    "maxminddb",
+    "certifi",
+    "mmdb_writer",
+    "netaddr",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.10,<3.13"
-
-# Flask (and dependencies), pinned because it's hard to upgrade
-flask = "~3.0.2"      # last version Flask 3.0.2 : 3 feb 2024
-jinja2 = "~3.1.3"     # 3.1.3 last 11 janv. 2024
-werkzeug = "~3.0.1"   # 3.0.1 las 24 oct. 2023
-markupSafe = "~2.1.4" # last  19 janv. 2024
-
-# Flask plugins (somme are pinned)
-flask-babel = "~1.0.0"
-# note : flask-babel = "~2.0.0" breaks tests
-# flask-babel = "~4.0.0"  # last 2 oct. 2023
-
-# flask-assets = ">=0.12" #0.12: 2016-08-18
-flask-assets = "2.1.0" #0.12: 2016-08-18  see webassets, v2.1.0 last 22 oct 2023
-
-flask-mail = ">=0.9.1"   # last 29 sept. 2014
-flask-migrate = "~4.0.5" # last 12 sept. 2023
-flask-login = "~0.6.3"   # last 30 oct. 2023
-
-# flask-talisman = ">=1.0.0"
-flask-talisman = "~1.1.0" # last  3 août 2023
-
-# TODO: replace by flask-vite which is maintained
-# flask-tailwind = "^0.2.2" # last 15 nov. 2023
-
-# Transitive dependencies, but called explicitly in our code
-Babel = "*"
-blinker = ">=1.6.2"
-click = ">=8.1.3"
-itsdangerous = ">=2.1.2"
-numpy = "^1.26.3"        # last  2 janv. 2024
-pytz = "*"
-
-# Databases / persistence
-sqlalchemy = "1.4.35"
-flask-sqlalchemy = "3.0.1"
-psycopg2 = "^2.9.9"
-
-# Currently broken w/ 0.13
-flask-wtf = "1.2.0"
-# https://flask-wtf.readthedocs.io/en/1.2.x/changes/#version-0-13
-
-# Flask-WTF==0.12
-# wtforms = "<2.2"
-#wtforms = "~2.1"
-wtforms = "3.1.2"
-WTForms-Alchemy = "0.18.0"
-wtforms-sqlalchemy = "0.4.1"
-# WTForms==2.1
-# WTForms-Alchemy==0.17.0
-# WTForms-Components==0.10.5
-# WTForms-SQLAlchemy==0.3
-
-# Currently broken w/ 2.0
-# webassets = "< 2"
-# webassets==0.12.1  (2017-01-08)
-webassets = "2.0" # requirement of flask-assets 2.1
-
-# can parse isoformat / used in a jinja filter
-python-dateutil = "^2.8.2" # last 14 juil. 2021
-
-# Indexing
-whoosh-reloaded = "^2.7.5"
-
-# logs
-loguru = "^0.7.2"
-
-# Task queue
-dramatiq = "^1.15.0"
-redis = ">=4.6.0,<5.0"
-flask-dramatiq = "^0.6.0"
-filelock = "^3.15"
-
-# Security
-bleach = { version = "^6.1.0", extras = ["css"] }
-bcrypt = "*"
-defusedxml = "^0.7.1"
-
-# low-level tools
-deprecated = "*"
-
-# Used by DeferredJS (TODO: remove)
-lxml = "*"
-
-# Configuration
-toml = "*"
-
-# Used by the session audit
-maxminddb = "*"
-
-# Progres bar, used by some scripts
-tqdm = "*"
-
-# Used by the Sentry extension
-sentry-sdk = { version = "*", extras = ["flask"] }
-
-# antivirus interface
-clamd = "*"
-
-# Content detection / transformation
-python-magic = "*"
-pillow = "*"
-
-# Reporting
-pandas = ">=2.2.0" # last version 20 janv. 2024
-# pandas==2.2.0
-
-#
-# Assets management (might not be necessary if distributing compiled assets)
-#
-jsmin = "*"
-cssmin = "*"
-closure = "==20161201"
-
-# Email validation (when sending digests)
-validate_email = "*" # 1.3 last 23 mars 2015
-
-# Language and charset detection
-langid = ">=1.1.6"
-chardet = "*"
-
-# Markdown support for Wiki
-markdown = "^3" # 3.5.2 last10 janv. 2024
-
-# needed by folder: export to xls
-xlwt = "*"
-openpyxl = "*"
-
-# Better FP library than itertools IMHO.
-toolz = "*"
-
-html2text = "^2024"
-
-# Production
-gunicorn = "*"
-
-# Debug tools
-devtools = "*"
-
-# Additional stuff
-python-dotenv = "^1.0.1" # last 1.0.1 23 janv. 2024
-
-dramatiq-abort = "^1.1.0"
-apscheduler = "^3.10.4"
-
-# Update of local geoip DB (devel)
-certifi = "*"
-mmdb_writer = "*"
-netaddr = "*"
-
-[tool.poetry.group.dev.dependencies]
-
-# Generic dev deps
-abilian-devtools = "^0.7"
-mypy = "^1.5.1"
-
-# Testing
-pytest = "^8"
-tox = "^4.5.1"
-pytest-flask = "*"
-# pytest-testmon = "^1.2.0"
-flask-linktester = "*"
-
-# Debugging
-Flask-DebugToolbar = "*"
-# used by the DTB
-sqlparse = "^0.4.4"
-
-# Rund dev server
-honcho = "*"
-
-# Used for testing
-html5lib = "*"
-hyperlink = "*"
-
-# Typing
-types-bleach = "*"
-types-deprecated = "*"
-types-python-dateutil = "*"
-types-pytz = "*"
-types-pyyaml = "*"
-types-redis = "*"
-types-requests = "*"
-types-setuptools = "*"
-types-chardet = "*"
-types-Markdown = "*"
-
-# Keep for now
-# pyanalyze = "*"
-# Dependency of pyanalzye. Pinned because issue w/ 1.10.1
-# qcore = "1.10.0"
-
-# Tools
-pyupgrade = "*"
-deptry = "*"
-
-# Documentation
-mkdocs-material = "^9.5.4"
-types-toml = "^0.10.8.7"
+[project.urls]
+Repository = "https://github.com/abilian/abilian-sbe"
 
 [build-system]
-requires = ["poetry-core>=1.2.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-# -----------------------------------------------------------------------------
+[tool.hatch.build.targets.wheel]
+packages = [
+    "src/abilian",
+    "src/extranet",
+]
+
+
+[tool.uv]
+dev-dependencies = [
+    "abilian-devtools>=0.7,<0.8",
+    "mypy>=1.5.1,<2.0.0",
+    "Flask-DebugToolbar",
+    "sqlparse>=0.4.4,<0.5.0",
+    # Dev server
+    "honcho",
+    # Testing
+    "html5lib",
+    "hyperlink",
+    "pytest>=8,<9",
+    "tox>=4.5.1,<5.0.0",
+    "pytest-flask",
+    "flask-linktester",
+    # Type hints
+    "types-bleach",
+    "types-deprecated",
+    "types-python-dateutil",
+    "types-pytz",
+    "types-pyyaml",
+    "types-redis",
+    "types-requests",
+    "types-setuptools",
+    "types-chardet",
+    "types-Markdown",
+    "types-toml>=0.10.8.7,<0.11.0.0",
+    # Tools
+    "pyupgrade",
+    "deptry",
+    # Documentation
+    "mkdocs-material>=9.5.4,<10.0.0",
+]
 
 [tool.pytest.ini_options]
 minversion = "6.0"
 filterwarnings = [
-        'ignore::DeprecationWarning',
-        'ignore::sqlalchemy.exc.SAWarning',
+    'ignore::DeprecationWarning',
+    'ignore::sqlalchemy.exc.SAWarning',
 ]
 # addopts = "-ra -q"
 testpaths = ["tests"]
@@ -233,19 +152,20 @@ python_files = ["test_*.py", "tests.py", "test.py", "*_tests.py"]
 
 # -----------------------------------------------------------------------------
 
+
 [tool.deptry.per_rule_ignores]
 # X defined as a dependency but not used in the codebase
 DEP002 = [
-        # Used (implicitly) by Flask-Migrate
-        'alembic',
-        # Used by webassets
-        'jsmin',
-        'cssmin',
-        'closure',
-        # Used implicitly by SQLA
-        'psycopg2',
-        # Web
-        'gunicorn',
+    # Used (implicitly) by Flask-Migrate
+    'alembic',
+    # Used by webassets
+    'jsmin',
+    'cssmin',
+    'closure',
+    # Used implicitly by SQLA
+    'psycopg2',
+    # Web
+    'gunicorn',
 ]
 
 # X imported but missing from the dependency definitions
@@ -255,6 +175,7 @@ DEP001 = ['pkg_resources']
 DEP004 = ['flask_debugtoolbar', 'html5lib']
 
 # -----------------------------------------------------------------------------
+
 
 [tool.pyright]
 exclude = ['.nox', 'tests', 'noxfile.py']
