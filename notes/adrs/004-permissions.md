@@ -147,7 +147,7 @@ Here are example role and permission configurations for common use cases such as
 ### Example Role and Permission Configurations
 
 
-#### 1. **Admin Role**
+#### Admin Role
 
 The **admin** role has full access to all resources in the system, including administrative functions like user management and system configuration.
 
@@ -176,7 +176,7 @@ The **admin** role has full access to all resources in the system, including adm
   - **API**:
     - Full access to all API endpoints, including admin functions
 
-#### 2. **Editor Role**
+#### Editor Role
 
 The **editor** role has permission to create, read, and modify documents and projects, but lacks the ability to delete sensitive resources or access administrative functionality.
 
@@ -200,7 +200,7 @@ The **editor** role has permission to create, read, and modify documents and pro
     - Access limited to document and project management APIs
     - Example API scopes: `read:documents`, `write:documents`, `read:projects`, `write:projects`
 
-#### 3. **Viewer Role**
+#### Viewer Role
 
 The **viewer** role has read-only access to resources, allowing users to view documents and project details, but not modify or delete them.
 
