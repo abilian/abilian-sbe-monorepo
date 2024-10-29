@@ -167,7 +167,7 @@ netaddr = "*"
 [tool.poetry.group.dev.dependencies]
 
 # Generic dev deps
-abilian-devtools = "^0.6"
+abilian-devtools = "^0.7"
 mypy = "^1.5.1"
 
 # Testing
@@ -213,7 +213,6 @@ deptry = "*"
 # Documentation
 mkdocs-material = "^9.5.4"
 types-toml = "^0.10.8.7"
-autotyping = "^24.3.0"
 
 [build-system]
 requires = ["poetry-core>=1.2.0"]
