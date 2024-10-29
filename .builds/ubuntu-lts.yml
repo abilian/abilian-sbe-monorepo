@@ -45,7 +45,8 @@ tasks:
 
   - test-nox: |
       cd abilian-sbe
-      nox -e pytest
+      # TODO: install other versions using rye
+      nox -e pytest-3.10
 
 triggers:
   - action: email

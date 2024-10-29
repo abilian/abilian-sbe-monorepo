@@ -1,7 +1,6 @@
 import nox
 
-# TODO: add 3.13 (when it's ready on sourcehut)
-PYTHON_VERSIONS = ["3.10", "3.11", "3.12"]
+PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13"]
 
 nox.options.reuse_existing_virtualenvs = True
 
