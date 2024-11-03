@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, cast
 
-from flask import url_for
+from flask import Flask, url_for
 from flask.blueprints import BlueprintSetupState
 from flask_babel import lazy_gettext as _l
 from flask_login import current_user
@@ -95,5 +95,6 @@ def register_actions(state: BlueprintSetupState) -> None:
     if not actions.installed(state.app):
         return
 
-    with state.app.app_context():
+    app = cast(Flask, state.app)
+    with app.app_context():
         actions.register(*_actions)

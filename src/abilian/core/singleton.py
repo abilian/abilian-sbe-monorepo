@@ -9,6 +9,8 @@ from sqlalchemy.types import String, TypeDecorator
 class ValueSingletonMeta(type):
     __instances__: dict[str, Any]
 
+    attr: str
+
     def __new__(
         mcs: type[ValueSingletonMeta],
         name: str,
@@ -28,12 +30,7 @@ class ValueSingletonMeta(type):
             value_instance = super().__call__(value, *args, **kwargs)
             cls.__instances__[getattr(value_instance, cls.attr)] = value_instance
 
-        result = cls.__instances__[value.lower()]
-
-        # from devtools import debug
-        # debug(result)
-        # assert False
-        return result
+        return cls.__instances__[value.lower()]
 
 
 class UniqueName(metaclass=ValueSingletonMeta):
