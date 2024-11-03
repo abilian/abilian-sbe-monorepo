@@ -138,6 +138,7 @@ dev-dependencies = [
     # Documentation
     "mkdocs-material>=9.5.4,<10.0.0",
     "pip-outdated>=0.7.0",
+    "flynt>=1.0.1",
 ]
 
 [tool.pytest.ini_options]

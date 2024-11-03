@@ -55,7 +55,7 @@ _PARAGRAPH_RE = re.compile(r"(?:\r\n|\r|\n){2,}")
 def paragraphs(value: str) -> str:
     """Blank lines delimitates paragraphs."""
     result = "\n\n".join(
-        "<p>{}</p>".format(p.strip().replace("\n", Markup("<br />\n")))
+        f"<p>{p.strip().replace('\\n', Markup('<br />\\n'))}</p>"
         for p in _PARAGRAPH_RE.split(escape(value))
     )
     return result

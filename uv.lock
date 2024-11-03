@@ -138,6 +138,7 @@ dev = [
     { name = "deptry" },
     { name = "flask-debugtoolbar" },
     { name = "flask-linktester" },
+    { name = "flynt" },
     { name = "honcho" },
     { name = "html5lib" },
     { name = "hyperlink" },
@@ -234,6 +235,7 @@ dev = [
     { name = "deptry" },
     { name = "flask-debugtoolbar" },
     { name = "flask-linktester" },
+    { name = "flynt", specifier = ">=1.0.1" },
     { name = "honcho" },
     { name = "html5lib" },
     { name = "hyperlink" },
@@ -375,6 +377,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/5f/39/27605e133e7f4bb0c8e48c9a6b87101515e3446003e0442761f6a02ac35e/argcomplete-3.5.1.tar.gz", hash = "sha256:eb1ee355aa2557bd3d0145de7b06b2a45b0ce461e1e7813f5d066039ab4177b4", size = 82280 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f7/be/a606a6701d491cfae75583c80a6583f8abe9c36c0b9666e867e7cdd62fe8/argcomplete-3.5.1-py3-none-any.whl", hash = "sha256:1a1d148bdaa3e3b93454900163403df41448a248af01b6e849edc5ac08e6c363", size = 43498 },
+]
+
+[[package]]
+name = "astor"
+version = "0.8.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/5a/21/75b771132fee241dfe601d39ade629548a9626d1d39f333fde31bc46febe/astor-0.8.1.tar.gz", hash = "sha256:6a6effda93f4e1ce9f618779b2dd1d9d84f1e32812c23a29b3fff6fd7f63fa5e", size = 35090 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c3/88/97eef84f48fa04fbd6750e62dcceafba6c63c81b7ac1420856c8dcc0a3f9/astor-0.8.1-py2.py3-none-any.whl", hash = "sha256:070a54e890cefb5b3739d19f30f5a5ec840ffc9c50ffa7d23cc9fc1a38ebbfc5", size = 27488 },
 ]
 
 [[package]]
@@ -1473,6 +1484,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ad/56/0386aa9f106872fa6c029e1202b9dcd182131e1a3029a3e5096d551c1be3/flask_wtf-1.2.0.tar.gz", hash = "sha256:e5dcf9f3cb80ee6ca8bb68de9ea467e7d613a708ebc5e130b9b02996e06c0d54", size = 42485 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/2f/ac/57430348aacb982be8a03387c596ea8571249a8bf159f57debde71e2f529/flask_wtf-1.2.0-py3-none-any.whl", hash = "sha256:96e6f091c641c9944ba7dba2957c84797b630006aa926c99507fbd790069772b", size = 12739 },
+]
+
+[[package]]
+name = "flynt"
+version = "1.0.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "astor" },
+    { name = "tomli", marker = "python_full_version < '3.11'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2a/6d/7ff4354c9b7cc3f4fc96758350d8dedf87fe7f036bd49d394f96327faca4/flynt-1.0.1.tar.gz", hash = "sha256:988aac00672a5469726cc0a17cef7d1178c284a9fe8563458db2475d0aaed965", size = 23174 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ab/4f/493b893a60860cfd0b21104098ac97c7e9cdc784a3d8191b690f84a20b3b/flynt-1.0.1-py3-none-any.whl", hash = "sha256:65d1c546434827275123222a98408e9561bcd67db832dd58f530ff17b8329ec1", size = 33305 },
 ]
 
 [[package]]
