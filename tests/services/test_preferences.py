@@ -40,7 +40,7 @@ class AdminPanel(PreferencePanel):
 class Application(BaseApplication):
     def init_extensions(self):
         super().init_extensions()
-        prefs = cast(PreferenceService, self.services["preferences"])
+        prefs = cast(PreferenceService, get_service("preferences"))
         prefs.app_state.panels = []
         prefs.register_panel(VisiblePanel(), self)
         prefs.register_panel(AdminPanel(), self)

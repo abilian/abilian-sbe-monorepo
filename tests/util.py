@@ -104,7 +104,7 @@ def ensure_services_started(services: list[str]):
 
 
 def stop_all_services(app: Application):
-    for service in app.services.values():
+    for service in app.services_manager.list_services():
         if service.running:
             service.stop()
 

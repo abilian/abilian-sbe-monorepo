@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import typing
 from collections.abc import Callable
 from datetime import datetime, timedelta
-from typing import Any
+from typing import TYPE_CHECKING, Any, cast
 
 from flask import Flask, current_app, g, redirect, request, url_for
 from flask_babel import lazy_gettext as _l
@@ -16,14 +15,14 @@ from abilian.core.extensions import db, login_manager
 from abilian.core.models.subjects import User
 from abilian.core.signals import user_loaded
 from abilian.core.util import unwrap
-from abilian.services import Service, ServiceState
+from abilian.services import Service, ServiceState, get_service
 from abilian.web.action import DynamicIcon, actions
 from abilian.web.nav import NavGroup, NavItem
 
 from .models import LoginSession
 from .views import login as login_views
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from abilian.app import Application
 
 __all__ = ["AuthService", "user_menu"]
@@ -143,7 +142,8 @@ class AuthService(Service):
             return None
 
         app = unwrap(current_app)
-        app.services[AuthService.name].user_logged_in(app, user)
+        auth_service = cast(AuthService, get_service(AuthService.name))
+        auth_service.user_logged_in(app, user)
         user_loaded.send(app, user=user)
         return user
 

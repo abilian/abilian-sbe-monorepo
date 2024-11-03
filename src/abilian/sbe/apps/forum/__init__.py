@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import cast
 
 from abilian.sbe.app import Application
+from abilian.services import get_service
 from abilian.services.indexing.service import WhooshIndexService
 
 
@@ -24,7 +25,7 @@ def register_plugin(app: Application) -> None:
     ):
         forum.record_once(register_actions)
     app.register_blueprint(forum)
-    indexing_service = cast(WhooshIndexService, app.services["indexing"])
+    indexing_service = cast(WhooshIndexService, get_service("indexing"))
     indexing_service.adapters_cls.insert(0, ThreadIndexAdapter)
     # tasks.init_app(app)
 

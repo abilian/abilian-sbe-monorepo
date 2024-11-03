@@ -6,6 +6,8 @@ http://flask.pocoo.org/docs/extensiondev/ )
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING, cast
+
 from flask import current_app
 
 # This one must be imported first
@@ -16,6 +18,14 @@ assert Service, ServiceState
 
 # flake8: noqa
 # Import below are flagged as problematic due to the trick above.
+
+
+def get_service(service: str) -> Service:
+    from abilian.app import Application
+
+    app = cast(Application, current_app)
+    return app.services_manager.get_service(service)
+
 
 from .activity import ActivityService
 from .antivirus import service as antivirus
@@ -32,10 +42,6 @@ from .vocabularies import vocabularies as vocabularies_service
 auth_service = AuthService()
 activity_service = ActivityService()
 settings_service = SettingsService()
-
-
-def get_service(service: str) -> Service:
-    return current_app.services[service]
 
 
 def get_security_service():

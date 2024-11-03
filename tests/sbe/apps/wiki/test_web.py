@@ -12,6 +12,7 @@ from abilian.core.models.subjects import User
 from abilian.sbe.apps.communities.models import READER, Community
 from abilian.sbe.apps.wiki import views
 from abilian.sbe.apps.wiki.models import WikiPage
+from abilian.services import get_service
 from tests.util import client_login
 
 
@@ -98,12 +99,12 @@ def test_wiki_indexed(
 ):
     monkeypatch.setenv("TESTING_DIRECT_FUNCTION_CALL", "testing")
     SERVICES = ("security", "indexing")
-    for _svc in SERVICES:
-        svc = app.services[_svc]
+    for svc_name in SERVICES:
+        svc = get_service(svc_name)
         if not svc.running:
             svc.start()
 
-    svc = app.services["indexing"]
+    index_svc = get_service("indexing")
 
     with client_login(client, admin_user):
         page1 = WikiPage(title="Community 1", community=community1)

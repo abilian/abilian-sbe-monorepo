@@ -49,7 +49,6 @@ from .schema import DefaultSearchSchema, indexable_role
 if TYPE_CHECKING:
     from abilian.app import Application
 
-
 PENDING_INDEXATION_ATTR = "abilian_pending_indexation"
 
 
@@ -95,7 +94,20 @@ class IndexServiceState(ServiceState):
         setattr(g, PENDING_INDEXATION_ATTR, values)
 
 
-class WhooshIndexService(Service):
+class IndexService(Service):
+    schemas: dict[str, DefaultSearchSchema]
+
+    def search(self, q: str, index_name: str = "default", **search_args):
+        raise NotImplementedError
+
+    def register_search_filter(self, func):
+        raise NotImplementedError
+
+    def register_value_provider(self, func):
+        raise NotImplementedError
+
+
+class WhooshIndexService(IndexService):
     """Index documents using whoosh."""
 
     name = "indexing"

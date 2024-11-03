@@ -20,6 +20,8 @@ import defusedxml
 import jinja2
 import sqlalchemy as sa
 import sqlalchemy.exc
+import svcs
+from attrs import field, frozen
 from flask import (
     Blueprint,
     Flask,
@@ -77,14 +79,15 @@ __all__ = ["Application", "ServiceManager", "create_app"]
 warnings.simplefilter("ignore", category=sa.exc.SAWarning)
 
 
+@frozen
 class ServiceManager:
     """Mixin that provides lifecycle (register/start/stop) support for
     services."""
 
-    services: dict[str, Service]
+    services: dict[str, Service] = field(factory=dict)
 
-    def __init__(self):
-        self.services = {}
+    def add_service(self, name: str, service: Service):
+        self.services[name] = service
 
     def start_services(self):
         for svc in self.services.values():
@@ -93,6 +96,12 @@ class ServiceManager:
     def stop_services(self):
         for svc in self.services.values():
             svc.stop()
+
+    def list_services(self):
+        return self.services.values()
+
+    def get_service(self, name: str) -> Service:
+        return self.services[name]
 
 
 class PluginManager:
@@ -125,7 +134,6 @@ class PluginManager:
 
 
 class Application(
-    ServiceManager,
     PluginManager,
     AssetManagerMixin,
     ErrorManagerMixin,
@@ -154,7 +162,8 @@ class Application(
 
         Flask.__init__(self, name, *args, **kwargs)
 
-        ServiceManager.__init__(self)
+        self.services_manager = ServiceManager()
+
         PluginManager.__init__(self)
         JinjaManagerMixin.__init__(self)
 
@@ -163,6 +172,8 @@ class Application(
 
     def setup(self, config: type | None):
         self.configure(config)
+
+        svcs.flask.init_app(self)
 
         # At this point we have loaded all external config files:
         # SQLALCHEMY_DATABASE_URI is definitively fixed (it cannot be defined in
@@ -514,6 +525,7 @@ def create_app(
     config: type | None = None, app_class: type = Application, **kw: Any
 ) -> Application:
     app = app_class(**kw)
+
     app.setup(config=config)
 
     # This is currently called from app.setup()

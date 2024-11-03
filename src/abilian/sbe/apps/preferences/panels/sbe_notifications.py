@@ -60,7 +60,7 @@ class SbeNotificationsPanel(PreferencePanel):
             return redirect(url_for(".sbe_notifications"))
         form = SbeNotificationsForm(request.form, prefix=self.id)
         if form.validate():
-            preferences = app.services["preferences"]
+            preferences = get_service("preferences")
             for field_name, field in form._fields.items():
                 if field is form.csrf_token:
                     continue

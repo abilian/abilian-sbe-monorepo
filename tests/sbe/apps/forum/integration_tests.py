@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta
+from typing import cast
 from unittest import mock
 
 import pytest
@@ -17,7 +18,8 @@ from abilian.sbe.apps.forum.tasks import (
     send_post_by_email,
 )
 from abilian.sbe.apps.forum.views import ThreadCreate
-from abilian.services import security_service
+from abilian.services import get_service, security_service
+from abilian.services.indexing.service import IndexService
 
 from ....util import client_login, redis_available
 from .util import get_string_from_file
@@ -45,7 +47,7 @@ def test_posts_ordering(db: SQLAlchemy, community1):
 @pytest.mark.skipif(not redis_available(), reason="requires redis connection")
 def test_thread_indexed(app, db: SQLAlchemy, community1, community2, monkeypatch):
     monkeypatch.setenv("TESTING_DIRECT_FUNCTION_CALL", "testing")
-    index_svc = app.services["indexing"]
+    index_svc = cast(IndexService, get_service("indexing"))
     index_svc.start()
     security_service.start()
 

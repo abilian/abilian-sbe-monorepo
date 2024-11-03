@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 
 import whoosh.fields as wf
 import whoosh.query as wq
@@ -9,6 +9,9 @@ from flask_login import current_user
 from loguru import logger
 from whoosh.query.compound import Or
 from whoosh.query.terms import Term
+
+from abilian.services import get_service
+from abilian.services.indexing.service import IndexService
 
 from .models import Membership
 
@@ -29,7 +32,7 @@ _FIELDS = [
 
 def init_app(app: Flask) -> None:
     """Add community fields to indexing service schema."""
-    indexing = app.services["indexing"]
+    indexing = cast(IndexService, get_service("indexing"))
     indexing.register_search_filter(filter_user_communities)
     indexing.register_value_provider(mark_non_community_content)
 

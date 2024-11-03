@@ -89,6 +89,8 @@ dependencies = [
     "certifi",
     "mmdb_writer",
     "netaddr",
+    "svcs>=24.1.0",
+    "attrs>=24.2.0",
 ]
 
 [project.urls]
