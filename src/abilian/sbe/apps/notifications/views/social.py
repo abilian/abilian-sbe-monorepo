@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from flask import current_app as app
 from flask import request
 from flask_login import current_user
@@ -12,7 +14,9 @@ from abilian.core.models.subjects import User
 from abilian.i18n import render_template_i18n
 from abilian.sbe.apps.communities.security import require_admin
 from abilian.sbe.apps.notifications import TOKEN_SERIALIZER_NAME
+from abilian.services import get_service
 from abilian.services.auth.views import get_token_status
+from abilian.services.preferences.service import PreferenceService
 
 from ..tasks.social import make_message, send_daily_social_digest_to
 from . import notifications
@@ -58,7 +62,7 @@ def unsubscribe_sbe(token: str) -> str:
         )
 
     elif request.method == "POST":
-        preferences = app.services["preferences"]
+        preferences = cast(PreferenceService, get_service("preferences"))
         preferences.set_preferences(user, **{"sbe:notifications:daily": False})
         db.session.commit()
         return render_template_i18n("notifications/unsubscribed.html", token=token)

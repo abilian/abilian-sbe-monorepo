@@ -857,6 +857,9 @@ def move_multiple(folder: Folder) -> Response:
 
     target_folder = content_repository.get_folder_by_id(target_folder_id)
 
+    if not target_folder:
+        raise InternalServerError("Target folder not found")
+
     if folder == target_folder:
         flash(
             _(
