@@ -147,5 +147,5 @@ class FormPermissions:
             else:
                 roles.extend(r)
 
-        security: SecurityService = get_service("security")
+        security = cast(SecurityService, get_service("security"))
         return security.has_role(user, role=roles, object=obj)
