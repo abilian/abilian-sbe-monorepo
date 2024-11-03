@@ -256,10 +256,7 @@ def reset_password_post(token: str) -> Response:
     db.session.commit()
 
     flash(
-        _(
-            "Your password has been changed. "
-            "You can now login with your new password"
-        ),
+        _("Your password has been changed. You can now login with your new password"),
         "success",
     )
 

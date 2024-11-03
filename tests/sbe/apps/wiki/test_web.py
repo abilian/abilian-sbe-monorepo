@@ -12,14 +12,15 @@ from abilian.core.models.subjects import User
 from abilian.sbe.apps.communities.models import READER, Community
 from abilian.sbe.apps.wiki import views
 from abilian.sbe.apps.wiki.models import WikiPage
-
-from ....util import client_login
+from tests.util import client_login
 
 
 @fixture()
 def user1(db):
     user = User(
-        email="user_1@example.com", password="azerty", can_login=True  # noqa: S106
+        email="user_1@example.com",
+        password="azerty",  # noqa: S106
+        can_login=True,
     )
     db.session.add(user)
     return user
@@ -28,7 +29,9 @@ def user1(db):
 @fixture()
 def user2(db):
     user = User(
-        email="user_2@example.com", password="azerty", can_login=True  # noqa: S106
+        email="user_2@example.com",
+        password="azerty",  # noqa: S106
+        can_login=True,
     )
     db.session.add(user)
     return user
@@ -37,7 +40,9 @@ def user2(db):
 @fixture()
 def user3(db):
     user = User(
-        email="user_3@example.com", password="azerty", can_login=True  # noqa: S106
+        email="user_3@example.com",
+        password="azerty",  # noqa: S106
+        can_login=True,
     )
     db.session.add(user)
     return user

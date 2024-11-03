@@ -288,9 +288,9 @@ class WhooshIndexService(Service):
                 roles.add(indexable_role(Authenticated))
                 roles |= {indexable_role(r) for r in security.get_roles(user)}
 
-            filter_q = wq.Or(
-                [wq.Term("allowed_roles_and_users", role) for role in roles]
-            )
+            filter_q = wq.Or([
+                wq.Term("allowed_roles_and_users", role) for role in roles
+            ])
             filters.append(filter_q)
 
         object_types_set = set(object_types)

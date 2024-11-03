@@ -99,9 +99,9 @@ class Length(Rule):
     """
 
     def __init__(self, min=-1, max=-1, message=None):
-        assert (
-            min != -1 or max != -1
-        ), "At least one of `min` or `max` must be specified."
+        assert min != -1 or max != -1, (
+            "At least one of `min` or `max` must be specified."
+        )
         assert max == -1 or min <= max, "`min` cannot be more than `max`."
         self.min = min
         self.max = max

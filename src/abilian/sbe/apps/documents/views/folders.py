@@ -1015,18 +1015,14 @@ def descendants_view(folder_id):
     root_path_ids = f"{folder._indexable_parent_ids}/{folder.id}"
     index_service = get_service("indexing")
 
-    filters = wq.And(
-        [
-            wq.Term("community_id", folder.community.id),
-            wq.Term("parent_ids", root_path_ids),
-            wq.Or(
-                [
-                    wq.Term("object_type", Folder.entity_type),
-                    wq.Term("object_type", Document.entity_type),
-                ]
-            ),
-        ]
-    )
+    filters = wq.And([
+        wq.Term("community_id", folder.community.id),
+        wq.Term("parent_ids", root_path_ids),
+        wq.Or([
+            wq.Term("object_type", Folder.entity_type),
+            wq.Term("object_type", Document.entity_type),
+        ]),
+    ])
 
     results = index_service.search("", filter=filters, limit=None)
     by_path = {}

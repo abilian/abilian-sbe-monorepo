@@ -1,5 +1,4 @@
-"""Configuration and injectable fixtures for Pytest.
-"""
+"""Configuration and injectable fixtures for Pytest."""
 
 from collections.abc import Iterator
 from typing import Any

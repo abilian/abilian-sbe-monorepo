@@ -151,7 +151,6 @@ class AuditService(Service):
             if not relation:
                 raise ValueError(
                     f'Invalid relation: "{related_attr}", invalid attribute is "{attr}"'
-                    ""
                 )
 
             mapper = relation.mapper

@@ -21,8 +21,7 @@ class Redis:
             return
         if not uri:
             app.logger.warning(
-                "Redis extension: REDIS_URI is not defined "
-                "in application configuration"
+                "Redis extension: REDIS_URI is not defined in application configuration"
             )
             return
 

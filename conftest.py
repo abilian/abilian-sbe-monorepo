@@ -131,7 +131,9 @@ def community1(db: SQLAlchemy) -> Community:
     db.session.add(community)
 
     user = User(
-        email="user_1@example.com", password="azerty", can_login=True  # noqa: S106
+        email="user_1@example.com",
+        password="azerty",  # noqa: S106
+        can_login=True,
     )
     db.session.add(user)
     community.set_membership(user, READER)
@@ -147,7 +149,9 @@ def community2(db: SQLAlchemy) -> Community:
     db.session.add(community)
 
     user = User(
-        email="user_2@example.com", password="azerty", can_login=True  # noqa: S106
+        email="user_2@example.com",
+        password="azerty",  # noqa: S106
+        can_login=True,
     )
     db.session.add(user)
     community.set_membership(user, READER)

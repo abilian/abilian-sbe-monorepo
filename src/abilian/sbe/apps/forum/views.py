@@ -84,9 +84,9 @@ def get_viewed_posts(entities):
         entity = view.entity
         if entity in entities:
             cutoff = related_hits[-1].viewed_at
-            nb_viewed_posts[entity] = len(
-                [post for post in entity.posts if post.created_at > cutoff]
-            )
+            nb_viewed_posts[entity] = len([
+                post for post in entity.posts if post.created_at > cutoff
+            ])
 
     never_viewed = set(entities) - {view.entity for view in views}
     for entity in never_viewed:
@@ -368,9 +368,9 @@ class ThreadPostCreate(ThreadCreate):
         args, kwargs = super().init_object(args, kwargs)
         thread_id = kwargs.pop(self.pk, None)
         self.thread = Thread.query.get(thread_id)
-        Thread.query.filter(Thread.id == thread_id).update(
-            {Thread.last_post_at: datetime.utcnow()}
-        )
+        Thread.query.filter(Thread.id == thread_id).update({
+            Thread.last_post_at: datetime.utcnow()
+        })
         return args, kwargs
 
     def after_populate_obj(self):
@@ -472,14 +472,12 @@ class ThreadPostEdit(BaseThreadView, views.ObjectEdit):
         self.obj.body_html = self.message_body
         obj_meta = self.obj.meta.setdefault("abilian.sbe.forum", {})
         history = obj_meta.setdefault("history", [])
-        history.append(
-            {
-                "user_id": current_user.id,
-                "user": str(current_user),
-                "date": utc_dt(datetime.utcnow()).isoformat(),
-                "reason": self.form.reason.data,
-            }
-        )
+        history.append({
+            "user_id": current_user.id,
+            "user": str(current_user),
+            "date": utc_dt(datetime.utcnow()).isoformat(),
+            "reason": self.form.reason.data,
+        })
         self.obj.meta["abilian.sbe.forum"] = obj_meta  # trigger change for SA
 
         attachments_to_remove = []
