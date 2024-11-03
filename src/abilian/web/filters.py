@@ -54,11 +54,9 @@ _PARAGRAPH_RE = re.compile(r"(?:\r\n|\r|\n){2,}")
 @autoescape
 def paragraphs(value: str) -> str:
     """Blank lines delimitates paragraphs."""
-    result = "\n\n".join(
-        f"<p>{p.strip().replace('\\n', Markup('<br />\\n'))}</p>"
-        for p in _PARAGRAPH_RE.split(escape(value))
-    )
-    return result
+    paragraphs = _PARAGRAPH_RE.split(escape(value))
+    paragraphs = [p.strip().replace("\n", Markup("<br />\n")) for p in paragraphs]
+    return "\n\n".join(f"<p>{p}</p>" for p in paragraphs)
 
 
 def labelize(s: str) -> str:
