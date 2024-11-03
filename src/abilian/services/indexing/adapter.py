@@ -159,13 +159,13 @@ class SAAdapter(SchemaAdapter):
             if field_def is False:
                 field_def = TEXT(stored=True, analyzer=accent_folder)
 
-            logger.debug(
-                "Adding field to schema:\n  Model: {model}\n"
-                '  Field: "{field_name}" {field_def}',
-                model=model_class._object_type(),
-                field_name=field_name,
-                field_def=field_def,
-            )
+            # logger.debug(
+            #     "Adding field to schema:\n  Model: {model}\n"
+            #     '  Field: "{field_name}" {field_def}',
+            #     model=model_class._object_type(),
+            #     field_name=field_name,
+            #     field_def=field_def,
+            # )
             schema.add(field_name, field_def)
 
     def retrieve(self, pk: int, _session: Session | None = None, **data: Any) -> Entity:

@@ -21,7 +21,7 @@ def init_dramatiq_engine(app) -> None:
     if dramatiq.app is not None:
         # ensure only one initialization, especially during tests
         return
-    logger.debug("Setting up Dramatiq")
+    # logger.debug("Setting up Dramatiq")
     dramatiq.init_app(app)
     _setup_rate_limiter(app)
     _add_dramatiq_abortable(app)
@@ -30,7 +30,7 @@ def init_dramatiq_engine(app) -> None:
 
 
 def _setup_rate_limiter(app):
-    logger.debug("Add dramatiq rate limiter")
+    # logger.debug("Add dramatiq rate limiter")
     redis_client = _rate_limiter_redis_client(app)
     backend = RateLimitRedisBackend(client=redis_client)
     # rate limit is 6/min
@@ -48,7 +48,7 @@ def _rate_limiter_redis_client(app) -> redis.Redis:
 
 
 def _register_scheduler(app) -> None:
-    logger.debug("Register scheduler")
+    # logger.debug("Register scheduler")
     app.cli.add_command(scheduler)
 
 
@@ -77,7 +77,7 @@ def _add_dramatiq_abortable(app) -> None:
     abort(message_id, mode=AbortMode.CANCEL)
     abort(message.message_id, mode=AbortMode.ABORT, abort_timeout=2000)
     """
-    logger.debug("Add dramatiq abortable")
+    # logger.debug("Add dramatiq abortable")
     redis_client = _abortable_redis_client(app)
     backend = dramatiq_abort.backends.RedisBackend(client=redis_client)
     abortable = Abortable(backend=backend)

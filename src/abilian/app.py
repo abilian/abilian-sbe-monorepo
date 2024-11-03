@@ -111,7 +111,7 @@ class PluginManager:
 
     def register_plugin(self, name: str):
         """Load and register a plugin given its package name."""
-        logger.info("Registering plugin: {name}", name=name)
+        # logger.info("Registering plugin: {name}", name=name)
         module = importlib.import_module(name)
         module.register_plugin(self)  # type: ignore
 

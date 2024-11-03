@@ -72,7 +72,7 @@ class Admin:
                 continue
 
             self.register_panel(panel_class())
-            logger.debug('Registered panel "{fqn}"', fqn=fqn)
+            # logger.debug('Registered panel "{fqn}"', fqn=fqn)
 
         if not self.panels:
 

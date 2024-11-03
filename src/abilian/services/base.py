@@ -55,12 +55,12 @@ class Service:
 
     def start(self, ignore_state: bool = False):
         """Starts the service."""
-        self.logger.debug("Start service")
+        # self.logger.debug("Start service")
         self._toggle_running(True, ignore_state)
 
     def stop(self, ignore_state: bool = False):
         """Stops the service."""
-        self.logger.debug("Stop service")
+        # self.logger.debug("Stop service")
         self._toggle_running(False, ignore_state)
 
     def _toggle_running(self, run_state: bool, ignore_state: bool = False):

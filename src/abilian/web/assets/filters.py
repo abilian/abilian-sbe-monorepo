@@ -11,6 +11,7 @@ from io import StringIO
 from os.path import isabs
 from pathlib import Path
 
+from devtools import debug
 from flask import current_app
 from loguru import logger
 from webassets.filter import ExternalTool, Filter, get_filter, register_filter
@@ -229,12 +230,13 @@ class Less(ExternalTool):
     def _apply_less(self, in_, out, output_path, output, **kw):
         # Set working directory to the source file so that includes are found
 
-        if self.less and shutil.which(self.less) is not None:
+        if self.less and shutil.which(self.less):
             lessc = shutil.which(self.less)
-        elif shutil.which("lessc") is not None:
+        elif shutil.which("lessc"):
             lessc = shutil.which("lessc")
         else:
             root = Path(current_app.root_path) / ".." / ".."
+            debug(root)
             lessc = str(root / "node_modules" / ".bin" / "lessc")
 
         assert Path(lessc).is_file(), f"lessc not found at {lessc}"

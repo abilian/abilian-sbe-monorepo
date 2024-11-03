@@ -20,7 +20,7 @@ _actor_registry = set()
 
 def crontab(crontab: str) -> Callable:
     def decorator(func: Callable) -> Callable:
-        logger.debug("Registering cron job: {func}", func=str(func))
+        # logger.debug("Registering cron job: {func}", func=str(func))
         job = Job(actor=func, key=crontab)
         _actor_registry.add(job)
         return func
@@ -50,11 +50,11 @@ def run_scheduler(config: dict) -> int:
                 actor=str(job.actor),
             )
             continue
-        logger.debug(
-            "Registering cron job: {actor} {crontab}",
-            actor=str(job.actor),
-            crontab=crontab_content,
-        )
+        # logger.debug(
+        #     "Registering cron job: {actor} {crontab}",
+        #     actor=str(job.actor),
+        #     crontab=crontab_content,
+        # )
 
         scheduler.add_job(
             job.actor.send,

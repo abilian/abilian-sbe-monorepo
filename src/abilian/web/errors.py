@@ -122,10 +122,10 @@ class ErrorManagerMixin(Flask):
         The default error handler renders a template named error404.html
         for http_error_code 404.
         """
-        logger.debug(
-            "Set Default HTTP error handler for status code {http_error_code}",
-            http_error_code=http_error_code,
-        )
+        # logger.debug(
+        #     "Set Default HTTP error handler for status code {http_error_code}",
+        #     http_error_code=http_error_code,
+        # )
         handler = partial(self.handle_http_error, http_error_code)
         self.errorhandler(http_error_code)(handler)
 
