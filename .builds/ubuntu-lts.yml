@@ -35,7 +35,7 @@ packages:
 
 tasks:
   - setup: |
-      sudo pip install -U uv nox
+      pip install --user -U uv nox
       cd abilian-sbe
       npm install
 
