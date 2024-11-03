@@ -35,7 +35,7 @@ packages:
 
 tasks:
   - setup: |
-      sudo apt-get install pipx
+      sudo apt-get install -y pipx
       pipx install uv nox
       cd abilian-sbe
       npm install
