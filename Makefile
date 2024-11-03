@@ -108,21 +108,20 @@ update-pot: update-pot
 ## Install dependencies
 install:
 	@echo "--> Installing / updating python dependencies for development"
-	@echo "Make sure that you have Poetry installed (https://python-poetry.org/)"
-	poetry install
+	@echo "Make sure that you have uv installed"
+	uv sync
 	@echo "--> Activating pre-commit hook"
 	pre-commit install
-	@echo "Remember to run `poetry shell` to activate the virtualenv"
+	@echo "Remember to run `uv run $SHELL` to activate the virtualenv"
 	yarn
 
 
 .PHONY: update-deps
 update-deps:  ## Update dependencies
-	pip install -qU pip setuptools wheel
-	poetry update
-	poetry export -o requirements.txt --without-hashes
+	uv update
+	uv export -o requirements.txt --without-hashes
 	pre-commit autoupdate
-	poetry show -o
+	# poetry show -o
 
 
 .PHONY: help
@@ -134,5 +133,5 @@ help:
 ## Publish to PyPI
 publish: clean
 	git push --tags
-	poetry build
+	uv build
 	twine upload dist/*

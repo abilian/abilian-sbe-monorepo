@@ -7,8 +7,7 @@ nox.options.reuse_existing_virtualenvs = True
 
 @nox.session
 def lint(session: nox.Session) -> None:
-    session.install("uv")
-    session.run("uv", "sync", "--inexact")
+    session.run("uv", "sync")
     session.run("uv", "pip", "check")
     session.run("uv", "run", "make", "lint")
     session.run("uv", "pip", "install", "safety", "pip-audit")
@@ -17,6 +16,5 @@ def lint(session: nox.Session) -> None:
 
 @nox.session(python=PYTHON_VERSIONS)
 def pytest(session: nox.Session) -> None:
-    session.install("uv")
-    session.run("uv", "sync", "--inexact")
+    session.run("uv", "sync")
     session.run("uv", "run", "pytest", "--tb=short")
