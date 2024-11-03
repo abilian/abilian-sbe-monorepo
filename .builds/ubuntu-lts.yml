@@ -37,14 +37,17 @@ tasks:
   - setup: |
       sudo apt-get install -y pipx
       pipx install uv nox
+      export PATH=$HOME/.local/bin:$PATH
       cd abilian-sbe
       npm install
 
   - lint-nox: |
+      export PATH=$HOME/.local/bin:$PATH
       cd abilian-sbe
       nox -e lint
 
   - test-nox: |
+      export PATH=$HOME/.local/bin:$PATH
       cd abilian-sbe
       # TODO: install other versions using rye
       nox -e pytest-3.10
