@@ -11,7 +11,7 @@ packages:
   - python3-dev
   - python3-pip
   - python3-wheel
-  - tox
+  - pipx
   # Node
   - nodejs
   - npm
@@ -35,7 +35,6 @@ packages:
 
 tasks:
   - setup: |
-      sudo apt-get install -y pipx
       pipx install uv nox
       export PATH=$HOME/.local/bin:$PATH
       cd abilian-sbe
