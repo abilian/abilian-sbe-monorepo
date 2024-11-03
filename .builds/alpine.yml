@@ -28,25 +28,19 @@ packages:
 
 tasks:
   - setup: |
-      # Workaround to install poetry on Alpine
-      # (was: sudo poetry self update)
-      pipx install poetry
-      sudo ln -sf ~/.local/bin/poetry /usr/local/bin/
+      pipx install uv nox
+      export PATH=$HOME/.local/bin:$PATH
       cd abilian-sbe
-      npm i
+      npm install
 
-  - lint: |
-      cd abilian-sbe
-      tox -e lint
-
-  - test: |
-      cd abilian-sbe
-      tox -e py311
-
-  - nox-lint: |
+  - lint-nox: |
+      export PATH=$HOME/.local/bin:$PATH
       cd abilian-sbe
       nox -e lint
 
-  - nox-test: |
+  - test-nox: |
+      export PATH=$HOME/.local/bin:$PATH
       cd abilian-sbe
-      nox -e pytest
+      # Default Python version is python 3.12
+      # TODO: install other versions using rye
+      nox -e pytest-3.12
