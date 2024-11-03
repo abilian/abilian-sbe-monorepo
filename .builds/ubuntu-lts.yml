@@ -50,7 +50,7 @@ tasks:
       export PATH=$HOME/.local/bin:$PATH
       cd abilian-sbe
       # TODO: install other versions using rye
-      nox pytest
+      nox -e pytest
       # nox -e pytest-3.10
 
 triggers:
