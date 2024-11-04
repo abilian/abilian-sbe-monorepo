@@ -2,8 +2,9 @@
 
 # from __future__ import annotations
 
-# import contextlib
+from __future__ import annotations
 
+# import contextlib
 # import sqlalchemy as sa
 
 # from abilian.core.models.tag import Tag, entity_tag_tbl

@@ -24,7 +24,7 @@ def get_service(service: str) -> Service:
     from abilian.app import Application
 
     app = cast(Application, current_app)
-    return app.services_manager.get_service(service)
+    return app.service_manager.get_service(service)
 
 
 from .activity import ActivityService

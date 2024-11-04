@@ -7,8 +7,8 @@ from typing import IO
 import pytest
 from sqlalchemy.orm import Session
 
+from abilian.app import Application
 from abilian.core.models.subjects import User
-from abilian.sbe.app import Application
 from abilian.sbe.apps.communities.models import Community
 from abilian.sbe.apps.documents.models import Document, Folder
 from abilian.sbe.apps.documents.views.folders import explore_archive

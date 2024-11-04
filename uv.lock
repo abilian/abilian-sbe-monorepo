@@ -148,8 +148,10 @@ dev = [
     { name = "mypy" },
     { name = "pip-outdated" },
     { name = "pytest" },
+    { name = "pytest-archon" },
     { name = "pytest-flask" },
     { name = "pyupgrade" },
+    { name = "snoop" },
     { name = "tox" },
     { name = "types-bleach" },
     { name = "types-chardet" },
@@ -247,8 +249,10 @@ dev = [
     { name = "mypy", specifier = ">=1.5.1,<2.0.0" },
     { name = "pip-outdated", specifier = ">=0.7.0" },
     { name = "pytest", specifier = ">=8,<9" },
+    { name = "pytest-archon", specifier = ">=0.0.6" },
     { name = "pytest-flask" },
     { name = "pyupgrade" },
+    { name = "snoop", specifier = ">=0.6.0" },
     { name = "tox", specifier = ">=4.5.1,<5.0.0" },
     { name = "types-bleach" },
     { name = "types-chardet" },
@@ -716,6 +720,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/9a/65/bdb9bc496d7d190d725e96816e20e2ae3a6fa42a5cac99c3c3d6ff884118/charset_normalizer-3.4.0-cp312-cp312-win32.whl", hash = "sha256:5726cf76c982532c1863fb64d8c6dd0e4c90b6ece9feb06c9f202417a31f7dd7", size = 94836 },
     { url = "https://files.pythonhosted.org/packages/3e/67/7b72b69d25b89c0b3cea583ee372c43aa24df15f0e0f8d3982c57804984b/charset_normalizer-3.4.0-cp312-cp312-win_amd64.whl", hash = "sha256:b197e7094f232959f8f20541ead1d9862ac5ebea1d58e9849c1bf979255dfac9", size = 102187 },
     { url = "https://files.pythonhosted.org/packages/bf/9b/08c0432272d77b04803958a4598a51e2a4b51c06640af8b8f0f908c18bf2/charset_normalizer-3.4.0-py3-none-any.whl", hash = "sha256:fe9f97feb71aa9896b81973a7bbada8c49501dc73e58a10fcef6663af95e5079", size = 49446 },
+]
+
+[[package]]
+name = "cheap-repr"
+version = "0.5.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/b1/30/f0e9d5bfe80b8287ea8a9263eb3c71c5fdf44b6f7a781a7c96f83172ccad/cheap_repr-0.5.2.tar.gz", hash = "sha256:001a5cf8adb0305c7ad3152c5f776040ac2a559d97f85770cebcb28c6ca5a30f", size = 20232 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ec/52/fec0262af470a157a557e46be1d52ecdaf1695cefd80bb62bb6a07cc4ea9/cheap_repr-0.5.2-py2.py3-none-any.whl", hash = "sha256:537ec1991bfee885c13c6d473afd110a408e039cde26882e95bf92761556ab6e", size = 12228 },
 ]
 
 [[package]]
@@ -2749,6 +2762,18 @@ wheels = [
 ]
 
 [[package]]
+name = "pytest-archon"
+version = "0.0.6"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/55/82/ae6a09261ad465e43844b5ff201ecf2ab01a2cd64123fb60c2cd702057c5/pytest-archon-0.0.6.tar.gz", hash = "sha256:5af260a7617fc0a9e8bcd7a62adc42ed1ad466e20ae128b218589f49f73b1bcf", size = 47661 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8f/67/ac6b2f2e9a9f46f5d1da47fd02107f51d9dff39d80442adc2dc7abb8c35d/pytest_archon-0.0.6-py3-none-any.whl", hash = "sha256:f49b6b1f33a541dda1cab8a733b93b8a712594a002f03283294a624d0b394e83", size = 44665 },
+]
+
+[[package]]
 name = "pytest-cov"
 version = "5.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3084,6 +3109,21 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926", size = 34041 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d9/5a/e7c31adbe875f2abbb91bd84cf2dc52d792b5a01506781dbcf25c91daf11/six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254", size = 11053 },
+]
+
+[[package]]
+name = "snoop"
+version = "0.6.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "asttokens" },
+    { name = "cheap-repr" },
+    { name = "executing" },
+    { name = "pygments" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/67/70/8479d19ec0441279e773521928ad7cad91901c1a3eaf1fc3a0eb92e3cf6e/snoop-0.6.0.tar.gz", hash = "sha256:c615eddf84d8907f893dec7fde38768aa4b1d88d92d63055b6cfc07e5cde37ec", size = 95968 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a5/93/84a16940c44f6ec62cf334f25aed3128a514dffc361397eee09421a1c7f2/snoop-0.6.0-py3-none-any.whl", hash = "sha256:f5ea9060e65594bf404e6841086b4a964cc27bc30569109c91a470f948b0f729", size = 27461 },
 ]
 
 [[package]]

@@ -9,48 +9,48 @@ from __future__ import annotations
 import jinja2
 
 from abilian.app import Application as BaseApplication
+from abilian.app import create_app as base_create_app
 from abilian.core.dramatiq.setup import init_dramatiq_engine
+from abilian.core.plugin_manager import CORE_PLUGINS
 from abilian.services import converter
 
 from .apps.documents.repository import content_repository
 from .extension import sbe
 
-# Used for side effects, do not remove
+__all__ = ["create_app"]
+
+SBE_PLUGINS = CORE_PLUGINS + [
+    "abilian.sbe.apps.main",
+    "abilian.sbe.apps.notifications",
+    "abilian.sbe.apps.preferences",
+    "abilian.sbe.apps.wiki",
+    "abilian.sbe.apps.wall",
+    "abilian.sbe.apps.documents",
+    "abilian.sbe.apps.forum",
+    # "abilian.sbe.apps.calendar",
+    "abilian.sbe.apps.communities",
+    "abilian.sbe.apps.social",
+    "abilian.sbe.apps.preferences",
+]
 
 
-__all__ = ["Application", "create_app"]
+def create_app(config: type | None = None, **kw) -> BaseApplication:
+    app = base_create_app(config=config, **kw)
 
-
-class Application(BaseApplication):
-    APP_PLUGINS = BaseApplication.APP_PLUGINS + [
-        "abilian.sbe.apps.main",
-        "abilian.sbe.apps.notifications",
-        "abilian.sbe.apps.preferences",
-        "abilian.sbe.apps.wiki",
-        "abilian.sbe.apps.wall",
-        "abilian.sbe.apps.documents",
-        "abilian.sbe.apps.forum",
-        # "abilian.sbe.apps.calendar",
-        "abilian.sbe.apps.communities",
-        "abilian.sbe.apps.social",
-        "abilian.sbe.apps.preferences",
-    ]
-
-    def setup(self, config: type | None) -> None:
-        super().setup(config)
-        loader = jinja2.PackageLoader("abilian.sbe")
-        self.register_jinja_loaders(loader)
-
-    def init_extensions(self) -> None:
-        super().init_extensions()
-        sbe.init_app(self)
-        content_repository.init_app(self)
-        converter.init_app(self)
-
-
-def create_app(config: type | None = None, **kw) -> Application:
-    app = Application(**kw)
     with app.app_context():
-        app.setup(config)
-    init_dramatiq_engine(app)
+        app.plugin_manager.register_plugins(SBE_PLUGINS)
+    sbe.init_app(app)
+
+    # with app.app_context():
+    #     # app.setup(config)
+    #
+    #     app.plugin_manager.register_plugins(SBE_PLUGINS)
+    #
+    #     # content_repository.init_app(app)
+    #     # converter.init_app(app)
+    #     #
+    #     # loader = jinja2.PackageLoader("abilian.sbe")
+    #     # app.register_jinja_loaders(loader)
+    #
+    # init_dramatiq_engine(app)
     return app

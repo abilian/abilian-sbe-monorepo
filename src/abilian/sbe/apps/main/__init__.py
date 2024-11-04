@@ -6,10 +6,10 @@ in the future.
 
 from __future__ import annotations
 
-from abilian.sbe.app import Application
+from flask import Flask
 
 
-def register_plugin(app: Application) -> None:
+def register_plugin(app: Flask) -> None:
     from .main import blueprint
 
     app.register_blueprint(blueprint)

@@ -7,15 +7,16 @@ from collections.abc import Iterator
 from datetime import datetime, timedelta
 
 import pytest
+from flask import Flask
 
 import abilian.i18n
 from abilian.core.signals import activity
-from abilian.sbe.app import Application, create_app
+from abilian.sbe.app import create_app
 from abilian.sbe.apps.communities.common import activity_time_format
 
 
 @pytest.fixture()
-def app(config: type) -> Iterator[Iterator | Iterator[Application]]:
+def app(config: type) -> Iterator[Iterator | Iterator[Flask]]:
     app = create_app(config)
 
     # We need some incantations here to make babel work in the test
@@ -29,7 +30,7 @@ def app(config: type) -> Iterator[Iterator | Iterator[Application]]:
     activity._clear_state()
 
 
-def test_activity_time_format(app: Application, app_context) -> None:
+def test_activity_time_format(app: Flask, app_context) -> None:
     # We need the app context because of Babel.
 
     then = datetime(2017, 1, 1, 12, 0, 0)

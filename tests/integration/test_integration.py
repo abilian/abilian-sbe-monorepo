@@ -4,6 +4,7 @@ import warnings
 from collections.abc import Iterator
 from typing import cast
 
+from devtools import debug
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.routing import Rule
 
@@ -34,6 +35,7 @@ def test_all_simple_endpoints_with_no_login(client, app: Application):
     security_service.start(ignore_state=True)
 
     for rule in all_rules_to_test(app):
+        debug(rule)
         if rule.endpoint in ENDPOINTS_TO_IGNORE:
             continue
 

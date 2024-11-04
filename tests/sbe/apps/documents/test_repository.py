@@ -1,17 +1,17 @@
 from __future__ import annotations
 
 import pytest
+from flask import Flask
 from pytest import fixture
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from abilian.sbe.app import Application
 from abilian.sbe.apps.documents.models import Document, Folder
 from abilian.sbe.apps.documents.repository import ContentRepository
 
 
 @fixture()
-def repository(app: Application) -> ContentRepository:
+def repository(app: Flask) -> ContentRepository:
     repository = ContentRepository()
     repository.init_app(app)
     return repository

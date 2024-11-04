@@ -171,7 +171,7 @@ def list_json2():
     # TODO: make generic ?
     args = request.args
 
-    q = args.get("q").replace("%", " ")
+    q = args.get("q", "").replace("%", " ")
     if not q or len(q) < 2:
         raise BadRequest
 

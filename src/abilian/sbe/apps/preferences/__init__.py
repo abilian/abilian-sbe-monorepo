@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import jinja2
 
-from abilian.sbe.app import Application
+from abilian.app import Application
 from abilian.services.preferences import preferences
 
 from .panels.sbe_notifications import SbeNotificationsPanel

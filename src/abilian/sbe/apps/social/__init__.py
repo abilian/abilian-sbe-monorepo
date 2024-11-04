@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from abilian.sbe.app import Application
+from abilian.app import Application
 
 
 def register_plugin(app: Application) -> None:

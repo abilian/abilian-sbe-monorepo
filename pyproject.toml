@@ -141,6 +141,8 @@ dev-dependencies = [
     "mkdocs-material>=9.5.4,<10.0.0",
     "pip-outdated>=0.7.0",
     "flynt>=1.0.1",
+    "snoop>=0.6.0",
+    "pytest-archon>=0.0.6",
 ]
 
 [tool.pytest.ini_options]

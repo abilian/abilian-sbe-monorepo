@@ -5,7 +5,7 @@ from __future__ import annotations
 import typing
 
 if typing.TYPE_CHECKING:
-    from abilian.sbe.app import Application
+    from abilian.app import Application
 
 
 def register_plugin(app: Application) -> None:

@@ -2,11 +2,12 @@
 
 # from typing import TYPE_CHECKING, Any
 
+from __future__ import annotations
+
 # from flask import Request
 # from loguru import logger
 # from sqlalchemy import func, orm
 # from sqlalchemy.sql.expression import or_
-
 # from abilian.core.entities import EntityQuery
 # from abilian.core.models import Model
 

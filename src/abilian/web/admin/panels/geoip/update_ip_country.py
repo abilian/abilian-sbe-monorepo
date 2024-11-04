@@ -4,6 +4,8 @@
 Resulting file file is written in curent working directory.
 """
 
+from __future__ import annotations
+
 import csv
 import ssl
 import urllib.request

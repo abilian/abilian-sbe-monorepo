@@ -12,15 +12,14 @@ from pytest import fixture, mark
 from toolz import first
 from werkzeug.datastructures import FileStorage
 
+from abilian.app import Application
 from abilian.core.sqlalchemy import SQLAlchemy
-from abilian.sbe.app import Application
 from abilian.sbe.apps.communities.models import WRITER, Community
 from abilian.sbe.apps.communities.presenters import CommunityPresenter
 from abilian.sbe.apps.documents.models import Folder
 from abilian.sbe.apps.documents.views import util as view_util
 from abilian.web.util import url_for
-
-from ....util import client_login, path_from_url, redis_available
+from tests.util import client_login, path_from_url, redis_available
 
 
 def open_file(filename: str) -> IO[bytes]:

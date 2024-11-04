@@ -16,15 +16,28 @@ from abilian.core.models.subjects import User
 from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.sbe.app import create_app
 from abilian.sbe.apps.communities.models import READER, Community
-from tests.conftest import TestConfig
 
 
-@fixture()
+class TestConfig:
+    TESTING = True
+    DEBUG = True
+    SECRET_KEY = "SECRET"  # noqa: S105
+    SERVER_NAME = "localhost.localdomain"
+    MAIL_SENDER = "tester@example.com"
+    SITE_NAME = "Abilian Test"
+    PREFERRED_URL_SCHEME = "http"
+    # WTF_CSRF_ENABLED = True
+    WTF_CSRF_ENABLED = False
+    BABEL_ACCEPT_LANGUAGES = ["en", "fr"]
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+
+
+@fixture(scope="module")
 def config() -> Any:
     return TestConfig
 
 
-@fixture()
+@fixture(scope="module")
 def app(config: Any) -> Flask:
     # We currently return a fresh app for each test.
     # Using session-scoped app doesn't currently work.
@@ -32,6 +45,24 @@ def app(config: Any) -> Flask:
     # from abilian.sbe.app import create_app
 
     return create_app(config=config)
+
+
+@fixture()
+def db(app: Flask, app_context: AppContext) -> Iterator[SQLAlchemy]:
+    """Return a fresh db for each test."""
+    from abilian.core.extensions import db as _db
+    from tests.util import cleanup_db, ensure_services_started, stop_all_services
+
+    stop_all_services(app)
+    ensure_services_started(["blob_store", "session_blob_store"])
+
+    cleanup_db(_db)
+    _db.create_all()
+    yield _db
+
+    _db.session.remove()
+    cleanup_db(_db)
+    stop_all_services(app)
 
 
 @fixture()
@@ -46,12 +77,6 @@ def test_request_context(app: Flask) -> Iterator[RequestContext]:
         yield ctx
 
 
-# @fixture
-# def req_ctx(app: Flask) -> Iterator[RequestContext]:
-#     with app.test_request_context() as _req_ctx:
-#         yield _req_ctx
-
-
 @fixture()
 def session(db: SQLAlchemy) -> Session:
     return db.session
@@ -60,12 +85,6 @@ def session(db: SQLAlchemy) -> Session:
 @fixture()
 def db_session(db: SQLAlchemy) -> Session:
     return db.session
-
-
-# @fixture
-# def client(app: Flask) -> FlaskClient:
-#     """Return a Web client, used for testing."""
-#     return app.test_client()
 
 
 @fixture()

@@ -51,7 +51,7 @@ class Service:
 
     def init_app(self, app: Application):
         app.extensions[self.name] = self.AppStateClass(self)
-        app.services_manager.add_service(self.name, self)
+        app.service_manager.add_service(self.name, self)
 
     def start(self, ignore_state: bool = False):
         """Starts the service."""

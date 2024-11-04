@@ -5,7 +5,7 @@ from flask import Flask, g
 from flask.signals import request_started
 from wtforms import Form, IntegerField, StringField
 
-# Import for side-effects (monkey-patch)
+# Import for side effects (monkey-patch)
 import abilian.web.forms
 from abilian.core.entities import Entity
 from abilian.web.forms.widgets import (

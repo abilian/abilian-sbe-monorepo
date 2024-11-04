@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from flask import current_app, g, session
 
 from abilian.core.entities import Entity

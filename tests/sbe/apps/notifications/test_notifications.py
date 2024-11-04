@@ -6,8 +6,8 @@ from flask import render_template
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug import Client
 
+from abilian.app import Application
 from abilian.core.models.subjects import User
-from abilian.sbe.app import Application
 from abilian.sbe.apps.communities.models import WRITER, Community
 from abilian.sbe.apps.notifications.tasks.social import (
     CommunityDigest,

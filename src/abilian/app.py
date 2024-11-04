@@ -42,6 +42,7 @@ import abilian.core.util
 import abilian.i18n
 from abilian.config import default_config
 from abilian.core import extensions, signals
+from abilian.core.plugin_manager import CORE_PLUGINS, PluginManager
 from abilian.services import (
     Service,
     activity_service,
@@ -89,52 +90,28 @@ class ServiceManager:
     def add_service(self, name: str, service: Service):
         self.services[name] = service
 
-    def start_services(self):
-        for svc in self.services.values():
-            svc.start()
+    def get_service(self, name: str) -> Service:
+        return self.services[name]
+
+    def start_services(self, services: list[str] | None = None):
+        """Start all services. If a service is already running, nothing happens."""
+        if services is None:
+            services = self.services.values()
+        for service in services:
+            if not service.running:
+                service.start()
 
     def stop_services(self):
-        for svc in self.services.values():
-            svc.stop()
+        """Stop all services. If a service is not running, nothing happens."""
+        for service in self.services.values():
+            if service.running:
+                service.stop()
 
     def list_services(self):
         return self.services.values()
 
-    def get_service(self, name: str) -> Service:
-        return self.services[name]
-
-
-class PluginManager:
-    """Mixin that provides support for loading plugins."""
-
-    config: Config
-
-    #: Custom apps may want to always load some plugins: list them here.
-    APP_PLUGINS = [
-        "abilian.web.search",
-        "abilian.web.tags",
-        "abilian.web.comments",
-        "abilian.web.uploads",
-        "abilian.web.attachments",
-    ]
-
-    def register_plugin(self, name: str):
-        """Load and register a plugin given its package name."""
-        # logger.info("Registering plugin: {name}", name=name)
-        module = importlib.import_module(name)
-        module.register_plugin(self)  # type: ignore
-
-    def register_plugins(self):
-        """Load plugins listed in config variable 'PLUGINS'."""
-        registered = set()
-        for plugin_fqdn in chain(self.APP_PLUGINS, self.config["PLUGINS"]):
-            if plugin_fqdn not in registered:
-                self.register_plugin(plugin_fqdn)
-                registered.add(plugin_fqdn)
-
 
 class Application(
-    PluginManager,
     AssetManagerMixin,
     ErrorManagerMixin,
     JinjaManagerMixin,
@@ -162,9 +139,9 @@ class Application(
 
         Flask.__init__(self, name, *args, **kwargs)
 
-        self.services_manager = ServiceManager()
+        self.service_manager = ServiceManager()
+        self.plugin_manager = PluginManager(self)
 
-        PluginManager.__init__(self)
         JinjaManagerMixin.__init__(self)
 
         self.default_view = ViewRegistry()
@@ -196,7 +173,10 @@ class Application(
 
         with self.app_context():
             self.init_extensions()
-            self.register_plugins()
+
+            plugins = CORE_PLUGINS + list(self.config["PLUGINS"])
+            self.plugin_manager.register_plugins(plugins)
+
             self.add_access_controller(
                 "static", allow_access_for_roles(Anonymous), endpoint=True
             )
@@ -229,8 +209,9 @@ class Application(
 
         request_started.connect(self.setup_nav_and_breadcrumbs)
 
-        if not self.testing:
-            signals.register_js_api.send(self)
+        with self.app_context():
+            if not self.testing:
+                signals.register_js_api.send(self)
 
         # Initialize Abilian core services.
         # Must come after all entity classes have been declared.
@@ -238,7 +219,7 @@ class Application(
         # later.
         if not self.testing:
             with self.app_context():
-                self.services_manager.start_services()
+                self.service_manager.start_services()
 
         setup(self)
 
@@ -521,14 +502,7 @@ def init_debug_toolbar(app: Flask):
             extensions.csrf.exempt(app.view_functions[view_name])
 
 
-def create_app(
-    config: type | None = None, app_class: type = Application, **kw: Any
-) -> Application:
-    app = app_class(**kw)
-
+def create_app(config: type | None = None, **kw: Any) -> Application:
+    app = Application(**kw)
     app.setup(config=config)
-
-    # This is currently called from app.setup()
-    # setup(app)
-
     return app

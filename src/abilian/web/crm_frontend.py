@@ -1,6 +1,8 @@
 # Dead code, not used in SBE (was used in CRM).
 # TODO: remove definitively (or move to CRM project).
 
+from __future__ import annotations
+
 # """Front-end for a CRM app.
 #
 # This should eventually allow implementing very custom CRM-style

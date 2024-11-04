@@ -5,8 +5,8 @@ from urllib.parse import urlparse
 from flask import url_for
 from flask.testing import FlaskClient
 
+from abilian.app import Application
 from abilian.core.sqlalchemy import SQLAlchemy
-from abilian.sbe.app import Application
 from abilian.sbe.apps.communities.models import Community
 from abilian.services import security_service
 from abilian.services.security import Admin

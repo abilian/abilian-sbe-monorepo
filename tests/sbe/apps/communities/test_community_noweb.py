@@ -9,10 +9,10 @@ import pytest
 import sqlalchemy as sa
 from sqlalchemy.orm import Session
 
+from abilian.app import Application
 from abilian.core.entities import Entity
 from abilian.core.models.subjects import User
 from abilian.core.sqlalchemy import SQLAlchemy
-from abilian.sbe.app import Application
 from abilian.sbe.apps.communities import signals, views
 from abilian.sbe.apps.communities.models import (
     MEMBER,

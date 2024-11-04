@@ -11,7 +11,7 @@ from loguru import logger
 from abilian.core.util import fqcn
 
 if TYPE_CHECKING:
-    from abilian.sbe.app import Application
+    from abilian.app import Application
 
 
 STATIC_DIR = str(rso.files("abilian.sbe") / "static")

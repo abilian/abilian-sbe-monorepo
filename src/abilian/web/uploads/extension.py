@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import time
 from io import BufferedReader
-from pathlib import PosixPath
+from pathlib import Path
 from typing import Any
 from uuid import UUID, uuid1
 
@@ -54,9 +54,10 @@ class FileUploadsExtension:
     """
 
     def __init__(self, app: Application):
+        app.register_blueprint(ac_blueprint)
+
         app.extensions["uploads"] = self
         app.add_template_global(self, "uploads")
-        app.register_blueprint(ac_blueprint)
         signals.register_js_api.connect(self._do_register_js_api)
 
         self.config: dict[str, Any] = {}
@@ -75,7 +76,7 @@ class FileUploadsExtension:
         js_api = app.js_api.setdefault("upload", {})
         js_api["newFileUrl"] = url_for("uploads.new_file")
 
-    def user_dir(self, user: User) -> PosixPath:
+    def user_dir(self, user: User) -> Path:
         if user.is_anonymous:
             user_id = "anonymous"
         else:
@@ -106,7 +107,7 @@ class FileUploadsExtension:
 
         return handle
 
-    def get_file(self, user: User, handle: str) -> PosixPath | None:
+    def get_file(self, user: User, handle: str) -> Path | None:
         """Retrieve a file for a user.
 
         :returns: a :class:`pathlib.Path` instance to this file,
@@ -126,7 +127,7 @@ class FileUploadsExtension:
 
         return file_path
 
-    def get_metadata_file(self, user: User, handle: str) -> PosixPath | None:
+    def get_metadata_file(self, user: User, handle: str) -> Path | None:
         content = self.get_file(user, handle)
         if content is None:
             return None

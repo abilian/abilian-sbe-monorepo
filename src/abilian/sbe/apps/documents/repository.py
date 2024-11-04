@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 import sqlalchemy as sa
 import sqlalchemy.orm
+from flask import Flask
 
 from abilian.core.models.subjects import User
 from abilian.services.security import READ, Permission, security
@@ -11,18 +12,18 @@ from abilian.services.security import READ, Permission, security
 from .models import BaseContent, CmisObject, Document, Folder
 
 if TYPE_CHECKING:
-    from abilian.sbe.app import Application
+    from abilian.app import Application
 
 
 class ContentRepository:
     """A simple document repository, implementing the basic functionalities of
     the CMIS model."""
 
-    def __init__(self, app: Application | None = None) -> None:
+    def __init__(self, app: Flask | None = None) -> None:
         if app is not None:
             self.init_app(app)
 
-    def init_app(self, app: Application) -> None:
+    def init_app(self, app: Flask) -> None:
         # self.app = app
         app.extensions["content_repository"] = self
 
