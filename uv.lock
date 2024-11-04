@@ -97,6 +97,7 @@ dependencies = [
     { name = "flask-wtf" },
     { name = "gunicorn" },
     { name = "html2text" },
+    { name = "hyperlink" },
     { name = "itsdangerous" },
     { name = "jinja2" },
     { name = "jsmin" },
@@ -115,14 +116,12 @@ dependencies = [
     { name = "psycopg2" },
     { name = "pytest" },
     { name = "python-dateutil" },
-    { name = "python-dotenv" },
     { name = "python-magic" },
     { name = "pytz" },
     { name = "redis" },
     { name = "sentry-sdk", extra = ["flask"] },
     { name = "sqlalchemy" },
     { name = "svcs" },
-    { name = "toml" },
     { name = "toolz" },
     { name = "tqdm" },
     { name = "validate-email" },
@@ -199,6 +198,7 @@ requires-dist = [
     { name = "flask-wtf", specifier = "==1.2.0" },
     { name = "gunicorn" },
     { name = "html2text", specifier = ">=2024,<2025" },
+    { name = "hyperlink", specifier = ">=21.0.0" },
     { name = "itsdangerous", specifier = ">=2.1.2" },
     { name = "jinja2", specifier = ">=3.1.3,<3.2.0" },
     { name = "jsmin" },
@@ -217,14 +217,12 @@ requires-dist = [
     { name = "psycopg2", specifier = ">=2.9.9,<3.0.0" },
     { name = "pytest", specifier = ">=8.3.3" },
     { name = "python-dateutil", specifier = ">=2.8.2,<3.0.0" },
-    { name = "python-dotenv", specifier = ">=1.0.1,<2.0.0" },
     { name = "python-magic" },
     { name = "pytz" },
     { name = "redis", specifier = ">=4.6.0,<5.0" },
     { name = "sentry-sdk", extras = ["flask"] },
     { name = "sqlalchemy", specifier = "==1.4.35" },
     { name = "svcs", specifier = ">=24.1.0" },
-    { name = "toml" },
     { name = "toolz" },
     { name = "tqdm" },
     { name = "validate-email" },
@@ -2849,15 +2847,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ce/8d/2ebc549adf1f623d4044b108b30ff5cdac5756b0384cd9dddac63fe53eae/python-debian-0.1.49.tar.gz", hash = "sha256:8cf677a30dbcb4be7a99536c17e11308a827a4d22028dc59a67f6c6dd3f0f58c", size = 121690 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/9c/37/6e38e7aafa55c1257f63ca9f575e8e3cf2560c896c5202a16c9f33ee7657/python_debian-0.1.49-py3-none-any.whl", hash = "sha256:880f3bc52e31599f2a9b432bd7691844286825087fccdcf2f6ffd5cd79a26f9f", size = 132460 },
-]
-
-[[package]]
-name = "python-dotenv"
-version = "1.0.1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/bc/57/e84d88dfe0aec03b7a2d4327012c1627ab5f03652216c63d49846d7a6c58/python-dotenv-1.0.1.tar.gz", hash = "sha256:e324ee90a023d808f1959c46bcbc04446a10ced277783dc6ee09987c37ec10ca", size = 39115 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/6a/3e/b68c118422ec867fa7ab88444e1274aa40681c606d59ac27de5a5588f082/python_dotenv-1.0.1-py3-none-any.whl", hash = "sha256:f7b63ef50f1b690dddf550d03497b66d609393b40b564ed0d674909a68ebf16a", size = 19863 },
 ]
 
 [[package]]

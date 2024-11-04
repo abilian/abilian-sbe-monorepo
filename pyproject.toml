@@ -91,6 +91,7 @@ dependencies = [
     "netaddr",
     #
     "pytest>=8.3.3",
+    "hyperlink>=21.0.0",
 ]
 
 [project.urls]
