@@ -7,6 +7,7 @@ import sqlalchemy as sa
 import sqlalchemy.exc
 from flask import Blueprint, Flask, abort
 from flask_migrate import Migrate
+from loguru import logger
 
 import abilian.core.util
 import abilian.i18n
@@ -103,3 +104,31 @@ def init_csrf(app: Flask) -> None:
         extensions.abilian_csrf.init_app(app)
 
     app.register_blueprint(csrf.csrf_blueprint)
+
+
+def init_sentry(app: Flask) -> None:
+    """Install Sentry handler if config defines 'SENTRY_DSN'."""
+    dsn = app.config.get("SENTRY_DSN")
+    if not dsn:
+        return
+
+    try:
+        import sentry_sdk
+    except ImportError:
+        logger.error(
+            'SENTRY_DSN is defined in config but package "sentry-sdk" is not installed.'
+        )
+        return
+
+    from sentry_sdk.integrations.flask import FlaskIntegration
+    from sentry_sdk.integrations.redis import RedisIntegration
+    from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
+
+    sentry_sdk.init(
+        dsn=dsn,
+        integrations=[
+            FlaskIntegration(),
+            SqlalchemyIntegration(),
+            RedisIntegration(),
+        ],
+    )

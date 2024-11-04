@@ -32,6 +32,7 @@ from abilian.services import auth_service, settings_service
 from abilian.services.security import Anonymous
 from abilian.services.security.models import Role
 from abilian.setup import setup
+from abilian.setup.extensions import init_sentry
 from abilian.web.access_blueprint import allow_access_for_roles
 from abilian.web.assets import AssetManagerMixin
 from abilian.web.errors import ErrorManagerMixin
@@ -219,15 +220,16 @@ class Application(
 
 
 def setup_app(app: Application):
-    svcs.flask.init_app(app)
-
     # At this point we have loaded all external config files:
     # SQLALCHEMY_DATABASE_URI is definitively fixed (it cannot be defined in
     # database AFAICT), and LOGGING_FILE cannot be set in DB settings.
-    app.setup_logging()
 
-    if not app.testing:
-        app.init_sentry()
+    svcs.flask.init_app(app)
+
+    # Force flask to create application logger before logging
+    # configuration; else, flask will overwrite our settings
+    assert app.logger
+    init_sentry(app)
 
     # time to load config bits from database: 'settings'
     # First init required stuff: db to make queries, and settings service
@@ -294,6 +296,8 @@ def install_id_generator(sender: Flask, **kwargs: Any):
 def create_app(config: type | None = None, **kw: Any) -> Application:
     app = Application(**kw)
     app.configure(config)
+    app.check_instance_folder(create=True)
+
     setup_app(app)
 
     signals.components_registered.send(app)

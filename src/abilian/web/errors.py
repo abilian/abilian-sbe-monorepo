@@ -8,7 +8,6 @@ from functools import partial
 import sqlalchemy as sa
 from flask import Flask, g, render_template
 from flask.globals import request_ctx
-from loguru import logger
 
 from abilian.core import extensions
 
@@ -83,34 +82,6 @@ class ErrorManagerMixin(Flask):
         dsn = self.config.get("SENTRY_DSN")
         if not dsn:
             super().log_exception(exc_info)
-
-    def init_sentry(self):
-        """Install Sentry handler if config defines 'SENTRY_DSN'."""
-        dsn = self.config.get("SENTRY_DSN")
-        if not dsn:
-            return
-
-        try:
-            import sentry_sdk
-        except ImportError:
-            logger.error(
-                'SENTRY_DSN is defined in config but package "sentry-sdk"'
-                " is not installed."
-            )
-            return
-
-        from sentry_sdk.integrations.flask import FlaskIntegration
-        from sentry_sdk.integrations.redis import RedisIntegration
-        from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
-
-        sentry_sdk.init(
-            dsn=dsn,
-            integrations=[
-                FlaskIntegration(),
-                SqlalchemyIntegration(),
-                RedisIntegration(),
-            ],
-        )
 
     def install_default_handlers(self):
         for http_error_code in (403, 404, 500):
