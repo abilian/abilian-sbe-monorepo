@@ -21,9 +21,8 @@ import sqlalchemy as sa
 import sqlalchemy.exc
 import svcs
 from attrs import field, frozen
-from flask import Flask, appcontext_pushed, g, request, request_started
+from flask import Flask, appcontext_pushed, g, request_started
 from flask.config import ConfigAttribute
-from flask_talisman import DEFAULT_CSP_POLICY, Talisman
 from loguru import logger
 
 import abilian.core.util
@@ -39,7 +38,7 @@ from abilian.web.access_blueprint import allow_access_for_roles
 from abilian.web.assets import AssetManagerMixin
 from abilian.web.errors import ErrorManagerMixin
 from abilian.web.jinja import JinjaManagerMixin
-from abilian.web.nav import BreadcrumbItem
+from abilian.web.nav import setup_nav_and_breadcrumbs
 from abilian.web.util import send_file_from_directory
 from abilian.web.views import Registry as ViewRegistry
 
@@ -136,8 +135,6 @@ class Application(
         # database AFAICT), and LOGGING_FILE cannot be set in DB settings.
         self.setup_logging()
 
-        appcontext_pushed.connect(self.install_id_generator)
-
         if not self.testing:
             self.init_sentry()
 
@@ -183,8 +180,6 @@ class Application(
 
         signals.components_registered.send(self)
 
-        request_started.connect(self.setup_nav_and_breadcrumbs)
-
         with self.app_context():
             if not self.testing:
                 signals.register_js_api.send(self)
@@ -197,25 +192,11 @@ class Application(
             with self.app_context():
                 self.service_manager.start_services()
 
-        # setup(self)
+        self.connect_signals()
 
-    def setup_nav_and_breadcrumbs(self, app: Flask):
-        """Listener for `request_started` event.
-
-        If you want to customize first items of breadcrumbs, override
-        :meth:`init_breadcrumbs`
-        """
-        g.nav = {"active": None}  # active section
-        g.breadcrumb = []
-        self.init_breadcrumbs()
-
-    def init_breadcrumbs(self):
-        """Insert the first element in breadcrumbs.
-
-        This happens during `request_started` event, which is triggered
-        before any url_value_preprocessor and `before_request` handlers.
-        """
-        g.breadcrumb.append(BreadcrumbItem(icon="home", url=f"/{request.script_root}"))
+    def connect_signals(self):
+        appcontext_pushed.connect(self.install_id_generator)
+        request_started.connect(setup_nav_and_breadcrumbs)
 
     # TODO: remove
     def install_id_generator(self, sender: Flask, **kwargs: Any):

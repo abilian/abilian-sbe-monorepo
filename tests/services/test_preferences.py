@@ -6,7 +6,7 @@ from flask_login import current_user, login_user
 from pytest import fixture
 from sqlalchemy.orm import Session
 
-from abilian.app import Application as BaseApplication
+from abilian.app import Application
 from abilian.core.models.subjects import User
 from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.services import get_service, security_service
@@ -37,19 +37,24 @@ class AdminPanel(PreferencePanel):
         return "Admin"
 
 
-class Application(BaseApplication):
-    def init_extensions(self):
-        super().init_extensions()
-        prefs = cast(PreferenceService, get_service("preferences"))
-        prefs.app_state.panels = []
-        prefs.register_panel(VisiblePanel(), self)
-        prefs.register_panel(AdminPanel(), self)
+# class Application(BaseApplication):
+#     def init_extensions(self):
+#         super().init_extensions()
+#         prefs = cast(PreferenceService, get_service("preferences"))
+#         prefs.app_state.panels = []
+#         prefs.register_panel(VisiblePanel(), self)
+#         prefs.register_panel(AdminPanel(), self)
 
 
 @fixture()
 def app(config: type) -> Application:
     app = Application()
     app.setup(config)
+    # with app.app_context():
+    #     prefs = cast(PreferenceService, get_service("preferences"))
+    #     prefs.app_state.panels = []
+    #     prefs.register_panel(VisiblePanel(), app)
+    #     prefs.register_panel(AdminPanel(), app)
     return app
 
 

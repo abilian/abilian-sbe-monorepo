@@ -10,7 +10,7 @@ from __future__ import annotations
 import typing
 from typing import Any
 
-from flask import g
+from flask import Flask, g, request
 from flask_babel.speaklater import LazyString
 from jinja2 import Template
 from markupsafe import Markup
@@ -21,6 +21,26 @@ from .action import ACTIVE, ENABLED, Action, Glyphicon, getset
 
 if typing.TYPE_CHECKING:
     from abilian.web.action import Status
+
+
+def setup_nav_and_breadcrumbs(_app: Flask):
+    """Listener for `request_started` event.
+
+    If you want to customize first items of breadcrumbs, override
+    :meth:`init_breadcrumbs`
+    """
+    g.nav = {"active": None}  # active section
+    g.breadcrumb = []
+    init_breadcrumbs()
+
+
+def init_breadcrumbs():
+    """Insert the first element in breadcrumbs.
+
+    This happens during `request_started` event, which is triggered
+    before any url_value_preprocessor and `before_request` handlers.
+    """
+    g.breadcrumb.append(BreadcrumbItem(icon="home", url=f"/{request.script_root}"))
 
 
 class NavItem(Action):
