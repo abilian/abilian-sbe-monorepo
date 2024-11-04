@@ -21,6 +21,7 @@ from abilian.web.nav import setup_nav_and_breadcrumbs
 from .blueprints import setup_blueprints
 from .debug import setup_debug
 from .extensions import init_extensions, init_sentry
+from .logging import init_logging
 
 if TYPE_CHECKING:
     from abilian.app import Application
@@ -33,9 +34,7 @@ def setup_app(app: Application):
 
     svcs.flask.init_app(app)
 
-    # Force flask to create application logger before logging
-    # configuration; else, flask will overwrite our settings
-    assert app.logger
+    init_logging(app)
     init_sentry(app)
 
     # time to load config bits from database: 'settings'
