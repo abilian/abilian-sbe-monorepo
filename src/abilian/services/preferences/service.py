@@ -106,9 +106,8 @@ class PreferenceService(Service):
     def register_panel(self, panel: PreferencePanel, app: Flask | None = None):
         state = self.app_state if app is None else app.extensions[self.name]
         if state.blueprint_registered:
-            raise ValueError(
-                "Extension already initialized for app, cannot add more panel"
-            )
+            msg = "Preferences extension already initialized for app, cannot add more panel"
+            raise ValueError(msg)
 
         state.panels.append(panel)
         panel.preferences = self
@@ -116,6 +115,8 @@ class PreferenceService(Service):
         endpoint = panel.id
         abs_endpoint = f"preferences.{endpoint}"
 
+        assert hasattr(panel, "get")
+        assert hasattr(panel, "post")
         if hasattr(panel, "get"):
             state.blueprint.add_url_rule(rule, endpoint, panel.get)
         if hasattr(panel, "post"):
@@ -138,8 +139,10 @@ class PreferenceService(Service):
         # initialization
         @signals.components_registered.connect_via(app)
         def register_bp(app: Flask):
+            pref_service = app.extensions[self.name]
+            assert not pref_service.blueprint_registered
             app.register_blueprint(bp)
-            app.extensions[self.name].blueprint_registered = True
+            pref_service.blueprint_registered = True
 
         self.app_state.root_breadcrumb_item = BreadcrumbItem(
             label=_("Preferences"), url=Endpoint("preferences.index")

@@ -72,7 +72,6 @@ class Admin:
                 continue
 
             self.register_panel(panel_class())
-            # logger.debug('Registered panel "{fqn}"', fqn=fqn)
 
         if not self.panels:
 
@@ -98,9 +97,8 @@ class Admin:
 
     def register_panel(self, panel: Any):
         if self.app:
-            raise ValueError(
-                "Extension already initialized for app, cannot add more panel"
-            )
+            msg = "Admin extension already initialized for app, cannot add more panel"
+            raise ValueError(msg)
 
         self.panels.append(panel)
         panel.admin = self

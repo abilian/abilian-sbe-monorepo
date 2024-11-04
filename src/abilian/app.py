@@ -36,13 +36,25 @@ from abilian.web.jinja import JinjaManagerMixin
 from abilian.web.util import send_file_from_directory
 from abilian.web.views import Registry as ViewRegistry
 
-defusedxml.defuse_stdlib()
-
-db = extensions.db
 __all__ = ["Application", "create_app"]
 
+defusedxml.defuse_stdlib()
 # Silence those warnings for now.
 warnings.simplefilter("ignore", category=sa.exc.SAWarning)
+
+db = extensions.db
+
+
+def create_app(config: type | None = None, plugins=None, **kw: Any) -> Application:
+    app = Application(**kw)
+    app.configure(config)
+    app.check_instance_folder(create=True)
+
+    setup_app(app, plugins=plugins)
+
+    signals.components_registered.send(app)
+
+    return app
 
 
 class Application(
@@ -212,15 +224,3 @@ class Application(
         self.add_access_controller(
             endpoint, allow_access_for_roles(Anonymous), endpoint=True
         )
-
-
-def create_app(config: type | None = None, **kw: Any) -> Application:
-    app = Application(**kw)
-    app.configure(config)
-    app.check_instance_folder(create=True)
-
-    setup_app(app)
-
-    signals.components_registered.send(app)
-
-    return app

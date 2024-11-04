@@ -47,6 +47,8 @@ ENDPOINTS_TO_IGNORE = {
     "social.users_dt_json",
     "social.users_json",
     "users.json_list",
+    "preferences.index",
+    "preferences.sbe_notifications",
 }
 
 

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import sys
 from itertools import count
 from typing import TYPE_CHECKING, Any
 
@@ -12,7 +11,6 @@ from flask import Flask, appcontext_pushed, g, request_started
 from flask_talisman import DEFAULT_CSP_POLICY, Talisman
 
 from abilian.core import extensions, signals
-from abilian.core.plugin_manager import CORE_PLUGINS
 from abilian.services import settings_service
 from abilian.services.security import Anonymous
 from abilian.web.access_blueprint import allow_access_for_roles
@@ -27,7 +25,7 @@ if TYPE_CHECKING:
     from abilian.app import Application
 
 
-def setup_app(app: Application):
+def setup_app(app: Application, plugins=None):
     # At this point we have loaded all external config files:
     # SQLALCHEMY_DATABASE_URI is definitively fixed (it cannot be defined in
     # database AFAICT), and LOGGING_FILE cannot be set in DB settings.
@@ -59,24 +57,12 @@ def setup_app(app: Application):
 
     setup_blueprints(app)
 
-    plugins = CORE_PLUGINS + list(app.config["PLUGINS"])
-    app.plugin_manager.register_plugins(plugins)
+    plugins = (plugins or []) + list(app.config["PLUGINS"])
 
-    app.add_access_controller(
-        "static", allow_access_for_roles(Anonymous), endpoint=True
-    )
-    # debugtoolbar: this is needed to have it when not authenticated
-    # on a private site. We cannot do this in init_debug_toolbar,
-    # since auth service is not yet installed.
-    app.add_access_controller(
-        "debugtoolbar",
-        allow_access_for_roles(Anonymous),
-    )
-    app.add_access_controller(
-        "_debug_toolbar.static",
-        allow_access_for_roles(Anonymous),
-        endpoint=True,
-    )
+    with app.app_context():
+        app.plugin_manager.register_plugins(plugins)
+
+    init_access_controllers(app)
 
     app.finalize_assets_setup()
 
@@ -110,3 +96,21 @@ def connect_signals():
 # TODO: remove
 def install_id_generator(sender: Flask, **kwargs: Any):
     g.id_generator = count(start=1)
+
+
+def init_access_controllers(app: Application):
+    app.add_access_controller(
+        "static", allow_access_for_roles(Anonymous), endpoint=True
+    )
+    # debugtoolbar: this is needed to have it when not authenticated
+    # on a private site. We cannot do this in init_debug_toolbar,
+    # since auth service is not yet installed.
+    app.add_access_controller(
+        "debugtoolbar",
+        allow_access_for_roles(Anonymous),
+    )
+    app.add_access_controller(
+        "_debug_toolbar.static",
+        allow_access_for_roles(Anonymous),
+        endpoint=True,
+    )

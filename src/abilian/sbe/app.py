@@ -35,11 +35,10 @@ SBE_PLUGINS = CORE_PLUGINS + [
 
 
 def create_app(config: type | None = None, **kw) -> BaseApplication:
+    kw["plugins"] = SBE_PLUGINS
     app = base_create_app(config=config, **kw)
 
     with app.app_context():
-        app.plugin_manager.register_plugins(SBE_PLUGINS)
-
         content_repository.init_app(app)
         converter.init_app(app)
 
