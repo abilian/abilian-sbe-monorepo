@@ -266,7 +266,7 @@ class Action:
         description: str = "",
         icon: str | Icon | None = None,
         url: str | Callable = "",
-        endpoint: Endpoint | None = None,
+        endpoint: Endpoint | str | None = None,
         condition: Callable | None = None,
         status: Any | None = None,
         template: Any | None = None,
