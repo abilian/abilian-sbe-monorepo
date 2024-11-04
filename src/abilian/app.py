@@ -4,7 +4,6 @@ applications."""
 from __future__ import annotations
 
 import errno
-import importlib
 
 # Temps monkey patches
 import os
@@ -12,7 +11,7 @@ import sys
 import warnings
 from collections.abc import Callable, Collection
 from functools import cached_property, partial
-from itertools import chain, count
+from itertools import count
 from pathlib import Path
 from typing import Any
 
@@ -22,19 +21,8 @@ import sqlalchemy as sa
 import sqlalchemy.exc
 import svcs
 from attrs import field, frozen
-from flask import (
-    Blueprint,
-    Flask,
-    abort,
-    appcontext_pushed,
-    g,
-    request,
-    request_started,
-)
-from flask.config import Config, ConfigAttribute
-from flask_migrate import Migrate
-
-# from flask_tailwind import Tailwind
+from flask import Flask, appcontext_pushed, g, request, request_started
+from flask.config import ConfigAttribute
 from flask_talisman import DEFAULT_CSP_POLICY, Talisman
 from loguru import logger
 
@@ -43,27 +31,11 @@ import abilian.i18n
 from abilian.config import default_config
 from abilian.core import extensions, signals
 from abilian.core.plugin_manager import CORE_PLUGINS, PluginManager
-from abilian.services import (
-    Service,
-    activity_service,
-    antivirus,
-    audit_service,
-    auth_service,
-    blob_store,
-    conversion_service,
-    index_service,
-    preferences_service,
-    security_service,
-    session_blob_store,
-    settings_service,
-    vocabularies_service,
-)
+from abilian.services import Service, auth_service, settings_service
 from abilian.services.security import Anonymous
 from abilian.services.security.models import Role
-from abilian.web import csrf
+from abilian.setup import setup
 from abilian.web.access_blueprint import allow_access_for_roles
-from abilian.web.action import actions
-from abilian.web.admin import Admin
 from abilian.web.assets import AssetManagerMixin
 from abilian.web.errors import ErrorManagerMixin
 from abilian.web.jinja import JinjaManagerMixin
@@ -82,8 +54,7 @@ warnings.simplefilter("ignore", category=sa.exc.SAWarning)
 
 @frozen
 class ServiceManager:
-    """Mixin that provides lifecycle (register/start/stop) support for
-    services."""
+    """Provides lifecycle (register/start/stop) support for services."""
 
     services: dict[str, Service] = field(factory=dict)
 
@@ -147,6 +118,14 @@ class Application(
         self.default_view = ViewRegistry()
         self.js_api = {}
 
+    @cached_property
+    def data_dir(self) -> Path:
+        path = Path(self.instance_path, "data")
+        if not path.exists():
+            path.mkdir(0o775, parents=True)
+
+        return path
+
     def setup(self, config: type | None):
         self.configure(config)
 
@@ -172,7 +151,7 @@ class Application(
         self.install_default_handlers()
 
         with self.app_context():
-            self.init_extensions()
+            setup(self)
 
             plugins = CORE_PLUGINS + list(self.config["PLUGINS"])
             self.plugin_manager.register_plugins(plugins)
@@ -191,9 +170,6 @@ class Application(
                 allow_access_for_roles(Anonymous),
                 endpoint=True,
             )
-
-        # TODO: maybe reenable later
-        # self.maybe_register_setup_wizard()
 
         self._finalize_assets_setup()
 
@@ -215,13 +191,13 @@ class Application(
 
         # Initialize Abilian core services.
         # Must come after all entity classes have been declared.
-        # Deletagted to ServiceManager. Will need some configuration love
+        # Delegated to ServiceManager. Will need some configuration love
         # later.
         if not self.testing:
             with self.app_context():
                 self.service_manager.start_services()
 
-        setup(self)
+        # setup(self)
 
     def setup_nav_and_breadcrumbs(self, app: Flask):
         """Listener for `request_started` event.
@@ -298,103 +274,6 @@ class Application(
         if err:
             raise OSError(eno, err, str(path))
 
-    @cached_property
-    def data_dir(self) -> Path:
-        path = Path(self.instance_path, "data")
-        if not path.exists():
-            path.mkdir(0o775, parents=True)
-
-        return path
-
-    def _init_babel(self):
-        # Babel (for i18n)
-        babel = abilian.i18n.babel
-        # Temporary (?) workaround
-        babel.locale_selector_func = None
-        babel.timezone_selector_func = None
-
-        babel.init_app(self)
-
-        babel.add_translations("wtforms", translations_dir="locale", domain="wtforms")
-        babel.add_translations("abilian")
-
-    def init_extensions(self):
-        """Initialize flask extensions, helpers and services."""
-
-        self._init_babel()
-
-        extensions.redis.init_app(self)
-        extensions.mail.init_app(self)
-        extensions.deferred_js.init_app(self)
-        extensions.upstream_info.extension.init_app(self)
-        actions.init_app(self)
-
-        # auth_service installs a `before_request` handler (actually it's
-        # flask-login). We want to authenticate user ASAP, so that sentry and
-        # logs can report which user encountered any error happening later,
-        # in particular in a before_request handler (like csrf validator)
-        auth_service.init_app(self)
-
-        # webassets
-        self.setup_asset_extension()
-        self.register_base_assets()
-
-        # Flask-Migrate
-        Migrate(self, db)
-
-        # CSRF by default
-        if self.config.get("WTF_CSRF_ENABLED"):
-            # extensions.csrf IS original wtf_csrf
-            # abilian_csrf is
-            # from .csrf import abilian_csrf
-            # from .csrf import wtf_csrf as csrf
-
-            extensions.csrf.init_app(self)  # double initialization
-            self.extensions["csrf"] = extensions.csrf
-            extensions.abilian_csrf.init_app(self)
-
-        self.register_blueprint(csrf.csrf_blueprint)
-
-        # images blueprint
-        from .web.views.images import images_bp
-
-        self.register_blueprint(images_bp)
-
-        # Abilian Core services
-        security_service.init_app(self)
-        blob_store.init_app(self)
-        session_blob_store.init_app(self)
-        audit_service.init_app(self)
-        index_service.init_app(self)
-        activity_service.init_app(self)
-        preferences_service.init_app(self)
-        conversion_service.init_app(self)
-        vocabularies_service.init_app(self)
-        antivirus.init_app(self)
-
-        from .web.preferences.user import UserPreferencesPanel
-
-        preferences_service.register_panel(UserPreferencesPanel(), self)
-
-        from .web.coreviews import users
-
-        self.register_blueprint(users.blueprint)
-
-        # Admin interface
-        Admin().init_app(self)
-
-        # dev helper
-        if self.debug:
-            # during dev, one can go to /http_error/403 to see rendering of 403
-            http_error_pages = Blueprint("http_error_pages", __name__)
-
-            @http_error_pages.route("/<int:code>")
-            def error_page(code):
-                """Helper for development to show 403, 404, 500..."""
-                abort(code)
-
-            self.register_blueprint(http_error_pages, url_prefix="/http_error")
-
     def add_url_rule_with_role(
         self,
         rule: str,
@@ -465,41 +344,18 @@ class Application(
         )
 
 
-def setup(app: Flask):
-    config = app.config
-
-    # CSP
-    if not app.debug:
-        csp = config.get("CONTENT_SECURITY_POLICY", DEFAULT_CSP_POLICY)
-        Talisman(app, content_security_policy=csp)
-
-    # Tailwind(app)
-
-    # Debug Toolbar
-    init_debug_toolbar(app)
-
-
-def init_debug_toolbar(app: Flask):
-    if not app.debug or app.testing:
-        return
-
-    try:
-        from flask_debugtoolbar import DebugToolbarExtension
-    except ImportError:
-        logger.warning("Running in debug mode but flask_debugtoolbar is not installed.")
-        return
-
-    dbt = DebugToolbarExtension()
-    default_config = dbt._default_config(app)
-    init_dbt = dbt.init_app
-
-    if "DEBUG_TB_PANELS" not in app.config:
-        # add our panels to default ones
-        app.config["DEBUG_TB_PANELS"] = list(default_config["DEBUG_TB_PANELS"])
-    init_dbt(app)
-    for view_name in app.view_functions:
-        if view_name.startswith("debugtoolbar."):
-            extensions.csrf.exempt(app.view_functions[view_name])
+# def setup(app: Flask):
+#     config = app.config
+#
+#     # CSP
+#     if not app.debug:
+#         csp = config.get("CONTENT_SECURITY_POLICY", DEFAULT_CSP_POLICY)
+#         Talisman(app, content_security_policy=csp)
+#
+#     # Tailwind(app)
+#
+#     # Debug Toolbar
+#     init_debug_toolbar(app)
 
 
 def create_app(config: type | None = None, **kw: Any) -> Application:

@@ -28,7 +28,6 @@ from .redis import Redis
 __all__ = (
     "csrf",
     "db",
-    "get_extension",
     "login_manager",
     "mail",
     "redis",
@@ -90,12 +89,6 @@ def _filter_metadata_for_connection(
 #
 # CSRF
 #
-def get_extension(name: str):
-    """Get the named extension from the current app, returning None if not
-    found."""
-    return current_app.extensions.get(name)
-
-
 def _install_get_display_value(cls: Any):
     _MARK = object()
 

@@ -73,6 +73,8 @@ dependencies = [
     "html2text>=2024,<2025",
     "devtools",
     "python-dotenv>=1.0.1,<2.0.0",
+    "svcs>=24.1.0",
+    "attrs>=24.2.0",
     # Markdown support for Wiki
     "markdown>=3,<4",
     # Language and charset detection
@@ -89,8 +91,8 @@ dependencies = [
     "certifi",
     "mmdb_writer",
     "netaddr",
-    "svcs>=24.1.0",
-    "attrs>=24.2.0",
+    #
+    "pytest>=8.3.3",
 ]
 
 [project.urls]
