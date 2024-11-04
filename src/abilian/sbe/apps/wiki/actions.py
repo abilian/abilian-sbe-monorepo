@@ -53,9 +53,19 @@ _actions = (
         condition=lambda ctx: is_manager(context=ctx),
         endpoint=".page_viewers",
     ),
-    WikiPageAction("wiki:page", "view", _l("View"), endpoint=".page", icon="eye-open"),
     WikiPageAction(
-        "wiki:page", "edit", _l("Edit"), endpoint=".page_edit", icon="pencil"
+        "wiki:page",
+        "view",
+        _l("View"),
+        endpoint=".page",
+        icon="eye-open",
+    ),
+    WikiPageAction(
+        "wiki:page",
+        "edit",
+        _l("Edit"),
+        endpoint=".page_edit",
+        icon="pencil",
     ),
     WikiPageModalAction(
         "wiki:page",
@@ -72,14 +82,32 @@ _actions = (
         icon=FAIcon("code"),
     ),
     WikiPageAction(
-        "wiki:page", "changes", _l("Changes"), endpoint=".page_changes", icon="time"
+        "wiki:page",
+        "changes",
+        _l("Changes"),
+        endpoint=".page_changes",
+        icon="time",
     ),
     WikiPageModalAction(
-        "wiki:page", "delete", _l("Delete"), url="#modal-delete", icon="trash"
+        "wiki:page",
+        "delete",
+        _l("Delete"),
+        url="#modal-delete",
+        icon="trash",
     ),
-    WikiAction("wiki:global", "new", _l("New page"), endpoint=".page_new", icon="plus"),
     WikiAction(
-        "wiki:global", "pages", _l("All pages"), endpoint=".wiki_pages", icon="list"
+        "wiki:global",
+        "new",
+        _l("New page"),
+        endpoint=".page_new",
+        icon="plus",
+    ),
+    WikiAction(
+        "wiki:global",
+        "pages",
+        _l("All pages"),
+        endpoint=".wiki_pages",
+        icon="list",
     ),
     WikiAction(
         "wiki:global",
