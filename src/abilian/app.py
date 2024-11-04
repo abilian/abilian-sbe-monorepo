@@ -234,11 +234,11 @@ class Application(
 
         # Initialize Abilian core services.
         # Must come after all entity classes have been declared.
-        # Inherited from ServiceManager. Will need some configuration love
+        # Deletagted to ServiceManager. Will need some configuration love
         # later.
         if not self.testing:
             with self.app_context():
-                self.start_services()
+                self.services_manager.start_services()
 
         setup(self)
 
