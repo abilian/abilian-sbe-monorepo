@@ -61,11 +61,6 @@ def init_extensions(app: Flask):
     # Flask-Migrate
     Migrate(app, db)
 
-    # images blueprint
-    from abilian.web.views.images import images_bp
-
-    app.register_blueprint(images_bp)
-
     # Abilian Core services
     security_service.init_app(app)
     blob_store.init_app(app)
@@ -78,28 +73,8 @@ def init_extensions(app: Flask):
     vocabularies_service.init_app(app)
     antivirus.init_app(app)
 
-    from abilian.web.preferences.user import UserPreferencesPanel
-
-    preferences_service.register_panel(UserPreferencesPanel(), app)
-
-    from abilian.web.coreviews import users
-
-    app.register_blueprint(users.blueprint)
-
     # Admin interface
     Admin().init_app(app)
-
-    # dev helper
-    if app.debug:
-        # during dev, one can go to /http_error/403 to see rendering of 403
-        http_error_pages = Blueprint("http_error_pages", __name__)
-
-        @http_error_pages.route("/<int:code>")
-        def error_page(code):
-            """Helper for development to show 403, 404, 500..."""
-            abort(code)
-
-        app.register_blueprint(http_error_pages, url_prefix="/http_error")
 
 
 def init_babel(app: Flask) -> None:

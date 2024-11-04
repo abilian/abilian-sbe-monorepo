@@ -91,7 +91,7 @@ class AssetManagerMixin(Flask):
             "min", str(assets_dir), endpoint="webassets_static", roles=Anonymous
         )
 
-    def _finalize_assets_setup(self):
+    def finalize_assets_setup(self):
         assets = self.extensions["webassets"]
         assets_dir = Path(assets.directory)
         closure_base_args = [

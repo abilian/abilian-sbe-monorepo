@@ -4,8 +4,6 @@ applications."""
 from __future__ import annotations
 
 import errno
-
-# Temps monkey patches
 import os
 import sys
 import warnings
@@ -20,7 +18,6 @@ import jinja2
 import sqlalchemy as sa
 import sqlalchemy.exc
 import svcs
-from attrs import field, frozen
 from flask import Flask, appcontext_pushed, g, request_started
 from flask.config import ConfigAttribute
 from loguru import logger
@@ -30,7 +27,8 @@ import abilian.i18n
 from abilian.config import default_config
 from abilian.core import extensions, signals
 from abilian.core.plugin_manager import CORE_PLUGINS, PluginManager
-from abilian.services import Service, auth_service, settings_service
+from abilian.core.service_manager import ServiceManager
+from abilian.services import auth_service, settings_service
 from abilian.services.security import Anonymous
 from abilian.services.security.models import Role
 from abilian.setup import setup
@@ -45,40 +43,10 @@ from abilian.web.views import Registry as ViewRegistry
 defusedxml.defuse_stdlib()
 
 db = extensions.db
-__all__ = ["Application", "ServiceManager", "create_app"]
+__all__ = ["Application", "create_app"]
 
 # Silence those warnings for now.
 warnings.simplefilter("ignore", category=sa.exc.SAWarning)
-
-
-@frozen
-class ServiceManager:
-    """Provides lifecycle (register/start/stop) support for services."""
-
-    services: dict[str, Service] = field(factory=dict)
-
-    def add_service(self, name: str, service: Service):
-        self.services[name] = service
-
-    def get_service(self, name: str) -> Service:
-        return self.services[name]
-
-    def start_services(self, services: list[str] | None = None):
-        """Start all services. If a service is already running, nothing happens."""
-        if services is None:
-            services = self.services.values()
-        for service in services:
-            if not service.running:
-                service.start()
-
-    def stop_services(self):
-        """Stop all services. If a service is not running, nothing happens."""
-        for service in self.services.values():
-            if service.running:
-                service.stop()
-
-    def list_services(self):
-        return self.services.values()
 
 
 class Application(
@@ -125,85 +93,9 @@ class Application(
 
         return path
 
-    def setup(self, config: type | None):
-        self.configure(config)
-
-        svcs.flask.init_app(self)
-
-        # At this point we have loaded all external config files:
-        # SQLALCHEMY_DATABASE_URI is definitively fixed (it cannot be defined in
-        # database AFAICT), and LOGGING_FILE cannot be set in DB settings.
-        self.setup_logging()
-
-        if not self.testing:
-            self.init_sentry()
-
-        # time to load config bits from database: 'settings'
-        # First init required stuff: db to make queries, and settings service
-        extensions.db.init_app(self)
-        settings_service.init_app(self)
-
-        self.register_jinja_loaders(jinja2.PackageLoader("abilian.web"))
-        self.init_assets()
-        self.install_default_handlers()
-
-        with self.app_context():
-            setup(self)
-
-            plugins = CORE_PLUGINS + list(self.config["PLUGINS"])
-            self.plugin_manager.register_plugins(plugins)
-
-            self.add_access_controller(
-                "static", allow_access_for_roles(Anonymous), endpoint=True
-            )
-            # debugtoolbar: this is needed to have it when not authenticated
-            # on a private site. We cannot do this in init_debug_toolbar,
-            # since auth service is not yet installed.
-            self.add_access_controller(
-                "debugtoolbar", allow_access_for_roles(Anonymous)
-            )
-            self.add_access_controller(
-                "_debug_toolbar.static",
-                allow_access_for_roles(Anonymous),
-                endpoint=True,
-            )
-
-        self._finalize_assets_setup()
-
-        # At this point all models should have been imported: time to configure
-        # mappers. Normally Sqlalchemy does it when needed but mappers may be
-        # configured inside sa.orm.class_mapper() which hides a
-        # misconfiguration: if a mapper is misconfigured its exception is
-        # swallowed by class_mapper(model) results in this laconic
-        # (and misleading) message: "model is not mapped"
-        sa.orm.configure_mappers()
-
-        signals.components_registered.send(self)
-
-        with self.app_context():
-            if not self.testing:
-                signals.register_js_api.send(self)
-
-        # Initialize Abilian core services.
-        # Must come after all entity classes have been declared.
-        # Delegated to ServiceManager. Will need some configuration love
-        # later.
-        if not self.testing:
-            with self.app_context():
-                self.service_manager.start_services()
-
-        self.connect_signals()
-
-    def connect_signals(self):
-        appcontext_pushed.connect(self.install_id_generator)
-        request_started.connect(setup_nav_and_breadcrumbs)
-
-    # TODO: remove
-    def install_id_generator(self, sender: Flask, **kwargs: Any):
-        g.id_generator = count(start=1)
-
     def configure(self, config: type | None):
         if config:
+            # This is usually the case for tests
             self.config.from_object(config)
         else:
             self.config.from_prefixed_env()
@@ -248,7 +140,7 @@ class Application(
         elif not path.is_dir():
             err = "Instance folder is not a directory"
             eno = errno.ENOTDIR
-        elif not os.access(str(path), os.R_OK | os.W_OK | os.X_OK):
+        elif not os.access(path, os.R_OK | os.W_OK | os.X_OK):
             err = 'Require "rwx" access rights, please verify permissions'
             eno = errno.EPERM
 
@@ -306,9 +198,10 @@ class Application(
 
         Example::
 
-           app.add_static_url('myplugin',
-                              '/path/to/myplugin/resources',
-                              endpoint='myplugin_static')
+            app.add_static_url(
+                'myplugin',
+                '/path/to/myplugin/resources',
+                endpoint='myplugin_static')
 
         With default setup it will serve content from directory
         `/path/to/myplugin/resources` from url `http://.../static/myplugin`
@@ -325,21 +218,83 @@ class Application(
         )
 
 
-# def setup(app: Flask):
-#     config = app.config
-#
-#     # CSP
-#     if not app.debug:
-#         csp = config.get("CONTENT_SECURITY_POLICY", DEFAULT_CSP_POLICY)
-#         Talisman(app, content_security_policy=csp)
-#
-#     # Tailwind(app)
-#
-#     # Debug Toolbar
-#     init_debug_toolbar(app)
+def setup_app(app: Application):
+    svcs.flask.init_app(app)
+
+    # At this point we have loaded all external config files:
+    # SQLALCHEMY_DATABASE_URI is definitively fixed (it cannot be defined in
+    # database AFAICT), and LOGGING_FILE cannot be set in DB settings.
+    app.setup_logging()
+
+    if not app.testing:
+        app.init_sentry()
+
+    # time to load config bits from database: 'settings'
+    # First init required stuff: db to make queries, and settings service
+    extensions.db.init_app(app)
+    settings_service.init_app(app)
+
+    app.register_jinja_loaders(jinja2.PackageLoader("abilian.web"))
+    app.init_assets()
+    app.install_default_handlers()
+
+    with app.app_context():
+        setup(app)
+
+        plugins = CORE_PLUGINS + list(app.config["PLUGINS"])
+        app.plugin_manager.register_plugins(plugins)
+
+        app.add_access_controller(
+            "static", allow_access_for_roles(Anonymous), endpoint=True
+        )
+        # debugtoolbar: this is needed to have it when not authenticated
+        # on a private site. We cannot do this in init_debug_toolbar,
+        # since auth service is not yet installed.
+        app.add_access_controller("debugtoolbar", allow_access_for_roles(Anonymous))
+        app.add_access_controller(
+            "_debug_toolbar.static",
+            allow_access_for_roles(Anonymous),
+            endpoint=True,
+        )
+
+    app.finalize_assets_setup()
+
+    # At this point all models should have been imported: time to configure
+    # mappers. Normally Sqlalchemy does it when needed but mappers may be
+    # configured inside sa.orm.class_mapper() which hides a
+    # misconfiguration: if a mapper is misconfigured its exception is
+    # swallowed by class_mapper(model) results in this laconic
+    # (and misleading) message: "model is not mapped"
+    sa.orm.configure_mappers()
+
+    if not app.testing:
+        with app.app_context():
+            # Time to generate the JS API
+            signals.register_js_api.send(app)
+
+            # Initialize Abilian core services.
+            # Must come after all entity classes have been declared.
+            # Delegated to ServiceManager. Will need some configuration love
+            # later.
+            app.service_manager.start_services()
+
+    connect_signals()
+
+
+def connect_signals():
+    appcontext_pushed.connect(install_id_generator)
+    request_started.connect(setup_nav_and_breadcrumbs)
+
+
+# TODO: remove
+def install_id_generator(sender: Flask, **kwargs: Any):
+    g.id_generator = count(start=1)
 
 
 def create_app(config: type | None = None, **kw: Any) -> Application:
     app = Application(**kw)
-    app.setup(config=config)
+    app.configure(config)
+    setup_app(app)
+
+    signals.components_registered.send(app)
     return app

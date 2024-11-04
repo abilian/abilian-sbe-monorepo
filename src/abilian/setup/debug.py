@@ -1,7 +1,12 @@
-from flask import Flask
+from flask import Blueprint, Flask, abort
 from loguru import logger
 
 from abilian.core import extensions
+
+
+def setup_debug(app: Flask) -> None:
+    init_debug_toolbar(app)
+    init_debug_pages(app)
 
 
 def init_debug_toolbar(app: Flask):
@@ -25,3 +30,16 @@ def init_debug_toolbar(app: Flask):
     for view_name in app.view_functions:
         if view_name.startswith("debugtoolbar."):
             extensions.csrf.exempt(app.view_functions[view_name])
+
+
+def init_debug_pages(app: Flask):
+    # dev helper
+    # during dev, one can go to /http_error/403 to see rendering of 403
+    http_error_pages = Blueprint("http_error_pages", __name__)
+
+    @http_error_pages.route("/<int:code>")
+    def error_page(code):
+        """Helper for development to show 403, 404, 500..."""
+        abort(code)
+
+    app.register_blueprint(http_error_pages, url_prefix="/http_error")

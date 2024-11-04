@@ -16,10 +16,7 @@ import sqlalchemy.dialects
 import sqlalchemy.exc
 import sqlalchemy.orm
 import sqlalchemy.pool
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy as SAExtension
 from sqlalchemy.engine.interfaces import Dialect
-from sqlalchemy.engine.url import URL
 from sqlalchemy.event import listens_for
 from sqlalchemy.ext.mutable import Mutable
 from sqlalchemy.sql.sqltypes import CHAR
@@ -45,73 +42,6 @@ def ping_connection(dbapi_connection: Connection, connection_record, connection_
         # connecting again up to three times before raising.
         raise sa.exc.DisconnectionError from e
     cursor.close()
-
-
-class SQLAlchemy(SAExtension):
-    """Base subclass of :class:`flask_sqlalchemy.SQLAlchemy`.
-
-    Add our custom driver hacks.
-    """
-
-    def apply_driver_hacks(self, app: Flask, info: URL, options: dict[str, Any]):
-        super().apply_driver_hacks(app, info, options)
-
-        if info.drivername == "sqlite":
-            connect_args = options.setdefault("connect_args", {})
-
-            if "isolation_level" not in connect_args:
-                # required to support savepoints/rollback without error. It disables
-                # implicit BEGIN/COMMIT statements made by pysqlite (a COMMIT kills all
-                # savepoints made).
-                connect_args["isolation_level"] = None
-
-        elif info.drivername.startswith("postgres"):
-            options.setdefault("client_encoding", "utf8")
-
-
-# # PATCH flask_sqlalchemy for proper info in debug toolbar.
-# #
-# # Original code works only when current app code is involved. If using 3rd party
-# # app the query is logged but source is marked "unknown". Our patch is a "best
-# # guess".
-# def _calling_context(app_path: str) -> str:
-#     frm = sys._getframe(1)
-#     entered_sa_code = exited_sa_code = False
-#     sa_caller = "<unknown>"
-#     format_name = (
-#         "{frm.f_code.co_filename}:{frm.f_lineno} ({frm.f_code.co_name})".format
-#     )
-
-#     while frm.f_back is not None:
-#         name = frm.f_globals.get("__name__")
-#         if name and (
-#             name == app_path
-#             or name.startswith(f"{app_path}.")
-#             or name.startswith("abilian.")
-#         ):
-#             return format_name(frm=frm)
-
-#         if not exited_sa_code:
-#             in_sa_code = name and (
-#                 name == "sqlalchemy" or name.startswith("sqlalchemy.")
-#             )
-#             if not entered_sa_code:
-#                 entered_sa_code = bool(in_sa_code)
-#             elif not in_sa_code:
-#                 # exited from sa stack: retain name
-#                 sa_caller = format_name(frm=frm)
-#                 exited_sa_code = True
-
-#         frm = frm.f_back
-
-#     return sa_caller
-
-
-# patch_logger.info(flask_sa._calling_context)
-# flask_sa._calling_context = _calling_context
-# del flask_sa
-
-# END PATCH
 
 
 def filter_cols(model, *filtered_columns):
@@ -415,14 +345,3 @@ class Timezone(sa.types.TypeDecorator):
 
     def process_result_value(self, value: Any | None, dialect: Dialect) -> Any | None:
         return None if value is None else babel.dates.get_timezone(value)
-
-
-# SQLAlchemy > 0.9 has a function generator that forget to set __module__
-# attributes in 0.9.x series. This is fixed in 1.0.x. Sphinx will try to include
-# those symbols in documentation, and this may break since we don't have
-# sphinx's extensions used by sqlalchemy author.
-#
-# Ref:
-# https://bitbucket.org/zzzeek/sqlalchemy/issues/3218/__module__-should-be-set-on-functions
-if not sa.orm.relationship.__module__:
-    sa.orm.relationship.__module__ = "sqlalchemy.orm"

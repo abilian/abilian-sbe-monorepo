@@ -39,6 +39,7 @@ def create_app(config: type | None = None, **kw) -> BaseApplication:
 
     with app.app_context():
         app.plugin_manager.register_plugins(SBE_PLUGINS)
+
         content_repository.init_app(app)
         converter.init_app(app)
 
@@ -48,16 +49,4 @@ def create_app(config: type | None = None, **kw) -> BaseApplication:
     sbe.init_app(app)
     init_dramatiq_engine(app)
 
-    # with app.app_context():
-    #     # app.setup(config)
-    #
-    #     app.plugin_manager.register_plugins(SBE_PLUGINS)
-    #
-    #     # content_repository.init_app(app)
-    #     # converter.init_app(app)
-    #     #
-    #     # loader = jinja2.PackageLoader("abilian.sbe")
-    #     # app.register_jinja_loaders(loader)
-    #
-    # init_dramatiq_engine(app)
     return app

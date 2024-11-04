@@ -96,13 +96,13 @@ def _install_get_display_value(cls: Any):
         """Return display value for fields having 'choices' mapping (stored
         value.
 
-        -> human readable value). For other fields it will simply return field
+        -> human-readable value). For other fields it will simply return field
         value.
 
         `display_value` should be used instead of directly getting field value.
 
         If `value` is provided, it is "translated" to a human-readable value. This is
-        useful for obtaining a human readable label from a raw value.
+        useful for obtaining a human-readable label from a raw value.
         """
         val = getattr(self, field_name, "ERROR") if value is _MARK else value
 

@@ -190,6 +190,7 @@ lint.extend-ignore = [
     "FURB110",
     "FURB103",
     "PLR1730",
+    "ISC001",
 ]
 
 [lint.mccabe]
