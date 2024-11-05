@@ -236,12 +236,7 @@ class Endpoint:
         return str(url_for(self.name, **self.get_kwargs()))
 
     def __repr__(self) -> str:
-        return "{cls}({name!r}, *{args!r}, **{kwargs!r})".format(
-            cls=self.__class__.__name__,
-            name=self.name,
-            args=self.args,
-            kwargs=self.kwargs,
-        )
+        return f"{self.__class__.__name__}({self.name!r}, *{self.args!r}, **{self.kwargs!r})"
 
 
 class Action:

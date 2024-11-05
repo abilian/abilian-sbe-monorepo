@@ -102,9 +102,7 @@ class Attachment(Entity):
         class_ = self.__class__
         mod_ = class_.__module__
         classname = class_.__name__
-        return "<{}.{} instance at 0x{:x} entity id={!r}>".format(
-            mod_, classname, id(self), self.entity_id
-        )
+        return f"<{mod_}.{classname} instance at 0x{id(self):x} entity id={self.entity_id!r}>"
 
 
 @sa.event.listens_for(Attachment, "before_insert", propagate=True)

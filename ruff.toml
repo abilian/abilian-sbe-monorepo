@@ -27,12 +27,9 @@ lint.extend-ignore = [
     "E712", # ...
     "E713", # Test for membership should be `not in`
     "PLR2044", # Line with empty comment
-    "RUF027", # Possible f-string without an `f` prefix
     "S101", # Use of `assert` detected
     "S320", # OK, we're using defusedxml
-#    "TCH001", # Move import into a type-checking block
-#    "TCH002", # Move import into a type-checking block
-#    "TCH003", # Move import into a type-checking block
+    "ISC001", # Conflicts with formatter
 
     # Fix these (if possible / reasonable)
     "A001", # Variable `...` is shadowing a python builtin
@@ -101,6 +98,7 @@ lint.extend-ignore = [
     "RET505", # Unnecessary `else` after `return` statement
     "RUF005", # Consider iterable unpacking instead of concatenation
     "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
+    #
     "S104", # Possible binding to all interfaces
     "S301", # `pickle`...
     "S403", # `pickle`, `cPickle`, `dill`, and `shelve` modules are possibly insecure
@@ -111,13 +109,13 @@ lint.extend-ignore = [
     "S606", # Subprocess related...
     "S607", # Subprocess related...
     "S701", # By default, jinja2 sets `autoescape` to `False`.
+    #
     "SIM102", # Use a single `if` statement instead of nested `if` statements
     "SIM108", # Use ternary operator
     "SIM115", # Use context handler for opening files
     "SIM117", # Use a single `with` statement with multiple contexts instead of nested `with` statements
     "SLF001", # Private member accessed
     "T201", # `print` found
-    "UP032", # Use f-strings
 ]
 
 [lint.mccabe]

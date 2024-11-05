@@ -293,13 +293,7 @@ class User(Principal, UserMixin, db.Model):
 
     def __repr__(self) -> str:
         cls = self.__class__
-        return "<{mod}.{cls} id={id!r} email={email!r} at 0x{addr:x}>".format(
-            mod=cls.__module__,
-            cls=cls.__name__,
-            id=self.id,
-            email=self.email,
-            addr=id(self),
-        )
+        return f"<{cls.__module__}.{cls.__name__} id={self.id!r} email={self.email!r} at 0x{id(self):x}>"
 
 
 @listens_for(User, "mapper_configured", propagate=True)

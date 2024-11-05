@@ -89,9 +89,7 @@ class JsonUsersList(base.JSONView):
                 r for r in security.get_roles(user, no_group_roles=True) if r.assignable
             ]
             columns = [
-                '<a href="{url}"><img src="{src}" width="{size}" height="{size}"></a>'.format(
-                    url=user_url, src=mugshot, size=MUGSHOT_SIZE
-                ),
+                f'<a href="{user_url}"><img src="{mugshot}" width="{MUGSHOT_SIZE}" height="{MUGSHOT_SIZE}"></a>',
                 f'<a href="{user_url}">{name}</a>',
                 f'<a href="{user_url}"><em>{email}</em></a>',
                 "\u2713" if user.can_login else "",

@@ -198,8 +198,8 @@ def document_download(doc_id: int, attach: bool = False) -> Response:
     ):
         # Note: we omit text/html for security reasons.
         quoted_filename = quote(doc.title.encode("utf8"))
-        response.headers["content-disposition"] = 'attachment;filename="{}"'.format(
-            quoted_filename
+        response.headers["content-disposition"] = (
+            f'attachment;filename="{quoted_filename}"'
         )
 
     return response

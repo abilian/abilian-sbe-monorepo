@@ -670,9 +670,7 @@ class Document(BaseContent, PathAndSecurityIndexable):
         return self.title
 
     def __repr__(self) -> str:
-        return "<Document id={!r} name={!r} path={!r} content_length={:d} at 0x{:x}>".format(
-            self.id, self.title, self.path, self.content_length, id(self)
-        )
+        return f"<Document id={self.id!r} name={self.title!r} path={self.path!r} content_length={self.content_length:d} at 0x{id(self):x}>"
 
     # locking management; used for checkin/checkout - this could be generalized to
     # any entity

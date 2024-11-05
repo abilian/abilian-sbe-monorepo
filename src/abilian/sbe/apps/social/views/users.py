@@ -123,8 +123,8 @@ def users_dt_json():
         name = escape(user.name or "")
 
         cell0 = (
-            '<a href="{url}"><img src="{src}" width="{size}" height="{size}">'
-            "</a>".format(url=user_url, src=mugshot, size=MUGSHOT_SIZE)
+            f'<a href="{user_url}"><img src="{mugshot}" width="{MUGSHOT_SIZE}" height="{MUGSHOT_SIZE}">'
+            "</a>"
         )
         cell1 = f'<div class="info"><a href="{user_url}">{name}</a></div>'
         cell2 = age(user.created_at)

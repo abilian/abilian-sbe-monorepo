@@ -174,11 +174,9 @@ class AuditService(Service):
                 backref_attr = ".".join(inferred_backref)
             else:
                 raise ValueError(
-                    "Audit setup class<{cls}: Could not guess backref name"
-                    ' of relationship "{related_attr}", please use tuple annotation '
-                    "on __auditable_entity__".format(
-                        cls=entity_class.__name__, related_attr=related_attr
-                    )
+                    f"Audit setup class<{entity_class.__name__}: Could not guess backref name"
+                    f' of relationship "{related_attr}", please use tuple annotation '
+                    "on __auditable_entity__"
                 )
 
         meta.related = related_path

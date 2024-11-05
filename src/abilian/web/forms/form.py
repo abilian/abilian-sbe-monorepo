@@ -204,9 +204,7 @@ if not _PATCHED:
 
         Useful for tracing field errors (like in Sentry).
         """
-        return "<{}.{} at 0x{:x} name={!r}>".format(
-            self.__class__.__module__, self.__class__.__name__, id(self), self.name
-        )
+        return f"<{self.__class__.__module__}.{self.__class__.__name__} at 0x{id(self):x} name={self.name!r}>"
 
     patch_logger.info(f"{Field.__module__}.Field.__repr__")
     Field.__repr__ = _core_field_repr
