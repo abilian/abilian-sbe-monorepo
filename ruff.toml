@@ -80,7 +80,6 @@ lint.extend-ignore = [
     "PT013", # Found incorrect import of pytest, use simple `import pytest` instead
     #
     "PYI024", # Use `typing.NamedTuple` instead of `collections.namedtuple`
-    "PYI034", # `__enter__` methods in classes like `FormContext` usually return `self` at runtime
     "RET503", # Missing explicit `return` at the end of function able to return non-`None` value
     "RET504", # Unnecessary variable assignment before `return` statement
     "RET505", # Unnecessary `else` after `return` statement
@@ -93,7 +92,7 @@ lint.extend-ignore = [
     "S405", # lxml` is vulnerable to XML attacks
     "S603", # Subprocess related...
     "S605", # Subprocess related...
-    "S607", # Subprocess related...
+    "S607", # Starting a process with a partial executable path
     "S701", # By default, jinja2 sets `autoescape` to `False`.
     #
     "SIM102", # Use a single `if` statement instead of nested `if` statements

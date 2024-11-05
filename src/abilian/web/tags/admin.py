@@ -110,13 +110,14 @@ class NSView(View):
         data = request.form
         action = data.get("__action")
 
-        if action == "delete":
-            return self.do_delete()
-        elif action == "merge":
-            return self.do_merge()
-        else:
-            flash(_("Unknown action"))
-            self.get(self.ns)
+        match action:
+            case "delete":
+                return self.do_delete()
+            case "merge":
+                return self.do_merge()
+            case _:
+                flash(_("Unknown action"))
+                return self.get(self.ns)
 
     def _get_selected_tags(self) -> list[Tag]:
         if self.__selected_tags is None:

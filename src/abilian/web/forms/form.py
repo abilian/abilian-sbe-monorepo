@@ -7,7 +7,7 @@ from __future__ import annotations
 import typing
 from collections import OrderedDict
 from functools import partial
-from typing import Any
+from typing import Any, Self
 
 from flask import g, has_app_context
 from flask_login import current_user
@@ -60,7 +60,7 @@ class FormContext:
         self.user = user
         self.obj = obj
 
-    def __enter__(self) -> FormContext:
+    def __enter__(self) -> Self:
         if not has_app_context():
             return self
 
