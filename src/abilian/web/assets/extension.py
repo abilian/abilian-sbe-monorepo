@@ -130,8 +130,7 @@ class AssetManager:
         supported = list(self.assets_bundles.keys())
         if type_ not in supported:
             msg = (
-                f"Invalid type: {type_!r}. "
-                f"Valid types: {', '.join(sorted(supported))}"
+                f"Invalid type: {type_!r}. Valid types: {', '.join(sorted(supported))}"
             )
             raise KeyError(msg)
 

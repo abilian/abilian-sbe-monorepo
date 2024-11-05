@@ -57,11 +57,11 @@ flask_mail.Message.send = _message_send
 
 mail = flask_mail.Mail()
 
-db = SQLAlchemy()
-
 redis = Redis()
 
 deferred_js = DeferredJS()
+
+db = SQLAlchemy()
 
 
 @sa.event.listens_for(db.metadata, "before_create")
@@ -129,14 +129,3 @@ def _install_get_display_value(cls: Any):
 
 
 sa.event.listen(db.Model, "class_instrument", _install_get_display_value)
-
-
-#
-# Make Sqlite a bit more well-behaved.
-#
-@sa.event.listens_for(Engine, "connect")
-def _set_sqlite_pragma(dbapi_connection: Any, connection_record: Any):
-    if isinstance(dbapi_connection, sqlite3.Connection):  # pragma: no cover
-        cursor = dbapi_connection.cursor()
-        cursor.execute("PRAGMA foreign_keys=ON;")
-        cursor.close()

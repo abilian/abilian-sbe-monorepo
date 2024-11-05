@@ -42,7 +42,7 @@ class DeferredJS:
 class DeferredJSExtension(JinjaExtension):
     """Put JS fragment at the end of the document in a script tag.
 
-    The JS fragment can contains <script> tag so that your favorite
+    The JS fragment can contain <script> tag so that your favorite
     editor keeps doing proper indentation, syntax highlighting...
     """
 
@@ -55,7 +55,7 @@ class DeferredJSExtension(JinjaExtension):
 
         # now we parse body of the block
         body = parser.parse_statements(
-            ["name:enddeferJS", "name:enddeferredJS"], drop_needle=True
+            ("name:enddeferJS", "name:enddeferredJS"), drop_needle=True
         )
 
         method = "defer_nodes" if tag == "deferJS" else "collect_deferred"

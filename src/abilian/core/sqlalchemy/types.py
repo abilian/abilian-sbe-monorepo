@@ -5,7 +5,6 @@ from __future__ import annotations
 import contextlib
 import json
 import uuid
-from sqlite3 import Connection
 from typing import Any
 
 import babel
@@ -13,48 +12,9 @@ import babel.dates
 import pytz
 import sqlalchemy as sa
 import sqlalchemy.dialects
-import sqlalchemy.exc
-import sqlalchemy.orm
-import sqlalchemy.pool
 from sqlalchemy.engine.interfaces import Dialect
-from sqlalchemy.event import listens_for
 from sqlalchemy.ext.mutable import Mutable
 from sqlalchemy.sql.sqltypes import CHAR
-
-
-@listens_for(sa.pool.Pool, "checkout")
-def ping_connection(dbapi_connection: Connection, connection_record, connection_proxy):
-    """Ensure connections are valid.
-
-    From: `http://docs.sqlalchemy.org/en/rel_0_8/core/pooling.html`
-
-    In case db has been restarted pool may return invalid connections.
-    """
-    cursor = dbapi_connection.cursor()
-    try:
-        cursor.execute("SELECT 1")
-    except Exception as e:
-        # optional - dispose the whole pool
-        # instead of invalidating one at a time
-        # connection_proxy._pool.dispose()
-
-        # raise DisconnectionError - pool will try
-        # connecting again up to three times before raising.
-        raise sa.exc.DisconnectionError from e
-    cursor.close()
-
-
-def filter_cols(model, *filtered_columns):
-    """Return columnsnames for a model except named ones.
-
-    Useful for defer() for example to retain only columns of interest
-    """
-    m = sa.orm.class_mapper(model)
-    return list(
-        {p.key for p in m.iterate_properties if hasattr(p, "columns")}.difference(
-            filtered_columns
-        )
-    )
 
 
 class MutationDict(Mutable, dict):
@@ -328,13 +288,13 @@ class Timezone(sa.types.TypeDecorator):
 
     @property
     def python_type(self):
-        return pytz.tzfile.DstTzInfo
+        return pytz.tzinfo.DstTzInfo
 
     def process_bind_param(self, value: Any | None, dialect: Dialect) -> Any | None:
         if value is None:
             return None
 
-        if not isinstance(value, pytz.tzfile.DstTzInfo):
+        if not isinstance(value, pytz.tzinfo.DstTzInfo):
             if not isinstance(value, str):
                 raise TypeError(f"Unknown timezone value: {value!r}")
             if not value.strip():
