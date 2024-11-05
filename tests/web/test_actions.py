@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import operator
+
 import pytest
 from flask import Flask
 from flask.ctx import AppContext
@@ -15,7 +17,7 @@ CONDITIONAL = Action(
     "conditional",
     "Conditional Action",
     url="http://condition.al",
-    condition=lambda ctx: ctx["show_all"],
+    condition=operator.itemgetter("show_all"),
     icon=Glyphicon("hand-right"),
     button="warning",
 )

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import operator
 from tempfile import NamedTemporaryFile
 from typing import IO
 
@@ -98,8 +99,7 @@ def test_wizard_extract_data(db: SQLAlchemy, csv_file: IO[str]) -> None:
     assert set(existing_accounts_objects) == {user2, user3}
     assert existing_members_objects == [user1]
 
-    def sorter(x):
-        return x["email"]
+    sorter = operator.itemgetter("email")
 
     assert sorted(accounts_list, key=sorter) == sorted(
         [

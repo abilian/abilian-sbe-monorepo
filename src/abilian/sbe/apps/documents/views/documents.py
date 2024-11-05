@@ -257,8 +257,7 @@ def document_preview_image(doc_id: int) -> Response:
     size = int(request.args.get("size", 0))
 
     # Just in case
-    if size > MAX_PREVIEW_SIZE:
-        size = MAX_PREVIEW_SIZE
+    size = min(size, MAX_PREVIEW_SIZE)
 
     # compute image if size != standard document size
     get_image = converter.get_image if size == doc.preview_size else converter.to_image

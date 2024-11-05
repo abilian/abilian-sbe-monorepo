@@ -39,7 +39,7 @@ def test_posts_ordering(db: SQLAlchemy, community1):
     assert [p.id for p in thread.posts] == [p1_id, p2_id]
 
     # set post1 created after post2
-    t1 = t1 + timedelta(minutes=2)
+    t1 += timedelta(minutes=2)
     p1.created_at = t1
     db.session.flush()
     db.session.expire(thread)  # force thread.posts refreshed from DB

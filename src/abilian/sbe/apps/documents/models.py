@@ -250,7 +250,7 @@ class PathAndSecurityIndexable:
 
             parent_allowed = allowed
             # pure intersection: users and groups in both are preserved
-            allowed = allowed & obj_allowed
+            allowed &= obj_allowed
             remaining = parent_allowed - obj_allowed
             # find users who can access 'obj' because of their group memberships
             # 1. extends groups in obj_allowed with their actual member list
