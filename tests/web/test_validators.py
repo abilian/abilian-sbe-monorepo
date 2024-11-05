@@ -35,7 +35,7 @@ def error_message(validator: Callable, form: DummyForm, field: DummyField) -> st
         return ""
 
 
-@fixture()
+@fixture
 def validator() -> Callable:
     return siret_validator()
 

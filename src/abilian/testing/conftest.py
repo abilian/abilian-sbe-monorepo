@@ -55,7 +55,7 @@ def app(config: Any) -> Flask:
     return create_app(config=config)
 
 
-@fixture()
+@fixture
 def db(app: Flask, app_context: AppContext) -> Iterator[SQLAlchemy]:
     """Return a fresh db for each test."""
     from abilian.core.extensions import db as _db
@@ -74,29 +74,29 @@ def db(app: Flask, app_context: AppContext) -> Iterator[SQLAlchemy]:
     stop_all_services(app)
 
 
-@fixture()
+@fixture
 def app_context(app: Flask) -> Iterator[AppContext]:
     with app.app_context() as ctx:
         yield ctx
 
 
-@fixture()
+@fixture
 def test_request_context(app: Flask) -> Iterator[RequestContext]:
     with app.test_request_context() as ctx:
         yield ctx
 
 
-@fixture()
+@fixture
 def session(db: SQLAlchemy) -> Session:
     return db.session
 
 
-@fixture()
+@fixture
 def db_session(db: SQLAlchemy) -> Session:
     return db.session
 
 
-@fixture()
+@fixture
 def user(db: SQLAlchemy) -> User:
     from abilian.core.models.subjects import User
 
@@ -112,7 +112,7 @@ def user(db: SQLAlchemy) -> User:
     return user
 
 
-@fixture()
+@fixture
 def admin_user(db: SQLAlchemy) -> User:
     from abilian.core.models.subjects import User
 
@@ -129,7 +129,7 @@ def admin_user(db: SQLAlchemy) -> User:
     return user
 
 
-@fixture()
+@fixture
 def login_user(user: User, client: FlaskClient) -> User:
     with client.session_transaction() as session:
         session["_user_id"] = user.id
@@ -137,7 +137,7 @@ def login_user(user: User, client: FlaskClient) -> User:
     return user
 
 
-@fixture()
+@fixture
 def login_admin(admin_user: User, client: FlaskClient) -> User:
     with client.session_transaction() as session:
         session["_user_id"] = admin_user.id
@@ -145,7 +145,7 @@ def login_admin(admin_user: User, client: FlaskClient) -> User:
     return admin_user
 
 
-@fixture()
+@fixture
 def community(db):
     community = Community(name="My Community")
     db.session.add(community)
@@ -153,7 +153,7 @@ def community(db):
     return community
 
 
-@fixture()
+@fixture
 def community1(db: SQLAlchemy) -> Community:
     community = Community(name="My Community")
     db.session.add(community)
@@ -171,7 +171,7 @@ def community1(db: SQLAlchemy) -> Community:
     return community
 
 
-@fixture()
+@fixture
 def community2(db: SQLAlchemy) -> Community:
     community = Community(name="Another Community")
     db.session.add(community)

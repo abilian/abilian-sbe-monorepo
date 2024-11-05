@@ -20,7 +20,7 @@ if TYPE_CHECKING:
     from abilian.core.sqlalchemy import SQLAlchemy
 
 
-@pytest.fixture()
+@pytest.fixture
 def csv_file() -> IO[str]:
     # create a tmp csv file
     csv = NamedTemporaryFile("w+", suffix=".csv", prefix="tmp_", delete=False)

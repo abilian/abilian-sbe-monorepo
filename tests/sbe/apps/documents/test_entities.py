@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from sqlalchemy.orm import Session
 
 
-@pytest.fixture()
+@pytest.fixture
 def app(config: type) -> Flask:
     return create_app(config=config)
 

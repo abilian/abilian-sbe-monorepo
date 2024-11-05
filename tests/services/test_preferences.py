@@ -43,7 +43,7 @@ class AdminPanel(PreferencePanel):
         return "Admin"
 
 
-@fixture()
+@fixture
 def app(config: type) -> Application:
     app = Application()
     app.configure(config)

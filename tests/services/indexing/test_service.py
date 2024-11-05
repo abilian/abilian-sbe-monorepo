@@ -28,7 +28,7 @@ class IndexedContact(Entity):
     name = sa.Column(sa.UnicodeText)
 
 
-@fixture()
+@fixture
 def svc(app: Application) -> Iterator[WhooshIndexService]:
     _svc = cast(WhooshIndexService, get_service("indexing"))
     with app.app_context():

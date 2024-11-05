@@ -16,14 +16,14 @@ if TYPE_CHECKING:
     from sqlalchemy.orm import Session
 
 
-@fixture()
+@fixture
 def repository(app: Flask) -> ContentRepository:
     repository = ContentRepository()
     repository.init_app(app)
     return repository
 
 
-@fixture()
+@fixture
 def root(session: Session) -> Folder:
     root = Folder(title="")
     session.add(root)

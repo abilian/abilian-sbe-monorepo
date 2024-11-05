@@ -126,7 +126,7 @@ def test_paragraphs():
     assert tmpl.render().strip() == expected.strip()
 
 
-@fixture()
+@fixture
 def app() -> Iterator[Flask]:
     app = Flask(__name__)
     babel = Babel(app, default_locale="fr", default_timezone=USER_TZ)

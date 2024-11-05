@@ -35,7 +35,7 @@ if TYPE_CHECKING:
 # from ..models import MEMBER, READER, Community, CommunityIdColumn, community_content
 
 
-@pytest.fixture()
+@pytest.fixture
 def community(db_session: Session) -> Community:
     community = Community(name="My Community")
     db_session.add(community)

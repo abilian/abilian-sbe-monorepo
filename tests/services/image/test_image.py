@@ -9,7 +9,7 @@ from pytest import fixture
 from abilian.services.image import CROP, SCALE, get_save_format, get_size, resize
 
 
-@fixture()
+@fixture
 def orig_image() -> bytes:
     # 725x518
     return (Path(__file__).parent / "cat.jpg").open("rb").read()

@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from flask import Flask
 
 
-@pytest.fixture()
+@pytest.fixture
 def app(config: type) -> Iterator[Iterator | Iterator[Flask]]:
     app = create_app(config)
 

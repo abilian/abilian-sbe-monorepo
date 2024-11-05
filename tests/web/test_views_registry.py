@@ -38,7 +38,7 @@ class RegEntity5(Entity):
     name = sa.Column(sa.Unicode, default="")
 
 
-@fixture()
+@fixture
 def registry(app: Flask) -> Registry:
     app.default_view = Registry()
     return app.default_view

@@ -36,7 +36,7 @@ def uid_from_url(url):
     return int(url.split("/")[-1])
 
 
-@fixture()
+@fixture
 def community(community1: Community, db: SQLAlchemy) -> Community:
     community = community1
     user = community.test_user
