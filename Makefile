@@ -64,7 +64,6 @@ lint-pyright:
 
 .PHONY: format
 format:
-	isort src tests *.py
 	ruff format src tests *.py
 
 

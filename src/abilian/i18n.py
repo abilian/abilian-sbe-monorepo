@@ -63,8 +63,14 @@ from babel.dates import LOCALTZ, get_timezone, get_timezone_gmt
 from babel.localedata import locale_identifiers
 from babel.support import Translations as BaseTranslations
 from flask import Flask, current_app, g, render_template, request
-from flask_babel import Babel as BabelBase
-from flask_babel import LazyString, force_locale, gettext, lazy_gettext, ngettext
+from flask_babel import (
+    Babel as BabelBase,
+    LazyString,
+    force_locale,
+    gettext,
+    lazy_gettext,
+    ngettext,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterator

@@ -8,8 +8,7 @@ from datetime import timedelta
 from typing import TYPE_CHECKING
 
 from flask import current_app, flash, redirect, render_template, request, url_for
-from flask_babel import gettext as _
-from flask_babel import lazy_gettext as _l
+from flask_babel import gettext as _, lazy_gettext as _l
 from jinja2 import Template
 
 from abilian.core.extensions import db

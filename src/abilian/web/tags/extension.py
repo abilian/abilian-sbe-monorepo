@@ -14,8 +14,7 @@ from abilian.web.forms import Form
 from abilian.web.views.object import EDIT_BUTTON
 
 from .forms import TagsField
-from .views import bp as tags_bp
-from .views import entity_bp
+from .views import bp as tags_bp, entity_bp
 
 if TYPE_CHECKING:
     from flask import Flask

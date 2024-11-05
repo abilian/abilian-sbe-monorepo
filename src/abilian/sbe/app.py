@@ -10,8 +10,7 @@ from __future__ import annotations
 
 import jinja2
 
-from abilian.app import Application as BaseApplication
-from abilian.app import create_app as base_create_app
+from abilian.app import Application as BaseApplication, create_app as base_create_app
 from abilian.core.dramatiq.setup import init_dramatiq_engine
 from abilian.core.plugin_manager import CORE_PLUGINS
 from abilian.services import converter

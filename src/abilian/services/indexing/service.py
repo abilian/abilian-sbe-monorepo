@@ -37,8 +37,7 @@ from abilian.core.dramatiq.singleton import dramatiq
 from abilian.core.entities import Entity, Indexable
 from abilian.core.extensions import db
 from abilian.core.models.subjects import Group, User
-from abilian.core.util import fqcn as base_fqcn
-from abilian.core.util import friendly_fqcn
+from abilian.core.util import fqcn as base_fqcn, friendly_fqcn
 from abilian.services import Service, ServiceState
 from abilian.services.security import Anonymous, Authenticated, Role, security
 

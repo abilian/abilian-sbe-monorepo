@@ -18,13 +18,20 @@ from flask_babel import format_date, format_datetime, get_locale, get_timezone
 from flask_login import current_user
 from flask_wtf.file import FileField as BaseFileField
 from loguru import logger
-from wtforms import Field
-from wtforms import FieldList as BaseFieldList
-from wtforms import FormField as BaseFormField
-from wtforms import SelectField, SelectFieldBase, SelectMultipleField, ValidationError
+from wtforms import (
+    Field,
+    FieldList as BaseFieldList,
+    FormField as BaseFormField,
+    SelectField,
+    SelectFieldBase,
+    SelectMultipleField,
+    ValidationError,
+)
 from wtforms.validators import DataRequired, Optional
-from wtforms_alchemy import ModelFieldList as BaseModelFieldList
-from wtforms_alchemy import ModelFormField as BaseModelFormField
+from wtforms_alchemy import (
+    ModelFieldList as BaseModelFieldList,
+    ModelFormField as BaseModelFormField,
+)
 from wtforms_sqlalchemy.fields import has_identity_key
 
 from abilian import i18n

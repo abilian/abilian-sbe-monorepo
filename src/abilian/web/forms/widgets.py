@@ -25,11 +25,13 @@ from flask_login import current_user
 from flask_wtf.file import FileField
 from markupsafe import Markup
 from wtforms import Field, FieldList, Form, FormField, IntegerField, Label, StringField
-from wtforms.widgets import Input
-from wtforms.widgets import PasswordInput as BasePasswordInput
-from wtforms.widgets import Select
-from wtforms.widgets import TextArea as BaseTextArea
-from wtforms.widgets import html_params
+from wtforms.widgets import (
+    Input,
+    PasswordInput as BasePasswordInput,
+    Select,
+    TextArea as BaseTextArea,
+    html_params,
+)
 from wtforms_alchemy import ModelFieldList
 
 from abilian.core.entities import Entity

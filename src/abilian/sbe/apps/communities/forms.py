@@ -6,8 +6,7 @@ import imghdr
 
 import sqlalchemy as sa
 from flask import request
-from flask_babel import gettext as _
-from flask_babel import lazy_gettext as _l
+from flask_babel import gettext as _, lazy_gettext as _l
 from PIL import Image
 from wtforms import BooleanField, StringField, TextAreaField
 from wtforms.validators import ValidationError, data_required, optional

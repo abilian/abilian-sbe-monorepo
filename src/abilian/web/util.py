@@ -10,8 +10,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from flask import current_app
-from flask import url_for as flask_url_for
+from flask import current_app, url_for as flask_url_for
 from flask.helpers import send_from_directory
 from werkzeug.routing import BuildError
 

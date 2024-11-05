@@ -6,8 +6,7 @@ import os
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
-from flask_assets import Bundle
-from flask_assets import Environment as AssetsEnv
+from flask_assets import Bundle, Environment as AssetsEnv
 from loguru import logger
 
 from abilian.services.security import Anonymous

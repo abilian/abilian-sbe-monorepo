@@ -27,9 +27,7 @@ from abilian.services.security.models import (
     READ,
     WRITE,
     Admin,
-)
-from abilian.services.security.models import Anonymous as AnonymousRole
-from abilian.services.security.models import (
+    Anonymous as AnonymousRole,
     Authenticated,
     Creator,
     FolderishModel,

@@ -4,8 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from flask import g
-from flask import url_for as url_for_orig
+from flask import g, url_for as url_for_orig
 from flask_login import current_user
 
 from abilian.i18n import _l
