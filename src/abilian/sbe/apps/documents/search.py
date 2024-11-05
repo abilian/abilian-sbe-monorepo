@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Indexing related utilities for Folder, Documents."""
 
 from __future__ import annotations

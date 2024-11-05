@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Simple redis extension."""
 
 from __future__ import annotations

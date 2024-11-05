@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """audit Service: logs modifications to audited objects.
 
 TODO: In the future, we may decide to:

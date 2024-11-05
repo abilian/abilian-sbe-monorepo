@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Login-related views (login / logout / password reminder / ...).
 
 Notes:

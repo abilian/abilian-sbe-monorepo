@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """The blueprint for this app."""
 
 from __future__ import annotations

@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Entity objects for the Document Management applications.
 
 TODO: move to an independent service / app.

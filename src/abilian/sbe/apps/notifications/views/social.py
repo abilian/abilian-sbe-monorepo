@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """First cut at a notification system."""
 
 from __future__ import annotations

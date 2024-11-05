@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Admin panel for vocabularies."""
 
 from __future__ import annotations

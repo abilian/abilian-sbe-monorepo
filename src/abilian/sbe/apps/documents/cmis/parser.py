@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Parses XML messages and converts them to objects."""
 
 # ruff:noqa:UP031

@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Read public domain (CC-0) database of IP/country and export to MMDB format.
 
 Resulting file file is written in curent working directory.

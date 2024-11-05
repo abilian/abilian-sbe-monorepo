@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Tests from test_community are currently refactored using pytest in this
 module."""
 

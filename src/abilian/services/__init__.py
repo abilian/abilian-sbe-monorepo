@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Modules that provide services.
 
 They are implemented as Flask extensions (see:

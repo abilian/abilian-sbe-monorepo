@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Extension for sending information to upstream server."""
 
 from __future__ import annotations
@@ -25,6 +27,7 @@ class UpstreamInfo:
 
     def init_app(self, app: Flask):
         app.extensions["upstream"] = self
+
         request_started.connect(self.request_started, sender=app)
         request_finished.connect(self.request_finished, sender=app)
         user_loaded.connect(self.user_loaded, sender=app)

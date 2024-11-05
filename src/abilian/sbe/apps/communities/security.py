@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Decorators and helpers to check access to communities."""
 
 from __future__ import annotations

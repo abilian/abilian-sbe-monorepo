@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Various tools that don't belong some place specific."""
 
 from __future__ import annotations

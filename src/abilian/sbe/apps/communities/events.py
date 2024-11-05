@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Lightweight integration and denormalisation using events (signals)."""
 
 from __future__ import annotations

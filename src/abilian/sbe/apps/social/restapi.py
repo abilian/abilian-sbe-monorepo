@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """
 NOTE: this code is a legacy from the early days of the application,
 and currently not used.

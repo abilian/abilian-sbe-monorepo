@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from flask import Blueprint, Flask, abort
 from loguru import logger
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Indexing service for Abilian.
 
 Adds Whoosh indexing capabilities to SQLAlchemy models.

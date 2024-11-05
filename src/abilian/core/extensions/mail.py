@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Mail extension for Abilian Core."""
 
 from __future__ import annotations

@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Configuration specific to integratin tests.
 
 Note: app is extranet.app

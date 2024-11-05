@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """View decorators for controlling some aspect of HTTP, mainly: Cache
 headers."""
 

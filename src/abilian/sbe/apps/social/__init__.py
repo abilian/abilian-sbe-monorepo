@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Default ("home") page for social apps."""
 
 from __future__ import annotations

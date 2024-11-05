@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Static configuration for the application.
 
 TODO: add more (runtime) flexibility in plugin discovery, selection

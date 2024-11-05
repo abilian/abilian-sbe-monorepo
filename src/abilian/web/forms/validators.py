@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Validators.
 
 TODO: most of this is currently only stubs and needs to be implemented.

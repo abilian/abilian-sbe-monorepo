@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Models for the Forum.
 
 Note: a few features are planned but not implemented yet, and are commented

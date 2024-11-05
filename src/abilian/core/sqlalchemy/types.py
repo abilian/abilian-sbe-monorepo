@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Additional data types for sqlalchemy."""
 
 from __future__ import annotations

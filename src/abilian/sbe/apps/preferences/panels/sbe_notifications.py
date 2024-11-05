@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """This panel manages user setting for email reminders related to the SBE
 (social netowking) app."""
 

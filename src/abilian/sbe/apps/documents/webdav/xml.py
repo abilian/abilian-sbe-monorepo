@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Parses and produces XML documents specified by the standard."""
 
 from __future__ import annotations

@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Some functions to retrieve activity entries."""
 
 # TODO: move to the activity service ?

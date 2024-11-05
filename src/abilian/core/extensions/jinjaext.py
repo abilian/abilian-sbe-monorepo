@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Jinja2 extensions."""
 
 from __future__ import annotations

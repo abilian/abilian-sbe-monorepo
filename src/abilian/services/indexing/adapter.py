@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Objects to schema adapters."""
 
 from __future__ import annotations

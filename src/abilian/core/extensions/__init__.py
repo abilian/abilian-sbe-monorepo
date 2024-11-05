@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Create all standard extensions."""
 
 # Note: Because of issues with circular dependencies, Abilian-specific

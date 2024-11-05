@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 # Dead code, not used in SBE (was used in CRM).
 # TODO: remove definitively (or move to CRM project).
 

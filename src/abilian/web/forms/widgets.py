@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Reusable widgets to be included in views.
 
 NOTE: code is currently quite messy. Needs to be refactored.

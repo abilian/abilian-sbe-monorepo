@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """All signals used by Abilian Core.
 
 Signals are the main tools used for decoupling applications components by

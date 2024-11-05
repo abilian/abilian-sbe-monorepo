@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Base class for entities, objects that are managed by the Abilian framwework
 (unlike SQLAlchemy models which are considered lower-level)."""
 

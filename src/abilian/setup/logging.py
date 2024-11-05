@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 # ruff: noqa: PLC0415
 
 from __future__ import annotations

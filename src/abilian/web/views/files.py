@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Base classes for file download."""
 
 from __future__ import annotations

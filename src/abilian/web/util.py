@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """A few utility functions.
 
 See https://docs.djangoproject.com/en/dev/topics/http/shortcuts/ for

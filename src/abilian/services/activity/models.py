@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Activity Service.
 
 See: http://activitystrea.ms/specs/json/1.0/

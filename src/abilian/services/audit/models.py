@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Audit Service: logs modifications to audited objects.
 
 Only subclasses of Entity are auditable, at this point.

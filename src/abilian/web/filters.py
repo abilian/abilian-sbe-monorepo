@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Add a few specific filters to Jinja2."""
 
 from __future__ import annotations

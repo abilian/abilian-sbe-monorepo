@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Blob.
 
 References to files stored in a on-disk repository

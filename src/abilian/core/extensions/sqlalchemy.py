@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Create a SQLAlchemy instance and configure it."""
 
 from __future__ import annotations

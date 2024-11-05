@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Dramatiq tasks related to documents."""
 
 from __future__ import annotations

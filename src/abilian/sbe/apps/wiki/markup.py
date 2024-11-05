@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Set up the markdown converter.
 
 Add extensions here (for now).

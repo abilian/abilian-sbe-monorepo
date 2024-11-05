@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Base Flask application class, used by tests or to be extended in real
 applications."""
 

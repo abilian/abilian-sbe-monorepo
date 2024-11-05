@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Elements to build test cases for an :class:`abilian.app.Application`"""
 
 from __future__ import annotations

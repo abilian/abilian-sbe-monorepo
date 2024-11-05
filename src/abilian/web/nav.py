@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Navigation elements.
 
 Abilian define theses categories:   `section`:     Used for navigation

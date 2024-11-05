@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Subject classes (i.e. people, groups, etc.).
 
 See ICOM-ics-v1.0 "Subject Branch".

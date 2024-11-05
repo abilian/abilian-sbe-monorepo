@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Register extensions as a plugin.
 
 NOTE: panels are currently loaded and registered manually. This may change

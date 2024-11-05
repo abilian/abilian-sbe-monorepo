@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Extensions to WTForms fields, widgets and validators."""
 
 from __future__ import annotations
