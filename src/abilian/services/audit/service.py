@@ -153,9 +153,10 @@ class AuditService(Service):
         for attr in related_path:
             relation = mapper.relationships.get(attr)
             if not relation:
-                raise ValueError(
+                msg = (
                     f'Invalid relation: "{related_attr}", invalid attribute is "{attr}"'
                 )
+                raise ValueError(msg)
 
             mapper = relation.mapper
             if inferred_backref is not None:
@@ -173,11 +174,12 @@ class AuditService(Service):
             if inferred_backref is not None:
                 backref_attr = ".".join(inferred_backref)
             else:
-                raise ValueError(
+                msg = (
                     f"Audit setup class<{entity_class.__name__}: Could not guess backref name"
                     f' of relationship "{related_attr}", please use tuple annotation '
                     "on __auditable_entity__"
                 )
+                raise ValueError(msg)
 
         meta.related = related_path
         meta.backref_attr = backref_attr

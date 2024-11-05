@@ -45,10 +45,12 @@ class BaseImageView(BaseFileDownload):
         try:
             size = int(size)
         except ValueError as e:
-            raise BadRequest(f'Invalid value for "s": {size:d}. Not an integer.') from e
+            msg = f'Invalid value for "s": {size:d}. Not an integer.'
+            raise BadRequest(msg) from e
 
         if self.max_size is not None and size > self.max_size:
-            raise BadRequest(f"Size too large: {size:d} (max: {self.max_size:d})")
+            msg = f"Size too large: {size:d} (max: {self.max_size:d})"
+            raise BadRequest(msg)
 
         kwargs["size"] = size
 
@@ -113,7 +115,8 @@ class StaticImageView(BaseImageView):
         self.image_path = Path(image)
         if not self.image_path.exists():
             p = str(self.image_path)
-            raise ValueError(f"Invalid image path: {p!r}")
+            msg = f"Invalid image path: {p!r}"
+            raise ValueError(msg)
 
     def prepare_args(self, args, kwargs):
         kwargs["image"] = self.image_path.open("rb")
@@ -141,7 +144,8 @@ class BlobView(BaseImageView):
         try:
             blob_id = int(blob_id)
         except ValueError as e:
-            raise BadRequest(f"Invalid blob id: {blob_id!r}") from e
+            msg = f"Invalid blob id: {blob_id!r}"
+            raise BadRequest(msg) from e
 
         blob = Blob.query.get(blob_id)
         if not blob:

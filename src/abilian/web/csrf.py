@@ -85,7 +85,8 @@ def protect(view: Callable) -> Callable:
     def csrf_check(*args, **kwargs):
         # an empty form is used to validate current csrf token and only that!
         if not FlaskForm().validate():
-            raise Forbidden("CSRF validation failed.")
+            msg = "CSRF validation failed."
+            raise Forbidden(msg)
 
         return view(*args, **kwargs)
 

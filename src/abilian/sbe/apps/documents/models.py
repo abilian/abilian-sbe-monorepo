@@ -400,7 +400,8 @@ class Folder(PathAndSecurityIndexable, CmisObject):
             elif isinstance(principal, Group):
                 return principal.name
             else:
-                raise TypeError(f"Bad class here: {type(principal)}")
+                msg = f"Bad class here: {type(principal)}"
+                raise TypeError(msg)
 
         return sorted(assignments, key=key)
 
@@ -717,7 +718,8 @@ class Document(BaseContent, PathAndSecurityIndexable):
 
         lock = self.lock
         if lock and not lock.is_owner(user=user):
-            raise RuntimeError("This document is already locked by another user")
+            msg = "This document is already locked by another user"
+            raise RuntimeError(msg)
 
         meta = self.meta.setdefault("abilian.sbe.documents", {})
         lock = Lock.new()

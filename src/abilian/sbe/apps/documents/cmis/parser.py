@@ -99,4 +99,5 @@ class Property:
                 # FIXME
                 self.value = datetime(value)
             else:
-                raise Exception(f"Unknown value type: {self.type}")
+                msg = f"Unknown value type: {self.type}"
+                raise Exception(msg)

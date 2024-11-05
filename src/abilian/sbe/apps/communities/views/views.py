@@ -134,7 +134,8 @@ def default_view_kw(
     if community_id is not None:
         kw["community_id"] = community_id
     else:
-        raise ValueError("Cannot find community_id value")
+        msg = "Cannot find community_id value"
+        raise ValueError(msg)
 
     return kw
 
@@ -418,7 +419,8 @@ def members_post() -> Response:
         return redirect(url_for(".members", community_id=community.slug))
 
     else:
-        raise BadRequest(f"Unknown action: {action!r}")
+        msg = f"Unknown action: {action!r}"
+        raise BadRequest(msg)
 
 
 MEMBERS_EXPORT_HEADERS = [

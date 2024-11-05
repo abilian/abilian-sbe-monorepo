@@ -416,7 +416,8 @@ class ThreadCloseView(BaseThreadView, views.object.BaseObjectView):
         args, kwargs = super().prepare_args(args, kwargs)
         action = kwargs["action"] = request.form.get("action")
         if action not in self._VALID_ACTIONS:
-            raise BadRequest(f"Unknown action: {action!r}")
+            msg = f"Unknown action: {action!r}"
+            raise BadRequest(msg)
 
         return args, kwargs
 

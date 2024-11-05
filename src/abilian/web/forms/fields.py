@@ -192,10 +192,11 @@ class FileField(BaseFileField):
                 isinstance(v, DataRequired if allow_delete else Optional)
                 for v in validators
             ):
-                raise ValueError(
+                msg = (
                     "Field validators are conflicting with `allow_delete`,"
                     f"validators={validators!r}, allow_delete={allow_delete!r}"
                 )
+                raise ValueError(msg)
             if not allow_delete:
                 validators.append(DataRequired())
 
@@ -247,7 +248,8 @@ class FileField(BaseFileField):
 
             if fileobj is None:
                 # FIXME: this is a validation task
-                raise ValueError(f"File with handle {handle!r} not found")
+                msg = f"File with handle {handle!r} not found"
+                raise ValueError(msg)
 
             meta = uploads.get_metadata(current_user, handle)
             filename = meta.get("filename", handle)
@@ -278,7 +280,8 @@ class FileField(BaseFileField):
 
         rel = getattr(mapper.relationships, name)
         if rel.uselist:
-            raise ValueError("Only single target supported; else use ModelFieldList")
+            msg = "Only single target supported; else use ModelFieldList"
+            raise ValueError(msg)
 
         if delete_value:
             setattr(obj, name, None)
@@ -525,9 +528,8 @@ class QuerySelect2Field(SelectFieldBase):
 
         if get_pk is None:
             if not has_identity_key:
-                raise Exception(
-                    "The sqlalchemy identity_key function could not be imported."
-                )
+                msg = "The sqlalchemy identity_key function could not be imported."
+                raise Exception(msg)
             self.get_pk = self._get_pk_from_identity
         else:
             self.get_pk = get_pk
@@ -789,9 +791,8 @@ class LocaleSelectField(SelectField):
         elif value is None:
             return None
 
-        raise ValueError(
-            f"Value cannot be converted to Locale(), or is not None, {value!r}"
-        )
+        msg = f"Value cannot be converted to Locale(), or is not None, {value!r}"
+        raise ValueError(msg)
 
     def iter_choices(self):
         if not self.flags.required:

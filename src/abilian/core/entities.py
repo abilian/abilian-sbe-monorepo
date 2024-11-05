@@ -215,10 +215,11 @@ class EntityMeta(BaseMeta):
                 if isinstance(default_permissions, collections.abc.Mapping):
                     default_permissions = default_permissions.items()
                 elif not isinstance(default_permissions, collections.abc.Set):
-                    raise TypeError(
+                    msg = (
                         "__default_permissions__ is neither a dict or set, "
                         f"cannot create class {classname}"
                     )
+                    raise TypeError(msg)
 
                 # also ensure that `roles` set is immutable, too
                 default_permissions = frozenset(
@@ -232,9 +233,8 @@ class EntityMeta(BaseMeta):
         cls = BaseMeta.__new__(mcs, classname, bases, d)
 
         if not issubclass(cls.query_class, EntityQuery):
-            raise TypeError(
-                f"query_class is not a subclass of EntityQuery: {cls.query_class!r}"
-            )
+            msg = f"query_class is not a subclass of EntityQuery: {cls.query_class!r}"
+            raise TypeError(msg)
 
         event.listen(cls, "before_insert", auto_slug_on_insert)
         event.listen(cls, "after_insert", auto_slug_after_insert)

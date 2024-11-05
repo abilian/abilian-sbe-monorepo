@@ -391,7 +391,8 @@ class Action:
                 assert isinstance(kwargs, dict)
                 endpoint = self.Endpoint(endpoint, **kwargs)
             else:
-                raise TypeError(f'Invalid endpoint specifier: "{endpoint!r}"')
+                msg = f'Invalid endpoint specifier: "{endpoint!r}"'
+                raise TypeError(msg)
 
         return endpoint
 

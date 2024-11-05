@@ -87,9 +87,8 @@ class Setting(db.Model):
         if not (
             type_ in self.transformers.encoders and type_ in self.transformers.decoders
         ):
-            raise ValueError(
-                f'Invalid type "{type_}": no encoder and/or decoder registered'
-            )
+            msg = f'Invalid type "{type_}": no encoder and/or decoder registered'
+            raise ValueError(msg)
         self._type = type_
 
     @property

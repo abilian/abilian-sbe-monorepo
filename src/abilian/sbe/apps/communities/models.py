@@ -246,7 +246,8 @@ class Community(Entity):
         role = Role(role)
 
         if role not in VALID_ROLES:
-            raise ValueError(f"Invalid role: {role}")
+            msg = f"Invalid role: {role}"
+            raise ValueError(msg)
 
         session = sa.orm.object_session(self) or db.session()
         is_new = True
@@ -273,7 +274,8 @@ class Community(Entity):
             and_(M.user_id == user.id, M.community_id == self.id)
         ).first()
         if not membership:
-            raise KeyError(f"User {user} is not a member of community {self}")
+            msg = f"User {user} is not a member of community {self}"
+            raise KeyError(msg)
 
         db.session.delete(membership)
         self.membership_count -= 1

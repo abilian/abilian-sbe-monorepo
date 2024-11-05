@@ -149,7 +149,8 @@ class Admin:
         ):
             if not rule:
                 # '' is already used for panel get/post
-                raise ValueError(f"Invalid additional url rule: {rule!r}")
+                msg = f"Invalid additional url rule: {rule!r}"
+                raise ValueError(msg)
 
             if endpoint is None:
                 endpoint = _endpoint_from_view_func(view_func)

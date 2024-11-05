@@ -60,10 +60,12 @@ class BaseAttachmentView:
             self.entity = Entity.query.get(entity_id)
 
         if self.entity is None:
-            raise BadRequest("No entity provided")
+            msg = "No entity provided"
+            raise BadRequest(msg)
 
         if not supports_attachments(self.entity):
-            raise BadRequest("This entity is doesn't support attachments")
+            msg = "This entity is doesn't support attachments"
+            raise BadRequest(msg)
 
         extension = current_app.extensions["attachments"]
         self.Form = extension.manager(self.entity).Form

@@ -303,7 +303,8 @@ class Less(ExternalTool):
             return url
 
         if len(possible_paths) > 1:
-            raise RuntimeError("Should not happen")
+            msg = "Should not happen"
+            raise RuntimeError(msg)
             # possible_paths.sort(lambda p: -len(p))
 
         path = possible_paths[0]
@@ -360,12 +361,14 @@ class ClosureJS(BaseClosureJS):
         possible_paths = [p for p in self.ctx.url_mapping if src_path.startswith(p)]
 
         if not possible_paths:
-            raise RuntimeError("Should not happen")
+            msg = "Should not happen"
+            raise RuntimeError(msg)
             # # FIXME: url is not defined at this point, this can't work.
             # return url
 
         if len(possible_paths) > 1:
-            raise RuntimeError("Should not happen")
+            msg = "Should not happen"
+            raise RuntimeError(msg)
             # possible_paths.sort(lambda p: -len(p))
 
         path = possible_paths[0]

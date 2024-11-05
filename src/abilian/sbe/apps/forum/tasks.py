@@ -146,9 +146,8 @@ def build_local_part(name, uid):
     if len(local_part) > 64:
         if (len(local_part) - len(digest) - 1) > 64:
             # even without digest, it's too long
-            raise ValueError(
-                "Cannot build reply address: local part exceeds 64 characters"
-            )
+            msg = "Cannot build reply address: local part exceeds 64 characters"
+            raise ValueError(msg)
         local_part = local_part[:64]
 
     return local_part
@@ -188,7 +187,8 @@ def extract_email_destination(address: str) -> tuple[str, ...]:
     signed_local_part = build_local_part(name, uid)
 
     if local_part != signed_local_part:
-        raise ValueError("Invalid signature in reply address")
+        msg = "Invalid signature in reply address"
+        raise ValueError(msg)
 
     values = uid.split("-")
     header = values.pop(0)
@@ -511,7 +511,8 @@ def check_maildir():
     home = expanduser("~")
     maildirpath = Path(home) / "Maildir"
     if not maildirpath.is_dir():
-        raise ValueError(f"{maildirpath} must be a directory")
+        msg = f"{maildirpath} must be a directory"
+        raise ValueError(msg)
 
     incoming_mailbox = mailbox.Maildir(str(maildirpath))
     incoming_mailbox.lock()  # Useless but recommended if old mbox is used by error

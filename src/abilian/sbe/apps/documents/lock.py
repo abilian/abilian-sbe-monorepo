@@ -32,7 +32,8 @@ class Lock:
             try:
                 date = dateutil.parser.parse(date)
             except Exception as e:
-                raise ValueError(f"Error parsing date: {date!r}") from e
+                msg = f"Error parsing date: {date!r}"
+                raise ValueError(msg) from e
 
         self.date = date
 

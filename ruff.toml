@@ -9,7 +9,6 @@ lint.extend-ignore = [
     "ARG",  # flake8-unused-arguments
     "COM",  # flake8-commas
     "D",    # pydocstyle
-    "EM",   # flake8-errmsg
     "FBT",  # flake8-boolean-trap
     "FIX",  # flake8-fixme
     "INP",  # flake8-no-pep420

@@ -47,7 +47,8 @@ def assert_valid(response: Response):
         assert_json_valid(response)
 
     else:
-        raise AssertionError(f"Unknown mime type: {response.mimetype}")
+        msg = f"Unknown mime type: {response.mimetype}"
+        raise AssertionError(msg)
 
 
 def assert_html_valid(response: Response):

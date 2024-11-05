@@ -211,7 +211,8 @@ def checkin_checkout(doc_id):
     action = request.form.get("action")
 
     if action not in ("checkout", "lock", "unlock"):
-        raise BadRequest(f"Unknown action: {action!r}")
+        msg = f"Unknown action: {action!r}"
+        raise BadRequest(msg)
 
     session = sa.orm.object_session(doc)
 

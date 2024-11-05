@@ -318,7 +318,8 @@ class AuditEntryPresenter(BaseEntryPresenter):
         elif e.op == 2:
             msg = _('{user} has deleted {entity_type}: {entity_id} "{entity}"')
         else:
-            raise Exception(f"Bad entry type: {e.type}")
+            msg = f"Bad entry type: {e.type}"
+            raise Exception(msg)
 
         self.msg = Markup(
             msg.format(
@@ -384,13 +385,15 @@ class SecurityEntryPresenter(BaseEntryPresenter):
                     '{manager} has revoked role "{role}" from {principal} on {entity}'
                 )
             else:
-                raise Exception(f"Invalid entity op: {e.op}")
+                msg = f"Invalid entity op: {e.op}"
+                raise Exception(msg)
         elif e.op == e.GRANT:
             msg = _('{manager} has given role "{role}" to {principal}')
         elif e.op == e.REVOKE:
             msg = _('{manager} has revoked role "{role}" from {principal}')
         else:
-            raise Exception(f"Invalid entity op: {e.op}")
+            msg = f"Invalid entity op: {e.op}"
+            raise Exception(msg)
 
         self.msg = Markup(
             msg.format(manager=manager, principal=principal, role=e.role, entity=entity)

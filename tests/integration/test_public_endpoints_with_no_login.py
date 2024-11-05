@@ -34,4 +34,5 @@ def test_public_endpoints_with_no_login(client: FlaskClient, app: Application):
     security_service.stop()
     if errors:
         print(errors)
-        raise AssertionError("Some public web tests failed")
+        msg = "Some public web tests failed"
+        raise AssertionError(msg)

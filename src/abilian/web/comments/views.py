@@ -61,10 +61,12 @@ class BaseCommentView:
             self.entity = Entity.query.get(entity_id)
 
         if self.entity is None:
-            raise BadRequest("No entity to comment")
+            msg = "No entity to comment"
+            raise BadRequest(msg)
 
         if not is_commentable(self.entity):
-            raise BadRequest("This entity is not commentable")
+            msg = "This entity is not commentable"
+            raise BadRequest(msg)
 
         actions.context["object"] = self.entity
         return args, kwargs

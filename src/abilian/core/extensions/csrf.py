@@ -35,10 +35,11 @@ class AbilianCsrf:
 
     def init_app(self, app):
         if "csrf" not in app.extensions:
-            raise RuntimeError(
+            msg = (
                 'Please install flask_wtf.csrf.CSRFProtect() as "csrf" in '
                 "extensions before AbilianCsrf()"
             )
+            raise RuntimeError(msg)
 
         # FIXME
         # app.extensions["csrf"].error_handler(self.csrf_error_handler)

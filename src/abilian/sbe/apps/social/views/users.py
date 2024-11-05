@@ -223,7 +223,8 @@ def user_post(user_id):
     elif action == "unfollow":
         current_user.unfollow(user)
     else:
-        raise Exception("Should not happen")
+        msg = "Should not happen"
+        raise Exception(msg)
     db.session.commit()
 
     if return_url:

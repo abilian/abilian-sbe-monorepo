@@ -715,10 +715,11 @@ class TextArea(BaseTextArea):
         super().__init__(*args, **kwargs)
 
         if resizeable not in self._resizeable_valid:
-            raise ValueError(
+            msg = (
                 f"Invalid value for resizeable: {resizeable}, "
                 f"valid values are: {self._resizeable_valid!r}"
             )
+            raise ValueError(msg)
         if resizeable:
             self.resizeable = f"resizeable-{resizeable}"
         else:

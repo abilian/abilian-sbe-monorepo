@@ -101,7 +101,8 @@ def group_post(group_id):
     membership_actions = frozenset(("add", "remove", "add-admin", "remove-admin"))
 
     if action not in {"join", "leave"} | membership_actions:
-        raise ValueError(f"Unknown action: {action}")
+        msg = f"Unknown action: {action}"
+        raise ValueError(msg)
 
     if action not in ("join", "leave"):
         assert is_admin(group)
@@ -176,7 +177,8 @@ def group_mugshot(group_id):
     # TODO: duplicated code (with user_mugshot). Extract common method.
     size = int(request.args.get("s", 55))
     if size > 500:
-        raise ValueError(f"Error, size = {size:d}")
+        msg = f"Error, size = {size:d}"
+        raise ValueError(msg)
     group = Group.query.get(group_id)
 
     if not group:

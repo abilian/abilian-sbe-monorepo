@@ -51,7 +51,8 @@ class ContentRepository:
         elif path:
             return self.get_object_by_path(path)
         else:
-            raise ValueError("id or path must be not null.")
+            msg = "id or path must be not null."
+            raise ValueError(msg)
 
     #
     # Id based navigation
@@ -136,7 +137,8 @@ class ContentRepository:
 
     def delete_object(self, obj: BaseContent) -> None:
         if obj.is_root_folder:
-            raise Exception("Can't delete root folder.")
+            msg = "Can't delete root folder."
+            raise Exception(msg)
 
         session = sa.orm.object_session(obj)
         obj.__path_before_delete = obj.path  # for audit log.

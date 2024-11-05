@@ -114,7 +114,8 @@ def folder_view(folder_id):
     elif view_style == "gallery_view":
         resp = render_template("documents/folder_gallery_view.html", **ctx)
     else:
-        raise InternalServerError("Unknown value for sbe_doc_view_style")
+        msg = "Unknown value for sbe_doc_view_style"
+        raise InternalServerError(msg)
 
     return resp
 
@@ -277,7 +278,8 @@ def permissions(folder_id):
                     'On {date}, {manager} has revoked role "{role}" from {principal}'
                 )
             else:
-                raise Exception(f"Unknown audit entry type {e.op}")
+                msg = f"Unknown audit entry type {e.op}"
+                raise Exception(msg)
 
             principal = ""
             if self.entry.user:
@@ -863,7 +865,8 @@ def move_multiple(folder: Folder) -> Response:
     target_folder = content_repository.get_folder_by_id(target_folder_id)
 
     if not target_folder:
-        raise InternalServerError("Target folder not found")
+        msg = "Target folder not found"
+        raise InternalServerError(msg)
 
     if folder == target_folder:
         flash(

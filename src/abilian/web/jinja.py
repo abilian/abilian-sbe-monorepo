@@ -85,9 +85,8 @@ class JinjaManagerMixin(Flask):
         :raise: `ValueError` if a template has already been rendered
         """
         if not hasattr(self, "_jinja_loaders"):
-            raise ValueError(
-                "Cannot register new jinja loaders after first template rendered"
-            )
+            msg = "Cannot register new jinja loaders after first template rendered"
+            raise ValueError(msg)
 
         self._jinja_loaders.extend(loaders)
 

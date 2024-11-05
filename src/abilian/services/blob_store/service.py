@@ -33,7 +33,8 @@ _NULL_MARK = object()
 
 def _assert_uuid(uuid: Any):
     if not isinstance(uuid, UUID):
-        raise TypeError("Not an uuid.UUID instance", uuid)
+        msg = "Not an uuid.UUID instance"
+        raise TypeError(msg, uuid)
 
 
 class BlobStoreServiceState(ServiceState):
@@ -129,7 +130,8 @@ class BlobStoreService(Service):
 
         dest = self.abs_path(uuid)
         if not dest.exists():
-            raise KeyError("No file can be found for this uuid", uuid)
+            msg = "No file can be found for this uuid"
+            raise KeyError(msg, uuid)
 
         dest.unlink()
 
@@ -138,7 +140,8 @@ class BlobStoreService(Service):
 
         value = self.get(uuid)
         if value is None:
-            raise KeyError("No file can be found for this uuid", uuid)
+            msg = "No file can be found for this uuid"
+            raise KeyError(msg, uuid)
         return value
 
     def __setitem__(self, uuid: UUID, content: Any):
@@ -352,7 +355,8 @@ class SessionBlobStoreService(Service):
         session = self._session_for(session)
         transaction = self.app_state.get_transaction(session)
         if transaction is None:
-            raise RuntimeError("transaction is None in blob store service")
+            msg = "transaction is None in blob store service"
+            raise RuntimeError(msg)
         transaction.set(uuid, content, encoding)
 
     def delete(self, session: Session | Blob, uuid: UUID):

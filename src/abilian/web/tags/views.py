@@ -74,7 +74,8 @@ class BaseEntityTagView(BaseTagView):
             self.entity = Entity.query.get(entity_id)
 
         if self.entity is None:
-            raise BadRequest("No entity provided")
+            msg = "No entity provided"
+            raise BadRequest(msg)
 
         return args, kwargs
 

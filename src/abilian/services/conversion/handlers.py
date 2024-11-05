@@ -122,7 +122,8 @@ class PdfToTextHandler(Handler):
             try:
                 subprocess.check_call([pdftotext, in_fn, out_fn])
             except Exception as e:
-                raise ConversionError("pdftotext failed") from e
+                msg = "pdftotext failed"
+                raise ConversionError(msg) from e
 
             converted = open(out_fn, "rb").read()
             try:
@@ -162,7 +163,8 @@ class AbiwordTextHandler(Handler):
                     cwd=bytes(tmp_dir),
                 )
             except Exception as e:
-                raise ConversionError("abiword failed") from e
+                msg = "abiword failed"
+                raise ConversionError(msg) from e
 
             converted = open(out_fn, "rb").read()
             try:
@@ -205,7 +207,8 @@ class AbiwordPDFHandler(Handler):
                     cwd=bytes(self.tmp_dir),
                 )
             except Exception as e:
-                raise ConversionError("abiword failed") from e
+                msg = "abiword failed"
+                raise ConversionError(msg) from e
 
             converted = Path(out_fn).read_bytes()
             return converted
@@ -223,7 +226,8 @@ class ImageMagickHandler(Handler):
                 converted = open(out_fn, "rb").read()
                 return converted
             except Exception as e:
-                raise ConversionError("convert failed") from e
+                msg = "convert failed"
+                raise ConversionError(msg) from e
 
 
 class PdfToPpmHandler(Handler):
@@ -247,7 +251,8 @@ class PdfToPpmHandler(Handler):
 
                 return converted_images
             except Exception as e:
-                raise ConversionError("pdftoppm failed") from e
+                msg = "pdftoppm failed"
+                raise ConversionError(msg) from e
             finally:
                 for fn in file_list:
                     with contextlib.suppress(OSError):
@@ -350,7 +355,8 @@ class UnoconvPdfHandler(Handler):
                     logger.opt(exception=True).error(
                         "run_uno error: {error}", error=str(e)
                     )
-                    raise ConversionError("unoconv failed") from e
+                    msg = "unoconv failed"
+                    raise ConversionError(msg) from e
 
             run_thread = threading.Thread(target=run_uno)
             run_thread.start()
@@ -369,7 +375,8 @@ class UnoconvPdfHandler(Handler):
                                 process=self._process,
                             )
 
-                    raise ConversionError(f"Conversion timeout ({timeout})")
+                    msg = f"Conversion timeout ({timeout})"
+                    raise ConversionError(msg)
 
                 converted = open(out_fn).read()
                 return converted
@@ -479,7 +486,8 @@ class LibreOfficePdfHandler(Handler):
                                 process=self._process,
                             )
 
-                    raise ConversionError(f"Conversion timeout ({timeout})")
+                    msg = f"Conversion timeout ({timeout})"
+                    raise ConversionError(msg)
 
                 out_fn = f"{os.path.splitext(in_fn)[0]}.pdf"
                 converted = open(out_fn, "rb").read()
@@ -544,7 +552,8 @@ class WvwareTextHandler(Handler):
             try:
                 subprocess.check_call(["wvText", in_fn, out_fn])
             except Exception as e:
-                raise ConversionError("wxText failed") from e
+                msg = "wxText failed"
+                raise ConversionError(msg) from e
 
             converted = open(out_fn, "rb").read()
 

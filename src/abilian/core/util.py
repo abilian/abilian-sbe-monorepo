@@ -185,7 +185,8 @@ _NOT_WORD_RE = re.compile(r"[^\w\s]+", flags=re.UNICODE)
 def slugify(value: str, separator: str = "-") -> str:
     """Slugify an Unicode string, to make it URL friendly."""
     if not isinstance(value, str):
-        raise TypeError("value must be a Unicode string")
+        msg = "value must be a Unicode string"
+        raise TypeError(msg)
 
     value = _NOT_WORD_RE.sub(" ", value)
     value = unicodedata.normalize("NFKD", value)
@@ -214,7 +215,8 @@ class BasePresenter:
         if key == "_model":
             self.__dict__[key] = value
         else:
-            raise AttributeError("Can't set attribute on a presenter.")
+            msg = "Can't set attribute on a presenter."
+            raise AttributeError(msg)
 
     @classmethod
     def wrap_collection(cls, models):

@@ -239,12 +239,14 @@ class User(Principal, UserMixin, db.Model):
 
     def follow(self, followee):
         if followee == self:
-            raise Exception("User can't follow self")
+            msg = "User can't follow self"
+            raise Exception(msg)
         self.followees.append(followee)
 
     def unfollow(self, followee):
         if followee == self:
-            raise Exception("User can't follow self")
+            msg = "User can't follow self"
+            raise Exception(msg)
         i = self.followees.index(followee)
         del self.followees[i]
 

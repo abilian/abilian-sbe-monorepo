@@ -57,7 +57,8 @@ class NewUploadView(BaseUploadsView, JSONView):
         form = UploadForm()
 
         if not form.validate():
-            raise BadRequest("File is missing.")
+            msg = "File is missing."
+            raise BadRequest(msg)
 
         uploaded = form["file"].data[0]
         filename = secure_filename(uploaded.filename)

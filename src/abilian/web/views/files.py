@@ -44,9 +44,11 @@ class BaseFileDownload(View):
 
         if self.set_expire:
             if not self.expire_offset:
-                raise ValueError("expire_offset is not set")
+                msg = "expire_offset is not set"
+                raise ValueError(msg)
             if not self.expire_vary_arg:
-                raise ValueError("expire_vary_arg is not set")
+                msg = "expire_vary_arg is not set"
+                raise ValueError(msg)
 
     def prepare_args(self, args, kwargs):
         if self.set_expire:
@@ -58,9 +60,8 @@ class BaseFileDownload(View):
                 # We must refuse to serve an image with expiry date set up
                 # to maybe 1 year from now.
                 # Check the code that has generated this url!
-                raise BadRequest(
-                    f"File version marker is missing ({self.expire_vary_arg!r}=?)"
-                )
+                msg = f"File version marker is missing ({self.expire_vary_arg!r}=?)"
+                raise BadRequest(msg)
 
         args, kwargs = super().prepare_args(args, kwargs)
         kwargs["attach"] = request.args.get("attach", self.as_attachment, type=bool)
