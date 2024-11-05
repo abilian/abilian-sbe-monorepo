@@ -5,26 +5,26 @@ exclude = []
 lint.select = ["ALL"]
 
 lint.extend-ignore = [
-    "A",    # Shadowing builtins
-    "ANN",  # flake8-annotations
-    "ARG",  # flake8-unused-arguments
-    "COM",  # flake8-commas
-    "D",    # pydocstyle
-    "FBT",  # flake8-boolean-trap
-    "FIX",  # flake8-fixme
-    "INP",  # flake8-no-pep420
+    "A", # Shadowing builtins
+    "ANN", # flake8-annotations
+    "ARG", # flake8-unused-arguments
+    "COM", # flake8-commas
+    "D", # pydocstyle
+    "FBT", # flake8-boolean-trap
+    "FIX", # flake8-fixme
     "PERF", # Perflint
-    "PGH",  # pygrep-hooks
-    "TD",   # flake8-todos
-    "TRY",  # tryceratops
-    "DOC",  # pydocstyle
-    "PTH",  # Pathlib
+    "PGH", # pygrep-hooks
+    "TD", # flake8-todos
+    "TRY", # tryceratops
+    "DOC", # pydocstyle
+    "PTH", # Pathlib
 
     # False positive, don't remove (unless you know exactly what you're doing)
     "E203", # whitespace before ':'
     "E711", # comparison to None should be 'if cond is not None:'
     "E712", # ...
     "E713", # Test for membership should be `not in`
+    "ERA001", # Found commented-out code
     "ISC001", # Conflicts with formatter
     "PLR2044", # Line with empty comment
     "PLW1514", # `open` in text mode without explicit `encoding` argument
@@ -45,7 +45,6 @@ lint.extend-ignore = [
     "E402", # Module level import not at top of file
     "E501", # line too long
     "E741", # Ambiguous variable name
-    "ERA001", # Found commented-out code
     "F401", # 'module' imported but unused
     "F841", # Local variable `...` is assigned to but never used
     "FURB113", # Use `x.extend(...)` instead of repeatedly calling `x.append()`
@@ -112,6 +111,9 @@ lint.extend-ignore = [
     "SLF001", # Private member accessed
     "T201", # `print` found
 ]
+
+[lint.per-file-ignores]
+"tests/**/*.py" = ["INP001"] # implicit namespace packages
 
 [lint.mccabe]
 max-complexity = 10
