@@ -5,19 +5,25 @@
 Reuses fixtures defined in abilian-core.
 """
 
-from collections.abc import Iterator
-from typing import Any
+from __future__ import annotations
 
-from flask import Flask
-from flask.ctx import AppContext, RequestContext
-from flask.testing import FlaskClient
+from typing import TYPE_CHECKING, Any
+
 from pytest import fixture
-from sqlalchemy.orm import Session
 
 from abilian.core.models.subjects import User
-from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.sbe.app import create_app
 from abilian.sbe.apps.communities.models import READER, Community
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+    from flask import Flask
+    from flask.ctx import AppContext, RequestContext
+    from flask.testing import FlaskClient
+    from sqlalchemy.orm import Session
+
+    from abilian.core.sqlalchemy import SQLAlchemy
 
 
 class TestConfig:

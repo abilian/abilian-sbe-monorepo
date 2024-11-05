@@ -1,8 +1,12 @@
 # Copyright (c) 2012-2024, Abilian SAS
 
-import re
+from __future__ import annotations
 
-from abilian.app import Application
+import re
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from abilian.app import Application
 
 
 def test_supported_db(app: Application):

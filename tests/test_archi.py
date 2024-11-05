@@ -7,6 +7,8 @@ Ref/tuto:
 - https://xebia.com/blog/how-to-tame-your-python-codebase/
 """
 
+from __future__ import annotations
+
 from pytest_archon import archrule
 
 # def test_models_should_not_import_flask() -> None:

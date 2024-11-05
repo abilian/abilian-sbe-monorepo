@@ -1,6 +1,11 @@
 # Copyright (c) 2012-2024, Abilian SAS
 
-from flask import Flask
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from flask import Flask
 
 
 def setup_blueprints(app: Flask) -> None:

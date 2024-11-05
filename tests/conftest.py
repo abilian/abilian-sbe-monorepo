@@ -5,4 +5,6 @@
 Reuses fixtures defined in abilian-core.
 """
 
+from __future__ import annotations
+
 from abilian.testing.conftest import *  # noqa: F403

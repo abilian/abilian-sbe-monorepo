@@ -3,7 +3,6 @@
 """Parses XML messages and converts them to objects."""
 
 # ruff:noqa:UP031
-
 from __future__ import annotations
 
 import base64
