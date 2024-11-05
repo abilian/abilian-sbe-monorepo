@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import cast
 
-from flask import current_app as app, request
+from flask import request
 from flask_login import current_user
 from werkzeug.exceptions import MethodNotAllowed
 

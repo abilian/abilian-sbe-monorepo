@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from typing import cast
 
-from flask import current_app as app, flash, redirect, render_template, request, url_for
+from flask import flash, redirect, render_template, request, url_for
 from werkzeug.exceptions import Forbidden
 from wtforms import BooleanField
 

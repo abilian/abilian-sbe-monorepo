@@ -114,6 +114,7 @@ lint.extend-ignore = [
 
 [lint.per-file-ignores]
 "tests/**/*.py" = ["INP001"] # implicit namespace packages
+"**/__init__.py" = ["F401"] # 'module' imported but unused
 
 [lint.mccabe]
 max-complexity = 10

@@ -9,7 +9,6 @@ from operator import attrgetter
 from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
-from loguru import logger
 from whoosh.fields import ID, TEXT, Schema
 
 from abilian.core.extensions import db
