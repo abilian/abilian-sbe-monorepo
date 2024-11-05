@@ -217,7 +217,7 @@ def user_url_args(user: User, size: int) -> tuple[str, dict[str, Any]]:
     if not user.is_anonymous:
         endpoint = "images.user_photo"
         kwargs["user_id"] = user.id
-        content = user.photo if user.photo else (user.name + user.email).encode("utf-8")
+        content = user.photo or (user.name + user.email).encode("utf-8")
         kwargs["md5"] = hashlib.md5(content).hexdigest()  # noqa: S324
 
     return endpoint, kwargs

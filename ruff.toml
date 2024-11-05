@@ -202,12 +202,12 @@ lint.extend-ignore = [
     "S701", # By default, jinja2 sets `autoescape` to `False`.
     # Consider using `autoescape=True` or the `select_autoescape` function to mitigate XSS vulnerabilities.
     # FIXME later
-    "FURB118",
-    "PLR6104",
-    "FURB110",
-    "FURB103",
-    "PLR1730",
+#    "FURB103",
+#    "FURB110",
+#    "FURB118",
     "ISC001",
+    "PLR1730",
+    "PLR6104",
 ]
 
 [lint.mccabe]

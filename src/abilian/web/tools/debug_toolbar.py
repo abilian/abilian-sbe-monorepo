@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import operator
 import sys
 
 from blinker import Namespace, Signal
@@ -49,7 +50,7 @@ class ActionDebugPanel(DebugPanel):
                     d["url"] = "<Exception>"
                 actions_for_template.append(d)
 
-        actions_for_template.sort(key=lambda x: (x["category"], x["title"]))
+        actions_for_template.sort(key=operator.itemgetter("category", "title"))
 
         ctx = {"actions": actions_for_template}
 
@@ -103,7 +104,7 @@ class SignalsDebugPanel(DebugPanel):
                     }
                     signals.append(d)
 
-        signals.sort(key=lambda d: (d["module_name"], d["ns_name"], d["signal_name"]))
+        signals.sort(key=operator.itemgetter("module_name", "ns_name", "signal_name"))
 
         ctx = {"signals": signals, "events": self.events}
 

@@ -529,8 +529,7 @@ class CloudoooPdfHandler(Handler):
 
         converted = b64decode(data)
         new_key = hashlib.md5(converted).hexdigest()  # noqa: S324
-        with open(f"data/{new_key}.blob", "wb") as fd:
-            fd.write(converted)
+        Path(f"data/{new_key}.blob").write_bytes(converted)
         return new_key
 
 

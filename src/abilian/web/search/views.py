@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import operator
 from collections import OrderedDict
 from functools import partial
 
@@ -119,7 +120,7 @@ def search_main(q="", page=1):
             link = page_url(object_type=typename)
             by_object_type.append((classname, count, link, is_active))
 
-        by_object_type.sort(key=lambda t: t[0])
+        by_object_type.sort(key=operator.itemgetter(0))
 
     if by_object_type:
         # Insert 'all' to clear all filters
