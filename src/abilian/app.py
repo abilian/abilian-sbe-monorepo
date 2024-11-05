@@ -30,7 +30,6 @@ from abilian.services.security import Anonymous
 from abilian.services.security.models import Role
 from abilian.setup import setup_app
 from abilian.web.access_blueprint import allow_access_for_roles
-from abilian.web.assets import AssetManagerMixin
 from abilian.web.errors import ErrorManagerMixin
 from abilian.web.jinja import JinjaManagerMixin
 from abilian.web.util import send_file_from_directory
@@ -58,7 +57,7 @@ def create_app(config: type | None = None, plugins=None, **kw: Any) -> Applicati
 
 
 class Application(
-    AssetManagerMixin,
+    # AssetManagerMixin,
     ErrorManagerMixin,
     JinjaManagerMixin,
     Flask,

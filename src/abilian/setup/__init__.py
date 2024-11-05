@@ -16,6 +16,7 @@ from abilian.services.security import Anonymous
 from abilian.web.access_blueprint import allow_access_for_roles
 from abilian.web.nav import setup_nav_and_breadcrumbs
 
+from ..extensions import asset_manager
 from .blueprints import setup_blueprints
 from .debug import setup_debug
 from .extensions import init_extensions, init_sentry
@@ -40,7 +41,6 @@ def setup_app(app: Application, plugins=None):
     extensions.db.init_app(app)
     settings_service.init_app(app)
 
-    app.init_assets()
     init_extensions(app)
 
     app.register_jinja_loaders(jinja2.PackageLoader("abilian.web"))
@@ -64,7 +64,7 @@ def setup_app(app: Application, plugins=None):
 
     init_access_controllers(app)
 
-    app.finalize_assets_setup()
+    asset_manager.finalize_assets_setup(app)
 
     # At this point all models should have been imported: time to configure
     # mappers. Normally Sqlalchemy does it when needed but mappers may be

@@ -12,6 +12,7 @@ from loguru import logger
 import abilian.core.util
 import abilian.i18n
 from abilian.core import extensions
+from abilian.extensions import asset_manager
 from abilian.services import (
     activity_service,
     antivirus,
@@ -40,11 +41,11 @@ warnings.simplefilter("ignore", category=sa.exc.SAWarning)
 def init_extensions(app: Flask):
     """Initialize flask extensions, helpers and services."""
 
-    init_babel(app)
     extensions.redis.init_app(app)
     extensions.mail.init_app(app)
     extensions.deferred_js.init_app(app)
     extensions.upstream_info.extension.init_app(app)
+
     actions.init_app(app)
 
     # auth_service installs a `before_request` handler (actually it's
@@ -53,11 +54,11 @@ def init_extensions(app: Flask):
     # in particular in a before_request handler (like csrf validator)
     auth_service.init_app(app)
 
-    init_csrf(app)
+    asset_manager.init_app(app)
 
-    # webassets
-    app.setup_asset_extension()
-    app.register_base_assets()
+    init_babel(app)
+
+    init_csrf(app)
 
     # Flask-Migrate
     Migrate(app, db)

@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING
 from loguru import logger
 
 from abilian.core.util import fqcn
+from abilian.extensions import asset_manager
 
 if TYPE_CHECKING:
     from abilian.app import Application
@@ -55,8 +56,8 @@ class AbilianSBE:
             STATIC_DIR, f"{app.static_url_path}/abilian/sbe"
         )
 
-        app.register_asset("js", *JS)
-        app.register_asset("css", LESSCSS_FILE)
+        asset_manager.register_asset("js", *JS)
+        asset_manager.register_asset("css", LESSCSS_FILE)
 
         # Jinja
         logger.info("Register jinja context processors")

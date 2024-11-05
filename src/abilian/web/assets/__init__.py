@@ -12,7 +12,6 @@ from webassets.filter import get_filter
 from abilian.services.security import Anonymous
 
 from .filters import register_filters
-from .mixin import AssetManagerMixin
 
 if typing.TYPE_CHECKING:
     from abilian.app import Application
