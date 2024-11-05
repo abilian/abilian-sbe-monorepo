@@ -110,7 +110,7 @@ def test_wiki_indexed(
         if not svc.running:
             svc.start()
 
-    index_svc = get_service("indexing")
+    get_service("indexing")
 
     with client_login(client, admin_user):
         page1 = WikiPage(title="Community 1", community=community1)

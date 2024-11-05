@@ -109,7 +109,7 @@ def test_create_thread_informative_member(
 
     mail = app.extensions["mail"]
     with client_login(client, user):
-        with mail.record_messages() as outbox:
+        with mail.record_messages():
             data["send_by_email"] = "y"  # actually should not be in html form
             response = client.post(url, data=data)
             assert response.status_code == 302

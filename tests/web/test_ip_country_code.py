@@ -9,12 +9,12 @@ from abilian.web.admin.panels.geoip.ip_country_code import ip_to_country_code
 
 def test_empty_ip():
     with pytest.raises(TypeError):
-        bad = ip_to_country_code()
+        ip_to_country_code()
 
 
 def test_not_string_ip():
     with pytest.raises(TypeError):
-        bad = ip_to_country_code(123)
+        ip_to_country_code(123)
 
 
 def test_any_str1():

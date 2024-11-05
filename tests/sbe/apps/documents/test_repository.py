@@ -98,7 +98,7 @@ def test_copy_nested_folders(root: Folder, repository: ContentRepository) -> Non
 def test_move_nested_folders(root: Folder, repository: ContentRepository) -> None:
     folder1 = root.create_subfolder("folder1")
     folder2 = root.create_subfolder("folder2")
-    subfolder = folder1.create_subfolder("subfolder")
+    folder1.create_subfolder("subfolder")
 
     repository.move_object(folder1, folder2)
 
@@ -147,7 +147,7 @@ def test_delete(root: Folder, repository: ContentRepository, session: Session) -
 
     # test delete tree
     folder = root.create_subfolder("folder")
-    sub = folder.create_subfolder("subfolder")
+    folder.create_subfolder("subfolder")
     doc = folder.create_document("doc")
     session.flush()
 

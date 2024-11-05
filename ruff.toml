@@ -37,14 +37,16 @@ lint.extend-ignore = [
     "B028", # No explicit `...` keyword argument found
     "BLE001", # Do not catch blind exception
     "C901", # X is too complex
+    #
     "DTZ001", # The use of `datetime.datetime()` without `tzinfo` argument is not allowed
     "DTZ003", # The use of `datetime.datetime.utcnow()` is not allowed, use `datetime.datetime.now(tz=)` instead
     "DTZ004", # The use of `datetime.datetime.utcfromtimestamp()` is not allowed, use `datetime.datetime.fromtimestamp(ts, tz=)` instead
     "DTZ005", # The use of `datetime.datetime.now()` without `tz` argument is not allowed
     "DTZ007", # The use of `datetime.datetime.strptime()` without %z must be followed by `.replace(tzinfo=)` or `.astimezone()`
+    #
     "E501", # line too long
     "E741", # Ambiguous variable name
-    "F841", # Local variable `...` is assigned to but never used
+    #    "F841", # Local variable `...` is assigned to but never used
     "FURB113", # Use `x.extend(...)` instead of repeatedly calling `x.append()`
     #
     "N801", # Class name should use CapWords convention
