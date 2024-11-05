@@ -90,17 +90,16 @@ lint.extend-ignore = [
     "RET503", # Missing explicit `return` at the end of function able to return non-`None` value
     "RET504", # Unnecessary variable assignment before `return` statement
     "RET505", # Unnecessary `else` after `return` statement
+    #
     "RUF005", # Consider iterable unpacking instead of concatenation
     "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
     #
-    "S104", # Possible binding to all interfaces
     "S301", # `pickle`...
     "S403", # `pickle`, `cPickle`, `dill`, and `shelve` modules are possibly insecure
     "S404", # `subprocess` module is possibly insecure
     "S405", # lxml` is vulnerable to XML attacks
     "S603", # Subprocess related...
     "S605", # Subprocess related...
-    "S606", # Subprocess related...
     "S607", # Subprocess related...
     "S701", # By default, jinja2 sets `autoescape` to `False`.
     #
