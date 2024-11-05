@@ -13,9 +13,9 @@ from werkzeug.exceptions import Forbidden, NotFound
 from werkzeug.wrappers import Response
 
 from abilian.core.extensions import db
+from abilian.sbe.apps.documents import repository
 from abilian.services import get_service
 
-from .. import repository
 from .constants import (
     DAV_PROPS,
     HTTP_BAD_REQUEST,

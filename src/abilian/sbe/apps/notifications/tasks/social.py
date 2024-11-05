@@ -21,13 +21,12 @@ from abilian.sbe.apps.communities.models import Community
 from abilian.sbe.apps.documents.models import Document
 from abilian.sbe.apps.documents.repository import content_repository
 from abilian.sbe.apps.forum.models import Post, Thread
+from abilian.sbe.apps.notifications import TOKEN_SERIALIZER_NAME
 from abilian.sbe.apps.wiki.models import WikiPage
 from abilian.services import get_service
 from abilian.services.activity import ActivityEntry
 from abilian.services.auth.views import get_serializer
 from abilian.web import url_for
-
-from .. import TOKEN_SERIALIZER_NAME
 
 
 @crontab("SCHEDULE_SEND_DAILY_SOCIAL_DIGEST")

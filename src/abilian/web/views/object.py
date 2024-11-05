@@ -19,9 +19,9 @@ from abilian.core.signals import activity
 from abilian.i18n import _, _l
 from abilian.services import get_service
 from abilian.services.security import CREATE, DELETE, READ, WRITE
+from abilian.web import csrf, forms, nav
+from abilian.web.action import ButtonAction, Endpoint, actions
 
-from .. import csrf, forms, nav
-from ..action import ButtonAction, Endpoint, actions
 from .base import JSONView, View
 
 

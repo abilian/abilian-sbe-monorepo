@@ -11,8 +11,7 @@ import pathlib
 from loguru import logger
 
 from abilian.core.models.blob import Blob
-
-from ..base import Service
+from abilian.services.base import Service
 
 try:
     from clamd import ClamdError, ClamdUnixSocket

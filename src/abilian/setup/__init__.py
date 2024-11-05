@@ -13,12 +13,12 @@ from flask import Flask, appcontext_pushed, g, request_started
 from flask_talisman import DEFAULT_CSP_POLICY, Talisman
 
 from abilian.core import extensions, signals
+from abilian.extensions import asset_manager
 from abilian.services import settings_service
 from abilian.services.security import Anonymous
 from abilian.web.access_blueprint import allow_access_for_roles
 from abilian.web.nav import setup_nav_and_breadcrumbs
 
-from ..extensions import asset_manager
 from .blueprints import setup_blueprints
 from .debug import setup_debug
 from .extensions import init_extensions, init_sentry

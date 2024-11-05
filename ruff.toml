@@ -116,7 +116,6 @@ lint.extend-ignore = [
     "SIM117", # Use a single `with` statement with multiple contexts instead of nested `with` statements
     "SLF001", # Private member accessed
     "T201", # `print` found
-    "TID252", # Relative imports from parent modules are banned
     "UP032", # Use f-strings
 ]
 

@@ -22,8 +22,8 @@ from abilian.sbe.apps.forum.tasks import (
 from abilian.sbe.apps.forum.views import ThreadCreate
 from abilian.services import get_service, security_service
 from abilian.services.indexing.service import IndexService
+from tests.util import client_login, redis_available
 
-from ....util import client_login, redis_available
 from .util import get_string_from_file
 
 

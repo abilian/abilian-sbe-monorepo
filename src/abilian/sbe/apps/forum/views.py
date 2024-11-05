@@ -18,16 +18,16 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 from abilian.core.util import utc_dt
 from abilian.i18n import _, _l
+from abilian.sbe.apps.communities.blueprint import CommunityBlueprint
+from abilian.sbe.apps.communities.common import activity_time_format, object_viewers
 from abilian.sbe.apps.communities.security import is_manager
+from abilian.sbe.apps.communities.views import default_view_kw
 from abilian.services.viewtracker import viewtracker
 from abilian.web import url_for, views
 from abilian.web.action import ButtonAction, Endpoint
 from abilian.web.nav import BreadcrumbItem
 from abilian.web.views import default_view
 
-from ..communities.blueprint import CommunityBlueprint
-from ..communities.common import activity_time_format, object_viewers
-from ..communities.views import default_view_kw
 from .forms import PostEditForm, PostForm, ThreadForm
 from .models import Post, PostAttachment, Thread
 from .tasks import send_post_by_email

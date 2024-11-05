@@ -15,8 +15,7 @@ from abilian.core.entities import Entity
 # noinspection PyUnresolvedReferences
 from abilian.web.views import default_view
 from abilian.web.views.registry import Registry
-
-from ..util import class_fqn
+from tests.util import class_fqn
 
 
 class RegEntity(Entity):

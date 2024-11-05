@@ -11,8 +11,7 @@ from pathlib import Path
 from pytest import fixture
 
 from abilian.sbe.app import create_app
-
-from ..conftest import TestConfig
+from tests.conftest import TestConfig
 
 PUBLIC_ENDPOINTS = [
     "login.forgotten_pw_form",

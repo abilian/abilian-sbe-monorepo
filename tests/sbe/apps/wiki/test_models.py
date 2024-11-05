@@ -10,8 +10,7 @@ from markdown import Markdown
 
 from abilian.sbe.apps.wiki.markup import SBEWikiLinkExtension
 from abilian.sbe.apps.wiki.models import WikiPage
-
-from ....util import client_login
+from tests.util import client_login
 
 
 @pytest.mark.parametrize("text", ["TOTO", "x 123", "/#$", "/*€("])
