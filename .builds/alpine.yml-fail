@@ -1,3 +1,7 @@
+#
+# Currently failing due to depencency issues
+# (error: could not compile `git-cliff-core` (lib) due to 4 previous errors)
+#
 image: alpine/edge
 
 packages:
