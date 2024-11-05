@@ -145,7 +145,7 @@ If you are using a web server as a reverse proxy, for instance nginx, you can us
 
 ### Configuration example
 
-A step by step configuration example using `honcho`, `.env` and `Python 3.12` is available in the `example_config` folder.
+A step-by-step configuration example using `honcho`, `.env` and `Python 3.12` is available in the `example_config` folder.
 
 ### On Heroku
 
@@ -168,7 +168,7 @@ See:
 
 ## License compliance
 
-This project is compliant with the REUSE Specification version 3.2.
+As of `Tue Nov  5 08:50:20 CET 2024`, this project is compliant with the REUSE Specification version 3.2.
 
 ```
 * Bad licenses: 0
@@ -178,8 +178,8 @@ This project is compliant with the REUSE Specification version 3.2.
 * Unused licenses: 0
 * Used licenses: CC-BY-4.0, LGPL-3.0-only
 * Read errors: 0
-* Files with copyright information: 1692 / 1692
-* Files with license information: 1692 / 1692
+* Files with copyright information: 1712 / 1712
+* Files with license information: 1712 / 1712
 
 Congratulations! Your project is compliant with version 3.2 of the REUSE Specification :-)
 ```
