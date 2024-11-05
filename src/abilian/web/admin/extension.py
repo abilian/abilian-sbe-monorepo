@@ -14,7 +14,7 @@ from werkzeug.utils import import_string
 
 from abilian.core.util import unwrap
 from abilian.i18n import _l
-from abilian.services.security import Admin as AdminRole, security
+from abilian.services.security import ADMIN, security
 from abilian.web.action import Endpoint, actions
 from abilian.web.nav import BreadcrumbItem, NavGroup, NavItem
 
@@ -42,7 +42,7 @@ class Admin:
 
         def condition(context: dict[str, bool]) -> bool:
             return not current_user.is_anonymous and security.has_role(
-                current_user, AdminRole
+                current_user, ADMIN
             )
 
         self.nav_root = NavGroup(

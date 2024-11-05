@@ -7,7 +7,7 @@ from flask_login import current_user
 
 from abilian.i18n import _l
 from abilian.services import get_service
-from abilian.services.security import Admin
+from abilian.services.security import ADMIN
 from abilian.web.action import Action, FAIcon, actions
 
 
@@ -30,7 +30,7 @@ class EventAction(CalendarAction):
 
 def is_admin(context):
     security = get_service("security")
-    return security.has_role(current_user, Admin, object=context.get("object"))
+    return security.has_role(current_user, ADMIN, object=context.get("object"))
 
 
 _actions = [

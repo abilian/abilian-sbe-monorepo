@@ -19,7 +19,7 @@ from abilian.core.models.subjects import User, gen_random_password
 from abilian.i18n import _
 from abilian.services import get_service
 from abilian.services.security import SecurityService
-from abilian.services.security.models import Admin, Role
+from abilian.services.security.models import ADMIN, Role
 from abilian.web.nav import BreadcrumbItem
 from abilian.web.util import url_for
 from abilian.web.views import base, object as views
@@ -157,8 +157,8 @@ class UserEdit(UserBase, views.ObjectEdit):
             # self edit: don't let user shoot themself in the foot
             self.form.can_login.data = True
             roles = self.form.roles
-            if Admin.name not in roles.data:
-                roles.data.append(Admin.name)
+            if ADMIN.name not in roles.data:
+                roles.data.append(ADMIN.name)
         return True
 
     def form_valid(self, *args, **kwargs):

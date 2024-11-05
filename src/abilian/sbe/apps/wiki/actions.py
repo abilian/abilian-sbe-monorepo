@@ -11,7 +11,7 @@ from flask_login import current_user
 from abilian.sbe.apps.communities.actions import CommunityEndpoint
 from abilian.sbe.apps.communities.security import is_manager
 from abilian.services import get_service
-from abilian.services.security import Admin, SecurityService
+from abilian.services.security import ADMIN, SecurityService
 from abilian.web.action import Action, FAIcon, ModalActionMixin, actions
 
 if TYPE_CHECKING:
@@ -37,7 +37,7 @@ class WikiPageAction(Action):
 
 def is_admin(context):
     security = cast(SecurityService, get_service("security"))
-    return security.has_role(current_user, Admin, object=context.get("object"))
+    return security.has_role(current_user, ADMIN, object=context.get("object"))
 
 
 class WikiPageModalAction(ModalActionMixin, WikiPageAction):

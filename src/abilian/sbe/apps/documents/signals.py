@@ -6,7 +6,7 @@ from typing import Any
 
 from abilian.sbe.apps.communities.models import VALID_ROLES, Community, Membership
 from abilian.sbe.apps.communities.signals import membership_removed, membership_set
-from abilian.services.security import Manager, Reader, Writer, security
+from abilian.services.security import MANAGER, READER, WRITER, security
 
 from .search import reindex_tree
 
@@ -20,9 +20,9 @@ def new_community_member(
 
     role = membership.role
     user = membership.user
-    local_role = Writer if community.type == "participative" else Reader
-    if role == Manager:
-        local_role = Manager
+    local_role = WRITER if community.type == "participative" else READER
+    if role == MANAGER:
+        local_role = MANAGER
 
     current_roles = set(security.get_roles(user, community.folder, no_group_roles=True))
     current_roles &= VALID_ROLES  # ensure we don't remove roles not managed

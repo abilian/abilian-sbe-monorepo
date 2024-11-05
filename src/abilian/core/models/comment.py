@@ -9,7 +9,7 @@ from sqlalchemy import CheckConstraint, Column, ForeignKey, Integer, UnicodeText
 from sqlalchemy.orm import backref, relationship
 
 from abilian.core.entities import Entity, EntityQuery
-from abilian.services.security import CREATE, DELETE, WRITE, Anonymous, Owner
+from abilian.services.security import ANONYMOUS, CREATE, DELETE, OWNER, WRITE
 
 #: name of backref on target :class:`Entity` object
 ATTRIBUTE = "__comments__"
@@ -68,7 +68,7 @@ class Comment(Entity):
     """A Comment related to an :class:`Entity`."""
 
     __tablename__ = "comment"
-    __default_permissions__ = {WRITE: {Owner}, DELETE: {Owner}, CREATE: {Anonymous}}
+    __default_permissions__ = {WRITE: {OWNER}, DELETE: {OWNER}, CREATE: {ANONYMOUS}}
 
     entity_id = Column(Integer, ForeignKey(Entity.id), nullable=False)
 

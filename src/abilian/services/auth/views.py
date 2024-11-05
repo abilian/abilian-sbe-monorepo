@@ -42,7 +42,7 @@ from abilian.core.models.subjects import User
 from abilian.core.signals import auth_failed
 from abilian.core.util import md5, unwrap
 from abilian.i18n import _, render_template_i18n
-from abilian.services.security import Anonymous
+from abilian.services.security import ANONYMOUS
 from abilian.web.access_blueprint import AccessControlBlueprint
 
 from .models import LoginSession
@@ -57,7 +57,7 @@ login = AccessControlBlueprint(
     "login",
     __name__,
     url_prefix="/user",
-    allowed_roles=Anonymous,
+    allowed_roles=ANONYMOUS,
     template_folder="templates",
 )
 route = login.route

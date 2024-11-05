@@ -39,7 +39,7 @@ from abilian.core.extensions import db
 from abilian.core.models.subjects import Group, User
 from abilian.core.util import fqcn as base_fqcn, friendly_fqcn
 from abilian.services import Service, ServiceState
-from abilian.services.security import Anonymous, Authenticated, Role, security
+from abilian.services.security import ANONYMOUS, AUTHENTICATED, Role, security
 
 from .adapter import SAAdapter
 from .schema import DefaultSearchSchema, indexable_role
@@ -299,8 +299,8 @@ class WhooshIndexService(IndexService):
             user = current_user
             roles = {indexable_role(user)}
             if not user.is_anonymous:
-                roles.add(indexable_role(Anonymous))
-                roles.add(indexable_role(Authenticated))
+                roles.add(indexable_role(ANONYMOUS))
+                roles.add(indexable_role(AUTHENTICATED))
                 roles |= {indexable_role(r) for r in security.get_roles(user)}
 
             filter_q = wq.Or([
@@ -479,7 +479,7 @@ class WhooshIndexService(IndexService):
 
         if not document.get("allowed_roles_and_users"):
             # no data for security: assume anybody can access the document
-            document["allowed_roles_and_users"] = indexable_role(Anonymous)
+            document["allowed_roles_and_users"] = indexable_role(ANONYMOUS)
 
         for func in self.app_state.value_provider_funcs:
             res = func(document, obj)

@@ -17,7 +17,7 @@ from abilian.sbe.apps.communities.models import Membership
 from abilian.sbe.apps.documents.models import Document, Folder
 from abilian.services import get_service
 from abilian.services.activity import ActivityEntry
-from abilian.services.security import READ, Admin, SecurityService
+from abilian.services.security import ADMIN, READ, SecurityService
 
 if TYPE_CHECKING:
     from abilian.core.models.subjects import User
@@ -30,7 +30,7 @@ def get_recent_entries(
     community: CommunityPresenter | None = None,
 ) -> list[Any]:
     # Check just in case
-    if not current_user.has_role(Admin):
+    if not current_user.has_role(ADMIN):
         if community and not community.has_member(current_user):
             raise Forbidden
 
@@ -50,7 +50,7 @@ def get_recent_entries(
     #
     # we use communities ids instead of object because as of sqlalchemy 0.8 the
     # 'in_' operator cannot be used with relationships, only foreign keys values
-    if not community and not current_user.has_role(Admin):
+    if not community and not current_user.has_role(ADMIN):
         community_ids = Membership.query.filter(
             Membership.user_id == current_user.id
         ).values(Membership.community_id)

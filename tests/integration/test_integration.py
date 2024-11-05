@@ -9,7 +9,7 @@ from devtools import debug
 
 from abilian.core.models.subjects import User
 from abilian.services import get_service, security_service
-from abilian.services.security import Admin, SecurityService
+from abilian.services.security import ADMIN, SecurityService
 from abilian.web import url_for
 
 from .conftest import ENDPOINTS_TO_IGNORE
@@ -112,7 +112,7 @@ def login_as_admin(client, db: SQLAlchemy):
     db.session.add(user)
 
     security = cast(SecurityService, get_service("security"))
-    security.grant_role(user, Admin)
+    security.grant_role(user, ADMIN)
 
     db.session.add(user)
     db.session.flush()

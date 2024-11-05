@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Any, cast
 
 from flask import Blueprint
 
-from abilian.services.security import Anonymous, Role
+from abilian.services.security import ANONYMOUS, Role
 from abilian.services.security.service import SecurityService
 
 if TYPE_CHECKING:
@@ -28,7 +28,7 @@ def allow_access_for_roles(roles: Collection[Role] | Role) -> Callable:
         roles = (roles,)
     valid_roles = frozenset(roles)
 
-    if Anonymous in valid_roles:
+    if ANONYMOUS in valid_roles:
         return allow_anonymous
 
     # FIXME: parameter not used. Why?

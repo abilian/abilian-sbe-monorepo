@@ -413,7 +413,7 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
         permission on this object."""
         from abilian.services import get_security_service
         from abilian.services.indexing import indexable_role
-        from abilian.services.security import READ, Admin, Anonymous, Creator, Owner
+        from abilian.services.security import ADMIN, ANONYMOUS, CREATOR, OWNER, READ
 
         result: list[str] = []
         security = get_security_service()
@@ -421,12 +421,12 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
         # roles - required to match when user has a global role
         assignments = security.get_permissions_assignments(permission=READ, obj=self)
         allowed_roles = assignments.get(READ, set())
-        allowed_roles.add(Admin)
+        allowed_roles.add(ADMIN)
 
         for role in allowed_roles:
             result.append(indexable_role(role))
 
-        for role, attr in ((Creator, "creator"), (Owner, "owner")):
+        for role, attr in ((CREATOR, "creator"), (OWNER, "owner")):
             if role in allowed_roles:
                 user = getattr(self, attr)
                 if user:
@@ -445,7 +445,7 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
 
         # Anonymous is a role listed in role assignments
         # - legacy when there wasn't permission-role assignments
-        principals.discard(Anonymous)
+        principals.discard(ANONYMOUS)
 
         # if Anonymous in principals:
         #     # it's a role listed in role assignments - legacy when there wasn't

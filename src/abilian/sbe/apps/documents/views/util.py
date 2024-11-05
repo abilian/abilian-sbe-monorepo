@@ -13,7 +13,7 @@ from werkzeug.exceptions import Forbidden, InternalServerError, NotFound
 from abilian.core.signals import activity
 from abilian.core.util import unwrap
 from abilian.sbe.apps.documents.repository import content_repository
-from abilian.services.security import MANAGE, WRITE, Admin, security
+from abilian.services.security import ADMIN, MANAGE, WRITE, security
 from abilian.web import url_for
 
 if TYPE_CHECKING:
@@ -174,7 +174,7 @@ def check_read_access(obj: BaseContent) -> None:
         raise NotFound
     if not security.running:
         return
-    if security.has_role(current_user, Admin):
+    if security.has_role(current_user, ADMIN):
         return
     if content_repository.has_access(current_user, obj):
         return
@@ -193,7 +193,7 @@ def check_write_access(obj: BaseContent) -> None:
         raise NotFound
     if not security.running:
         return
-    if security.has_role(current_user, Admin):
+    if security.has_role(current_user, ADMIN):
         return
 
     if content_repository.has_access(
@@ -216,7 +216,7 @@ def check_manage_access(obj) -> None:
         raise NotFound
     if not security.running:
         return
-    if security.has_role(current_user, Admin):
+    if security.has_role(current_user, ADMIN):
         return
     if content_repository.has_access(
         current_user, obj

@@ -9,7 +9,7 @@ from flask import url_for
 
 from abilian.sbe.apps.communities.models import Community
 from abilian.services import security_service
-from abilian.services.security import Admin
+from abilian.services.security import ADMIN
 from tests.util import client_login
 
 if TYPE_CHECKING:
@@ -66,7 +66,7 @@ def test_new(
         response = client.get(url_for("communities.new"))
         assert response.status_code == 403
 
-    security_service.grant_role(user, Admin)
+    security_service.grant_role(user, ADMIN)
     db.session.flush()
 
     with client_login(client, user):
@@ -86,7 +86,7 @@ def test_community_settings(
         response = client.get(url)
         assert response.status_code == 403
 
-        security_service.grant_role(user, Admin)
+        security_service.grant_role(user, ADMIN)
         response = client.get(url)
         assert response.status_code == 200
 
@@ -124,7 +124,7 @@ def test_members(
         response = client.post(url, data=data)
         assert response.status_code == 403
 
-        security_service.grant_role(user1, Admin)
+        security_service.grant_role(user1, ADMIN)
 
         data = {"action": "add-user-role", "user": user2.id, "role": "member"}
         response = client.post(url, data=data, follow_redirects=True)

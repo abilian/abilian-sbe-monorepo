@@ -19,22 +19,22 @@ if TYPE_CHECKING:
 def test_default_permissions(app: Flask, db: SQLAlchemy, session: Session):
     class MyRestrictedType(Entity):
         __default_permissions__ = {
-            security.READ: {security.Anonymous},
-            security.WRITE: {security.Owner},
-            security.CREATE: {security.Writer},
-            security.DELETE: {security.Owner},
+            security.READ: {security.ANONYMOUS},
+            security.WRITE: {security.OWNER},
+            security.CREATE: {security.WRITER},
+            security.DELETE: {security.OWNER},
         }
 
     assert isinstance(MyRestrictedType.__default_permissions__, frozenset)
 
     expected = frozenset({
-        (security.READ, frozenset({security.Anonymous})),
+        (security.READ, frozenset({security.ANONYMOUS})),
         #
-        (security.WRITE, frozenset({security.Owner})),
+        (security.WRITE, frozenset({security.OWNER})),
         #
-        (security.CREATE, frozenset({security.Writer})),
+        (security.CREATE, frozenset({security.WRITER})),
         #
-        (security.DELETE, frozenset({security.Owner})),
+        (security.DELETE, frozenset({security.OWNER})),
     })
     assert MyRestrictedType.__default_permissions__ == expected
 
@@ -45,9 +45,9 @@ def test_default_permissions(app: Flask, db: SQLAlchemy, session: Session):
     PA = security.PermissionAssignment
     query = session.query(PA.role).filter(PA.object == obj)
 
-    assert query.filter(PA.permission == security.READ).all() == [(security.Anonymous,)]
-    assert query.filter(PA.permission == security.WRITE).all() == [(security.Owner,)]
-    assert query.filter(PA.permission == security.DELETE).all() == [(security.Owner,)]
+    assert query.filter(PA.permission == security.READ).all() == [(security.ANONYMOUS,)]
+    assert query.filter(PA.permission == security.WRITE).all() == [(security.OWNER,)]
+    assert query.filter(PA.permission == security.DELETE).all() == [(security.OWNER,)]
 
     # special case:
     assert query.filter(PA.permission == security.CREATE).all() == []
@@ -55,7 +55,7 @@ def test_default_permissions(app: Flask, db: SQLAlchemy, session: Session):
     security_svc = get_security_service()
     permissions = security_svc.get_permissions_assignments(obj)
     assert permissions == {
-        security.READ: {security.Anonymous},
-        security.WRITE: {security.Owner},
-        security.DELETE: {security.Owner},
+        security.READ: {security.ANONYMOUS},
+        security.WRITE: {security.OWNER},
+        security.DELETE: {security.OWNER},
     }

@@ -11,10 +11,10 @@ from abilian.core.entities import Entity
 from abilian.core.models.subjects import User
 from abilian.services import get_service
 from abilian.services.security import (
+    ANONYMOUS,
     CREATE,
     READ,
     WRITE,
-    Anonymous,
     Permission,
     Role,
     SecurityService,
@@ -29,7 +29,7 @@ class FormPermissions:
 
     def __init__(
         self,
-        default: Role = Anonymous,
+        default: Role = ANONYMOUS,
         read: None | Role | Collection[Role] = None,
         write: None | Role | Collection[Role] = None,
         fields_read: dict[str, Collection[Role]] | None = None,

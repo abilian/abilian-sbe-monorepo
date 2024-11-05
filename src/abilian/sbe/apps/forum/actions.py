@@ -9,7 +9,7 @@ from flask_login import current_user
 
 from abilian.i18n import _l
 from abilian.services import get_service
-from abilian.services.security import Admin, SecurityService
+from abilian.services.security import ADMIN, SecurityService
 from abilian.web.action import Action, FAIcon, ModalActionMixin, actions
 
 if TYPE_CHECKING:
@@ -45,7 +45,7 @@ class ThreadAction(ForumAction):
 
 def is_admin(context):
     security = cast(SecurityService, get_service("security"))
-    return security.has_role(current_user, Admin, object=context.get("object"))
+    return security.has_role(current_user, ADMIN, object=context.get("object"))
 
 
 def is_in_thread(context) -> bool:

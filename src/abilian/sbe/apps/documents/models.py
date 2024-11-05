@@ -38,7 +38,7 @@ from abilian.core.models.subjects import Group, User
 from abilian.core.util import md5
 from abilian.services.conversion import converter
 from abilian.services.indexing import indexable_role
-from abilian.services.security import Admin, Anonymous, InheritSecurity, security
+from abilian.services.security import ADMIN, ANONYMOUS, InheritSecurity, security
 
 from . import tasks
 from .lock import Lock
@@ -247,7 +247,7 @@ class PathAndSecurityIndexable:
                 continue
             obj_allowed = {o[0] for o in security.get_role_assignements(obj)}
 
-            if Anonymous in obj_allowed:
+            if ANONYMOUS in obj_allowed:
                 continue
 
             parent_allowed = allowed
@@ -274,7 +274,7 @@ class PathAndSecurityIndexable:
             allowed |= remaining_groups_members - extended_allowed
 
         # admin role is always granted access
-        allowed.add(Admin)
+        allowed.add(ADMIN)
         return " ".join(indexable_role(p) for p in allowed)
 
 

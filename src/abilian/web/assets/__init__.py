@@ -11,7 +11,7 @@ from flask import current_app, url_for
 from flask_assets import Bundle
 from webassets.filter import get_filter
 
-from abilian.services.security import Anonymous
+from abilian.services.security import ANONYMOUS
 
 from .filters import register_filters
 
@@ -25,7 +25,7 @@ def init_app(app: Application):
     assets = app.extensions["webassets"]
     assets.append_path(RESOURCES_DIR, "/static/abilian")
     app.add_static_url(
-        "abilian", RESOURCES_DIR, endpoint="abilian_static", roles=Anonymous
+        "abilian", RESOURCES_DIR, endpoint="abilian_static", roles=ANONYMOUS
     )
 
     with app.app_context():

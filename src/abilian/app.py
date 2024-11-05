@@ -27,7 +27,7 @@ from abilian.core import extensions, signals
 from abilian.core.plugin_manager import PluginManager
 from abilian.core.service_manager import ServiceManager
 from abilian.services import auth_service
-from abilian.services.security import Anonymous
+from abilian.services.security import ANONYMOUS
 from abilian.setup import setup_app
 from abilian.web.access_blueprint import allow_access_for_roles
 from abilian.web.errors import ErrorManagerMixin
@@ -226,5 +226,5 @@ class Application(
             roles=roles,
         )
         self.add_access_controller(
-            endpoint, allow_access_for_roles(Anonymous), endpoint=True
+            endpoint, allow_access_for_roles(ANONYMOUS), endpoint=True
         )

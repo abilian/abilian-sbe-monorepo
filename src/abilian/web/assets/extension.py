@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Any
 from flask_assets import Bundle, Environment as AssetsEnv
 from loguru import logger
 
-from abilian.services.security import Anonymous
+from abilian.services.security import ANONYMOUS
 from abilian.web.assets.filters import ClosureJS
 
 if TYPE_CHECKING:
@@ -102,7 +102,7 @@ class AssetManager:
         assets.url = f"{app.static_url_path}/min"
         assets.append_path(str(assets_dir), assets.url)
         app.add_static_url(
-            "min", str(assets_dir), endpoint="webassets_static", roles=Anonymous
+            "min", str(assets_dir), endpoint="webassets_static", roles=ANONYMOUS
         )
 
     def register_base_assets(self, app: Flask):

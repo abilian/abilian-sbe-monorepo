@@ -7,10 +7,10 @@ from __future__ import annotations
 from flask_login import AnonymousUserMixin
 
 from abilian.services.indexing.schema import indexable_role
-from abilian.services.security.models import Anonymous, Reader
+from abilian.services.security.models import ANONYMOUS, READER
 
 
 def test_indexable_role():
-    assert indexable_role(Anonymous) == "role:anonymous"
+    assert indexable_role(ANONYMOUS) == "role:anonymous"
     assert indexable_role(AnonymousUserMixin()) == "role:anonymous"
-    assert indexable_role(Reader) == "role:reader"
+    assert indexable_role(READER) == "role:reader"

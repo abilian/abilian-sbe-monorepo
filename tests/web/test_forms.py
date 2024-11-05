@@ -13,7 +13,7 @@ import pytz
 from wtforms import Form
 
 from abilian.core.entities import Entity
-from abilian.services.security import READ, WRITE, Anonymous, Owner, Role
+from abilian.services.security import ANONYMOUS, OWNER, READ, WRITE, Role
 from abilian.web.forms import FormPermissions, fields, filters
 
 if TYPE_CHECKING:
@@ -74,7 +74,7 @@ def test_form_permissions_controller():
         fp = FormPermissions()
         assert fp.has_permission(READ)
         assert has_role.called
-        assert has_role.call_args[-1]["role"] == [Anonymous]
+        assert has_role.call_args[-1]["role"] == [ANONYMOUS]
 
         has_role.reset_mock()
         assert fp.has_permission(READ, obj=_MARK)
@@ -96,9 +96,9 @@ def test_form_permissions_controller():
         assert has_role.call_args[-1]["role"] == [MarkRole]
 
         has_role.reset_mock()
-        fp = FormPermissions(default=MarkRole, read=Anonymous)
+        fp = FormPermissions(default=MarkRole, read=ANONYMOUS)
         fp.has_permission(READ)
-        assert has_role.call_args[-1]["role"] == [Anonymous]
+        assert has_role.call_args[-1]["role"] == [ANONYMOUS]
 
         has_role.reset_mock()
         fp.has_permission(READ, field="test")
@@ -111,18 +111,18 @@ def test_form_permissions_controller():
         # field roles
         has_role.reset_mock()
         fp = FormPermissions(
-            default=MarkRole, read=Anonymous, fields_read={"test": {Owner}}
+            default=MarkRole, read=ANONYMOUS, fields_read={"test": {OWNER}}
         )
         fp.has_permission(READ)
-        assert has_role.call_args[-1]["role"] == [Anonymous]
+        assert has_role.call_args[-1]["role"] == [ANONYMOUS]
 
         has_role.reset_mock()
         fp.has_permission(READ, field="test")
-        assert has_role.call_args[-1]["role"] == [Owner]
+        assert has_role.call_args[-1]["role"] == [OWNER]
 
         has_role.reset_mock()
         fp.has_permission(READ, field="test")
-        assert has_role.call_args[-1]["role"] == [Owner]
+        assert has_role.call_args[-1]["role"] == [OWNER]
 
         # dynamic roles
         has_role.reset_mock()
@@ -135,10 +135,10 @@ def test_form_permissions_controller():
 
         has_role.reset_mock()
         dyn_roles.reset_mock()
-        fp = FormPermissions(read=[Owner, dyn_roles])
+        fp = FormPermissions(read=[OWNER, dyn_roles])
         fp.has_permission(READ)
         assert dyn_roles.call_args == [{"permission": READ, "field": None, "obj": None}]
-        assert has_role.call_args[-1]["role"] == [Owner, MarkRole]
+        assert has_role.call_args[-1]["role"] == [OWNER, MarkRole]
 
 
 def patch_babel(app: Application):

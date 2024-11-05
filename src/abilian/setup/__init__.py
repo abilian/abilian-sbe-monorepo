@@ -15,7 +15,7 @@ from flask_talisman import DEFAULT_CSP_POLICY, Talisman
 from abilian.core import extensions, signals
 from abilian.extensions import asset_manager
 from abilian.services import settings_service
-from abilian.services.security import Anonymous
+from abilian.services.security import ANONYMOUS
 from abilian.web.access_blueprint import allow_access_for_roles
 from abilian.web.nav import setup_nav_and_breadcrumbs
 
@@ -102,17 +102,17 @@ def install_id_generator(sender: Flask, **kwargs: Any):
 
 def init_access_controllers(app: Application):
     app.add_access_controller(
-        "static", allow_access_for_roles(Anonymous), endpoint=True
+        "static", allow_access_for_roles(ANONYMOUS), endpoint=True
     )
     # debugtoolbar: this is needed to have it when not authenticated
     # on a private site. We cannot do this in init_debug_toolbar,
     # since auth service is not yet installed.
     app.add_access_controller(
         "debugtoolbar",
-        allow_access_for_roles(Anonymous),
+        allow_access_for_roles(ANONYMOUS),
     )
     app.add_access_controller(
         "_debug_toolbar.static",
-        allow_access_for_roles(Anonymous),
+        allow_access_for_roles(ANONYMOUS),
         endpoint=True,
     )

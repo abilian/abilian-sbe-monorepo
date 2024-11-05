@@ -30,28 +30,28 @@ if TYPE_CHECKING:
     from flask_babel import LazyString
 
 __all__ = [
+    "ADMIN",
+    "ANONYMOUS",
+    "AUTHENTICATED",
     "CREATE",
+    "CREATOR",
     "DELETE",
     "MANAGE",
+    "MANAGER",
+    "OWNER",
     "PERMISSIONS_ATTR",
     "READ",
+    "READER",
     "WRITE",
-    "Admin",
-    "Anonymous",
-    "Authenticated",
-    "Creator",
+    "WRITER",
     "FolderishModel",
     "InheritSecurity",
-    "Manager",
-    "Owner",
     "Permission",
     "PermissionAssignment",
-    "Reader",
     "Role",
     "RoleAssignment",
     "RoleType",
     "SecurityAudit",
-    "Writer",
 ]
 
 
@@ -136,21 +136,21 @@ class RoleType(UniqueNameType):
 
 
 #: marker for role assigned to 'Anonymous'
-Anonymous = Role("anonymous", _l("role_anonymous"), assignable=False)
+ANONYMOUS = Role("anonymous", _l("role_anonymous"), assignable=False)
 
 #: marker for role assigned to 'Authenticated'
-Authenticated = Role("authenticated", _l("role_authenticated"), assignable=False)
+AUTHENTICATED = Role("authenticated", _l("role_authenticated"), assignable=False)
 
 #: marker for `admin` role
-Admin = Role("admin", _l("role_administrator"))
+ADMIN = Role("admin", _l("role_administrator"))
 
 #: marker for `manager` role
-Manager = Role("manager", _l("role_manager"), assignable=False)
+MANAGER = Role("manager", _l("role_manager"), assignable=False)
 
-Creator = Role("creator", assignable=False)
-Owner = Role("owner", assignable=False)
-Reader = Role("reader", assignable=False)
-Writer = Role("writer", assignable=False)
+CREATOR = Role("creator", assignable=False)
+OWNER = Role("owner", assignable=False)
+READER = Role("reader", assignable=False)
+WRITER = Role("writer", assignable=False)
 
 # Permissions
 READ = Permission("read")
@@ -205,7 +205,7 @@ class RoleAssignment(Model):
 
 
 # On postgres the UniqueConstraint will not be effective because at least 1
-# columns will have NULL value:
+# column will have NULL value:
 #
 # From http://www.postgresql.org/docs/9.1/static/ddl-constraints.html
 #
