@@ -182,14 +182,14 @@ _PATCHED = False
 if not _PATCHED:
     Field.view_template = None
 
-    _wtforms_Field_init = Field.__init__
+    _wtforms_field_init = Field.__init__
 
     def _core_field_init(self: Any, *args: Any, **kwargs: Any):
         view_widget = None
         if "view_widget" in kwargs:
             view_widget = kwargs.pop("view_widget")
 
-        _wtforms_Field_init(self, *args, **kwargs)
+        _wtforms_field_init(self, *args, **kwargs)
         if view_widget is None:
             view_widget = self.widget
 
@@ -211,13 +211,13 @@ if not _PATCHED:
     del _core_field_repr
 
     #  support 'widget_options' for some custom widgets
-    _wtforms_Field_render = Field.__call__
+    _wtforms_field_render = Field.__call__
 
     def _core_field_render(self, **kwargs):
         if "widget_options" in kwargs and not kwargs["widget_options"]:
             kwargs.pop("widget_options")
 
-        return _wtforms_Field_render(self, **kwargs)
+        return _wtforms_field_render(self, **kwargs)
 
     patch_logger.info(Field.__call__)
     Field.__call__ = _core_field_render

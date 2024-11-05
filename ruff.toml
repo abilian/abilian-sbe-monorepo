@@ -54,8 +54,6 @@ lint.extend-ignore = [
     "N804", # First argument of a class method should be named `cls`
     "N805", # First argument of a method should be named `self`
     "N806", # Variable in function should be lowercase
-#    "N814", # Camelcase ... imported as constant
-    "N816", # Variable in global scope should not be mixedCase
     #
     "PD011", # Use `.to_numpy()` instead of `.values`
     "PERF203", # `try`-`except` within a loop incurs performance overhead
