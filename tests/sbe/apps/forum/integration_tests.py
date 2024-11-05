@@ -11,7 +11,7 @@ from flask import url_for
 from flask_login import login_user
 
 from abilian.sbe.apps.communities.models import MANAGER, MEMBER
-from abilian.sbe.apps.forum.cli import _inject_email
+from abilian.sbe.apps.forum.cli import do_inject_email
 from abilian.sbe.apps.forum.models import Post, Thread
 from abilian.sbe.apps.forum.tasks import (
     build_reply_email_address,
@@ -265,7 +265,7 @@ def test_parse_forum_email(mock_process_email, mock_email):
     mock_email.return_value = get_string_from_file("notification.email")
 
     # test the parsing function
-    _inject_email()
+    do_inject_email()
 
     # assert the email is read
     assert mock_email.called
@@ -279,6 +279,6 @@ def test_parse_forum_email(mock_process_email, mock_email):
     assert not mock_process_email.delay.called
 
     mock_email.return_value = get_string_from_file("defects.email")
-    _inject_email()
+    do_inject_email()
     assert mock_email.called
     assert not mock_process_email.delay.called

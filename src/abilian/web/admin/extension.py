@@ -7,7 +7,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from flask import Blueprint, Flask, g
-from flask.sansio.scaffold import _endpoint_from_view_func
 from flask_login import current_user
 from loguru import logger
 from werkzeug.exceptions import Forbidden
@@ -153,7 +152,7 @@ class Admin:
                 raise ValueError(msg)
 
             if endpoint is None:
-                endpoint = _endpoint_from_view_func(view_func)
+                endpoint = view_func.__name__
 
             if not endpoint.startswith(base_endpoint):
                 endpoint = f"{base_endpoint}_{endpoint}"

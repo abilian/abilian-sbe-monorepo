@@ -60,12 +60,9 @@ lint.extend-ignore = [
     #
     "PD011", # Use `.to_numpy()` instead of `.values`
     "PERF203", # `try`-`except` within a loop incurs performance overhead
-    "PERF401", # Use a list comprehension to create a transformed list
-    "PERF403", # Use a dictionary comprehension instead of a for-loop
     "PLC0206", # Extracting value from dictionary without calling `.items()`
     "PLC0415", # `import` should be at the top-level of a file
     "PLC1901", # `x == ""` can be simplified to `not x` as an empty string is falsey
-    "PLC2701", # Private name import `_...` from external module
     "PLC2801", # Unnecessary dunder call
     "PLR0904", # Too many public methods (22 > 20)
     "PLR0911", # Too many return statements

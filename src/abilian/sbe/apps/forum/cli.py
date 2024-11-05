@@ -18,10 +18,10 @@ from .tasks import check_maildir, process_email
 def inject_email(filename="-"):
     """Read one email from stdin, parse it, forward it in a task to be
     persisted."""
-    _inject_email(filename)
+    do_inject_email(filename)
 
 
-def _inject_email(filename="-"):
+def do_inject_email(filename="-"):
     parser = FeedParser()
 
     try:
