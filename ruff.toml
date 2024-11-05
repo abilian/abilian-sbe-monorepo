@@ -42,10 +42,8 @@ lint.extend-ignore = [
     "DTZ004", # The use of `datetime.datetime.utcfromtimestamp()` is not allowed, use `datetime.datetime.fromtimestamp(ts, tz=)` instead
     "DTZ005", # The use of `datetime.datetime.now()` without `tz` argument is not allowed
     "DTZ007", # The use of `datetime.datetime.strptime()` without %z must be followed by `.replace(tzinfo=)` or `.astimezone()`
-    "E402", # Module level import not at top of file
     "E501", # line too long
     "E741", # Ambiguous variable name
-    # "F401", # 'module' imported but unused
     "F841", # Local variable `...` is assigned to but never used
     "FURB113", # Use `x.extend(...)` instead of repeatedly calling `x.append()`
     #
