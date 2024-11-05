@@ -45,7 +45,7 @@ lint.extend-ignore = [
     "E402", # Module level import not at top of file
     "E501", # line too long
     "E741", # Ambiguous variable name
-    "F401", # 'module' imported but unused
+    # "F401", # 'module' imported but unused
     "F841", # Local variable `...` is assigned to but never used
     "FURB113", # Use `x.extend(...)` instead of repeatedly calling `x.append()`
     #

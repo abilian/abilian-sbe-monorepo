@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, cast
 
 import pytest
-from devtools import debug
 from flask_login import current_user, login_user
 from pytest import fixture
 
