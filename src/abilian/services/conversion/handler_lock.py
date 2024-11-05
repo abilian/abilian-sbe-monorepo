@@ -3,12 +3,15 @@
 from __future__ import annotations
 
 import functools
-from collections.abc import Callable
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from filelock import FileLock, Timeout
 
 from .exceptions import ConversionError
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 LOCK_EXPIRE = 1800  # 30 min, in case many request in //
 LOCK_DIR = []

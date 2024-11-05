@@ -5,7 +5,7 @@ from __future__ import annotations
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
 from blinker import ANY
@@ -25,7 +25,6 @@ from sqlalchemy.event import listens_for
 from sqlalchemy.orm import backref, relationship
 from sqlalchemy.orm.attributes import OP_APPEND, OP_REMOVE, Event
 from sqlalchemy.sql.schema import Column
-from werkzeug.local import LocalProxy
 
 from abilian.core.entities import Entity
 from abilian.core.extensions import db
@@ -45,6 +44,9 @@ from abilian.services.security import Writer as WRITER
 from abilian.services.security import security
 
 from . import signals
+
+if TYPE_CHECKING:
+    from werkzeug.local import LocalProxy
 
 MEMBER = Role("member", label=_l("role_member"), assignable=False)
 VALID_ROLES = frozenset([READER, WRITER, MANAGER, MEMBER])

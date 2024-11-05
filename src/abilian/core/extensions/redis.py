@@ -4,8 +4,12 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import redis
-from flask import Flask
+
+if TYPE_CHECKING:
+    from flask import Flask
 
 
 class Redis:

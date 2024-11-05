@@ -3,19 +3,21 @@
 from __future__ import annotations
 
 import inspect
-from collections.abc import Callable
 from operator import attrgetter, itemgetter
 from typing import TYPE_CHECKING, Any
 
 from flask import Blueprint, url_for
-from flask.blueprints import BlueprintSetupState
 from whoosh.searching import Hit
 
-from abilian.core.entities import Entity
 from abilian.core.extensions import db
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from flask.blueprints import BlueprintSetupState
+
     from abilian.app import Application
+    from abilian.core.entities import Entity
 
 
 class Registry:

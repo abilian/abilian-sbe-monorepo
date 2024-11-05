@@ -2,13 +2,17 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pytest
-from flask import Flask
-from flask.ctx import AppContext
-from sqlalchemy.orm import Session
 
 from abilian.app import create_app
 from abilian.sbe.apps.documents.models import Document, Folder, icon_for
+
+if TYPE_CHECKING:
+    from flask import Flask
+    from flask.ctx import AppContext
+    from sqlalchemy.orm import Session
 
 
 @pytest.fixture()

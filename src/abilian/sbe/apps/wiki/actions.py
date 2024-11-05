@@ -2,10 +2,9 @@
 
 from __future__ import annotations
 
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from flask import Flask, url_for
-from flask.blueprints import BlueprintSetupState
 from flask_babel import lazy_gettext as _l
 from flask_login import current_user
 
@@ -14,6 +13,9 @@ from abilian.sbe.apps.communities.security import is_manager
 from abilian.services import get_service
 from abilian.services.security import Admin, SecurityService
 from abilian.web.action import Action, FAIcon, ModalActionMixin, actions
+
+if TYPE_CHECKING:
+    from flask.blueprints import BlueprintSetupState
 
 
 class WikiPageAction(Action):

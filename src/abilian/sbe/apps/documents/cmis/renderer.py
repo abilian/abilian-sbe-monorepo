@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from flask import render_template
 
-from abilian.sbe.apps.documents.models import Document, Folder
+if TYPE_CHECKING:
+    from abilian.sbe.apps.documents.models import Document, Folder
 
 # TEMP
 ROOT = "http://localhost:5000/cmis/atompub"

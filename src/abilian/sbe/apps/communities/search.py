@@ -2,20 +2,22 @@
 
 from __future__ import annotations
 
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import whoosh.fields as wf
 import whoosh.query as wq
 from flask import Flask, g
 from flask_login import current_user
 from loguru import logger
-from whoosh.query.compound import Or
-from whoosh.query.terms import Term
 
 from abilian.services import get_service
 from abilian.services.indexing.service import IndexService
 
 from .models import Membership
+
+if TYPE_CHECKING:
+    from whoosh.query.compound import Or
+    from whoosh.query.terms import Term
 
 _COMMUNITY_CONTENT_FIELDNAME = "is_community_content"
 _COMMUNITY_CONTENT_FIELD = wf.BOOLEAN()

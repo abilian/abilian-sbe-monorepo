@@ -4,10 +4,13 @@
 
 from __future__ import annotations
 
-from flask import Flask
+from typing import TYPE_CHECKING
 
 from .extension import AttachmentExtension, AttachmentsManager
 from .forms import AttachmentForm
+
+if TYPE_CHECKING:
+    from flask import Flask
 
 
 def register_plugin(app: Flask):

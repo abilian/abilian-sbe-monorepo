@@ -4,15 +4,17 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
 import sqlalchemy.event
 import sqlalchemy.orm
-from sqlalchemy.engine import Connection
-from sqlalchemy.sql.schema import MetaData
 
 from abilian.core.sqlalchemy import SQLAlchemy
+
+if TYPE_CHECKING:
+    from sqlalchemy.engine import Connection
+    from sqlalchemy.sql.schema import MetaData
 
 __all__ = ("db",)
 

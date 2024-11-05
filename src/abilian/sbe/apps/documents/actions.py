@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from flask import g
 from flask import url_for as url_for_orig
-from flask.blueprints import BlueprintSetupState
 from flask_login import current_user
 
 from abilian.i18n import _l
@@ -15,6 +14,9 @@ from abilian.services.security import MANAGE, WRITE, security
 from abilian.web.action import Action, FAIcon, ModalActionMixin, actions
 
 from .repository import content_repository
+
+if TYPE_CHECKING:
+    from flask.blueprints import BlueprintSetupState
 
 
 def url_for(endpoint, **kw):

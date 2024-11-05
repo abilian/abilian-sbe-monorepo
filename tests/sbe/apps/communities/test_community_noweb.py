@@ -5,16 +5,14 @@ module."""
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
 from unittest import mock
 
 import pytest
 import sqlalchemy as sa
-from sqlalchemy.orm import Session
 
-from abilian.app import Application
 from abilian.core.entities import Entity
 from abilian.core.models.subjects import User
-from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.sbe.apps.communities import signals, views
 from abilian.sbe.apps.communities.models import (
     MEMBER,
@@ -26,6 +24,12 @@ from abilian.sbe.apps.communities.models import (
 from abilian.sbe.apps.documents.models import Folder
 from abilian.services import index_service, security_service
 from tests.util import login
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm import Session
+
+    from abilian.app import Application
+    from abilian.core.sqlalchemy import SQLAlchemy
 
 # from .. import signals, views
 # from ..models import MEMBER, READER, Community, CommunityIdColumn, community_content

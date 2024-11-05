@@ -11,18 +11,15 @@ TODO: In the future, we may decide to:
 from __future__ import annotations
 
 import contextlib
-from datetime import datetime
 from inspect import isclass
 from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
 from flask import current_app, g
-from flask_sqlalchemy.model import Model
 from loguru import logger
 from sqlalchemy import event, extract
 from sqlalchemy.orm import Query, Session
 from sqlalchemy.orm.attributes import NEVER_SET, InstrumentedAttribute
-from sqlalchemy.orm.unitofwork import UOWTransaction
 
 from abilian.core.entities import Entity
 from abilian.core.extensions import db
@@ -31,6 +28,11 @@ from abilian.services import Service, ServiceState
 from .models import CREATION, DELETION, RELATED, UPDATE, AuditEntry, Changes
 
 if TYPE_CHECKING:
+    from datetime import datetime
+
+    from flask_sqlalchemy.model import Model
+    from sqlalchemy.orm.unitofwork import UOWTransaction
+
     from abilian.app import Application
 
 

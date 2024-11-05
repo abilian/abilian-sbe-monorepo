@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from datetime import datetime
 from functools import total_ordering
+from typing import TYPE_CHECKING
 
-from flask_babel import LazyString
 from sqlalchemy import sql
 from sqlalchemy.orm import backref, relationship
 from sqlalchemy.schema import (
@@ -25,6 +25,9 @@ from abilian.core.models import Model
 from abilian.core.models.subjects import Group, User
 from abilian.core.singleton import UniqueName, UniqueNameType
 from abilian.i18n import _l
+
+if TYPE_CHECKING:
+    from flask_babel import LazyString
 
 __all__ = [
     "CREATE",

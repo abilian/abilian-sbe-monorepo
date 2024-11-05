@@ -2,13 +2,10 @@
 
 from __future__ import annotations
 
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from flask import render_template
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug import Client
 
-from abilian.app import Application
 from abilian.core.models.subjects import User
 from abilian.sbe.apps.communities.models import WRITER, Community
 from abilian.sbe.apps.notifications.tasks.social import (
@@ -18,6 +15,12 @@ from abilian.sbe.apps.notifications.tasks.social import (
 from abilian.services import get_service
 from abilian.services.preferences.service import PreferenceService
 from abilian.web import url_for
+
+if TYPE_CHECKING:
+    from flask_sqlalchemy import SQLAlchemy
+    from werkzeug import Client
+
+    from abilian.app import Application
 
 
 def test_unsubscribe(app: Application, client: Client, db: SQLAlchemy, app_context):

@@ -2,17 +2,21 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 
 from flask import url_for
-from flask.testing import FlaskClient
 
-from abilian.app import Application
-from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.sbe.apps.communities.models import Community
 from abilian.services import security_service
 from abilian.services.security import Admin
 from tests.util import client_login
+
+if TYPE_CHECKING:
+    from flask.testing import FlaskClient
+
+    from abilian.app import Application
+    from abilian.core.sqlalchemy import SQLAlchemy
 
 
 def test_index(

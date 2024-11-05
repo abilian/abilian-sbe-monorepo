@@ -11,8 +11,8 @@ TODO: Look wether other attributes from the spec need to be implemented.
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import Column, ForeignKey
@@ -20,6 +20,9 @@ from sqlalchemy.types import DateTime, Integer, String, Text
 
 from abilian.core.entities import Entity, db
 from abilian.core.models.subjects import User
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 __all__ = ["ActivityEntry"]
 

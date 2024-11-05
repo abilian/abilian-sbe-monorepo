@@ -5,14 +5,16 @@
 from __future__ import annotations
 
 from datetime import datetime
-
-from sqlalchemy.orm.session import Session
+from typing import TYPE_CHECKING
 
 from abilian.core.entities import Entity
 from abilian.core.models.base import AUDITABLE, NOT_SEARCHABLE, SEARCHABLE, Info
 from abilian.core.models.subjects import User
 
 from .dummy import DummyContact
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm.session import Session
 
 # @fixture
 # def session() -> Session:

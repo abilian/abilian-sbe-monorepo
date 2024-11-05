@@ -10,12 +10,15 @@ validation code.
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 from wtforms import Field, Form, validators
 
 from abilian.i18n import _, _n
 from abilian.services import get_service
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 __all__ = (
     "VALIDATORS",

@@ -5,13 +5,11 @@ from __future__ import annotations
 import csv
 import io
 import json
-from collections.abc import Sequence
 from os.path import splitext
-from typing import IO, Any
+from typing import IO, TYPE_CHECKING, Any
 
 from flask import current_app, flash, g, redirect, render_template, request, url_for
 from validate_email import validate_email
-from werkzeug.wrappers import Response
 
 from abilian.core.extensions import db
 from abilian.core.models.subjects import User
@@ -24,6 +22,11 @@ from abilian.web.action import Endpoint
 from abilian.web.nav import BreadcrumbItem
 
 from .views import route, tab
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from werkzeug.wrappers import Response
 
 
 def wizard_extract_data(

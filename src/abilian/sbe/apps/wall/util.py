@@ -6,7 +6,7 @@
 
 from __future__ import annotations
 
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import sqlalchemy as sa
 from flask import g
@@ -14,13 +14,15 @@ from flask_login import current_user
 from werkzeug.exceptions import Forbidden
 
 from abilian.core.extensions import db
-from abilian.core.models.subjects import User
 from abilian.sbe.apps.communities.models import Membership
-from abilian.sbe.apps.communities.presenters import CommunityPresenter
 from abilian.sbe.apps.documents.models import Document, Folder
 from abilian.services import get_service
 from abilian.services.activity import ActivityEntry
 from abilian.services.security import READ, Admin, SecurityService
+
+if TYPE_CHECKING:
+    from abilian.core.models.subjects import User
+    from abilian.sbe.apps.communities.presenters import CommunityPresenter
 
 
 def get_recent_entries(

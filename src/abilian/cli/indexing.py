@@ -7,6 +7,7 @@ from __future__ import annotations
 import contextlib
 import time
 from collections import deque
+from typing import TYPE_CHECKING
 
 import click
 import sqlalchemy as sa
@@ -18,9 +19,11 @@ from sqlalchemy.orm.session import Session
 from tqdm import tqdm
 from whoosh.writing import CLEAR, AsyncWriter
 
-from abilian.core.entities import Entity
 from abilian.core.extensions import db
 from abilian.services import get_service
+
+if TYPE_CHECKING:
+    from abilian.core.entities import Entity
 
 STOP = object()
 COMMIT = object()

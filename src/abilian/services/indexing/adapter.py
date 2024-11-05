@@ -6,18 +6,21 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from operator import attrgetter
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
 from loguru import logger
-from sqlalchemy.orm.session import Session
 from whoosh.fields import ID, TEXT, Schema
 
-from abilian.core.entities import Entity
 from abilian.core.extensions import db
-from abilian.core.models import Model
 
 from .schema import accent_folder
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm.session import Session
+
+    from abilian.core.entities import Entity
+    from abilian.core.models import Model
 
 __all__ = ["SAAdapter", "SchemaAdapter"]
 

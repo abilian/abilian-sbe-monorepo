@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import contextlib
 import os
-from collections.abc import Collection
 from inspect import isclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -27,7 +26,6 @@ from flask_login import current_user
 from loguru import logger
 from sqlalchemy import event
 from sqlalchemy.orm import Session
-from sqlalchemy.orm.unitofwork import UOWTransaction
 from whoosh import query as wq
 from whoosh.filedb.filestore import FileStorage, RamStorage
 from whoosh.index import FileIndex, Index
@@ -38,7 +36,6 @@ from abilian.core import signals
 from abilian.core.dramatiq.singleton import dramatiq
 from abilian.core.entities import Entity, Indexable
 from abilian.core.extensions import db
-from abilian.core.models import Model
 from abilian.core.models.subjects import Group, User
 from abilian.core.util import fqcn as base_fqcn
 from abilian.core.util import friendly_fqcn
@@ -49,7 +46,12 @@ from .adapter import SAAdapter
 from .schema import DefaultSearchSchema, indexable_role
 
 if TYPE_CHECKING:
+    from collections.abc import Collection
+
+    from sqlalchemy.orm.unitofwork import UOWTransaction
+
     from abilian.app import Application
+    from abilian.core.models import Model
 
 PENDING_INDEXATION_ATTR = "abilian_pending_indexation"
 

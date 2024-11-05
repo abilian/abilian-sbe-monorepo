@@ -27,14 +27,12 @@ lint.extend-ignore = [
     "E712", # ...
     "E713", # Test for membership should be `not in`
     "PLR2044", # Line with empty comment
-    "PT012", # `pytest.raises()` block should contain a single simple statement
-    "PT001", # use @pytest.fixture over @pytest.fixture()
     "RUF027", # Possible f-string without an `f` prefix
     "S101", # Use of `assert` detected
     "S320", # OK, we're using defusedxml
-    "TCH001", # Move import into a type-checking block
-    "TCH002", # Move import into a type-checking block
-    "TCH003", # Move import into a type-checking block
+#    "TCH001", # Move import into a type-checking block
+#    "TCH002", # Move import into a type-checking block
+#    "TCH003", # Move import into a type-checking block
 
     # Fix these (if possible / reasonable)
     "A001", # Variable `...` is shadowing a python builtin
@@ -59,6 +57,7 @@ lint.extend-ignore = [
     "F841", # Local variable `...` is assigned to but never used
     "FURB113", # Use `x.extend(...)` instead of repeatedly calling `x.append()`
     "I001", # Import block is un-sorted or un-formatted
+    #
     "N801", # Class name should use CapWords convention
     "N802", # Function name should be lowercase
     "N803", # Argument name should be lowercase
@@ -67,11 +66,11 @@ lint.extend-ignore = [
     "N806", # Variable in function should be lowercase
     "N814", # Camelcase ... imported as constant
     "N816", # Variable in global scope should not be mixedCase
+    #
     "PD011", # Use `.to_numpy()` instead of `.values`
     "PERF203", # `try`-`except` within a loop incurs performance overhead
     "PERF401", # Use a list comprehension to create a transformed list
     "PERF403", # Use a dictionary comprehension instead of a for-loop
-    "PIE810", # Call `startswith` / `endswith` once with a `tuple`
     "PLC0206", # Extracting value from dictionary without calling `.items()`
     "PLC0415", # `import` should be at the top-level of a file
     "PLC1901", # `x == ""` can be simplified to `not x` as an empty string is falsey
@@ -90,9 +89,12 @@ lint.extend-ignore = [
     "PLW1514", # `open` in text mode without explicit `encoding` argument
     "PLW2901", # `for` loop variable overwritten by assignment target
     "PLW3201", # Bad or misspelled dunder method name. (bad-dunder-name)
+    #
+    "PT001", # use @pytest.fixture over @pytest.fixture()
     "PT011", # `pytest.raises(ValueError)` is too broad, set the `match` parameter or use a more specific exception
     "PT012", # `pytest.raises()` block should contain a single simple statement
     "PT013", # Found incorrect import of pytest, use simple `import pytest` instead
+    #
     "PYI024", # Use `typing.NamedTuple` instead of `collections.namedtuple`
     "PYI034", # `__enter__` methods in classes like `FormContext` usually return `self` at runtime
     "RET503", # Missing explicit `return` at the end of function able to return non-`None` value

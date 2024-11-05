@@ -3,20 +3,24 @@
 from __future__ import annotations
 
 import warnings
-from collections.abc import Iterator
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from devtools import debug
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.routing import Rule
 
-from abilian.app import Application
 from abilian.core.models.subjects import User
 from abilian.services import get_service, security_service
 from abilian.services.security import Admin, SecurityService
 from abilian.web import url_for
 
 from .conftest import ENDPOINTS_TO_IGNORE
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+    from flask_sqlalchemy import SQLAlchemy
+    from werkzeug.routing import Rule
+
+    from abilian.app import Application
 
 
 def all_rules_to_test(app: Application) -> Iterator[Rule]:

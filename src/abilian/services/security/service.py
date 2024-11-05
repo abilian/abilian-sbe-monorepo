@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Collection
 from functools import wraps
 from itertools import chain
 from typing import TYPE_CHECKING, Any
@@ -14,12 +13,9 @@ from flask import g
 from flask_login import current_user
 from sqlalchemy import sql
 from sqlalchemy.orm import Session, object_session, subqueryload
-from sqlalchemy.sql.selectable import Exists
 
 from abilian.core.entities import Entity
 from abilian.core.extensions import db
-from abilian.core.extensions.login import AnonymousUser
-from abilian.core.models import Model
 from abilian.core.models.subjects import Group, Principal, User
 from abilian.core.util import unwrap
 from abilian.services import Service, ServiceState
@@ -50,7 +46,13 @@ from abilian.services.security.models import (
 )
 
 if TYPE_CHECKING:
+    from collections.abc import Callable, Collection
+
+    from sqlalchemy.sql.selectable import Exists
+
     from abilian.app import Application
+    from abilian.core.extensions.login import AnonymousUser
+    from abilian.core.models import Model
 
 
 #: list of legacy supported permissions when not using :class:`Permission`

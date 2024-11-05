@@ -5,10 +5,10 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 import sqlalchemy as sa
 import sqlalchemy.orm
-from flask.blueprints import BlueprintSetupState
 from flask_login import current_user
 from werkzeug.exceptions import BadRequest
 
@@ -27,6 +27,9 @@ from abilian.web.views.object import (
 )
 
 from .forms import CommentForm
+
+if TYPE_CHECKING:
+    from flask.blueprints import BlueprintSetupState
 
 bp = AccessControlBlueprint("comments", __name__, url_prefix="/comments")
 

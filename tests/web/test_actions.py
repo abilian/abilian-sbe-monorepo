@@ -3,13 +3,16 @@
 from __future__ import annotations
 
 import operator
+from typing import TYPE_CHECKING
 
 import pytest
 from flask import Flask
-from flask.ctx import AppContext
 from markupsafe import Markup
 
 from abilian.web.action import Action, Glyphicon, StaticIcon, actions
+
+if TYPE_CHECKING:
+    from flask.ctx import AppContext
 
 BASIC = Action("cat_1", "basic", "Basic Action", url="http://some.where", icon="ok")
 CONDITIONAL = Action(

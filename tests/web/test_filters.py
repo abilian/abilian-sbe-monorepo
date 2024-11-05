@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import datetime
-from collections.abc import Iterator
 from textwrap import dedent
+from typing import TYPE_CHECKING
 
 import html5lib
 from flask import Flask
@@ -14,6 +14,9 @@ from pytest import fixture
 from pytz import timezone, utc
 
 from abilian.web import filters
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 NNSP = "\u202f"  # narrow no-break space
 

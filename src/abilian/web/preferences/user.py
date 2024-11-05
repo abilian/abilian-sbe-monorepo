@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import imghdr
 from io import BytesIO
+from typing import TYPE_CHECKING
 
 import babel.dates
 import PIL.Image
@@ -19,7 +20,9 @@ from abilian.i18n import _, _l, get_default_locale
 from abilian.services.preferences.panel import PreferencePanel
 from abilian.web import csrf
 from abilian.web.forms import Form, fields, required, widgets
-from abilian.web.forms.fields import FileField
+
+if TYPE_CHECKING:
+    from abilian.web.forms.fields import FileField
 
 
 class UserPreferencesForm(Form):

@@ -4,10 +4,11 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import sqlalchemy as sa
 import sqlalchemy.orm
 from flask import current_app, send_file
-from flask.blueprints import BlueprintSetupState
 from werkzeug.exceptions import BadRequest
 from werkzeug.utils import redirect
 
@@ -20,6 +21,9 @@ from abilian.web.action import ButtonAction, actions
 from abilian.web.views import BaseObjectView, ObjectCreate, ObjectDelete, ObjectEdit
 
 from .forms import AttachmentForm
+
+if TYPE_CHECKING:
+    from flask.blueprints import BlueprintSetupState
 
 bp = AccessControlBlueprint("attachments", __name__, url_prefix="/attachments")
 

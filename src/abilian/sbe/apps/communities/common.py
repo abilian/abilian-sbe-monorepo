@@ -5,15 +5,18 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from flask import g
 from flask_babel import format_date
 
 from abilian.i18n import _l
 from abilian.sbe.apps.communities.security import is_manager
-from abilian.sbe.apps.documents.models import Document
-from abilian.sbe.apps.wiki.models import WikiPage
 from abilian.services.viewtracker import viewtracker
+
+if TYPE_CHECKING:
+    from abilian.sbe.apps.documents.models import Document
+    from abilian.sbe.apps.wiki.models import WikiPage
 
 
 def object_viewers(entity: Document | WikiPage) -> list:

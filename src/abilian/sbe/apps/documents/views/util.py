@@ -3,19 +3,23 @@
 from __future__ import annotations
 
 import re
+from typing import TYPE_CHECKING
 
 from flask import current_app, flash, g, request
 from flask_babel import gettext as _
 from flask_login import current_user
-from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import Forbidden, InternalServerError, NotFound
 
 from abilian.core.signals import activity
 from abilian.core.util import unwrap
-from abilian.sbe.apps.documents.models import BaseContent, Document, Folder
 from abilian.sbe.apps.documents.repository import content_repository
 from abilian.services.security import MANAGE, WRITE, Admin, security
 from abilian.web import url_for
+
+if TYPE_CHECKING:
+    from werkzeug.datastructures import FileStorage
+
+    from abilian.sbe.apps.documents.models import BaseContent, Document, Folder
 
 
 #

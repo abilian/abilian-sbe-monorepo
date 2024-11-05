@@ -2,15 +2,12 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterator
+from typing import TYPE_CHECKING
 
 from pytest import fixture, mark
-from sqlalchemy.orm import Session
 
-from abilian.app import Application
 from abilian.core.entities import Entity
 from abilian.core.models.subjects import Group, User, create_root_user
-from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.sbe.apps.documents.models import Folder
 from abilian.services.security import (
     READ,
@@ -29,6 +26,14 @@ from abilian.services.security import (
     Writer,
     security,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+    from sqlalchemy.orm import Session
+
+    from abilian.app import Application
+    from abilian.core.sqlalchemy import SQLAlchemy
 
 # from abilian.services.security.models import FolderishModel
 

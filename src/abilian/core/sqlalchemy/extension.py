@@ -4,11 +4,13 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from flask import Flask
 from flask_sqlalchemy import SQLAlchemy as SAExtension
-from sqlalchemy.engine.url import URL
+
+if TYPE_CHECKING:
+    from flask import Flask
+    from sqlalchemy.engine.url import URL
 
 
 class SQLAlchemy(SAExtension):

@@ -2,16 +2,18 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from flask import g
 from flask import url_for as url_for_orig
-from flask.blueprints import BlueprintSetupState
 from flask_babel import lazy_gettext as _l
 from flask_login import current_user
 
 from abilian.web.action import Action, Endpoint, actions
 from abilian.web.nav import NavItem
+
+if TYPE_CHECKING:
+    from flask.blueprints import BlueprintSetupState
 
 __all__ = ["register_actions"]
 

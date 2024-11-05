@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import uuid
-from collections.abc import Callable
 from importlib import resources as rso
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -14,6 +13,8 @@ from abilian.core.util import fqcn
 from abilian.extensions import asset_manager
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from abilian.app import Application
 
 

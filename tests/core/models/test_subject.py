@@ -2,10 +2,14 @@
 
 from __future__ import annotations
 
-from flask import Flask
+from typing import TYPE_CHECKING
 
 from abilian.core.models.subjects import Group, User
-from abilian.core.sqlalchemy import SQLAlchemy
+
+if TYPE_CHECKING:
+    from flask import Flask
+
+    from abilian.core.sqlalchemy import SQLAlchemy
 
 
 def test_non_ascii_password():

@@ -6,11 +6,13 @@ from __future__ import annotations
 
 import uuid
 from pathlib import Path
-
-from sqlalchemy.orm import Session
+from typing import TYPE_CHECKING
 
 from abilian.services.blob_store import blob_store, session_blob_store
 from abilian.services.blob_store.service import BlobStoreTransaction
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm import Session
 
 
 def test_transaction_lifetime(session: Session):

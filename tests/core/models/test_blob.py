@@ -5,12 +5,15 @@ from __future__ import annotations
 import uuid
 from io import StringIO
 from pathlib import Path
-
-from flask import Flask
+from typing import TYPE_CHECKING
 
 from abilian.core.models.blob import Blob
-from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.services import blob_store, session_blob_store
+
+if TYPE_CHECKING:
+    from flask import Flask
+
+    from abilian.core.sqlalchemy import SQLAlchemy
 
 
 def test_auto_uuid():

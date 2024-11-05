@@ -3,14 +3,16 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import dateutil.parser
 from flask import current_app
 from flask_login import current_user
 
-from abilian.core.models.subjects import User
 from abilian.core.util import utcnow
+
+if TYPE_CHECKING:
+    from abilian.core.models.subjects import User
 
 DEFAULT_LIFETIME = 3600
 

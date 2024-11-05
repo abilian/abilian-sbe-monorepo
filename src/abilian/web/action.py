@@ -5,13 +5,10 @@
 from __future__ import annotations
 
 import re
-from collections.abc import Callable
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from flask import current_app, g
-from flask.app import Flask
 from flask.signals import appcontext_pushed
-from flask_babel.speaklater import LazyString
 from jinja2 import Template
 from loguru import logger
 from markupsafe import Markup
@@ -19,6 +16,12 @@ from markupsafe import Markup
 from abilian.core.singleton import UniqueName
 from abilian.web import csrf
 from abilian.web.util import url_for
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from flask.app import Flask
+    from flask_babel.speaklater import LazyString
 
 __all__ = (
     "ACTIVE",

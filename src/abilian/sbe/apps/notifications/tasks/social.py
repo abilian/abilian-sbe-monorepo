@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta
+from typing import TYPE_CHECKING
 
 import html2text
 from flask import current_app
@@ -13,11 +14,9 @@ from validate_email import validate_email
 
 from abilian.core.dramatiq.scheduler import crontab
 from abilian.core.dramatiq.singleton import dramatiq
-from abilian.core.entities import Entity
 from abilian.core.models.subjects import User
 from abilian.core.util import md5
 from abilian.i18n import render_template_i18n
-from abilian.sbe.apps.communities.models import Community
 from abilian.sbe.apps.documents.models import Document
 from abilian.sbe.apps.documents.repository import content_repository
 from abilian.sbe.apps.forum.models import Post, Thread
@@ -27,6 +26,10 @@ from abilian.services import get_service
 from abilian.services.activity import ActivityEntry
 from abilian.services.auth.views import get_serializer
 from abilian.web import url_for
+
+if TYPE_CHECKING:
+    from abilian.core.entities import Entity
+    from abilian.sbe.apps.communities.models import Community
 
 
 @crontab("SCHEDULE_SEND_DAILY_SOCIAL_DIGEST")

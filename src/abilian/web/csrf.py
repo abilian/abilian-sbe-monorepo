@@ -2,13 +2,17 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from functools import wraps
+from typing import TYPE_CHECKING
 
 from flask import Blueprint, current_app, request
 from flask_wtf import FlaskForm
 from werkzeug.exceptions import Forbidden
-from wtforms.csrf.core import CSRFTokenField
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from wtforms.csrf.core import CSRFTokenField
 
 csrf_blueprint = Blueprint("csrf", __name__, url_prefix="/csrf")
 

@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 import importlib
+from typing import TYPE_CHECKING
 
 from attrs import field, frozen
-from flask import Flask
+
+if TYPE_CHECKING:
+    from flask import Flask
 
 CORE_PLUGINS = [
     "abilian.web.search",

@@ -7,16 +7,18 @@ from __future__ import annotations
 import contextlib
 import json
 import uuid
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import babel
 import babel.dates
 import pytz
 import sqlalchemy as sa
 import sqlalchemy.dialects
-from sqlalchemy.engine.interfaces import Dialect
 from sqlalchemy.ext.mutable import Mutable
-from sqlalchemy.sql.sqltypes import CHAR
+
+if TYPE_CHECKING:
+    from sqlalchemy.engine.interfaces import Dialect
+    from sqlalchemy.sql.sqltypes import CHAR
 
 
 class MutationDict(Mutable, dict):

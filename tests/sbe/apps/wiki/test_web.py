@@ -3,19 +3,23 @@
 from __future__ import annotations
 
 import re
+from typing import TYPE_CHECKING
 
 from flask import g, url_for
-from flask_sqlalchemy import SQLAlchemy
 from pytest import fixture
 from toolz import first
 
-from abilian.app import Application
 from abilian.core.models.subjects import User
 from abilian.sbe.apps.communities.models import READER, Community
 from abilian.sbe.apps.wiki import views
 from abilian.sbe.apps.wiki.models import WikiPage
 from abilian.services import get_service
 from tests.util import client_login
+
+if TYPE_CHECKING:
+    from flask_sqlalchemy import SQLAlchemy
+
+    from abilian.app import Application
 
 
 @fixture()

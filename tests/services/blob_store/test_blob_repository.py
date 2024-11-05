@@ -4,11 +4,14 @@ from __future__ import annotations
 
 import uuid
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from pytest import raises
-from sqlalchemy.orm import Session
 
 from abilian.services.blob_store import blob_store
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm import Session
 
 UUID_STR = "4f80f02f-52e3-4fe2-b9f2-2c3e99449ce9"
 UUID = uuid.UUID(UUID_STR)

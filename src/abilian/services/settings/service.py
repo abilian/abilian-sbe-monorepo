@@ -4,13 +4,15 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterator
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from abilian.core.extensions import db
 from abilian.services import Service
 
 from .models import Setting
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 class SettingsNamespace:

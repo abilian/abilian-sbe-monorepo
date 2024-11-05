@@ -17,8 +17,8 @@ import shutil
 import subprocess
 from io import BytesIO
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-from flask import Flask
 from loguru import logger
 from PIL import Image
 from PIL.ExifTags import TAGS
@@ -28,6 +28,9 @@ from .exceptions import HandlerNotFoundError
 from .handler_lock import init_conversion_lock_dir
 from .handlers import Handler, poppler_bin_util
 from .util import make_temp_file
+
+if TYPE_CHECKING:
+    from flask import Flask
 
 TMP_DIR = "tmp"
 CACHE_DIR = "cache"

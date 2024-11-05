@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 import sqlalchemy as sa
 import sqlalchemy.orm
@@ -24,6 +24,9 @@ from abilian.web.views import ObjectEdit
 from abilian.web.views.base import View
 
 from .forms import TagForm
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 _OBJ_COUNT = func.count(entity_tag_tbl.c.entity_id).label("obj_count")
 

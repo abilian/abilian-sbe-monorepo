@@ -3,12 +3,15 @@
 from __future__ import annotations
 
 import uuid
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Column
-from sqlalchemy.orm import Query, Session
 
 from abilian.core.entities import Entity
 from abilian.core.sqlalchemy import UUID, JSONDict, JSONList
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm import Query, Session
 
 
 class DummyModel2(Entity):

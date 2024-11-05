@@ -12,7 +12,7 @@ import contextlib
 import secrets
 import string
 from datetime import datetime
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from urllib.parse import urljoin, urlparse
 
 from flask import (
@@ -36,8 +36,6 @@ from itsdangerous import (
 )
 from sqlalchemy import sql
 from sqlalchemy.orm.exc import NoResultFound
-from werkzeug.datastructures import ImmutableMultiDict
-from werkzeug.wrappers import Response
 
 from abilian.core.extensions import csrf, db
 from abilian.core.models.subjects import User
@@ -48,6 +46,10 @@ from abilian.services.security import Anonymous
 from abilian.web.access_blueprint import AccessControlBlueprint
 
 from .models import LoginSession
+
+if TYPE_CHECKING:
+    from werkzeug.datastructures import ImmutableMultiDict
+    from werkzeug.wrappers import Response
 
 __all__ = ("login",)
 

@@ -6,15 +6,19 @@ from __future__ import annotations
 
 import json
 from functools import partial
+from typing import TYPE_CHECKING
 
 from flask import request, url_for
-from flask.ctx import AppContext
-from flask.testing import FlaskClient
-from sqlalchemy.orm import Session
 
-from abilian.app import Application
 from abilian.core.models.subjects import User
 from abilian.services.auth import views
+
+if TYPE_CHECKING:
+    from flask.ctx import AppContext
+    from flask.testing import FlaskClient
+    from sqlalchemy.orm import Session
+
+    from abilian.app import Application
 
 
 def test_get_redirect_target(app: Application, app_context: AppContext):

@@ -4,17 +4,19 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
 import sqlalchemy.event
 import sqlalchemy.orm
-from flask_sqlalchemy.model import Model
 from flask_sqlalchemy.query import Query
 from sqlalchemy import Column
 
 from abilian.core.extensions import db
 from abilian.core.util import slugify
+
+if TYPE_CHECKING:
+    from flask_sqlalchemy.model import Model
 
 _BaseMeta = db.Model.__class__
 

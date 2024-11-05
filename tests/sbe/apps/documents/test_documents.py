@@ -4,18 +4,21 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
-from typing import IO
+from typing import IO, TYPE_CHECKING
 
 import pytest
-from sqlalchemy.orm import Session
 
-from abilian.app import Application
 from abilian.core.models.subjects import User
-from abilian.sbe.apps.communities.models import Community
 from abilian.sbe.apps.documents.models import Document, Folder
 from abilian.sbe.apps.documents.views.folders import explore_archive
 from abilian.services import index_service, security_service
 from tests.util import login, redis_available
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm import Session
+
+    from abilian.app import Application
+    from abilian.sbe.apps.communities.models import Community
 
 
 def open_file(filename: str) -> IO[bytes]:

@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from attrs import field, frozen
 
-from abilian.services import Service
+if TYPE_CHECKING:
+    from abilian.services import Service
 
 
 @frozen

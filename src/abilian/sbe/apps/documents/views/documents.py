@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import contextlib
 from datetime import datetime
+from typing import TYPE_CHECKING
 from urllib.parse import quote
 
 import sqlalchemy as sa
@@ -20,7 +21,6 @@ from flask import (
 from flask_login import current_user
 from flask_mail import Message
 from werkzeug.exceptions import BadRequest, NotFound
-from werkzeug.wrappers.response import Response
 
 from abilian.core.extensions import db, mail
 from abilian.core.signals import activity
@@ -51,6 +51,9 @@ from .util import (
     match,
 )
 from .views import community_blueprint
+
+if TYPE_CHECKING:
+    from werkzeug.wrappers.response import Response
 
 route = community_blueprint.route
 

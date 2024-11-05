@@ -6,9 +6,12 @@ from __future__ import annotations
 
 import logging
 import sys
+from typing import TYPE_CHECKING
 
-from flask import Flask
 from loguru import logger
+
+if TYPE_CHECKING:
+    from flask import Flask
 
 
 def init_logging(app: Flask) -> None:

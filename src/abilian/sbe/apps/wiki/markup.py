@@ -7,16 +7,19 @@ Add extensions here (for now).
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
 from xml.etree.ElementTree import Element
 
 import markdown
 from flask import url_for
-from markdown.core import Markdown
 from markdown.extensions.wikilinks import WikiLinkExtension, WikiLinksInlineProcessor
 
-from abilian.sbe.apps.wiki.models import WikiPage
-
 from .util import page_exists
+
+if TYPE_CHECKING:
+    from markdown.core import Markdown
+
+    from abilian.sbe.apps.wiki.models import WikiPage
 
 __all__ = ("SBEWikiLinkExtension", "convert")
 

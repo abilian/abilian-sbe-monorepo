@@ -4,15 +4,19 @@ from __future__ import annotations
 
 import os
 import tempfile
-from collections.abc import Iterator
 from pathlib import Path
+from typing import TYPE_CHECKING
 from warnings import warn
 
 from magic import Magic
 from pytest import fixture, mark
 
 from abilian.services.conversion.handlers import HAS_LIBREOFFICE, HAS_PDFTOTEXT
-from abilian.services.conversion.service import Converter
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+    from abilian.services.conversion.service import Converter
 
 mime_sniffer = Magic(mime=True)
 encoding_sniffer = Magic(mime_encoding=True)

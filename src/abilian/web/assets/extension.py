@@ -4,15 +4,17 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from flask import Flask
 from flask_assets import Bundle
 from flask_assets import Environment as AssetsEnv
 from loguru import logger
 
 from abilian.services.security import Anonymous
 from abilian.web.assets.filters import ClosureJS
+
+if TYPE_CHECKING:
+    from flask import Flask
 
 
 class AssetManager:

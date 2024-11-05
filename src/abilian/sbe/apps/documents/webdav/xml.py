@@ -4,11 +4,13 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from lxml import etree, objectify
 from lxml.builder import ElementMaker
-from lxml.etree import _Element
+
+if TYPE_CHECKING:
+    from lxml.etree import _Element
 
 E = ElementMaker(namespace="DAV:")
 

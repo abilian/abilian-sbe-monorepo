@@ -6,15 +6,16 @@ from typing import TYPE_CHECKING
 
 import sqlalchemy as sa
 import sqlalchemy.orm
-from flask import Flask
 
-from abilian.core.models.subjects import User
 from abilian.services.security import READ, Permission, security
 
 from .models import BaseContent, CmisObject, Document, Folder
 
 if TYPE_CHECKING:
+    from flask import Flask
+
     from abilian.app import Application
+    from abilian.core.models.subjects import User
 
 
 class ContentRepository:

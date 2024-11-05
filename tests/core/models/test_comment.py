@@ -3,13 +3,17 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta
+from typing import TYPE_CHECKING
 
 import pytest
-from flask import Flask
 
 from abilian.core.entities import Entity
 from abilian.core.models.comment import Comment, is_commentable, register
-from abilian.core.sqlalchemy import SQLAlchemy
+
+if TYPE_CHECKING:
+    from flask import Flask
+
+    from abilian.core.sqlalchemy import SQLAlchemy
 
 
 @register

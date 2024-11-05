@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from datetime import datetime
 from itertools import chain
+from typing import TYPE_CHECKING
 
 import pytz
 import sqlalchemy as sa
@@ -30,6 +30,9 @@ from abilian.services.security import SecurityAudit
 from abilian.web.admin import AdminPanel
 from abilian.web.util import url_for
 from abilian.web.views.base import JSONView
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 def format_date_for_input(date):

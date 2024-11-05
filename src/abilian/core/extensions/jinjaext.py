@@ -4,16 +4,18 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import lxml.html
 from flask import Flask, current_app, g
 from flask.signals import got_request_exception, request_started
 from jinja2 import nodes
 from jinja2.ext import Extension as JinjaExtension
-from jinja2.nodes import CallBlock
-from jinja2.parser import Parser
-from jinja2.runtime import Macro
+
+if TYPE_CHECKING:
+    from jinja2.nodes import CallBlock
+    from jinja2.parser import Parser
+    from jinja2.runtime import Macro
 
 
 class DeferredJS:

@@ -4,12 +4,16 @@
 
 from __future__ import annotations
 
-from flask import Flask
-from sqlalchemy.orm import Session
+from typing import TYPE_CHECKING
 
 from abilian.core.entities import Entity
-from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.services import get_security_service, security
+
+if TYPE_CHECKING:
+    from flask import Flask
+    from sqlalchemy.orm import Session
+
+    from abilian.core.sqlalchemy import SQLAlchemy
 
 
 def test_default_permissions(app: Flask, db: SQLAlchemy, session: Session):

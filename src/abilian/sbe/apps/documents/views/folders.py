@@ -10,12 +10,11 @@ import re
 import sys
 import tempfile
 import traceback
-from collections.abc import Iterator
 from datetime import datetime
 from functools import partial
 from io import StringIO
 from itertools import takewhile
-from typing import IO, Any
+from typing import IO, TYPE_CHECKING, Any
 from urllib.parse import quote
 from zipfile import ZipFile, is_zipfile
 
@@ -38,9 +37,7 @@ from flask_login import current_user
 from loguru import logger
 from markupsafe import Markup
 from sqlalchemy import func
-from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import InternalServerError
-from werkzeug.wrappers import Response
 from xlwt import Workbook, easyxf
 
 from abilian.core.extensions import db
@@ -71,6 +68,12 @@ from .util import (
     get_selected_objects,
 )
 from .views import community_blueprint
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+    from werkzeug.datastructures import FileStorage
+    from werkzeug.wrappers import Response
 
 route = community_blueprint.route
 

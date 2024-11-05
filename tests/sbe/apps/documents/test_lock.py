@@ -3,18 +3,21 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta
+from typing import TYPE_CHECKING
 from unittest import mock
 
 import pytest
-from flask import Flask
 from flask_login import login_user
 from pytz import UTC
-from sqlalchemy.orm import Session
 
 from abilian.core.models.subjects import User
 from abilian.sbe.apps.documents import lock
 from abilian.sbe.apps.documents.lock import Lock
 from tests.util import redis_available
+
+if TYPE_CHECKING:
+    from flask import Flask
+    from sqlalchemy.orm import Session
 
 
 def test_lock() -> None:

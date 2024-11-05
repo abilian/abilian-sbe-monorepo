@@ -6,18 +6,22 @@ from __future__ import annotations
 
 import contextlib
 from contextlib import AbstractContextManager
+from typing import TYPE_CHECKING
 
-from flask.testing import FlaskClient
 from flask_login import login_user, logout_user
 from hyperlink import URL
 from redis import Redis
 from sqlalchemy.exc import DatabaseError
 
-from abilian.app import Application
-from abilian.core.models.subjects import User
-from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.services import get_service
 from abilian.web import url_for
+
+if TYPE_CHECKING:
+    from flask.testing import FlaskClient
+
+    from abilian.app import Application
+    from abilian.core.models.subjects import User
+    from abilian.core.sqlalchemy import SQLAlchemy
 
 __all__ = (
     "class_fqn",

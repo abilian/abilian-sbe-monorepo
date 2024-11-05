@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 from collections import namedtuple
-from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from loguru import logger
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 Job = namedtuple("Job", ["actor", "key"])
 

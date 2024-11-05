@@ -3,14 +3,17 @@
 from __future__ import annotations
 
 import warnings
+from typing import TYPE_CHECKING
 
-from flask.testing import FlaskClient
-
-from abilian.app import Application
 from abilian.services import security_service
 from abilian.web import url_for
 
 from .conftest import ENDPOINTS_TO_IGNORE, PUBLIC_ENDPOINTS
+
+if TYPE_CHECKING:
+    from flask.testing import FlaskClient
+
+    from abilian.app import Application
 
 
 def test_public_endpoints_with_no_login(client: FlaskClient, app: Application):

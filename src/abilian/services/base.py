@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from functools import wraps
 from typing import TYPE_CHECKING, Any
 
@@ -12,6 +11,8 @@ from loguru import logger
 from abilian.core.util import fqcn
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from abilian.app import Application
 
 

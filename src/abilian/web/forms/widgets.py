@@ -11,9 +11,8 @@ import base64
 import html
 import re
 from collections import namedtuple
-from collections.abc import Sequence
 from datetime import datetime
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from urllib import parse
 
 import bleach
@@ -25,7 +24,6 @@ from flask_babel import format_date, format_datetime, format_number, get_locale
 from flask_login import current_user
 from flask_wtf.file import FileField
 from markupsafe import Markup
-from sqlalchemy.orm.mapper import Mapper
 from wtforms import Field, FieldList, Form, FormField, IntegerField, Label, StringField
 from wtforms.widgets import Input
 from wtforms.widgets import PasswordInput as BasePasswordInput
@@ -43,6 +41,11 @@ from abilian.web import url_for
 from abilian.web.filters import babel2datepicker, labelize
 
 from .util import babel2datetime
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from sqlalchemy.orm.mapper import Mapper
 
 __all__ = [
     "AjaxMainTableView",
@@ -262,9 +265,7 @@ class BaseTableView(View):
                 url = build_url(entity)
                 text = html.escape(value.name)
                 cell = Markup(f'<a href="{url}">{text}</a>')
-            elif isinstance(value, str) and (
-                value.startswith("http://") or value.startswith("www.")
-            ):
+            elif isinstance(value, str) and (value.startswith(("http://", "www."))):
                 cell = Markup(linkify_url(value))
             elif value in (True, False):
                 cell = "\u2713" if value else ""  # Unicode "Check mark"
@@ -437,9 +438,7 @@ class AjaxMainTableView(View):
                 cell = Markup(
                     f'<a href="{url_for(value)}">{html.escape(value.name)}</a>'
                 )
-            elif isinstance(value, str) and (
-                value.startswith("http://") or value.startswith("www.")
-            ):
+            elif isinstance(value, str) and (value.startswith(("http://", "www."))):
                 cell = Markup(linkify_url(value))
             elif col.get("linkable"):
                 cell = Markup(

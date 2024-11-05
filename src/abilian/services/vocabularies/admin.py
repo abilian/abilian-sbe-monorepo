@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 from flask import g, redirect, render_template, request
 
@@ -17,6 +17,9 @@ from abilian.web.admin import AdminPanel
 from abilian.web.nav import BreadcrumbItem
 
 from .forms import EditForm
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 _MARKER = object()
 

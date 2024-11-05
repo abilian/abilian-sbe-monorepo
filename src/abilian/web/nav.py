@@ -13,16 +13,15 @@ import typing
 from typing import Any
 
 from flask import Flask, g, request
-from flask_babel.speaklater import LazyString
 from jinja2 import Template
 from markupsafe import Markup
-
-from abilian.web.action import Endpoint
 
 from .action import ACTIVE, ENABLED, Action, Glyphicon, getset
 
 if typing.TYPE_CHECKING:
-    from abilian.web.action import Status
+    from flask_babel.speaklater import LazyString
+
+    from abilian.web.action import Endpoint, Status
 
 
 def setup_nav_and_breadcrumbs(_app: Flask):

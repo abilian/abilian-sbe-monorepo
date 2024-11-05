@@ -5,14 +5,12 @@ from __future__ import annotations
 import contextlib
 import hashlib
 from collections import Counter
-from collections.abc import Callable
-from datetime import datetime
 from functools import wraps
 from io import BytesIO
 from operator import attrgetter
 from pathlib import Path
 from time import gmtime, strftime
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import openpyxl
 import sqlalchemy as sa
@@ -28,11 +26,9 @@ from flask import (
     session,
     url_for,
 )
-from flask.blueprints import BlueprintSetupState
 from flask_login import current_user, login_required
 from openpyxl.cell import WriteOnlyCell
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
-from werkzeug.wrappers.response import Response
 from whoosh.searching import Hit
 
 from abilian.core.extensions import db
@@ -44,7 +40,6 @@ from abilian.sbe.apps.communities.actions import register_actions
 from abilian.sbe.apps.communities.blueprint import CommunityBlueprint
 from abilian.sbe.apps.communities.forms import CommunityForm
 from abilian.sbe.apps.communities.models import Community, Membership
-from abilian.sbe.apps.communities.presenters import CommunityPresenter
 from abilian.sbe.apps.communities.security import (
     is_manager,
     require_admin,
@@ -57,6 +52,15 @@ from abilian.web import csrf, views
 from abilian.web.action import Endpoint
 from abilian.web.nav import BreadcrumbItem
 from abilian.web.views import images as image_views
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    from datetime import datetime
+
+    from flask.blueprints import BlueprintSetupState
+    from werkzeug.wrappers.response import Response
+
+    from abilian.sbe.apps.communities.presenters import CommunityPresenter
 
 __all__ = ["BaseCommunityView", "communities", "default_view_kw", "route", "tab"]
 

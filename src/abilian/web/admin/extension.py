@@ -4,8 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from flask import Blueprint, Flask, g
 from flask.sansio.scaffold import _endpoint_from_view_func
@@ -22,6 +21,9 @@ from abilian.web.action import Endpoint, actions
 from abilian.web.nav import BreadcrumbItem, NavGroup, NavItem
 
 from .panel import AdminPanel
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 _BP_PREFIX = "admin"
 

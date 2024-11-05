@@ -4,12 +4,10 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterator
 from contextlib import contextmanager
 from typing import TYPE_CHECKING
 
 from loguru import logger
-from sqlalchemy.orm import Session
 
 from abilian.core.dramatiq.singleton import dramatiq
 from abilian.core.extensions import db
@@ -17,6 +15,10 @@ from abilian.services import converter, get_service
 from abilian.services.conversion import ConversionError, HandlerNotFoundError
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+    from sqlalchemy.orm import Session
+
     from .models import Document
 
 

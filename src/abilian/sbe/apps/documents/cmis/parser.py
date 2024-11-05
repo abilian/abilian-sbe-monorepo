@@ -8,10 +8,12 @@ from __future__ import annotations
 
 import base64
 from datetime import datetime
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from lxml import objectify
-from lxml.objectify import ObjectifiedElement
+
+if TYPE_CHECKING:
+    from lxml.objectify import ObjectifiedElement
 
 ATOM_NS = "http://www.w3.org/2005/Atom"
 APP_NS = "http://www.w3.org/2007/app"

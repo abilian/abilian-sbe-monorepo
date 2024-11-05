@@ -9,10 +9,9 @@ import errno
 import os
 import sys
 import warnings
-from collections.abc import Callable, Collection
 from functools import cached_property, partial
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import defusedxml
 import sqlalchemy as sa
@@ -29,13 +28,17 @@ from abilian.core.plugin_manager import PluginManager
 from abilian.core.service_manager import ServiceManager
 from abilian.services import auth_service
 from abilian.services.security import Anonymous
-from abilian.services.security.models import Role
 from abilian.setup import setup_app
 from abilian.web.access_blueprint import allow_access_for_roles
 from abilian.web.errors import ErrorManagerMixin
 from abilian.web.jinja import JinjaManagerMixin
 from abilian.web.util import send_file_from_directory
 from abilian.web.views import Registry as ViewRegistry
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Collection
+
+    from abilian.services.security.models import Role
 
 __all__ = ["Application", "create_app"]
 

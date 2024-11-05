@@ -5,16 +5,20 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterator
 from datetime import datetime, timedelta
+from typing import TYPE_CHECKING
 
 import pytest
-from flask import Flask
 
 import abilian.i18n
 from abilian.core.signals import activity
 from abilian.sbe.app import create_app
 from abilian.sbe.apps.communities.common import activity_time_format
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+    from flask import Flask
 
 
 @pytest.fixture()

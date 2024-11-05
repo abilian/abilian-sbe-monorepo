@@ -5,16 +5,19 @@
 from __future__ import annotations
 
 import datetime
+from typing import TYPE_CHECKING
 from unittest import mock
 
 import pytest
 import pytz
 from wtforms import Form
 
-from abilian.app import Application
 from abilian.core.entities import Entity
 from abilian.services.security import READ, WRITE, Anonymous, Owner, Role
 from abilian.web.forms import FormPermissions, fields, filters
+
+if TYPE_CHECKING:
+    from abilian.app import Application
 
 NNSP = "\u202f"  # narrow no-break space
 

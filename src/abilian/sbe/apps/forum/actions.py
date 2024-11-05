@@ -2,16 +2,18 @@
 
 from __future__ import annotations
 
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from flask import g, request, url_for
-from flask.blueprints import BlueprintSetupState
 from flask_login import current_user
 
 from abilian.i18n import _l
 from abilian.services import get_service
 from abilian.services.security import Admin, SecurityService
 from abilian.web.action import Action, FAIcon, ModalActionMixin, actions
+
+if TYPE_CHECKING:
+    from flask.blueprints import BlueprintSetupState
 
 
 class ForumAction(Action):

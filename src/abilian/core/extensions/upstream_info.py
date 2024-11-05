@@ -7,14 +7,15 @@ from __future__ import annotations
 import typing
 from typing import Any
 
-from flask import Flask
 from flask.globals import request_ctx
 from flask.signals import request_finished, request_started
-from flask.wrappers import Response
 
 from abilian.core.signals import user_loaded
 
 if typing.TYPE_CHECKING:
+    from flask import Flask
+    from flask.wrappers import Response
+
     from abilian.core.models.subjects import User
 
 

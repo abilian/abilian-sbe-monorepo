@@ -9,18 +9,21 @@ from __future__ import annotations
 
 import hashlib
 import uuid
-from pathlib import Path
-from typing import IO
+from typing import IO, TYPE_CHECKING
 
 import sqlalchemy as sa
 from sqlalchemy.event import listens_for
-from sqlalchemy.orm.session import Session
-from sqlalchemy.orm.unitofwork import UOWTransaction
 from sqlalchemy.schema import Column
 from sqlalchemy.types import Integer
 
 from abilian.core.models.base import Model
 from abilian.core.sqlalchemy import UUID, JSONDict
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+    from sqlalchemy.orm.session import Session
+    from sqlalchemy.orm.unitofwork import UOWTransaction
 
 
 class Blob(Model):

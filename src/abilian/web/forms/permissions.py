@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Collection
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from flask_login import current_user
 from wtforms import Field
@@ -20,6 +19,9 @@ from abilian.services.security import (
     Role,
     SecurityService,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Collection
 
 
 class FormPermissions:

@@ -15,11 +15,10 @@ import traceback
 from abc import ABC, ABCMeta, abstractmethod
 from base64 import b64decode, b64encode
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from xmlrpc.client import ServerProxy
 
 from devtools import debug
-from flask import Flask
 from loguru import logger
 from magic import Magic
 
@@ -28,6 +27,9 @@ from abilian.services.image import resize
 from .exceptions import ConversionError
 from .handler_lock import acquire_lock
 from .util import get_tmp_dir, make_temp_file
+
+if TYPE_CHECKING:
+    from flask import Flask
 
 
 def poppler_bin_util(util: str) -> str:

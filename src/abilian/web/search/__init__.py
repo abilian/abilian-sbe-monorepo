@@ -4,9 +4,13 @@
 
 from __future__ import annotations
 
-from abilian.app import Application
+from typing import TYPE_CHECKING
+
 from abilian.core.signals import register_js_api
 from abilian.web import url_for
+
+if TYPE_CHECKING:
+    from abilian.app import Application
 
 # from .criterion import BaseCriterion, TextSearchCriterion
 

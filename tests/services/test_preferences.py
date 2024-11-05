@@ -2,22 +2,25 @@
 
 from __future__ import annotations
 
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 import pytest
 from devtools import debug
 from flask_login import current_user, login_user
 from pytest import fixture
-from sqlalchemy.orm import Session
 
 from abilian.app import Application, setup_app
 from abilian.core.models.subjects import User
-from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.services import get_service, security_service
 from abilian.services.preferences.models import UserPreference
 from abilian.services.preferences.panel import PreferencePanel
 from abilian.services.preferences.service import PreferenceService
 from abilian.services.security import SecurityService
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm import Session
+
+    from abilian.core.sqlalchemy import SQLAlchemy
 
 
 class VisiblePanel(PreferencePanel):

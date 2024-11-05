@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 from pytest import fixture, raises
 from wtforms import Form, StringField
 from wtforms.validators import ValidationError
 
 from abilian.web.forms.validators import siret_validator
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class DummyForm(Form):

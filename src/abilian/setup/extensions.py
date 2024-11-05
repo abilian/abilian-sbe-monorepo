@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import warnings
+from typing import TYPE_CHECKING
 
 import defusedxml
 import sqlalchemy as sa
 import sqlalchemy.exc
-from flask import Blueprint, Flask, abort
+from flask import Blueprint, abort
 from flask_migrate import Migrate
 from loguru import logger
 
@@ -31,6 +32,9 @@ from abilian.services import (
 from abilian.web import csrf
 from abilian.web.action import actions
 from abilian.web.admin import Admin
+
+if TYPE_CHECKING:
+    from flask import Flask
 
 defusedxml.defuse_stdlib()
 

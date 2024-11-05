@@ -3,13 +3,15 @@
 from __future__ import annotations
 
 import json
-from collections.abc import Callable
 from datetime import timedelta
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
 
 from abilian.core.extensions import db
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 __all__ = ["Setting", "empty_value"]
 

@@ -4,14 +4,17 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Collection
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from flask import Blueprint
 
-from abilian.core.models.subjects import User
 from abilian.services.security import Anonymous, Role
 from abilian.services.security.service import SecurityService
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Collection
+
+    from abilian.core.models.subjects import User
 
 
 def allow_anonymous(user: User, roles: Collection[Role], **kwargs: Any) -> bool:

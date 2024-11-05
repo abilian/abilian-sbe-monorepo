@@ -4,15 +4,19 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import sqlalchemy as sa
 import sqlalchemy.orm
 
 from abilian.core.entities import Entity
 from abilian.core.extensions import db
-from abilian.sbe.apps.documents.models import Folder
 from abilian.services import get_service
 
 from .models import CmisObject
+
+if TYPE_CHECKING:
+    from abilian.sbe.apps.documents.models import Folder
 
 
 def reindex_tree(obj: Folder) -> None:

@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from flask import Flask
+from typing import TYPE_CHECKING
 
 from abilian.core.models import comment as comments
 from abilian.web import url_for
@@ -12,6 +12,9 @@ from abilian.web import url_for
 from .forms import CommentForm
 from .views import COMMENT_BUTTON
 from .views import bp as blueprint
+
+if TYPE_CHECKING:
+    from flask import Flask
 
 
 class CommentExtension:

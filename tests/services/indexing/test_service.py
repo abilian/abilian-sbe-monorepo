@@ -4,18 +4,22 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterator
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 import sqlalchemy as sa
 from pytest import fixture, mark
-from sqlalchemy.orm import Session
 
-from abilian.app import Application
 from abilian.core.entities import Entity
 from abilian.services import get_service
 from abilian.services.indexing.service import WhooshIndexService
 from tests.util import redis_available
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+    from sqlalchemy.orm import Session
+
+    from abilian.app import Application
 
 
 class IndexedContact(Entity):

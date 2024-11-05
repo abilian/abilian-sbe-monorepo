@@ -3,13 +3,12 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta
-from typing import cast
+from typing import TYPE_CHECKING, cast
 from unittest import mock
 
 import pytest
 from flask import url_for
 from flask_login import login_user
-from flask_sqlalchemy import SQLAlchemy
 
 from abilian.sbe.apps.communities.models import MANAGER, MEMBER
 from abilian.sbe.apps.forum.cli import _inject_email
@@ -25,6 +24,9 @@ from abilian.services.indexing.service import IndexService
 from tests.util import client_login, redis_available
 
 from .util import get_string_from_file
+
+if TYPE_CHECKING:
+    from flask_sqlalchemy import SQLAlchemy
 
 
 def test_posts_ordering(db: SQLAlchemy, community1):

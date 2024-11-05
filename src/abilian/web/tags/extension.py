@@ -5,11 +5,8 @@
 from __future__ import annotations
 
 import contextlib
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from flask import Flask
-
-from abilian.core.entities import Entity
 from abilian.core.models.tag import TAGS_ATTR, Tag, supports_tagging
 from abilian.i18n import _l
 from abilian.web import url_for
@@ -19,6 +16,11 @@ from abilian.web.views.object import EDIT_BUTTON
 from .forms import TagsField
 from .views import bp as tags_bp
 from .views import entity_bp
+
+if TYPE_CHECKING:
+    from flask import Flask
+
+    from abilian.core.entities import Entity
 
 ENTITY_DEFAULT_NS_ATTR = "__tags_default_ns__"
 

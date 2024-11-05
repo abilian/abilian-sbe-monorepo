@@ -7,19 +7,17 @@ from __future__ import annotations
 import operator
 from datetime import datetime
 from functools import cached_property, partial
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import babel
 import babel.dates
 import sqlalchemy as sa
 import sqlalchemy.exc
-from babel.core import Locale
 from flask import current_app
 from flask_babel import format_date, format_datetime, get_locale, get_timezone
 from flask_login import current_user
 from flask_wtf.file import FileField as BaseFileField
 from loguru import logger
-from werkzeug.datastructures import ImmutableMultiDict
 from wtforms import Field
 from wtforms import FieldList as BaseFieldList
 from wtforms import FormField as BaseFormField
@@ -35,6 +33,10 @@ from abilian.core.util import utc_dt
 
 from .util import babel2datetime
 from .widgets import DateInput, DateTimeInput, FileInput, Select2, Select2Ajax
+
+if TYPE_CHECKING:
+    from babel.core import Locale
+    from werkzeug.datastructures import ImmutableMultiDict
 
 # FIXME
 # Warning

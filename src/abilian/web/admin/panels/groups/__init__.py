@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 from flask import render_template
 
@@ -13,6 +13,9 @@ from abilian.web.admin.panel import AdminPanel
 from abilian.web.util import url_for
 
 from . import views
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class GroupsPanel(AdminPanel):

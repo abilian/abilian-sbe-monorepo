@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from flask_login import current_user
 from sqlalchemy import (
@@ -17,8 +18,6 @@ from sqlalchemy import (
 from sqlalchemy.event import listens_for
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import backref, relationship
-from sqlalchemy.orm.attributes import Event
-from sqlalchemy.util.langhelpers import _symbol
 
 from abilian.core.entities import Entity, db
 from abilian.core.models import SEARCHABLE
@@ -29,6 +28,10 @@ from abilian.sbe.apps.communities.models import (
     community_content,
 )
 from abilian.sbe.apps.documents.models import BaseContent
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm.attributes import Event
+    from sqlalchemy.util.langhelpers import _symbol
 
 __all__ = ["WikiPage", "WikiPageAttachment", "WikiPageRevision"]
 

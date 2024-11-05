@@ -4,18 +4,20 @@ from __future__ import annotations
 
 import operator
 from tempfile import NamedTemporaryFile
-from typing import IO
+from typing import IO, TYPE_CHECKING
 
 import pytest
 from flask import g
 
 from abilian.core.models.subjects import User
-from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.sbe.apps.communities.models import READER, Community
 from abilian.sbe.apps.communities.views.wizard import (
     wizard_extract_data,
     wizard_read_csv,
 )
+
+if TYPE_CHECKING:
+    from abilian.core.sqlalchemy import SQLAlchemy
 
 
 @pytest.fixture()

@@ -4,11 +4,13 @@
 
 from __future__ import annotations
 
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
-from abilian.app import Application
 from abilian.services import get_service
 from abilian.services.indexing.service import WhooshIndexService
+
+if TYPE_CHECKING:
+    from abilian.app import Application
 
 
 def register_plugin(app: Application) -> None:

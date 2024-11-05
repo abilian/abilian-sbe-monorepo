@@ -8,7 +8,10 @@ in the future.
 
 from __future__ import annotations
 
-from flask import Flask
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from flask import Flask
 
 
 def register_plugin(app: Flask) -> None:

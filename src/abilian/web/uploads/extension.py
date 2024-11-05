@@ -6,22 +6,25 @@ from __future__ import annotations
 
 import json
 import time
-from io import BufferedReader
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from uuid import UUID, uuid1
 
 from flask import current_app
 from loguru import logger
 
-from abilian.app import Application
 from abilian.core import signals
 from abilian.core.dramatiq.scheduler import crontab
 from abilian.core.dramatiq.singleton import dramatiq
-from abilian.core.models.subjects import User
 from abilian.web import url_for
 
 from .views import ac_blueprint
+
+if TYPE_CHECKING:
+    from io import BufferedReader
+    from pathlib import Path
+
+    from abilian.app import Application
+    from abilian.core.models.subjects import User
 
 CHUNK_SIZE = 64 * 1024
 

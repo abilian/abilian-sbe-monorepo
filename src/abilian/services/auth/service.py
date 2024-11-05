@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from datetime import datetime, timedelta
 from typing import TYPE_CHECKING, Any, cast
 
@@ -11,7 +10,6 @@ from flask_babel import lazy_gettext as _l
 from flask_login import current_user, login_user, user_logged_in, user_logged_out
 from loguru import logger
 from werkzeug.exceptions import Forbidden
-from werkzeug.wrappers import Response
 
 from abilian.core.extensions import db, login_manager
 from abilian.core.models.subjects import User
@@ -25,6 +23,10 @@ from .models import LoginSession
 from .views import login as login_views
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from werkzeug.wrappers import Response
+
     from abilian.app import Application
 
 __all__ = ["AuthService", "user_menu"]

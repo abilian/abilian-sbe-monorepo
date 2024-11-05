@@ -51,11 +51,10 @@ import importlib
 import os
 import re
 import unicodedata
-from collections.abc import Callable, Iterator
 from datetime import datetime, tzinfo
 from gettext import GNUTranslations
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import flask_babel
 import pytz
@@ -66,6 +65,9 @@ from babel.support import Translations as BaseTranslations
 from flask import Flask, current_app, g, render_template, request
 from flask_babel import Babel as BabelBase
 from flask_babel import LazyString, force_locale, gettext, lazy_gettext, ngettext
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Iterator
 
 __all__ = [
     "VALID_LANGUAGES_CODE",

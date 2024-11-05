@@ -4,24 +4,27 @@ from __future__ import annotations
 
 from io import BytesIO
 from pathlib import Path
-from typing import IO
+from typing import IO, TYPE_CHECKING
 from zipfile import ZipFile
 
 import flask_mail
 from flask import g, get_flashed_messages
-from flask.testing import FlaskClient
 from pytest import fixture, mark
 from toolz import first
 from werkzeug.datastructures import FileStorage
 
-from abilian.app import Application
-from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.sbe.apps.communities.models import WRITER, Community
 from abilian.sbe.apps.communities.presenters import CommunityPresenter
 from abilian.sbe.apps.documents.models import Folder
 from abilian.sbe.apps.documents.views import util as view_util
 from abilian.web.util import url_for
 from tests.util import client_login, path_from_url, redis_available
+
+if TYPE_CHECKING:
+    from flask.testing import FlaskClient
+
+    from abilian.app import Application
+    from abilian.core.sqlalchemy import SQLAlchemy
 
 
 def open_file(filename: str) -> IO[bytes]:

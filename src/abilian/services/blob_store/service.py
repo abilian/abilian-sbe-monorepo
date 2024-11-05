@@ -14,18 +14,19 @@ import sqlalchemy as sa
 from flask import g
 
 # import sqlalchemy.event
-from sqlalchemy.engine.base import Connection
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm.session import Session, SessionTransaction
-from sqlalchemy.orm.unitofwork import UOWTransaction
 
 from abilian.core.extensions import db
-from abilian.core.models import Model
-from abilian.core.models.blob import Blob
 from abilian.services import Service, ServiceState
 
 if typing.TYPE_CHECKING:
+    from sqlalchemy.engine.base import Connection
+    from sqlalchemy.orm.unitofwork import UOWTransaction
+
     from abilian.app import Application
+    from abilian.core.models import Model
+    from abilian.core.models.blob import Blob
 
 _NULL_MARK = object()
 

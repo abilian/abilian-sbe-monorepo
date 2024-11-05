@@ -5,11 +5,10 @@ from __future__ import annotations
 import os
 from functools import cached_property
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import jinja2
 from flask import Flask, current_app
-from flask.templating import Environment
 from flask_babel import get_locale as babel_get_locale
 from jinja2.loaders import ChoiceLoader, FileSystemLoader, PackageLoader
 from sqlalchemy.orm.attributes import NEVER_SET, NO_VALUE
@@ -20,6 +19,9 @@ from abilian.web import csrf
 from abilian.web.filters import init_filters
 from abilian.web.util import url_for
 from abilian.web.views.images import user_photo_url
+
+if TYPE_CHECKING:
+    from flask.templating import Environment
 
 
 class JinjaManagerMixin(Flask):

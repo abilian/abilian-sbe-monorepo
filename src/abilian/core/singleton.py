@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from sqlalchemy.engine.interfaces import Dialect
 from sqlalchemy.types import String, TypeDecorator
+
+if TYPE_CHECKING:
+    from sqlalchemy.engine.interfaces import Dialect
 
 
 class ValueSingletonMeta(type):

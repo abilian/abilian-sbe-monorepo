@@ -6,10 +6,9 @@ from __future__ import annotations
 
 import re
 from calendar import timegm
-from collections.abc import Callable
 from datetime import date, datetime
 from functools import wraps
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import bleach
 import dateutil.parser
@@ -17,7 +16,6 @@ import flask_babel as babel
 from babel.dates import DateTimePattern, format_timedelta, parse_pattern
 from deprecated import deprecated
 from jinja2 import Environment, pass_eval_context
-from jinja2.nodes import EvalContext
 from markupsafe import Markup, escape
 from pytz import utc
 from werkzeug.routing import BuildError
@@ -25,6 +23,11 @@ from werkzeug.routing import BuildError
 from abilian.core.util import local_dt, slugify, utc_dt
 
 from .util import url_for
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from jinja2.nodes import EvalContext
 
 NNSP = "\u202f"  # narrow no-break space
 

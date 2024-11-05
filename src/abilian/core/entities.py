@@ -14,10 +14,8 @@ from typing import TYPE_CHECKING, Any, cast
 import sqlalchemy as sa
 from flask import current_app
 from sqlalchemy import event
-from sqlalchemy.engine.base import Connection
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import Mapper, Session, mapper
-from sqlalchemy.orm.unitofwork import UOWTransaction
 from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.types import Integer, String, UnicodeText
 
@@ -27,6 +25,9 @@ from .sqlalchemy import JSONDict
 from .util import friendly_fqcn, memoized, slugify
 
 if TYPE_CHECKING:
+    from sqlalchemy.engine.base import Connection
+    from sqlalchemy.orm.unitofwork import UOWTransaction
+
     from abilian.core.models.subjects import User
     from abilian.core.models.tag import Tag
     from abilian.services.security import Permission

@@ -2,14 +2,18 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pytest
-from flask import Flask
 from pytest import fixture
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session
 
 from abilian.sbe.apps.documents.models import Document, Folder
 from abilian.sbe.apps.documents.repository import ContentRepository
+
+if TYPE_CHECKING:
+    from flask import Flask
+    from sqlalchemy.orm import Session
 
 
 @fixture()

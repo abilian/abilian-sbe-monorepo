@@ -18,13 +18,13 @@ from wtforms_alchemy import model_form_factory
 
 from abilian.core.entities import Entity
 from abilian.core.logger_patch import patch_logger
-from abilian.core.models.subjects import User
 from abilian.i18n import _, _n
-from abilian.services.security import Permission
 
 from .widgets import DefaultViewWidget
 
 if typing.TYPE_CHECKING:
+    from abilian.core.models.subjects import User
+    from abilian.services.security import Permission
     from abilian.web.forms import FormPermissions
 
 

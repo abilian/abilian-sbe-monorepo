@@ -12,7 +12,6 @@ from flask_wtf.file import FileField, file_required
 from werkzeug.exceptions import BadRequest, NotFound
 from werkzeug.utils import secure_filename
 
-from abilian.core.models.subjects import User
 from abilian.core.util import unwrap
 from abilian.web import csrf, url_for
 from abilian.web.access_blueprint import AccessControlBlueprint
@@ -20,6 +19,7 @@ from abilian.web.forms import Form
 from abilian.web.views import JSONView, View
 
 if typing.TYPE_CHECKING:
+    from abilian.core.models.subjects import User
     from abilian.web.uploads import FileUploadsExtension
 
 

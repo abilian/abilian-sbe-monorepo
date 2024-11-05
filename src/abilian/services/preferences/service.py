@@ -19,11 +19,9 @@ from werkzeug.exceptions import InternalServerError
 
 from abilian.core import signals
 from abilian.core.extensions import db
-from abilian.core.models.subjects import User
 from abilian.i18n import _, _l
 from abilian.services.auth.service import user_menu
 from abilian.services.base import Service, ServiceState
-from abilian.services.preferences.panel import PreferencePanel
 from abilian.web.action import Endpoint
 from abilian.web.nav import BreadcrumbItem, NavItem
 
@@ -31,6 +29,8 @@ from .models import UserPreference
 
 if TYPE_CHECKING:
     from abilian.app import Application
+    from abilian.core.models.subjects import User
+    from abilian.services.preferences.panel import PreferencePanel
 
 _PREF_NAV_ITEM = NavItem(
     "user",
