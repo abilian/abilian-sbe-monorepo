@@ -183,7 +183,7 @@ def extract_email_destination(address: str) -> tuple[str, ...]:
         address = m.group(1)
     local_part = address.rsplit("@", 1)[0]
     name, ident = local_part.rsplit("+", 1)
-    uid, digest = ident.rsplit("-", 1)
+    uid, _digest = ident.rsplit("-", 1)
     signed_local_part = build_local_part(name, uid)
 
     if local_part != signed_local_part:

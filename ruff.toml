@@ -46,7 +46,6 @@ lint.extend-ignore = [
     #
     "E501", # line too long
     "E741", # Ambiguous variable name
-    #    "F841", # Local variable `...` is assigned to but never used
     "FURB113", # Use `x.extend(...)` instead of repeatedly calling `x.append()`
     #
     "N801", # Class name should use CapWords convention

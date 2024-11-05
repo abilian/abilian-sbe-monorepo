@@ -766,7 +766,7 @@ def _trigger_conversion_tasks(session: Session) -> None:
 
     document_queue = _get_documents_queue()
     while document_queue:
-        doc, task_id = document_queue.pop()
+        doc, _task_id = document_queue.pop()
         if doc.id and isinstance(doc.id, int):
             logger.debug(
                 "_trigger_conversion_tasks() doc.id={doc_id}",

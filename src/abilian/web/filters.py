@@ -147,8 +147,8 @@ def age(
     delta = dt - now
 
     if date_threshold is not None:
-        dy, dw, dd = dt_cal = dt.isocalendar()
-        ny, nw, nd = now_cal = now.isocalendar()
+        dy, _dw, _dd = dt_cal = dt.isocalendar()
+        ny, _nw, _nd = now_cal = now.isocalendar()
 
         if dt_cal != now_cal:
             # not same day

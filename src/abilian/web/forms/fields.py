@@ -552,7 +552,7 @@ class QuerySelect2Field(SelectFieldBase):
         SQLAlchemy >= 1.2."""
         from sqlalchemy.orm.util import identity_key
 
-        cls, key = identity_key(instance=obj)[0:2]
+        _cls, key = identity_key(instance=obj)[0:2]
         return ":".join(str(x) for x in key)
 
     def _get_data(self):

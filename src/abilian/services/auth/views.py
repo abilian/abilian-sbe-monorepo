@@ -207,7 +207,7 @@ def forgotten_pw(new_user: bool = False) -> str | Response | tuple[str, int]:
 
 @route("/reset_password/<token>")
 def reset_password(token: str) -> str | Response:
-    expired, invalid, user = reset_password_token_status(token)
+    expired, invalid, _user = reset_password_token_status(token)
     if invalid:
         flash(_("Invalid reset password token."), "error")
     elif expired:
@@ -330,7 +330,7 @@ def get_token_status(
     try:
         data = serializer.loads(token, max_age=max_age)
     except SignatureExpired:
-        d, data = serializer.loads_unsafe(token)
+        _d, data = serializer.loads_unsafe(token)
         expired = True
     except BadSignature:
         invalid = True
@@ -400,7 +400,7 @@ def check_for_redirect(target: str) -> str:
 
     # exceptions may happen if route is not found for example
     with contextlib.suppress(Exception):
-        endpoint, ignored = ctx.url_adapter.match(url.path, "GET")
+        endpoint, _ignored = ctx.url_adapter.match(url.path, "GET")
         if "." in endpoint and endpoint.rsplit(".", 1)[0] == "login":
             # don't redirect to any login view after successful login
             return ""

@@ -129,8 +129,8 @@ def users_dt_json():
         cell1 = f'<div class="info"><a href="{user_url}">{name}</a></div>'
         cell2 = age(user.created_at)
         cell3 = age(user.last_active)
+        _cell4 = ""  # TODO: follow / unfollow?
 
-        cell4 = ""  # TODO: follow / unfollow?
         data.append([cell0, cell1, cell2, cell3])
 
     result = {

@@ -324,7 +324,7 @@ class UnoconvPdfHandler(Handler):
             cmd = [self.unoconv, "--version"]
 
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-        out, err = process.communicate()
+        out, _err = process.communicate()
         return out
 
     def convert(self, blob, **kw):
