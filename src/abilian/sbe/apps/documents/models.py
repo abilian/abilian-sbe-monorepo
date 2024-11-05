@@ -342,9 +342,10 @@ class Folder(PathAndSecurityIndexable, CmisObject):
         try:
             for name in path_segments[:]:
                 obj = first(x for x in obj.children if x.title == name)
-            return obj
         except IndexError:
             return None
+        else:
+            return obj
 
     def __repr__(self) -> str:
         return (

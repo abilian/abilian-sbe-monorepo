@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from typing import TYPE_CHECKING
 
 import pytest
+from typeguard import TypeCheckError
 
 from abilian.core.entities import Entity
 from abilian.core.models.comment import Comment, is_commentable, register
@@ -37,8 +38,8 @@ def test_cannot_register_non_entities():
     class Dummy:
         pass
 
-    with pytest.raises(ValueError):
-        register(Dummy)
+    with pytest.raises((TypeError, TypeCheckError)):  # type: ignore
+        register(Dummy)  # type: ignore
 
 
 def test_default_ordering(app: Flask, db: SQLAlchemy):

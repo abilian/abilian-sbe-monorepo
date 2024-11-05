@@ -17,7 +17,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.event import listens_for
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import backref, relationship
+from sqlalchemy.orm import Mapped, backref, relationship
 
 from abilian.core.entities import Entity, db
 from abilian.core.models import SEARCHABLE
@@ -41,9 +41,10 @@ class WikiPage(Entity):
     __tablename__ = "wiki_page"
 
     # : The title for this page
-    _title = Column("title", Unicode(200), nullable=False, index=True)
+    _title: Mapped[str] = Column("title", Unicode(200), nullable=False, index=True)
 
     community_id = CommunityIdColumn()
+
     #: The community this page belongs to
     community = relationship(
         Community,
@@ -66,10 +67,10 @@ class WikiPage(Entity):
         self.title = title
         self.create_revision(body_src, message)
 
-    # title is defined has an hybrid property to allow name <-> title sync
+    # title is defined as a hybrid property to allow name <-> title sync
     # (2 way)
     @hybrid_property
-    def title(self: str) -> str:
+    def title(self) -> str:
         return self._title
 
     @title.setter

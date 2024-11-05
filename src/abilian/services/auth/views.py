@@ -34,6 +34,7 @@ from itsdangerous import (
     TimedSerializer,
     URLSafeTimedSerializer,
 )
+from loguru import logger
 from sqlalchemy import sql
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -360,7 +361,7 @@ def send_mail(subject: str, recipient: str, template: str, **context: Any):
     # msg.html = render_template('%s/%s.html' % ctx, **context)
 
     mail = current_app.extensions.get("mail")
-    current_app.logger.debug("Sending mail...")
+    logger.debug("Sending mail...")
     mail.send(msg)
 
 

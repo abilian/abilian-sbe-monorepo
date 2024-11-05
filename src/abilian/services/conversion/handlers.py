@@ -247,11 +247,11 @@ class PdfToPpmHandler(Handler):
                 for fn in file_list:
                     converted = resize(open(fn, "rb").read(), size, size)
                     converted_images.append(converted)
-
-                return converted_images
             except Exception as e:
                 msg = "pdftoppm failed"
                 raise ConversionError(msg) from e
+            else:
+                return converted_images
             finally:
                 for fn in file_list:
                     with contextlib.suppress(OSError):

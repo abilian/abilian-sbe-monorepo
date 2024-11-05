@@ -144,6 +144,7 @@ dev-dependencies = [
     "flynt>=1.0.1",
     "snoop>=0.6.0",
     "pytest-archon>=0.0.6",
+    "typeguard>=4.4.1",
 ]
 
 [tool.pytest.ini_options]

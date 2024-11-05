@@ -102,6 +102,7 @@ lint.extend-ignore = [
     "SIM117", # Use a single `with` statement with multiple contexts instead of nested `with` statements
     "SLF001", # Private member accessed
     "T201", # `print` found
+    "TRY002", # Create you own exception class
 ]
 
 [lint.per-file-ignores]

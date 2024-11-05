@@ -29,9 +29,10 @@ class DummyField:
 def error_message(validator: Callable, form: DummyForm, field: DummyField) -> str:
     try:
         validator(form, field)
-        return ""
     except ValidationError as e:
         return e.args[0]
+    else:
+        return ""
 
 
 @fixture()

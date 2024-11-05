@@ -16,7 +16,6 @@ import pickle
 from datetime import datetime
 from typing import Any
 
-from flask import current_app
 from loguru import logger
 from sqlalchemy import LargeBinary
 from sqlalchemy.orm import relationship
@@ -204,9 +203,9 @@ class AuditEntry(db.Model):
                         # TODO: Temp fix for errors that happen during
                         # migration
                         try:
-                            val = val.decode("utf-8")
+                            val = val.decode()
                         except UnicodeDecodeError:
-                            current_app.logger.error(
+                            logger.exception(
                                 "A Unicode error happened on changes {changes}",
                                 changes=repr(changes),
                             )

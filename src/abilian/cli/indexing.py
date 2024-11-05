@@ -13,8 +13,8 @@ import click
 import sqlalchemy as sa
 import whoosh
 import whoosh.index
-from flask import current_app
 from flask.cli import with_appcontext
+from loguru import logger
 from sqlalchemy.orm.session import Session
 from tqdm import tqdm
 from whoosh.writing import CLEAR, AsyncWriter
@@ -97,7 +97,7 @@ class Reindexer:
             try:
                 count = query.count()
             except Exception as e:
-                current_app.logger.error(
+                logger.exception(
                     "Indexing error on class {name}: {exc}",
                     name=name,
                     exc=repr(e),
