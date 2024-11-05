@@ -91,7 +91,6 @@ lint.extend-ignore = [
     "RET504", # Unnecessary variable assignment before `return` statement
     "RET505", # Unnecessary `else` after `return` statement
     #
-    "RUF005", # Consider iterable unpacking instead of concatenation
     "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
     #
     "S301", # `pickle`...

@@ -182,7 +182,7 @@ class AssetManager:
             for f in filters:
                 if f == "closure_js":
                     js_map_file = str(assets_dir / f"{name}.map")
-                    f = ClosureJS(extra_args=closure_base_args + [js_map_file])
+                    f = ClosureJS(extra_args=[*closure_base_args, js_map_file])
                 options["filters"].append(f)
 
             if not options["filters"]:

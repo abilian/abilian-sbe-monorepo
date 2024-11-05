@@ -194,7 +194,7 @@ class EntityMeta(BaseMeta):
     ) -> Any:
         if d["__module__"] != EntityMeta.__module__ or classname != "Entity":
             if not any(issubclass(b, _EntityInherit) for b in bases):
-                bases = (_EntityInherit,) + bases
+                bases = (_EntityInherit, *bases)
                 d["id"] = _EntityInherit.id
 
             if d.get("entity_type") is None:

@@ -479,7 +479,7 @@ class SecurityService(Service):
             role = (role,)
 
         # admin & manager always have role
-        valid_roles = frozenset((Admin, Manager) + tuple(role))
+        valid_roles = frozenset((Admin, Manager, *tuple(role)))
 
         if AnonymousRole in valid_roles:
             # everybody has the role 'Anonymous'
@@ -733,7 +733,7 @@ class SecurityService(Service):
                 obj = obj.parent
                 checked_objs.append(obj)
 
-        principals = [user] + list(user.groups)
+        principals = [user, *list(user.groups)]
         self._fill_role_cache_batch(principals)
 
         return any(

@@ -32,7 +32,7 @@ def breadcrumbs_for(obj: Document) -> list[dict[str, str]]:
     bc = [{"label": obj.title}]
     parent = obj.parent
     while parent and not parent.is_root_folder:
-        bc = [{"label": parent.title, "path": url_for(parent)}] + bc
+        bc = [{"label": parent.title, "path": url_for(parent)}, *bc]
         parent = parent.parent
 
     return bc

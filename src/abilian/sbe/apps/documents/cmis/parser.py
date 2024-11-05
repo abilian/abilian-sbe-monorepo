@@ -74,6 +74,7 @@ class Property:
     Every property is typed. The property-type defines the data type of the data
     value(s) held by the property. CMIS specifies the following property-types.
     """
+
     type: str
     property_definition_id: str
     local_name: str | None

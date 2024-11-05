@@ -340,9 +340,10 @@ class UnoconvPdfHandler(Handler):
                 cmd = [
                     "/Applications/LibreOffice.app/Contents/program/python",
                     "/usr/local/bin/unoconv",
-                ] + args
+                    *args,
+                ]
             else:
-                cmd = [self.unoconv] + args
+                cmd = [self.unoconv, *args]
 
             def run_uno():
                 try:

@@ -20,7 +20,8 @@ from .extension import sbe
 
 __all__ = ["create_app"]
 
-SBE_PLUGINS = CORE_PLUGINS + [
+SBE_PLUGINS = [
+    *CORE_PLUGINS,
     "abilian.sbe.apps.main",
     "abilian.sbe.apps.notifications",
     "abilian.sbe.apps.preferences",

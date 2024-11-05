@@ -35,7 +35,7 @@ class BaseMixin(IdMixin, TimestampedMixin, OwnedMixin):
 
     def to_dict(self) -> dict[str, Any]:
         if hasattr(self, "__exportable__"):
-            exported = self.__exportable__ + ["id"]
+            exported = [*self.__exportable__, "id"]
         else:
             exported = self.column_names
         result: dict[str, Any] = {}

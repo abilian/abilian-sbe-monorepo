@@ -274,7 +274,7 @@ class BaseTableView(View):
             elif isinstance(value, list):
                 cell = "; ".join(value)
             else:
-                if not isinstance(value, (Markup,) + (str,)):
+                if not isinstance(value, (Markup, str)):
                     if value is None:
                         value = ""
                     else:

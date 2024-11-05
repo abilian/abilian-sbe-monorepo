@@ -32,7 +32,8 @@ class Message(Entity):
     __tablename__ = "message"
     __indexable__ = False
     __editable__ = ["content"]
-    __exportable__ = __editable__ + [
+    __exportable__ = [
+        *__editable__,
         "id",
         "created_at",
         "updated_at",
@@ -70,7 +71,8 @@ class PrivateMessage(Entity):
     __tablename__ = "private_message"
     __indexable__ = False
     __editable__ = ["content", "recipient_id"]
-    __exportable__ = __editable__ + [
+    __exportable__ = [
+        *__editable__,
         "id",
         "created_at",
         "updated_at",
@@ -86,7 +88,8 @@ class Like(Entity):
     __tablename__ = "like"
     __indexable__ = False
     __editable__ = ["content", "message_id"]
-    __exportable__ = __editable__ + [
+    __exportable__ = [
+        *__editable__,
         "id",
         "created_at",
         "updated_at",

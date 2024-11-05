@@ -188,7 +188,7 @@ def set_entity_type(cls: type[User | Group]) -> type[User | Group]:
 class User(Principal, UserMixin, db.Model):
     __tablename__ = "user"
     __editable__ = ["first_name", "last_name", "email", "password"]
-    __exportable__ = __editable__ + ["created_at", "updated_at", "id"]
+    __exportable__ = [*__editable__, "created_at", "updated_at", "id"]
 
     __password_strategy__ = BcryptPasswordStrategy()
 
@@ -315,7 +315,7 @@ class Group(Principal, db.Model):
     __indexable__ = False
     __tablename__ = "group"
     __editable__ = ["name", "description"]
-    __exportable__ = __editable__ + ["created_at", "updated_at", "id"]
+    __exportable__ = [*__editable__, "created_at", "updated_at", "id"]
 
     name = Column(UnicodeText, nullable=False, info=SEARCHABLE)
     description = Column(UnicodeText, info=SEARCHABLE)
