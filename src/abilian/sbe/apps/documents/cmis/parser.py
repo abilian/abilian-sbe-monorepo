@@ -2,6 +2,7 @@
 
 """Parses XML messages and converts them to objects."""
 
+# f-strings are confusing here
 # ruff:noqa:UP031
 from __future__ import annotations
 
@@ -73,6 +74,12 @@ class Property:
     Every property is typed. The property-type defines the data type of the data
     value(s) held by the property. CMIS specifies the following property-types.
     """
+    type: str
+    property_definition_id: str
+    local_name: str | None
+    display_name: str | None
+    query_name: str | None
+    value: str | datetime | None
 
     def __init__(self, element: ObjectifiedElement | None = None) -> None:
         if element is not None:
