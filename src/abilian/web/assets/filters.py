@@ -355,7 +355,7 @@ class ClosureJS(BaseClosureJS):
 
         name = smap_path.name
         out.write(f"//# sourceMappingURL={name!s}")
-        self.fix_source_map_urls(str(smap_path))
+        self.fix_source_map_urls(smap_path)
 
     def fix_url(self, cur_path, src_path):
         possible_paths = [p for p in self.ctx.url_mapping if src_path.startswith(p)]
@@ -374,8 +374,8 @@ class ClosureJS(BaseClosureJS):
         path = possible_paths[0]
         return self.ctx.url_mapping[path] + src_path[len(path) :]
 
-    def fix_source_map_urls(self, filename):
-        with open(filename) as f:
+    def fix_source_map_urls(self, file_path: Path):
+        with file_path.open() as f:
             data = json.load(f)
 
         for idx, path in enumerate(data["sources"]):
@@ -385,7 +385,7 @@ class ClosureJS(BaseClosureJS):
 
             data["sources"][idx] = self.fix_url(self.ctx.directory, path)
 
-        with open(filename, "w") as f:
+        with file_path.open("w") as f:
             json.dump(data, f)
 
 

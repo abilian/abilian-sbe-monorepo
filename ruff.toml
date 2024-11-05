@@ -32,7 +32,6 @@ lint.extend-ignore = [
     "S320", # OK, we're using defusedxml
 
     # Fix these (if possible / reasonable)
-    "B024", # `...` is an abstract base class, but it has no abstract methods
     "B027", # `...` is an empty method in an abstract base class, but has no abstract decorator
     "B028", # No explicit `...` keyword argument found
     "BLE001", # Do not catch blind exception
@@ -56,7 +55,6 @@ lint.extend-ignore = [
     "N806", # Variable in function should be lowercase
     #
     "PD011", # Use `.to_numpy()` instead of `.values`
-    "PERF203", # `try`-`except` within a loop incurs performance overhead
     "PLC0206", # Extracting value from dictionary without calling `.items()`
     "PLC0415", # `import` should be at the top-level of a file
     "PLC1901", # `x == ""` can be simplified to `not x` as an empty string is falsey

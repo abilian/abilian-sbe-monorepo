@@ -19,8 +19,8 @@ from .blob import Blob
 ATTRIBUTE = "__attachments__"
 
 
-class SupportsAttachment(abc.ABC):
-    pass
+class SupportsAttachment(abc.ABC):  # noqa: B024
+    """Mixin for entities that can have attachments."""
 
 
 def register(cls):
