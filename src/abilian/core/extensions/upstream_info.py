@@ -1,4 +1,4 @@
-"""Extension for sending informations to upstream server."""
+"""Extension for sending information to upstream server."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ if typing.TYPE_CHECKING:
 
 
 class UpstreamInfo:
-    """Extension for sending informations to upstream server."""
+    """Extension for sending information to upstream server."""
 
     def __init__(self, app: Flask | None = None):
         if app is not None:
