@@ -178,7 +178,7 @@ def extract_email_destination(address: str) -> tuple[str, ...]:
     :param address: similar to test+IjEvMy8yLzQi.xjE04-4S0IzsdicTHKTAqcqa1fE@testcase.app.tld
     :return: List() of splitted values
     """
-    m = re.search("<(.*)>", address)
+    m = re.search(r"<(.*)>", address)
     if m:
         address = m.group(1)
     local_part = address.rsplit("@", 1)[0]

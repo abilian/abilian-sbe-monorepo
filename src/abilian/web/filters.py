@@ -160,7 +160,7 @@ def age(
             if remove_year:
                 date_fmt = date_fmt.replace("y", "").strip()
                 # remove leading or trailing spaces, comma, etc...
-                date_fmt = re.sub("^[^A-Za-z]*|[^A-Za-z]*$", "", date_fmt)
+                date_fmt = re.sub(r"^[^A-Za-z]*|[^A-Za-z]*$", "", date_fmt)
 
             fmt = fmt.format(time_fmt, date_fmt)
             return babel.format_datetime(dt, format=fmt)

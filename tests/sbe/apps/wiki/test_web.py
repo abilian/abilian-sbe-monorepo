@@ -175,7 +175,7 @@ def test_create_page(community1, app, admin_user, client):
             for l in response.get_data(as_text=True).split("\n")
             if 'name="page_id"' in l
         )
-        m = re.search('value="(.*?)"', line)
+        m = re.search(r'value="(.*?)"', line)
         page_id = int(m.group(1))
 
         url = url_for("wiki.page_changes", community_id=community.slug, title=title)

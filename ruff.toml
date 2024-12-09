@@ -97,8 +97,14 @@ lint.extend-ignore = [
     "SIM115", # Use context handler for opening files
     "SIM117", # Use a single `with` statement with multiple contexts instead of nested `with` statements
     "SLF001", # Private member accessed
+    # More
     "T201", # `print` found
     "TRY002", # Create you own exception class
+    "TC006", # Add quotes to type expression in `typing.cast()`
+    "RUF052", # Local dummy variable is accessed
+    "RUF035", # Unsafe use of `markupsafe.Markup` detected
+    "RUF036", # `None` not at the end of the type annotation.
+    "FURB189", # Subclassing `dict` can be error prone, use `collections.UserDict` instead
 ]
 
 [lint.per-file-ignores]

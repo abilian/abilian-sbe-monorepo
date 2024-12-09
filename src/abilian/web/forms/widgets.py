@@ -121,7 +121,7 @@ def linkify_url(value: str) -> str:
 
 def text2html(text: str) -> Markup | str:
     text = text.strip()
-    if re.search("<(p|br)>", text.lower()):
+    if re.search(r"<(p|br)>", text.lower()):
         return text
     if "\n" not in text:
         return text
@@ -1295,8 +1295,7 @@ class MoneyWidget(TextInput):
 
         if val > 1000:
             unit = "k€"
-            # pylint: disable=W1633
-            val = int(round(val / 1000.0))
+            val = round(val / 1000.0)
 
         # `format_currency()` is not used since it display numbers with cents
         # units, which we don't want

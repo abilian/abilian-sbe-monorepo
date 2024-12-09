@@ -145,24 +145,24 @@ class Pagination:
         self.total_count = total_count
 
     @property
-    def pages(self):
-        return int(ceil(self.total_count / float(self.per_page)))
+    def pages(self) -> int:
+        return ceil(self.total_count / float(self.per_page))
 
     @property
-    def has_prev(self):
+    def has_prev(self) -> bool:
         return self.page > 1
 
     @property
-    def prev(self):
+    def prev(self) -> int | None:
         return self.page - 1 if self.has_prev else None
 
     @property
-    def has_next(self):
+    def has_next(self) -> bool:
         return self.page < self.pages
 
     # pylint: disable=W1653
     @property
-    def next(self):
+    def next(self) -> int | None:
         return self.page + 1 if self.has_next else None
 
     def iter_pages(self, left_edge=2, left_current=2, right_current=5, right_edge=2):
