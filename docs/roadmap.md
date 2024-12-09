@@ -5,10 +5,10 @@
 - [Upcoming Releases](#upcoming-releases)
   * [Version 1.2 (Q4 2024)](#version-12-q4-2024)
     + [Focus Areas:](#focus-areas)
-  * [Version 1.3 (Q1 2025)](#version-13-q1-2025)
+  * [Version 1.3 (Q1 or Q2 2025)](#version-13-q1-or-q2-2025)
     + [Focus Areas:](#focus-areas-1)
     + [Tasks](#tasks)
-- [See also:](#see-also)
+  * [See also:](#see-also)
 - [Completed Releases](#completed-releases)
   * [Version 1.1 (Q1 2024)](#version-11-q1-2024)
     + [Tasks](#tasks-1)
@@ -62,7 +62,7 @@
    - [ ] Update POC to MVP
 
 
-### Version 1.3 (Q1 2025)
+### Version 1.3 (Q1 or Q2 2025)
 
 #### Focus Areas:
 
@@ -97,7 +97,7 @@
   - See: [ADR 001](../notes/adrs/001-oidc.md), [ADR 002](../notes/adrs/002-scim.md), [ADR 003](../notes/adrs/003-rbac.md), [ADR 004](../notes/adrs/004-permissions.md).
 
 
-## See also:
+### See also:
 
 A significant part of shaping the future of Abilian SBE involves participating in the creation and review of **[Architecture Decision Records](../notes/adrs) (ADRs)**. These documents capture major architectural decisions and guide the project’s long-term technical direction.
 
@@ -108,11 +108,11 @@ A significant part of shaping the future of Abilian SBE involves participating i
 
 #### Tasks
 
-- [x] Replace Celery with Dramatiq [DONE].
-- [x] Make POC for SlapOS port of Abilian SBE (cf. [HyperOpen X](https://abilian.com/fr/recherche-developpement/hyper-open-x/) project) [DONE].
-- [x] Write some doc [DONE].
-- [x] Upgrade some core dependencies: Flask, WTForms, etc. [DONE].
-- [x] POC for SlapOS port of Abilian SBE [DONE].
+- [x] Replace Celery with Dramatiq.
+- [x] Make POC for SlapOS port of Abilian SBE (cf. [HyperOpen X](https://abilian.com/fr/recherche-developpement/hyper-open-x/) project).
+- [x] Write some doc.
+- [x] Upgrade some core dependencies: Flask, WTForms, etc.
+- [x] POC for SlapOS port of Abilian SBE.
 
 #### Achievements:
 
@@ -179,7 +179,7 @@ A significant part of shaping the future of Abilian SBE involves participating i
 
 1. **Developer Experience**:
 
-   - [x] Full adoption of `Nix` for reproducible environments.
+   - [x] Adoption of `Nix` for reproducible environments.
    - [x] Modernized CI/CD workflows for better developer productivity.
 
 1. **Modularity Preparations**:
