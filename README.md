@@ -2,6 +2,19 @@
 
 Build status: [![builds.sr.ht status](https://builds.sr.ht/~sfermigier/abilian-sbe/commits/main/ubuntu-lts.yml.svg)](https://builds.sr.ht/~sfermigier/abilian-sbe/commits/main/ubuntu-lts.yml?)
 
+<!-- toc -->
+
+- [Introduction to Abilian SBE](#introduction-to-abilian-sbe)
+- [Key Features](#key-features)
+- [Installation and Deployment](#installation-and-deployment)
+  * [Local (development)](#local-development)
+  * [Production](#production)
+  * [Configuration example](#configuration-example)
+  * [On Heroku](#on-heroku)
+- [Development](#development)
+- [License compliance](#license-compliance)
+
+<!-- tocstop -->
 
 ## Introduction to Abilian SBE
 
