@@ -10,6 +10,7 @@ import sqlalchemy as sa
 import sqlalchemy.orm
 import svcs
 from flask import Flask, appcontext_pushed, g, request_started
+from flask_super import register_commands
 from flask_talisman import DEFAULT_CSP_POLICY, Talisman
 
 from abilian.core import extensions, signals
@@ -88,6 +89,9 @@ def setup_app(app: Application, plugins=None):
             app.service_manager.start_services()
 
     connect_signals()
+
+    # Register CLI commands
+    register_commands(app)
 
 
 def connect_signals():
