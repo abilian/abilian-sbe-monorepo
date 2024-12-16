@@ -14,6 +14,7 @@ import sqlalchemy as sa
 import whoosh
 import whoosh.index
 from flask.cli import with_appcontext
+from flask_super.cli import command
 from loguru import logger
 from sqlalchemy.orm.session import Session
 from tqdm import tqdm
@@ -29,7 +30,7 @@ STOP = object()
 COMMIT = object()
 
 
-@click.command()
+@command()
 @click.option("--batch-size", default=0)
 @click.option("--progressive/--no-progressive")
 @click.option("--clear/--no-clear")

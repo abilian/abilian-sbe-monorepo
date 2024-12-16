@@ -105,6 +105,8 @@ lint.extend-ignore = [
     "RUF035", # Unsafe use of `markupsafe.Markup` detected
     "RUF036", # `None` not at the end of the type annotation.
     "FURB189", # Subclassing `dict` can be error prone, use `collections.UserDict` instead
+    # Missing copyright
+    "CPY001",
 ]
 
 [lint.per-file-ignores]

@@ -26,6 +26,7 @@ from abilian.config import default_config
 from abilian.core import extensions, signals
 from abilian.core.plugin_manager import PluginManager
 from abilian.core.service_manager import ServiceManager
+from abilian.lib.scanner import scan_package
 from abilian.services import auth_service
 from abilian.services.security import ANONYMOUS
 from abilian.setup import setup_app
@@ -51,11 +52,18 @@ db = extensions.db
 
 def create_app(config: type | None = None, plugins=None, **kw: Any) -> Application:
     app = Application(**kw)
+
+    # 1: Ensure app.config is properly set up
     app.configure(config)
     app.check_instance_folder(create=True)
 
+    # 2: Scan to pre-register callbacks, services, etc.
+    scan_package("abilian.cli")
+
+    # 3: Perform registrations on app
     setup_app(app, plugins=plugins)
 
+    # 4: Perform post-registration actions
     signals.components_registered.send(app)
 
     return app

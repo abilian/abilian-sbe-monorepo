@@ -92,6 +92,8 @@ dependencies = [
     #
     "pytest>=8.3.3",
     "hyperlink>=21.0.0",
+    "python-dotenv>=1.0.1",
+    "flask-super>=0.2.8",
 ]
 
 [project.urls]
@@ -145,6 +147,7 @@ dev-dependencies = [
     "snoop>=0.6.0",
     "pytest-archon>=0.0.6",
     "typeguard>=4.4.1",
+    "mariadb>=1.1.11",
 ]
 
 [tool.pytest.ini_options]

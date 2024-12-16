@@ -6,20 +6,21 @@ import runpy
 
 import click
 from flask.cli import with_appcontext
+from flask_super.cli import command
 
 from abilian.core.extensions import db
 from abilian.core.models.subjects import User, create_root_user
 from abilian.services import get_service
 
 
-@click.command()
+@command()
 @with_appcontext
 def initdb():
     db.create_all()
     create_root_user()
 
 
-@click.command()
+@command()
 @click.option("-y", "--yes", is_flag=True)
 @with_appcontext
 def dropdb(yes=None):
@@ -35,7 +36,7 @@ def dropdb(yes=None):
         db.drop_all()
 
 
-@click.command()
+@command()
 @click.argument("path", type=click.Path(exists=True))
 @with_appcontext
 def script(path):
@@ -43,7 +44,7 @@ def script(path):
     runpy.run_path(path, run_name="__main__")
 
 
-@click.command()
+@command()
 @click.argument("email")
 @click.argument("password")
 @click.option("--role")

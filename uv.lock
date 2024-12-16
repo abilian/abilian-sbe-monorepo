@@ -92,6 +92,7 @@ dependencies = [
     { name = "flask-mail" },
     { name = "flask-migrate" },
     { name = "flask-sqlalchemy" },
+    { name = "flask-super" },
     { name = "flask-talisman" },
     { name = "flask-wtf" },
     { name = "gunicorn" },
@@ -115,6 +116,7 @@ dependencies = [
     { name = "psycopg2" },
     { name = "pytest" },
     { name = "python-dateutil" },
+    { name = "python-dotenv" },
     { name = "python-magic" },
     { name = "pytz" },
     { name = "redis" },
@@ -143,6 +145,7 @@ dev = [
     { name = "honcho" },
     { name = "html5lib" },
     { name = "hyperlink" },
+    { name = "mariadb" },
     { name = "mkdocs-material" },
     { name = "mypy" },
     { name = "pip-outdated" },
@@ -194,6 +197,7 @@ requires-dist = [
     { name = "flask-mail", specifier = ">=0.9.1" },
     { name = "flask-migrate", specifier = ">=4.0.5,<4.1.0" },
     { name = "flask-sqlalchemy", specifier = "==3.0.1" },
+    { name = "flask-super", specifier = ">=0.2.8" },
     { name = "flask-talisman", specifier = ">=1.1.0,<1.2.0" },
     { name = "flask-wtf", specifier = "==1.2.0" },
     { name = "gunicorn" },
@@ -217,6 +221,7 @@ requires-dist = [
     { name = "psycopg2", specifier = ">=2.9.9,<3.0.0" },
     { name = "pytest", specifier = ">=8.3.3" },
     { name = "python-dateutil", specifier = ">=2.8.2,<3.0.0" },
+    { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "python-magic" },
     { name = "pytz" },
     { name = "redis", specifier = ">=4.6.0,<5.0" },
@@ -245,6 +250,7 @@ dev = [
     { name = "honcho" },
     { name = "html5lib" },
     { name = "hyperlink" },
+    { name = "mariadb", specifier = ">=1.1.11" },
     { name = "mkdocs-material", specifier = ">=9.5.4,<10.0.0" },
     { name = "mypy", specifier = ">=1.5.1,<2.0.0" },
     { name = "pip-outdated", specifier = ">=0.7.0" },
@@ -1432,6 +1438,21 @@ wheels = [
 ]
 
 [[package]]
+name = "flask-super"
+version = "0.2.8"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "flask" },
+    { name = "loguru" },
+    { name = "sentry-sdk" },
+    { name = "svcs" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c3/47/ceb81806e0fff5003ae63b71f599f815b780c9b89b41b948ce15810d4bdd/flask_super-0.2.8.tar.gz", hash = "sha256:64c98e88e69b2df9b1e41c617a26ed376e7cdb0f94847bb10534e7a00ee44e27", size = 9199 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/57/40/5ccea67e49f3043a05a6a1a61f0d9111c1061cc2fc7e81507a93d7e81421/flask_super-0.2.8-py3-none-any.whl", hash = "sha256:5218e60f68c2da9fdef0b0071f62a751462bfc3f9123f20ec449cdb3f0d1381f", size = 9173 },
+]
+
+[[package]]
 name = "flask-talisman"
 version = "1.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1842,6 +1863,23 @@ wheels = [
 ]
 
 [[package]]
+name = "mariadb"
+version = "1.1.11"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "packaging" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a1/8b/4e263dd4e631083ffaac4f3f7b03ad6fd52a3736967aea06ef946a824ff6/mariadb-1.1.11.tar.gz", hash = "sha256:cf6647cee081e21d0994b409ba8c8fa2077f3972f1de3627c5502fb31d14f806", size = 85604 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8a/75/440570ee3893d9d2bfbc0f88c83b2ea18452e304ac1a3296276b70072677/mariadb-1.1.11-cp310-cp310-win32.whl", hash = "sha256:dbc4cf0e302ca82d46f9431a0b04f048e9c21ee56d6f3162c29605f84d63b40c", size = 183311 },
+    { url = "https://files.pythonhosted.org/packages/6b/1f/5295e8496aea3854ea9481538de406245b8e7f06c3e7592308ef9ed08402/mariadb-1.1.11-cp310-cp310-win_amd64.whl", hash = "sha256:579420293fa790d5ae0a6cb4bdb7e8be8facc2ceefb6123c2b0e8042b3fa725d", size = 199877 },
+    { url = "https://files.pythonhosted.org/packages/fc/0b/e4557b46d6ed5b9cadba0f580c790040c2f796e40b19115638b641e7418d/mariadb-1.1.11-cp311-cp311-win32.whl", hash = "sha256:0f8de8d66ca71bd102f34a970a331b7d75bdf7f8050d80e37cdcc6ff3c85cf7a", size = 183310 },
+    { url = "https://files.pythonhosted.org/packages/90/4f/35dc6c4b7e17157cd51cb1f6e1a1476fd0a083cc3e34f6551100216cb8df/mariadb-1.1.11-cp311-cp311-win_amd64.whl", hash = "sha256:3f64b520089cb60c4f8302f365ed0ae057c4c859ab70fc8b1c4358192c3c8f27", size = 199867 },
+    { url = "https://files.pythonhosted.org/packages/1b/5b/3ff578d7fb61196b9a61c8e78b0fcfe4a9c06ecd1a53293014fe0900c702/mariadb-1.1.11-cp312-cp312-win32.whl", hash = "sha256:f6dfdc954edf02b6519419a054798cda6034dc459d1d482e3329e37aa27d34f0", size = 183447 },
+    { url = "https://files.pythonhosted.org/packages/72/0e/ad5ec8b2d2b71fe2ce7604320d35d13a96334b2788168f2d3859a5844f93/mariadb-1.1.11-cp312-cp312-win_amd64.whl", hash = "sha256:2e72ea65f1d7d8563ee84e172f2a583193092bdb6ff83c470ca9722873273ecc", size = 199946 },
+]
+
+[[package]]
 name = "markdown"
 version = "3.7"
 source = { registry = "https://pypi.org/simple" }
@@ -2011,7 +2049,7 @@ wheels = [
 
 [[package]]
 name = "mkdocs-material"
-version = "9.5.48"
+version = "9.5.49"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "babel" },
@@ -2026,9 +2064,9 @@ dependencies = [
     { name = "regex" },
     { name = "requests" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/73/e3/925e4c619c03cd538b77d329479f64d75ed9ae35f5d936a19023204de6eb/mkdocs_material-9.5.48.tar.gz", hash = "sha256:a582531e8b34f4c7ed38c29d5c44763053832cf2a32f7409567e0c74749a47db", size = 3936033 }
+sdist = { url = "https://files.pythonhosted.org/packages/e2/14/8daeeecee2e25bd84239a843fdcb92b20db88ebbcb26e0d32f414ca54a22/mkdocs_material-9.5.49.tar.gz", hash = "sha256:3671bb282b4f53a1c72e08adbe04d2481a98f85fed392530051f80ff94a9621d", size = 3949559 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3e/c2/5cb2482c12d3473c00b6a8b8fe7305613142d418d87871edb83a9eb89981/mkdocs_material-9.5.48-py3-none-any.whl", hash = "sha256:b695c998f4b939ce748adbc0d3bff73fa886a670ece948cf27818fa115dc16f8", size = 8666114 },
+    { url = "https://files.pythonhosted.org/packages/fc/2d/2dd23a36b48421db54f118bb6f6f733dbe2d5c78fe7867375e48649fd3df/mkdocs_material-9.5.49-py3-none-any.whl", hash = "sha256:c3c2d8176b18198435d3a3e119011922f3e11424074645c24019c2dcf08a360e", size = 8684098 },
 ]
 
 [[package]]
@@ -2682,6 +2720,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ce/8d/2ebc549adf1f623d4044b108b30ff5cdac5756b0384cd9dddac63fe53eae/python-debian-0.1.49.tar.gz", hash = "sha256:8cf677a30dbcb4be7a99536c17e11308a827a4d22028dc59a67f6c6dd3f0f58c", size = 121690 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/9c/37/6e38e7aafa55c1257f63ca9f575e8e3cf2560c896c5202a16c9f33ee7657/python_debian-0.1.49-py3-none-any.whl", hash = "sha256:880f3bc52e31599f2a9b432bd7691844286825087fccdcf2f6ffd5cd79a26f9f", size = 132460 },
+]
+
+[[package]]
+name = "python-dotenv"
+version = "1.0.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/bc/57/e84d88dfe0aec03b7a2d4327012c1627ab5f03652216c63d49846d7a6c58/python-dotenv-1.0.1.tar.gz", hash = "sha256:e324ee90a023d808f1959c46bcbc04446a10ced277783dc6ee09987c37ec10ca", size = 39115 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/6a/3e/b68c118422ec867fa7ab88444e1274aa40681c606d59ac27de5a5588f082/python_dotenv-1.0.1-py3-none-any.whl", hash = "sha256:f7b63ef50f1b690dddf550d03497b66d609393b40b564ed0d674909a68ebf16a", size = 19863 },
 ]
 
 [[package]]
