@@ -11,7 +11,7 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Integer,
-    Unicode,
+    Text,
     UnicodeText,
     UniqueConstraint,
 )
@@ -41,7 +41,7 @@ class WikiPage(Entity):
     __tablename__ = "wiki_page"
 
     # : The title for this page
-    _title: Mapped[str] = Column("title", Unicode(200), nullable=False, index=True)
+    _title: Mapped[str] = Column("title", Text, nullable=False, index=True)
 
     community_id = CommunityIdColumn()
 
@@ -54,7 +54,7 @@ class WikiPage(Entity):
 
     #: The body, using some markup language (Markdown for now)
     body_src = Column(
-        UnicodeText,
+        Text,
         default="",
         nullable=False,
         info=SEARCHABLE | {"index_to": ("text",)},

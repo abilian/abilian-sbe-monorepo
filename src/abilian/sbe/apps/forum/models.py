@@ -13,10 +13,10 @@ from datetime import datetime
 from itertools import chain
 from typing import Any
 
-from sqlalchemy import Column, ForeignKey, Integer, Unicode, UnicodeText
+from sqlalchemy import Column, ForeignKey, Integer, Text, UnicodeText
 from sqlalchemy.event import listens_for
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import backref, relationship
+from sqlalchemy.orm import Mapped, backref, relationship
 from sqlalchemy.types import DateTime
 
 from abilian.core.entities import SEARCHABLE, Entity
@@ -59,7 +59,9 @@ class Thread(Entity):
     )
 
     #: The thread title (aka subject)
-    _title = Column("title", Unicode(255), nullable=False, default="", info=SEARCHABLE)
+    _title: Mapped[str] = Column(
+        "title", Text, nullable=False, default="", info=SEARCHABLE
+    )
 
     last_post_at = Column(DateTime, default=datetime.utcnow, nullable=True)
 

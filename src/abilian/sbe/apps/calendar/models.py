@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
-from sqlalchemy import Column, DateTime, Unicode
+from datetime import datetime
+
+from sqlalchemy import TEXT, Column, DateTime
 from sqlalchemy.event import listens_for
-from sqlalchemy.orm import backref, relationship
+from sqlalchemy.orm import Mapped, backref, relationship
 
 from abilian.core.entities import SEARCHABLE, Entity
 from abilian.sbe.apps.communities.models import (
@@ -19,6 +21,7 @@ class Event(Entity):
     __tablename__ = "sbe_event"
 
     community_id = CommunityIdColumn()
+
     #: The community this event belongs to
     community = relationship(
         Community,
@@ -26,16 +29,17 @@ class Event(Entity):
         backref=backref("events", cascade="all, delete-orphan"),
     )
 
-    title = Column(Unicode, nullable=False, default="", info=SEARCHABLE)
+    # title = Column(Unicode, nullable=False, default="", info=SEARCHABLE)
+    title: Mapped[str] = Column(TEXT, nullable=False, default="", info=SEARCHABLE)
 
-    description = Column(Unicode, nullable=False, default="", info=SEARCHABLE)
+    description: Mapped[str] = Column(TEXT, nullable=False, default="", info=SEARCHABLE)
 
-    location = Column(Unicode, nullable=False, default="", info=SEARCHABLE)
+    location: Mapped[str] = Column(TEXT, nullable=False, default="", info=SEARCHABLE)
 
-    start = Column(DateTime, nullable=False)
-    end = Column(DateTime)
+    start: Mapped[datetime] = Column(DateTime, nullable=False)
+    end: Mapped[datetime] = Column(DateTime)
 
-    url = Column(Unicode, nullable=False, default="")
+    url: Mapped[str] = Column(TEXT, nullable=False, default="")
 
 
 @listens_for(Event.title, "set", active_history=True)

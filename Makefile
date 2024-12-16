@@ -135,3 +135,9 @@ publish: clean
 	git push --tags
 	uv build
 	twine upload dist/*
+
+
+# Additonal targets
+
+test-with-mariadb:
+	FLASK_SQLALCHEMY_DATABASE_URI=mysql+pymysql://sbe:sbe@localhost/sbe_test pytest tests

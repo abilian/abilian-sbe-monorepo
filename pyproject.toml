@@ -177,6 +177,8 @@ DEP002 = [
     'psycopg2',
     # Web
     'gunicorn',
+    # Flask uses it implicitly
+    "python-dotenv",
 ]
 
 # X imported but missing from the dependency definitions

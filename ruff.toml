@@ -30,6 +30,8 @@ lint.extend-ignore = [
     "PLW1514", # `open` in text mode without explicit `encoding` argument
     "S101", # Use of `assert` detected
     "S320", # OK, we're using defusedxml
+    "TC003",
+    "TC002",
 
     # Fix these (if possible / reasonable)
     "B027", # `...` is an empty method in an abstract base class, but has no abstract decorator

@@ -8,6 +8,7 @@ from flask import flash, redirect, render_template, request, url_for
 from flask_babel import gettext as _
 from flask_login import current_user
 from flask_mail import Message as Email
+from sqlalchemy.orm import Mapped
 from sqlalchemy.schema import Column
 from sqlalchemy.types import Text
 
@@ -21,7 +22,7 @@ class Invite(db.Model):
 
     __tablename__ = "invitation"
 
-    email = Column(Text, nullable=False)
+    email: Mapped[str] = Column(Text, nullable=False)
 
     query = db.session.query_property()
 

@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from sqlalchemy import Column, ForeignKey, Integer, String, UniqueConstraint
-from sqlalchemy.orm import backref, relationship
+from sqlalchemy.orm import Mapped, backref, relationship
 
 from abilian.core.extensions import db
 from abilian.core.models.subjects import User
@@ -19,7 +19,7 @@ class UserPreference(db.Model):
     __table_args__ = (UniqueConstraint("user_id", "key"),)
 
     #: Unique id for this preference.
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = Column(Integer, primary_key=True, autoincrement=True)
 
     #: The user who set this preference.
     user = relationship(
@@ -28,7 +28,7 @@ class UserPreference(db.Model):
     user_id = Column(ForeignKey(User.id))
 
     #: The key
-    key = Column(String, nullable=False)
+    key: Mapped[str] = Column(String(255), nullable=False)
 
     #: The value
-    value = Column(JSON, nullable=False)
+    value: Mapped[JSON] = Column(JSON, nullable=False)

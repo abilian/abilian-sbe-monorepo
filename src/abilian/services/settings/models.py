@@ -7,6 +7,7 @@ from datetime import timedelta
 from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
+from sqlalchemy.orm import Mapped
 
 from abilian.core.extensions import db
 
@@ -70,13 +71,13 @@ class Setting(db.Model):
     __tablename__ = "setting"
 
     transformers = _transformers
-    key = sa.Column("key", sa.String(length=1000), primary_key=True)
+    key: Mapped[str] = sa.Column(sa.String(255), primary_key=True)
 
     #: Can be a string (Unicode), int, bool, json... or even a long dotted name
     #: if that's what you need. Type must be set before setting `value`
-    _type = sa.Column("type", sa.String(length=1000), nullable=False)
+    _type: Mapped[str] = sa.Column("type", sa.TEXT, nullable=False)
 
-    _value = sa.Column("value", sa.Text())
+    _value: Mapped[str] = sa.Column("value", sa.TEXT)
 
     @property
     def type(self) -> str:

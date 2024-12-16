@@ -21,11 +21,12 @@ from flask_login import current_user
 
 # from loguru import logger
 from loguru import logger
+from sqlalchemy import UniqueConstraint
 from sqlalchemy.event import listen, listens_for
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import backref, foreign, relationship, remote
+from sqlalchemy.orm import Mapped, backref, foreign, relationship, remote
 from sqlalchemy.orm.session import Session
-from sqlalchemy.schema import Column, ForeignKey, UniqueConstraint
+from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.types import Integer, Text, UnicodeText
 from toolz import first
 from whoosh.analysis import CharsetFilter, LowercaseFilter, RegexTokenizer
@@ -97,18 +98,23 @@ class CmisObject(InheritSecurity, Entity):
         ("community.slug", ("community_slug",)),
     )
 
-    _title = Column("title", UnicodeText, nullable=False, default="")
-    description = Column(
-        UnicodeText,
+    _title: Mapped[str] = Column("title", Text, nullable=False, default="")
+
+    description: Mapped[str] = Column(
+        Text,
         nullable=False,
         default="",
         info=SEARCHABLE | {"index_to": ("description", "text")},
     )
 
-    _parent_id = Column(Integer, ForeignKey("cmisobject.id"), nullable=True)
+    _parent_id: Mapped[int] = Column(
+        Integer, ForeignKey("cmisobject.id"), nullable=True
+    )
 
-    # no duplicate name in same folder
-    __table_args__ = (UniqueConstraint("_parent_id", "title"),)
+    __table_args__ = (
+        # no duplicate name in same folder
+        UniqueConstraint("_parent_id", "title"),
+    )
 
     # Set in concrete classes
     sbe_type: str = ""
