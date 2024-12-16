@@ -118,10 +118,10 @@ install:
 
 .PHONY: update-deps
 update-deps:  ## Update dependencies
-	uv update
-	uv export -o requirements.txt --without-hashes
+	uv sync -U
+	uv export -o requirements.txt
 	pre-commit autoupdate
-	# poetry show -o
+	uv pip list --outdated
 
 
 .PHONY: help
