@@ -167,6 +167,8 @@ python_files = ["test_*.py", "tests.py", "test.py", "*_tests.py"]
 [tool.deptry.per_rule_ignores]
 # X defined as a dependency but not used in the codebase
 DEP002 = [
+    # Used by Flask
+    "python-dotenv",
     # Used (implicitly) by Flask-Migrate
     'alembic',
     # Used by webassets
