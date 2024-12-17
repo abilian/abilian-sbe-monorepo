@@ -181,6 +181,7 @@ DEP002 = [
     'closure',
     # Used implicitly by SQLA
     'psycopg2',
+    "mariadb",
     # Web
     'gunicorn',
     # Flask uses it implicitly
