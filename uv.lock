@@ -135,6 +135,11 @@ dependencies = [
     { name = "xlwt" },
 ]
 
+[package.optional-dependencies]
+mariadb = [
+    { name = "mariadb" },
+]
+
 [package.dev-dependencies]
 dev = [
     { name = "abilian-devtools" },
@@ -145,7 +150,6 @@ dev = [
     { name = "honcho" },
     { name = "html5lib" },
     { name = "hyperlink" },
-    { name = "mariadb" },
     { name = "mkdocs-material" },
     { name = "mypy" },
     { name = "pip-outdated" },
@@ -209,6 +213,7 @@ requires-dist = [
     { name = "langid", specifier = ">=1.1.6" },
     { name = "loguru", specifier = ">=0.7.2,<0.8.0" },
     { name = "lxml" },
+    { name = "mariadb", marker = "extra == 'mariadb'", specifier = ">=1.1.11" },
     { name = "markdown", specifier = ">=3,<4" },
     { name = "markupsafe", specifier = ">=2.1.4,<2.2.0" },
     { name = "maxminddb" },
@@ -250,7 +255,6 @@ dev = [
     { name = "honcho" },
     { name = "html5lib" },
     { name = "hyperlink" },
-    { name = "mariadb", specifier = ">=1.1.11" },
     { name = "mkdocs-material", specifier = ">=9.5.4,<10.0.0" },
     { name = "mypy", specifier = ">=1.5.1,<2.0.0" },
     { name = "pip-outdated", specifier = ">=0.7.0" },

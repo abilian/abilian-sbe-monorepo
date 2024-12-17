@@ -14,6 +14,7 @@ packages:
   - gcc
   # Libraries
   - libpq-devel
+  - mariadb-connector-c-devel
   # Docker and friends (NB: docker is not available on Rocky Linux)
   - buildah
   # Dependencies for buildah
