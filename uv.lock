@@ -8,7 +8,7 @@ resolution-markers = [
 
 [[package]]
 name = "abilian-devtools"
-version = "0.7.5"
+version = "0.7.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "black" },
@@ -38,7 +38,6 @@ dependencies = [
     { name = "flake8-super-call" },
     { name = "flake8-tidy-imports" },
     { name = "flake8-tuple" },
-    { name = "git-cliff" },
     { name = "invoke" },
     { name = "isort" },
     { name = "mypy" },
@@ -56,9 +55,9 @@ dependencies = [
     { name = "tomlkit" },
     { name = "vulture" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/57/49/4d9f9a1cf7e38f6c51b63a287e0d7a190f1a64f7fce3b8f590c786c1449b/abilian_devtools-0.7.5.tar.gz", hash = "sha256:4a03ae2dc24b78a850277bcbe300fdc87cbd5b8caf52bb1d057247d408773b17", size = 120866 }
+sdist = { url = "https://files.pythonhosted.org/packages/26/c3/979c359b927b3e3affe5d5df23f596a254038e917d5ee62333d467c5e688/abilian_devtools-0.7.6.tar.gz", hash = "sha256:47cb9eb32367b5073ef6adc9553f37273c4aabaad8bfe2d98bd625bc4dd7ca46", size = 119787 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/39/1d/19ae9b7637c5c32b8a028eee13b2f5906267c06ccee5e5dc5548fd48be63/abilian_devtools-0.7.5-py3-none-any.whl", hash = "sha256:aef0ad412d758eb1e7c49693921a7c4253ac1232aadfb5a065de51ee63ff4ac0", size = 18561 },
+    { url = "https://files.pythonhosted.org/packages/36/b9/16c6db9416a11b6788eddad4c5ba368926646a286b80c947a365c862c549/abilian_devtools-0.7.6-py3-none-any.whl", hash = "sha256:95ac5e87a3665305b43dd60d16ac8b54b1ead926e7a72b7aeaba41e802543d32", size = 18559 },
 ]
 
 [[package]]
@@ -1556,23 +1555,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/d9/29/d40217cbe2f6b1359e00c6c307bb3fc876ba74068cbab3dde77f03ca0dc4/ghp-import-2.1.0.tar.gz", hash = "sha256:9c535c4c61193c2df8871222567d7fd7e5014d835f97dc7b7439069e2413d343", size = 10943 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f7/ec/67fbef5d497f86283db54c22eec6f6140243aae73265799baaaa19cd17fb/ghp_import-2.1.0-py3-none-any.whl", hash = "sha256:8337dd7b50877f163d4c0289bc1f1c7f127550241988d568c1db512c4324a619", size = 11034 },
-]
-
-[[package]]
-name = "git-cliff"
-version = "2.7.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/95/cd/7381f5d86719ab014f062d37049fc098efd95efb79a29eaa120784088bc0/git_cliff-2.7.0.tar.gz", hash = "sha256:15badec95cc5c9c7755dc5a0775cc8c836f5c5f271f20ed6a4f32af093ec1eaa", size = 86336 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/a8/76/c0369d630f451dbc4537c2f5d2390b8af136aeedfe73d7bf76e093487bfd/git_cliff-2.7.0-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:84de0ab5e213c64f59c0f5e1a8285c578ed5a28667bdab31ebc2f7db764fc32e", size = 7046377 },
-    { url = "https://files.pythonhosted.org/packages/40/3e/be84bcd50b9bacc06be4069168a3f09fc2d1ca00f61a02032ee6576e8819/git_cliff-2.7.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:45dcda6206f8b2b7ec0de56b9ee3a7ff12253e59737290a5a918ed8eb62adfe2", size = 6586141 },
-    { url = "https://files.pythonhosted.org/packages/45/0b/bc123e0cf8e1291f95f3a0d420ba8f7ad039cd1d57570f78c401cce08538/git_cliff-2.7.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:5f8b0cb192ab12f3b23b113e6f190c8b060a03f306e447a60580d1e0563f0d3e", size = 6270855 },
-    { url = "https://files.pythonhosted.org/packages/ab/94/822352866f7fbbf46fbc091f3d1aec8d9be001f38ffc4dde0d5ca1263a63/git_cliff-2.7.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e65f9ee3f747c57356a7efee156fcd2b6d01428dba61c4cd1f0e773d8c842ca6", size = 6743909 },
-    { url = "https://files.pythonhosted.org/packages/50/16/74cd2c84c8f92845856298265c781a4bc5feb45a37d187f6f419bb1371c2/git_cliff-2.7.0-py3-none-manylinux_2_28_aarch64.whl", hash = "sha256:7b2f5dbb82e1d8b62c6885d06eda8a11daa063e6f124b16db634f5e23371ac49", size = 6326845 },
-    { url = "https://files.pythonhosted.org/packages/16/ec/155991fe9663baca233125b56393278669f619605dc6d1a9cb6d701c8a62/git_cliff-2.7.0-py3-none-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:1bdf9c04a883a70cdb0b29bf033ea39d64fab6ba28459b332cd221a7f47d86f0", size = 6569951 },
-    { url = "https://files.pythonhosted.org/packages/f7/ac/16c6475b896a7da9bbc60ac6d61d3c86375b32592fd8df63bc4261aad337/git_cliff-2.7.0-py3-none-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:a698f9b8b10e6df0dd47b049b75c25f8cfb3dc4f973ab05790912ba55e5a4ebb", size = 6993157 },
-    { url = "https://files.pythonhosted.org/packages/37/5d/539bdd9ce6ca813adc595fc2bf7f057952c2787cc32908b066e75302e6a0/git_cliff-2.7.0-py3-none-win32.whl", hash = "sha256:914015dd0deab69f23718a8ee982018140095b5b1f45268b15abdfd99d60e098", size = 6058153 },
-    { url = "https://files.pythonhosted.org/packages/51/08/eb7d104031f3cb267ef547b5291b4e44698aa3100a39b27eb36c61930b8e/git_cliff-2.7.0-py3-none-win_amd64.whl", hash = "sha256:7180874591548846cf30e4cb6953ff74e8ed2d4bed4487c5e39122581bef15c7", size = 6794695 },
 ]
 
 [[package]]
