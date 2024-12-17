@@ -97,7 +97,9 @@ clean:
 .PHONY: tidy
 ## Make super-clean
 tidy: clean
-	rm -rf .tox .nox
+	rm -rf .venv .tox .nox .ruff_cache
+	rm -rf tailwind/node_modules node_modules
+	# rm -rf src/instance
 
 .PHONY:
 update-pot: update-pot

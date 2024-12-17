@@ -5,6 +5,12 @@
 .vagrant
 .tox
 .nox
+.venv
+.ruff_cache
 
+src/instance
+node_modules
 front/node_modules
+tailwind/node_modules
+vite/node_modules
 data

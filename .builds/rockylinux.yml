@@ -1,0 +1,50 @@
+# Copyright (c) 2023-2024, Abilian SAS
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+image: rockylinux/latest
+
+packages:
+  # Python
+  - python3.12
+  - python3.12-pip
+  - python3.12-devel
+  # Build tools
+  - make
+  - gcc
+  # Libraries
+  - libpq-devel
+  # Docker and friends (NB: docker is not available on Rocky Linux)
+  - buildah
+  # Dependencies for buildah
+  - passt-selinux
+
+
+tasks:
+  - setup: |
+      sudo pip3.12 install -U uv nox
+      cd abilian-sbe
+      uv sync
+      npm install
+
+  - lint: |
+      cd abilian-sbe
+      uv run make lint
+
+  - test: |
+      cd abilian-sbe
+      uv run make test
+
+  - nox-lint: |
+      cd abilian-sbe
+      nox -e lint
+
+  - nox-test: |
+      cd abilian-sbe
+      # Default Python version is python 3.12
+      # TODO: install other versions using rye
+      nox -e pytest-3.12
+
+  - buildah: |
+      cd abilian-sbe
+      buildah build .
