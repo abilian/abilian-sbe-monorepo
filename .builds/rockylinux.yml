@@ -12,6 +12,7 @@ packages:
   # Build tools
   - make
   - gcc
+  - npm
   # Libraries
   - libpq-devel
   - mariadb-connector-c-devel
