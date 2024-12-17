@@ -15,17 +15,19 @@ packages:
   # Node
   - nodejs
   - npm
-  # Libraries
+  - libnode-dev
+  # Librairies for DB connectors
+  - libsqlite3-dev
   - libpq-dev
+  - libmariadb-dev
+  # More libraries
+  - libbz2-dev
+  - libffi-dev
+  - libjpeg-dev
+  - libjpeg-turbo8-dev
+  - libmagic-dev
   - libxslt-dev
   - libxslt1-dev
-  - libjpeg-dev
-  - libffi-dev
-  - libsqlite3-dev
-  - libbz2-dev
-  - libmagic-dev
-  - libjpeg-turbo8-dev
-  - libnode-dev
   # Other deps
   - strace
   - poppler-utils
