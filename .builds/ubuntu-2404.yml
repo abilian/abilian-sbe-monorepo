@@ -1,3 +1,7 @@
+# Copyright (c) 2024, Abilian SAS
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 image: ubuntu/24.04
 
 packages:
@@ -48,7 +52,7 @@ tasks:
   - test-nox: |
       cd abilian-sbe
       # Default Python version is python 3.12
-      # TODO: install other versions using rye
+      # TODO: install other versions using rye or uv
       nox -e pytest-3.12
 
 triggers:
