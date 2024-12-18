@@ -37,7 +37,8 @@ packages:
 
 tasks:
   - setup: |
-      pipx install uv nox
+      pipx install uv
+      pipx install nox
       export PATH=$HOME/.local/bin:$PATH
       cd abilian-sbe
       npm install

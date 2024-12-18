@@ -147,7 +147,6 @@ dev-dependencies = [
     "snoop>=0.6.0",
     "pytest-archon>=0.0.6",
     "typeguard>=4.4.1",
-    "mariadb>=1.1.11",
 ]
 
 [tool.pytest.ini_options]
