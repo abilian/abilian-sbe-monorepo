@@ -51,6 +51,6 @@ tasks:
   - test-nox: |
       export PATH=$HOME/.local/bin:$PATH
       cd abilian-sbe
-      # Default Python version is python 3.12
-      # TODO: install other versions using rye
-      nox -e pytest-3.12
+      # Default Python version is python 3.10
+      # TODO: install other versions using rye or uv
+      nox -e pytest-3.10
