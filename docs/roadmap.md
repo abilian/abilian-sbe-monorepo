@@ -26,16 +26,6 @@
 
 #### Focus Areas:
 
-1. **Documentation Enhancements**:
-
-   - [ ] Improve and expand documentation for both developers and end-users.
-   - [ ] Review and update existing Architecture Decision Records (ADRs) to reflect the latest system architecture and practices.
-
-1. **UI Modernization**:
-
-   - [ ] Transition to modern UI frameworks: [Flask-Vite](https://github.com/abilian/flask-vite), [Tailwind CSS](https://tailwindcss.com/), [Alpine.js](https://alpinejs.dev/), and [htmx](https://htmx.org/).
-   - [ ] Streamline the front-end development process (see: ADR 006).
-
 1. **Codebase Refinement**:
 
    - [x] Enhance type annotations and adopt modern Python coding practices, such as replacing legacy formatting with f-strings.
@@ -47,10 +37,17 @@
    - [x] Upgrade critical dependencies like SQLAlchemy to their latest stable versions.
    - [x] Address vulnerabilities by removing deprecated or insecure dependencies, such as `sqlparse`.
 
+1. **UI Modernization**:
+
+   - [ ] Transition to modern UI frameworks: [Flask-Vite](https://github.com/abilian/flask-vite), [Tailwind CSS](https://tailwindcss.com/), [Alpine.js](https://alpinejs.dev/), and [htmx](https://htmx.org/).
+   - [ ] Streamline the front-end development process (see: ADR 006).
+
 1. **Pipeline and CI/CD Enhancements**:
 
    - [x] Support for additional Python versions (e.g., Python 3.12), ensuring long-term compatibility.
-   - [ ] Reactivate Alpine builds and optimize CI pipelines for better efficiency.
+   - [x] Reactivate Alpine builds, add Rocky Linux.
+   - [x] Optimize CI pipelines for better efficiency.
+   - [x] Build and deploy w/ nixpacks.
 
 1. **Open Source Compliance**:
 
@@ -60,6 +57,11 @@
 1. **SlapOS Integration**
 
    - [ ] Update POC to MVP
+
+1. **Documentation Enhancements**:
+
+   - [x] Review and update existing Architecture Decision Records (ADRs).
+   - [ ] Improve and expand documentation for both developers and end-users.
 
 
 ### Version 1.3 (Q1 or Q2 2025)
