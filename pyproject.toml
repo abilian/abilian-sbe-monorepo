@@ -59,7 +59,6 @@ dependencies = [
     "bleach[css]>=6.2.0,<7.0.0",
     "bcrypt",
     "defusedxml>=0.7.1,<0.8.0",
-    "clamd",
     # Various libs
     "deprecated",
     "lxml",
