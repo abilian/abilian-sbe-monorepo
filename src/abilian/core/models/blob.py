@@ -83,7 +83,7 @@ class Blob(Model):
 
     @value.setter
     def value(self, value: bytes | str | IO):
-        """Store binary content to applications's repository and update
+        """Store binary content to the repository and update
         `self.meta['md5']`.
 
         :param:content: bytes, or any object with a `read()` method
