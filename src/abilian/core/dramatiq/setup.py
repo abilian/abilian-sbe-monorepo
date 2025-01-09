@@ -24,7 +24,15 @@ def init_dramatiq_engine(app) -> None:
         # ensure only one initialization, especially during tests
         return
 
-    # logger.debug("Setting up Dramatiq")
+    logger.debug("Setting up Dramatiq")
+    logger.debug(f"SERVER_NAME: '{app.config.get('SERVER_NAME')}'")
+    # for k in (
+    #     "DRAMATIQ_RATE_LIMIT_REDIS_URL",
+    #     "DRAMATIQ_BROKER_URL",
+    #     "DEFAULT_DRAMATIQ_RATE_LIMIT_REDIS_URL",
+    # ):
+    #     logger.debug(f"{k}: '{app.config.get(k)}'")
+
     dramatiq.init_app(app)
 
     _setup_rate_limiter(app)
@@ -50,6 +58,7 @@ def _rate_limiter_redis_client(app) -> redis.Redis:
         redis_url = app.config.get("DRAMATIQ_BROKER_URL")
     if not redis_url:
         redis_url = DEFAULT_DRAMATIQ_RATE_LIMIT_REDIS_URL
+    logger.debug(f"Dramatiq Redis URL: '{redis_url}'")
     return redis.Redis.from_url(redis_url)
 
 

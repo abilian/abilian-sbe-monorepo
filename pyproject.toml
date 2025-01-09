@@ -5,9 +5,7 @@ description = "Social Business platform (entreprise collaboration and informatio
 readme = "README.md"
 requires-python = ">=3.10,<3.13"
 license = "LGPL-2.0-or-later"
-authors = [
-    { name = "Abilian SAS", email = "sales@abilian.com" },
-]
+authors = [{ name = "Abilian SAS", email = "sales@abilian.com" }]
 dependencies = [
     # Flask and friends
     "flask>=3.0.2,<3.1.0",
@@ -93,6 +91,8 @@ dependencies = [
     "hyperlink>=21.0.0",
     "python-dotenv>=1.0.1",
     "flask-super>=0.2.8",
+    "termcolor >= 2.5.0",
+    "cleez >= 0.1.13:whl",
 ]
 
 [project.urls]
@@ -103,11 +103,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = [
-    "src/abilian",
-    "src/extranet",
-]
-
+packages = ["src/abilian"]
 
 [tool.uv]
 dev-dependencies = [
