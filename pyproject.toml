@@ -92,7 +92,7 @@ dependencies = [
     "python-dotenv>=1.0.1",
     "flask-super>=0.2.8",
     "termcolor >= 2.5.0",
-    "cleez >= 0.1.13:whl",
+    "cleez >= 0.1.13",
 ]
 
 [project.urls]

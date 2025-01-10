@@ -73,7 +73,7 @@ dependencies = [
     { name = "blinker" },
     { name = "certifi" },
     { name = "chardet" },
-    { name = "clamd" },
+    { name = "cleez" },
     { name = "click" },
     { name = "closure" },
     { name = "cssmin" },
@@ -122,6 +122,7 @@ dependencies = [
     { name = "sentry-sdk", extra = ["flask"] },
     { name = "sqlalchemy" },
     { name = "svcs" },
+    { name = "termcolor" },
     { name = "toolz" },
     { name = "tqdm" },
     { name = "validate-email" },
@@ -177,7 +178,7 @@ requires-dist = [
     { name = "blinker", specifier = ">=1.6.2" },
     { name = "certifi" },
     { name = "chardet" },
-    { name = "clamd" },
+    { name = "cleez", specifier = ">=0.1.13" },
     { name = "click", specifier = ">=8.1.3" },
     { name = "closure", specifier = "==20161201" },
     { name = "cssmin" },
@@ -226,6 +227,7 @@ requires-dist = [
     { name = "sentry-sdk", extras = ["flask"] },
     { name = "sqlalchemy", specifier = "==1.4.35" },
     { name = "svcs", specifier = ">=24.1.0" },
+    { name = "termcolor", specifier = ">=2.5.0" },
     { name = "toolz" },
     { name = "tqdm" },
     { name = "validate-email" },
@@ -443,7 +445,7 @@ name = "bandit"
 version = "1.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
     { name = "pyyaml" },
     { name = "rich" },
     { name = "stevedore" },
@@ -717,15 +719,6 @@ wheels = [
 ]
 
 [[package]]
-name = "clamd"
-version = "1.0.2"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/14/8b/55332f1f79f28a5ccc50f66364087e64fae8e4ed62e52007ca82b3072221/clamd-1.0.2.tar.gz", hash = "sha256:d82a2fd814684a35a1b31feadafb2e69c8ebde9403613f6bdaa5d877c0f29560", size = 8218 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/3d/d0/84614de2a53ad52370adc9f9260bea420e53e0c228a248ec0eacfa65ccbb/clamd-1.0.2-py2.py3-none-any.whl", hash = "sha256:5c32546b7d1eb00fd6be00a889d79e00fbf980ed082826ccfa369bce3dcff5e7", size = 6684 },
-]
-
-[[package]]
 name = "cleez"
 version = "0.1.13"
 source = { registry = "https://pypi.org/simple" }
@@ -742,7 +735,7 @@ name = "click"
 version = "8.1.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz", hash = "sha256:ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de", size = 336121 }
 wheels = [
@@ -1978,7 +1971,7 @@ version = "1.6.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
     { name = "ghp-import" },
     { name = "jinja2" },
     { name = "markdown" },
@@ -3148,7 +3141,7 @@ name = "tqdm"
 version = "4.67.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/a8/4b/29b4ef32e036bb34e4ab51796dd745cdba7ed47ad142a9f4a1eb8e0c744d/tqdm-4.67.1.tar.gz", hash = "sha256:f8aef9c52c08c13a65f30ea34f4e5aac3fd1a34959879d7e59e63027286627f2", size = 169737 }
 wheels = [
@@ -3333,7 +3326,7 @@ name = "tzlocal"
 version = "5.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "tzdata", marker = "platform_system == 'Windows'" },
+    { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/04/d3/c19d65ae67636fe63953b20c2e4a8ced4497ea232c43ff8d01db16de8dc0/tzlocal-5.2.tar.gz", hash = "sha256:8d399205578f1a9342816409cc1e46a93ebd5755e39ea2d85334bea911bf0e6e", size = 30201 }
 wheels = [
