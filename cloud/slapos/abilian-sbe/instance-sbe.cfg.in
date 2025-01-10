@@ -16,9 +16,6 @@ tmp = ${:srv}/tmp
 redis     = ${:srv}/redis
 redis-log = ${:log}/redis
 redis-backup   = ${:backup}/sbe
-# clamav
-clamd_tmp = ${:tmp}
-clamd_db_dir = ${:srv}/clamd_db
 # LO
 font = ${:srv}/font
 fontconfig-cache = ${buildout:directory}/.fontconfig
@@ -51,7 +48,7 @@ port = ${postgresql-address:port}
 
 
 [postgres-uri]
-uri = postgres://${postgresql:superuser}:${postgresql:password}@${postgresql:ipv4}:${postgresql:port}/${postgresql:dbname}
+uri = postgresql://${postgresql:superuser}:${postgresql:password}@${postgresql:ipv4}:${postgresql:port}/${postgresql:dbname}
 
 
 [postgresql-binary-link]
@@ -104,67 +101,6 @@ name = redis
 log = ${directory:redis-log}/*.log
 frequency = daily
 rotate-num = 30
-
-
-[clamconf]
-tmp_dir = ${directory:clamd_tmp}
-db_dir = ${directory:clamd_db_dir}
-socket = ${directory:run}/clamd.ctl
-
-
-[clamd-config-file]
-recipe = slapos.recipe.template:jinja2
-url = {{ parameter_dict['template_clamd_conf'] }}
-filename = clamd.conf
-output = ${directory:etc}/${:filename}
-context =
-  section clamconf clamconf
-  key slapparameter_dict slap-configuration:configuration
-
-
-[freshclam-config-file]
-recipe = slapos.recipe.template:jinja2
-url = {{ parameter_dict['template_freshclam_conf'] }}
-filename = freshclam.conf
-output = ${directory:etc}/${:filename}
-context =
-  section clamconf clamconf
-  key slapparameter_dict slap-configuration:configuration
-
-
-
-
-[clamd-server]
-recipe = slapos.cookbook:wrapper
-clamd = {{ parameter_dict['clamd_bin'] }}
-config_file = ${clamd-config-file:output}
-datadir = ${directory:clamd_db_dir}
-pid = ${directory:run}/clamd.pid
-command-line =
-  ${:clamd} --foreground --config-file=${:config_file} --datadir=${:datadir} --pid=${:pid}
-wrapper-path = ${directory:services}/clamd_server
-environment =
-  LD_LIBRARY_PATH={{ openssl_location }}/lib
-
-
-[clamd-server-promise]
-<= monitor-promise-base
-promise = check_socket_listening
-name = clamd-server-promise.py
-config-pathname = ${clamconf:socket}
-
-
-[freshclam-init]
-recipe = slapos.cookbook:wrapper
-freshclam = {{ parameter_dict['freshclam_bin'] }}
-config_file = ${freshclam-config-file:output}
-datadir = ${directory:clamd_db_dir}
-# pid = ${directory:run}/freshclam.pid
-command-line =
-  ${:freshclam} --stdout --datadir=${:datadir} --config-file=${:config_file}
-wrapper-path = ${directory:services}/freshclam-init
-environment =
-  LD_LIBRARY_PATH={{ openssl_location }}/lib
 
 
 [request-sbe-frontend]
@@ -230,6 +166,7 @@ passwd = azerty
 recipe = slapos.cookbook:wrapper
 environment =
   FLASK_APP=wsgi.py
+  FLASK_SERVER_NAME = ${request-sbe-frontend:connection-domain}
   FLASK_SECRET_KEY="zzzsdqlfkjhqldsfjhoiertzoetryi"
   FLASK_SQLALCHEMY_DATABASE_URI=${postgres-uri:uri}
   FLASK_DEBUG=1
@@ -237,15 +174,16 @@ environment =
   FLASK_MAIL_SENDER=sbe-server@abilian.com
   FLASK_REDIS_URI=${redis-uri:unix}
   REDIS_URI=${redis-uri:unix}
-  FLASK_CELERY_BROKER_URL=${redis-uri:redis}
-  CELERY_BROKER_URL=${redis-uri:redis}
-  FLASK_CELERY_RESULT_BACKEND=${redis-uri:redis}
-  CELERY_RESULT_BACKEND=${redis-uri:redis}
+  FLASK_BROKER_URL=${redis-uri:unix}
+  FLASK_DRAMATIQ_BROKER="dramatiq.brokers.redis:RedisBroker"
+  FLASK_DRAMATIQ_BROKER_URL=${redis-uri:unix}
+  FLASK_DRAMATIC_ABORT_REDIS_URL=${redis-uri:unix}
+  FLASK_SCHEDULE_SEND_DAILY_SOCIAL_DIGEST="0 12 * * *"
+  FLASK_PERIODIC_CLEAN_UPLOAD_DIRECTORY="5 * * * *"
   FLASK_SITE_NAME=some name
-  FLASK_MAIL_SERVER=FLASK_SERVER_NAME=${dummy-mail:host}:${dummy-mail:port}
+  FLASK_MAIL_SERVER=${dummy-mail:host}:${dummy-mail:port}
   LIBREOFFICEPATH={{parameter_dict['libreoffice_bin']}}/program
   FLASK_SOFFICE_LOCATION = {{parameter_dict['libreoffice_bin']}}/program/soffice.bin
-  CLAMD_CONF_PATH = ${clamd-config-file:output}
   FONTCONFIG_FILE = ${fontconfig-conf:output}
   LANG = C.UTF-8
   POPPLER_BIN = {{parameter_dict['poppler']}}/bin
@@ -275,19 +213,8 @@ command-line =
 wrapper-path = ${directory:services}/sbe_create_admin
 
 
-[celery-cmd]
-command = {{parameter_dict['celery']}} -A extranet.celery_app worker -l INFO
-
-
-[start-celery]
-<= sbe-wrapper
-command-line =
-  sh -c "cd {{parameter_dict['sbe_path']}} && ${celery-cmd:command}"
-wrapper-path = ${directory:services}/sbe_start_celery
-
-
 [gunicorn-cmd]
-command = {{parameter_dict['gunicorn']}} extranet.wsgi:app -b [${sbe-parameters:ipv6}]:${sbe-parameters:port} -p ${sbe-parameters:pid-file} --workers 2 --error-logfile ${sbe-parameters:log-file} --log-level debug --timeout 10000
+command = {{parameter_dict['gunicorn']}} wsgi:app -b [${sbe-parameters:ipv6}]:${sbe-parameters:port} -p ${sbe-parameters:pid-file} --workers 2 --error-logfile ${sbe-parameters:log-file} --log-level debug --timeout 10000
 
 
 [sbe-start-gunicorn]
@@ -317,12 +244,6 @@ extends = {{ template_monitor }}
 parts =
   publish-connection-information
 
-  clamd-config-file
-  freshclam-config-file
-  freshclam-init
-  clamd-server
-  clamd-server-promise
-
   postgresql
   postgresql-binary-link
 
@@ -335,7 +256,6 @@ parts =
   sbe-assets
   sbe-initdb
   sbe-create-admin
-  start-celery
   sbe-start-gunicorn
   sbe-listen-promise
   sbe-frontend-promise
