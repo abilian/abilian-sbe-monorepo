@@ -32,6 +32,7 @@ lint.extend-ignore = [
     "S320", # OK, we're using defusedxml
 
     # Fix these (if possible / reasonable)
+    "B903", # Class could be a dataclass
     "B027", # `...` is an empty method in an abstract base class, but has no abstract decorator
     "B028", # No explicit `...` keyword argument found
     "BLE001", # Do not catch blind exception
