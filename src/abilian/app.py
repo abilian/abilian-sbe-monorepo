@@ -153,7 +153,7 @@ class Application(
         if not path.exists():
             if create:
                 logger.info("Create instance folder: {path}", path=str(path))
-                path.mkdir(0o775, parents=True)
+                path.mkdir(0o775, parents=True, exist_ok=True)
             else:
                 err = "Instance folder does not exists"
                 eno = errno.ENOENT
