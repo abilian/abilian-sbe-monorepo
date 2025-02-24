@@ -71,9 +71,7 @@ class FileUploadsExtension:
         app.config["FILE_UPLOADS"] = self.config
 
         path = self.UPLOAD_DIR = app.data_dir / "uploads"
-        if not path.exists():
-            path.mkdir(mode=0o775, parents=True)
-
+        path.mkdir(mode=0o775, parents=True, exist_ok=True)
         path.resolve()
 
     def _do_register_js_api(self, sender: Application):
