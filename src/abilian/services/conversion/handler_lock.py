@@ -20,8 +20,7 @@ LOCK_FILES = {}
 
 def init_conversion_lock_dir(instance_path: str) -> None:
     lock_dir = Path(instance_path) / "lock"
-    if not lock_dir.exists():
-        lock_dir.mkdir(parents=True)
+    lock_dir.mkdir(parents=True, exist_ok=True)
     LOCK_DIR.append(lock_dir)
 
 
