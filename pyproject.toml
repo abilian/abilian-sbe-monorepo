@@ -1,6 +1,6 @@
 [project]
 name = "abilian-sbe"
-version = "1.1.12"
+version = "1.1.13"
 description = "Social Business platform (entreprise collaboration and information management)"
 readme = "README.md"
 requires-python = ">=3.10,<3.13"
