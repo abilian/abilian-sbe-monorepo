@@ -102,7 +102,7 @@ class BaseVocabulary(db.Model, metaclass=_VocabularyMeta):
     def __repr__(self):
         tpl = (
             "<{module}.{cls} id={id} label={label} position={position} "
-            "active={active} default={default} at 0x{addr:x}>"
+            "active={active} default={default}>"
         )
         cls = self.__class__
         return tpl.format(
@@ -113,7 +113,6 @@ class BaseVocabulary(db.Model, metaclass=_VocabularyMeta):
             position=repr(self.position),
             active=repr(self.active),
             default=repr(self.default),
-            addr=id(self),
         )
 
 
