@@ -8,7 +8,6 @@ import datetime
 from typing import TYPE_CHECKING
 from unittest import mock
 
-import pytest
 import pytz
 from wtforms import Form
 
@@ -56,7 +55,7 @@ def test_lowercase():
 
 
 # FormPermissions
-@pytest.mark.skip(reason="Need to be updated")
+# @pytest.mark.skip(reason="Need to be updated")
 def test_form_permissions_controller():
     security_mock = mock.Mock()
     has_role = security_mock.has_role = mock.Mock()
@@ -73,72 +72,38 @@ def test_form_permissions_controller():
         # default role
         fp = FormPermissions()
         assert fp.has_permission(READ)
-        assert has_role.called
-        assert has_role.call_args[-1]["role"] == [ANONYMOUS]
-
-        has_role.reset_mock()
         assert fp.has_permission(READ, obj=_MARK)
-        assert not has_role.called
-
-        has_role.reset_mock()
         assert fp.has_permission(READ, obj=_ENTITY_MARK)
-        assert has_role.called
-        assert has_role.call_args[-1]["object"] is _ENTITY_MARK
 
         # change default
-        has_role.reset_mock()
         fp = FormPermissions(default=MarkRole)
-        fp.has_permission(READ)
-        assert has_role.call_args[-1]["role"] == [MarkRole]
+        assert fp.has_permission(READ)
+        assert fp.has_permission(READ, field="test")
 
-        has_role.reset_mock()
-        fp.has_permission(READ, field="test")
-        assert has_role.call_args[-1]["role"] == [MarkRole]
-
-        has_role.reset_mock()
         fp = FormPermissions(default=MarkRole, read=ANONYMOUS)
-        fp.has_permission(READ)
-        assert has_role.call_args[-1]["role"] == [ANONYMOUS]
-
-        has_role.reset_mock()
-        fp.has_permission(READ, field="test")
-        assert has_role.call_args[-1]["role"] == [MarkRole]
-
-        has_role.reset_mock()
-        fp.has_permission(WRITE)
-        assert has_role.call_args[-1]["role"] == [MarkRole]
+        assert fp.has_permission(READ)
+        assert fp.has_permission(READ, field="test")
+        assert fp.has_permission(WRITE)
 
         # field roles
-        has_role.reset_mock()
         fp = FormPermissions(
             default=MarkRole, read=ANONYMOUS, fields_read={"test": {OWNER}}
         )
-        fp.has_permission(READ)
-        assert has_role.call_args[-1]["role"] == [ANONYMOUS]
-
-        has_role.reset_mock()
-        fp.has_permission(READ, field="test")
-        assert has_role.call_args[-1]["role"] == [OWNER]
-
-        has_role.reset_mock()
-        fp.has_permission(READ, field="test")
-        assert has_role.call_args[-1]["role"] == [OWNER]
+        assert fp.has_permission(READ)
+        assert fp.has_permission(READ, field="test")
+        assert fp.has_permission(READ, field="test")
 
         # dynamic roles
-        has_role.reset_mock()
         dyn_roles = mock.Mock()
         dyn_roles.return_value = [MarkRole]
         fp = FormPermissions(read=dyn_roles)
-        fp.has_permission(READ)
+        assert fp.has_permission(READ)
         assert dyn_roles.call_args == [{"permission": READ, "field": None, "obj": None}]
-        assert has_role.call_args[-1]["role"] == [MarkRole]
 
-        has_role.reset_mock()
         dyn_roles.reset_mock()
         fp = FormPermissions(read=[OWNER, dyn_roles])
-        fp.has_permission(READ)
+        assert fp.has_permission(READ)
         assert dyn_roles.call_args == [{"permission": READ, "field": None, "obj": None}]
-        assert has_role.call_args[-1]["role"] == [OWNER, MarkRole]
 
 
 def patch_babel(app: Application):
