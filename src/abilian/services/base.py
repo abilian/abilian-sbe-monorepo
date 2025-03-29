@@ -5,6 +5,7 @@ from __future__ import annotations
 from functools import wraps
 from typing import TYPE_CHECKING, Any
 
+from attrs import mutable
 from flask import current_app
 from loguru import logger
 
@@ -20,18 +21,12 @@ class ServiceNotRegisteredError(Exception):
     pass
 
 
+@mutable
 class ServiceState:
     """Service state stored in Application.extensions."""
 
-    #: reference to :class:`Service` instance
     service: Service
-
-    running = False
-
-    def __init__(self, service: Service, running: bool = False):
-        self.service = service
-        self.running = running
-        self.logger = logger
+    running: bool = False
 
 
 class Service:

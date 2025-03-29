@@ -145,7 +145,9 @@ class ModelFieldList(FilterFieldListMixin, BaseModelFieldList):
 
         self._field_names = field_names
         self._field_labels = labels
-        self._field_nameTolabel = dict(zip(self._field_names, self._field_labels))
+        self._field_nameTolabel = dict(
+            zip(self._field_names, self._field_labels, strict=True)
+        )
 
     def __call__(self, **kwargs):
         """Refill with default min_entry, which were possibly removed by

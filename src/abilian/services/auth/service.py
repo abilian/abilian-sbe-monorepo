@@ -91,10 +91,13 @@ _ACTIONS = (
 class AuthServiceState(ServiceState):
     """State class for :class:`AuthService`"""
 
+    bp_access_controllers: dict[str | None, list[Callable]]
+    endpoint_access_controllers: dict[str, list[Callable]]
+
     def __init__(self, service: AuthService, *args: Any, **kwargs: Any):
         super().__init__(service, *args, **kwargs)
-        self.bp_access_controllers: dict[str | None, list[Callable]] = {None: []}
-        self.endpoint_access_controllers: dict[str, list[Callable]] = {}
+        self.bp_access_controllers = {None: []}
+        self.endpoint_access_controllers = {}
 
     def add_bp_access_controller(self, blueprint: str, func: Callable):
         self.bp_access_controllers.setdefault(blueprint, []).append(func)

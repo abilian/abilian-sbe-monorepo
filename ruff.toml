@@ -92,6 +92,7 @@ lint.extend-ignore = [
     "S605", # Subprocess related...
     "S607", # Starting a process with a partial executable path
     "S701", # By default, jinja2 sets `autoescape` to `False`.
+    "S704", # Unsafe use of `markupsafe.Markup` detected
     #
     "SIM102", # Use a single `if` statement instead of nested `if` statements
     "SIM108", # Use ternary operator
@@ -103,7 +104,6 @@ lint.extend-ignore = [
     "TRY002", # Create you own exception class
     "TC006", # Add quotes to type expression in `typing.cast()`
     "RUF052", # Local dummy variable is accessed
-    "RUF035", # Unsafe use of `markupsafe.Markup` detected
     "RUF036", # `None` not at the end of the type annotation.
     "FURB189", # Subclassing `dict` can be error prone, use `collections.UserDict` instead
     # Missing copyright
