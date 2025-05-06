@@ -24,7 +24,7 @@ class UserProfileViewForm(UserProfileForm):
         "Communautés d'appartenance",
         get_label="name",
         view_widget=abilian_widgets.ListWidget(),
-        query_factory=lambda: Community.query.all(),  # noqa: PLW0108
+        query_factory=lambda: Community.query.all(),
         multiple=True,
         validators=[optional()],
     )

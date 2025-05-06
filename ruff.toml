@@ -1,5 +1,3 @@
-preview = true
-
 exclude = []
 
 lint.select = ["ALL"]
