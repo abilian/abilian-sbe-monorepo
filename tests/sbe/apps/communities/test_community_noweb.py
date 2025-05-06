@@ -57,10 +57,8 @@ def test_default_view_kw() -> None:
     # and no community_id in kwargs. and ValueError is properly raised
     dummy = type("Dummy", (object,), {"community": None})()
 
-    with pytest.raises(ValueError) as exc_info:
+    with pytest.raises(ValueError, match="Cannot find community_id value"):
         views.default_view_kw({}, dummy, "dummy", 1)
-
-    assert exc_info.value.args == ("Cannot find community_id value",)
 
 
 def test_default_url(app: Application, community: Community) -> None:
@@ -108,7 +106,7 @@ def test_membership(community: Community, db: SQLAlchemy) -> None:
     signals.membership_removed.connect(when_removed)
 
     # invalid role
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Invalid role"):
         community.set_membership(user, "dummy role name")
 
     assert not when_set.called

@@ -21,7 +21,7 @@ def test_type_set():
     s.type = "json"
     s.type = "string"
 
-    with raises(ValueError):
+    with raises(ValueError, match="Invalid type"):
         s.type = "dummy type name"
 
 
@@ -57,7 +57,9 @@ def test_service_facade(app, session):
     assert settings_service.get("key_1") == 42
 
     # new key with no type: raise error:
-    with raises(ValueError):
+    with raises(
+        ValueError, match="tried to set a new key without specifiying its type"
+    ):
         settings_service.set("key_err", 42)
 
     # key already with type_, this should not raise an error
