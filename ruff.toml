@@ -44,7 +44,6 @@ lint.extend-ignore = [
     #
     "E501", # line too long
     "E741", # Ambiguous variable name
-    "FURB113", # Use `x.extend(...)` instead of repeatedly calling `x.append()`
     #
     "N801", # Class name should use CapWords convention
     "N802", # Function name should be lowercase
@@ -54,7 +53,7 @@ lint.extend-ignore = [
     "N806", # Variable in function should be lowercase
     #
     "PD011", # Use `.to_numpy()` instead of `.values`
-    "PLC0206", # Extracting value from dictionary without calling `.items()`
+    "PLC0206", # Extracting value from dictionnary without calling `.items()`
     "PLC0415", # `import` should be at the top-level of a file
     "PLC1901", # `x == ""` can be simplified to `not x` as an empty string is falsey
     "PLC2801", # Unnecessary dunder call
@@ -69,10 +68,8 @@ lint.extend-ignore = [
     "PLR6201", # Use a `set` literal when testing for membership
     "PLR6301", # Method could be a function, class method, or static method
     "PLW2901", # `for` loop variable overwritten by assignment target
-    "PLW3201", # Bad or misspelled dunder method name. (bad-dunder-name)
     #
     "PT011", # `pytest.raises(ValueError)` is too broad, set the `match` parameter or use a more specific exception
-    "PT012", # `pytest.raises()` block should contain a single simple statement
     "PT013", # Found incorrect import of pytest, use simple `import pytest` instead
     #
     "PYI024", # Use `typing.NamedTuple` instead of `collections.namedtuple`

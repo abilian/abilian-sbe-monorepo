@@ -80,24 +80,24 @@ def test_items(db, session):
     assert labels == expected_ordering
 
     # test db-side constraint for non-empty labels
-    with raises(sa.exc.IntegrityError):
-        with session.begin_nested():
-            v = PriorityVoc(label="   ", position=6)
-            session.add(v)
+    with session.begin_nested():
+        v = PriorityVoc(label="   ", position=6)
+        session.add(v)
+        with raises(sa.exc.IntegrityError):
             session.flush()
 
     # test unique labels constraint
-    with raises(sa.exc.IntegrityError):
-        with session.begin_nested():
-            v = PriorityVoc(label="Immediate")
-            session.add(v)
+    with session.begin_nested():
+        v = PriorityVoc(label="Immediate")
+        session.add(v)
+        with raises(sa.exc.IntegrityError):
             session.flush()
 
     # test unique position constraint
-    with raises(sa.exc.IntegrityError):
-        with session.begin_nested():
-            v = PriorityVoc(label="New one", position=1)
-            session.add(v)
+    with session.begin_nested():
+        v = PriorityVoc(label="New one", position=1)
+        session.add(v)
+        with raises(sa.exc.IntegrityError):
             session.flush()
 
     # test by_position without results
