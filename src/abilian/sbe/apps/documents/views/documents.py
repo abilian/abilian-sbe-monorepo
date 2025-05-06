@@ -238,6 +238,7 @@ def checkin_checkout(doc_id):
         doc.updated_at = d
         session.commit()
         return redirect(url_for(doc))
+    return None
 
 
 def preview_missing_image():

@@ -72,6 +72,7 @@ def get_nb_viewers(entities):
         ]
 
         return Counter(threads)
+    return None
 
 
 def get_viewed_posts(entities):
@@ -118,6 +119,7 @@ def get_viewed_times(entities):
                 entity_viewed_times[view.entity] += viewed_times[view.id]
 
         return entity_viewed_times
+    return None
 
 
 @route("/")

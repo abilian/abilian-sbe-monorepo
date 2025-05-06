@@ -73,7 +73,7 @@ lint.extend-ignore = [
     "PT013", # Found incorrect import of pytest, use simple `import pytest` instead
     #
     "PYI024", # Use `typing.NamedTuple` instead of `collections.namedtuple`
-    "RET503", # Missing explicit `return` at the end of function able to return non-`None` value
+#    "RET503", # Missing explicit `return` at the end of function able to return non-`None` value
     "RET504", # Unnecessary variable assignment before `return` statement
     #
     "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
@@ -89,17 +89,14 @@ lint.extend-ignore = [
     "S704", # Unsafe use of `markupsafe.Markup` detected
     # More
     "SIM115", # Use context handler for opening files
-    "T201", # `print` found
     "TC006", # Add quotes to type expression in `typing.cast()`
-    "RUF052", # Local dummy variable is accessed
-    "RUF036", # `None` not at the end of the type annotation.
-    "FURB189", # Subclassing `dict` can be error prone, use `collections.UserDict` instead
     # Missing copyright
     "CPY001",
     # Don't "fix" these
     "SIM102", # Use a single `if` statement instead of nested `if` statements
     "SIM108", # Use ternary operator
     "SLF001", # Private member accessed
+    "T201", # `print` found
 ]
 
 [lint.per-file-ignores]
