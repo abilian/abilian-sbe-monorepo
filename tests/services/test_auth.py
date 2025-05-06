@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from abilian.app import Application
 
 
-def test_get_redirect_target(app: Application, app_context: AppContext):
+def test_get_redirect_target(app: Application, app_context: AppContext) -> None:
     get_redirect_target = views.get_redirect_target
     form_url = partial(url_for, "login.login_form")
 
@@ -54,7 +54,7 @@ def test_get_redirect_target(app: Application, app_context: AppContext):
         assert get_redirect_target() == f"{url_root}///google.com"
 
 
-def test_login_post(session: Session, client: FlaskClient):
+def test_login_post(session: Session, client: FlaskClient) -> None:
     kwargs = {"email": "User@domain.tld", "password": "azerty", "can_login": True}
     user = User(**kwargs)
     session.add(user)
@@ -76,7 +76,7 @@ def test_login_post(session: Session, client: FlaskClient):
     assert response.status_code == 401
 
 
-def test_api_post(session: Session, client: FlaskClient):
+def test_api_post(session: Session, client: FlaskClient) -> None:
     kwargs = {"email": "User@domain.tld", "password": "azerty", "can_login": True}
     user = User(**kwargs)
     session.add(user)
@@ -97,7 +97,7 @@ def test_api_post(session: Session, client: FlaskClient):
     assert response.status_code == 200
 
 
-def test_forgotten_pw(app: Application, session: Session, client: FlaskClient):
+def test_forgotten_pw(app: Application, session: Session, client: FlaskClient) -> None:
     mail = app.extensions["mail"]
     kwargs = {"email": "User@domain.tld", "password": "azerty", "can_login": True}
     user = User(**kwargs)

@@ -93,7 +93,7 @@ class EventCreateView(BaseEventView, views.ObjectCreate):
 
     title = _l("New event")
 
-    def after_populate_obj(self):
+    def after_populate_obj(self) -> None:
         if self.obj.community is None:
             self.obj.community = g.community._model
 

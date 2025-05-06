@@ -47,7 +47,7 @@ def get_vocabulary(name: str, group: str = "") -> type[BaseVocabulary] | None:
 class VocabularyService(Service):
     name = "vocabularies"
 
-    def init_app(self, app: Application):
+    def init_app(self, app: Application) -> None:
         super().init_app(app)
         loader = jinja2.PackageLoader("abilian.services.vocabularies")
         app.register_jinja_loaders(loader)

@@ -142,7 +142,7 @@ def group_post(group_id):
 
 
 @social.route("/groups/new")
-def groups_new():
+def groups_new() -> None:
     # TODO later
     return
 
@@ -152,7 +152,7 @@ def groups_new():
 
 
 @social.route("/groups/new", methods=["POST"])
-def groups_new_post():
+def groups_new_post() -> None:
     # TODO later
     return
 

@@ -16,5 +16,5 @@ if TYPE_CHECKING:
 __all__ = ["TagsExtension"]
 
 
-def register_plugin(app: Flask):
+def register_plugin(app: Flask) -> None:
     TagsExtension(app)

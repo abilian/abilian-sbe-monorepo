@@ -181,7 +181,7 @@ def test_image_upload(client: FlaskClient, community: Community) -> None:
 
 
 @mark.skipif(not redis_available(), reason="requires redis connection")
-def test_binary_upload(client, community):
+def test_binary_upload(client, community) -> None:
     name = "random.bin"
     user = community.test_user
     with client_login(client, user):
@@ -197,7 +197,7 @@ def test_binary_upload(client, community):
 @mark.skipif(not redis_available(), reason="requires redis connection")
 def test_zip_upload_uncompress(
     community: Community, db: SQLAlchemy, client: FlaskClient
-):
+) -> None:
     subfolder = Folder(title="folder 1", parent=community.folder)
     db.session.add(subfolder)
     db.session.flush()

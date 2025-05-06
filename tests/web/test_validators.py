@@ -20,7 +20,7 @@ class DummyForm(Form):
 
 
 class DummyField:
-    def __init__(self, data: str, errors=(), raw_data=None):
+    def __init__(self, data: str, errors=(), raw_data=None) -> None:
         self.data = data
         self.errors = list(errors)
         self.raw_data = raw_data
@@ -40,21 +40,21 @@ def validator() -> Callable:
     return siret_validator()
 
 
-def test_siret_validator_valid_1(validator: Callable):
+def test_siret_validator_valid_1(validator: Callable) -> None:
     # valid
     form = DummyForm(siret="54207855500514", name="foo")
     field = form.siret
     assert validator(form, field) is None
 
 
-def test_siret_validator_valid_2(validator: Callable):
+def test_siret_validator_valid_2(validator: Callable) -> None:
     # valid
     form = DummyForm(siret="54207855500514", name="foo")
     field = form.siret
     assert validator(form, field) is None
 
 
-def test_siret_validator_invalid_luhn(validator: Callable):
+def test_siret_validator_invalid_luhn(validator: Callable) -> None:
     # invalid Luhn (changed the first digit)
     form = DummyForm(siret="64207855500514", name="foo")
     field = form.siret
@@ -62,7 +62,7 @@ def test_siret_validator_invalid_luhn(validator: Callable):
         validator(form, field)
 
 
-def test_siret_validator_invalid_2(validator: Callable):
+def test_siret_validator_invalid_2(validator: Callable) -> None:
     # invalid
     form = DummyForm(siret="WRONG542078555", name="foo")
     field = form.siret
@@ -70,7 +70,7 @@ def test_siret_validator_invalid_2(validator: Callable):
         validator(form, field)
 
 
-def test_siret_validator_too_short(validator: Callable):
+def test_siret_validator_too_short(validator: Callable) -> None:
     # too short
     form = DummyForm(siret="54207", name="foo")
     field = form.siret
@@ -78,7 +78,7 @@ def test_siret_validator_too_short(validator: Callable):
         validator(form, field)
 
 
-def test_siret_ok():
+def test_siret_ok() -> None:
     siret = siret_validator()
     form = DummyForm()
     assert siret(form, DummyField("78913349300013")) is None
@@ -92,7 +92,7 @@ def test_siret_ok():
     assert siret(form, DummyField("MONACOCONFO372")) is None
 
 
-def test_siret_ko_special_siret(validator: Callable):
+def test_siret_ko_special_siret(validator: Callable) -> None:
     form = DummyForm()
 
     field = DummyField("MONACOCONFO999")
@@ -104,7 +104,7 @@ def test_siret_ko_special_siret(validator: Callable):
     )
 
 
-def test_siret_ko_invalid_length(validator: Callable):
+def test_siret_ko_invalid_length(validator: Callable) -> None:
     # invalid length
     form = DummyForm()
     field = DummyField("42342435")
@@ -116,7 +116,7 @@ def test_siret_ko_invalid_length(validator: Callable):
     )
 
 
-def test_siret_ko_invalid_luhn(validator: Callable):
+def test_siret_ko_invalid_luhn(validator: Callable) -> None:
     # invalid checksum
     form = DummyForm()
     field = DummyField("78913349300011")

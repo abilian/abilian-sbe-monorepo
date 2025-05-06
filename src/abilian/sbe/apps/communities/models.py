@@ -76,7 +76,7 @@ class Membership(db.Model):
 
     __table_args__ = (UniqueConstraint("user_id", "community_id"),)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (
             f"<Membership user={self.user!r}, "
             f"community={self.community!r}, "
@@ -199,7 +199,7 @@ class Community(Entity):
     # Not used anymore.
     members_can_send_by_email = Column(Boolean, nullable=False, default=False)
 
-    def __init__(self, **kw):
+    def __init__(self, **kw) -> None:
         self.has_documents = True
         self.membership_count = 0
         self.document_count = 0
@@ -386,7 +386,7 @@ def membership_removed(sender: Community, membership: Membership) -> None:
 
 @listens_for(Community.members, "append")
 @listens_for(Community.members, "remove")
-def _on_member_change(community, user, initiator):
+def _on_member_change(community, user, initiator) -> None:
     group = community.group
     if not group:
         return
@@ -500,7 +500,7 @@ def _on_group_member_change(group: Group, user: User, initiator: Event) -> None:
 
 
 @listens_for(Group.members, "set", active_history=True)
-def _on_group_members_replace(group, value, oldvalue, initiator):
+def _on_group_members_replace(group, value, oldvalue, initiator) -> None:
     if value == oldvalue:
         return
 

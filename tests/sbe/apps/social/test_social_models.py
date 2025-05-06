@@ -7,7 +7,7 @@ from abilian.core.models.subjects import Group, User
 from abilian.sbe.apps.social.models import Message, PrivateMessage
 
 
-def check_editable(object):
+def check_editable(object) -> None:
     if hasattr(object, "__editable__"):
         for k in object.__editable__:
             assert hasattr(object, k)

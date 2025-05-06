@@ -23,7 +23,7 @@ def activity_service(app, db):
     service.stop()
 
 
-def test(app, session, activity_service):
+def test(app, session, activity_service) -> None:
     service = activity_service
     user = User(email="test@example.com")
     message = Message1(creator=user, owner=user, name="test message")

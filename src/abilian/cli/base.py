@@ -15,7 +15,7 @@ from abilian.services import get_service
 
 @command()
 @with_appcontext
-def initdb():
+def initdb() -> None:
     db.create_all()
     create_root_user()
 
@@ -23,7 +23,7 @@ def initdb():
 @command()
 @click.option("-y", "--yes", is_flag=True)
 @with_appcontext
-def dropdb(yes=None):
+def dropdb(yes=None) -> None:
     """Drop the application DB."""
     if yes:
         db.drop_all()
@@ -39,7 +39,7 @@ def dropdb(yes=None):
 @command()
 @click.argument("path", type=click.Path(exists=True))
 @with_appcontext
-def script(path):
+def script(path) -> None:
     """Run given script in the app context."""
     runpy.run_path(path, run_name="__main__")
 
@@ -51,7 +51,7 @@ def script(path):
 @click.option("--name")
 @click.option("--first_name")
 @with_appcontext
-def createuser(email, password, role=None, name=None, first_name=None):
+def createuser(email, password, role=None, name=None, first_name=None) -> None:
     """Create new user."""
 
     if User.query.filter(User.email == email).count() > 0:

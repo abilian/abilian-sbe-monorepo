@@ -44,7 +44,7 @@ __all__ = (
 
 class Rule:
     @property
-    def rule(self):
+    def rule(self) -> None:
         return None
 
 
@@ -103,7 +103,7 @@ class Length(Rule):
     provided depending on the existence of min and max.
     """
 
-    def __init__(self, min=-1, max=-1, message=None):
+    def __init__(self, min=-1, max=-1, message=None) -> None:
         assert min != -1 or max != -1, (
             "At least one of `min` or `max` must be specified."
         )
@@ -246,7 +246,7 @@ def siret_validator() -> Callable:
     """Validate a SIRET: check its length (14), its final code, and pass it
     through the Luhn algorithm."""
 
-    def _validate_siret(form: Form, field: Field, siret: str = ""):
+    def _validate_siret(form: Form, field: Field, siret: str = "") -> None:
         """SIRET validator.
 
         A WTForm validator wants a form and a field as parameters. We

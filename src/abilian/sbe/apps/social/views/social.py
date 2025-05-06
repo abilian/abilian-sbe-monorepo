@@ -34,7 +34,7 @@ def home() -> str:
 
 
 @route("/stream/<stream_name>")
-def stream(stream_name):
+def stream(stream_name) -> None:
     pass
 
 

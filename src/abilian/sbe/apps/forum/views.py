@@ -50,7 +50,7 @@ def post_kw_view_func(kw, obj, obj_type, obj_id, **kwargs):
 
 
 @forum.url_value_preprocessor
-def init_forum_values(endpoint, values):
+def init_forum_values(endpoint, values) -> None:
     g.current_tab = "forum"
 
     g.breadcrumb.append(
@@ -293,7 +293,7 @@ class ThreadCreate(BaseThreadView, views.ObjectCreate):
         self.thread = self.obj
         return args, kwargs
 
-    def before_populate_obj(self):
+    def before_populate_obj(self) -> None:
         del self.form["attachments"]
         self.message_body = self.form.message.data
         del self.form["message"]
@@ -304,7 +304,7 @@ class ThreadCreate(BaseThreadView, views.ObjectCreate):
             )
             del self.form["send_by_email"]
 
-    def after_populate_obj(self):
+    def after_populate_obj(self) -> None:
         if self.thread.community is None:
             self.thread.community = g.community._model
 
@@ -337,7 +337,7 @@ class ThreadCreate(BaseThreadView, views.ObjectCreate):
                 attachment.set_content(f.read(), mimetype)
             session.add(attachment)
 
-    def commit_success(self):
+    def commit_success(self) -> None:
         if self.send_by_email:
             message = send_post_by_email.send(self.post.id)
             # task = send_post_by_email.delay(self.post.id)
@@ -377,7 +377,7 @@ class ThreadPostCreate(ThreadCreate):
         )
         return args, kwargs
 
-    def after_populate_obj(self):
+    def after_populate_obj(self) -> None:
         super().after_populate_obj()
         session = sa.orm.object_session(self.obj)
         session.expunge(self.obj)
@@ -459,7 +459,7 @@ class ThreadPostEdit(BaseThreadView, views.ObjectEdit):
         kwargs["message"] = self.obj.body_html
         return kwargs
 
-    def before_populate_obj(self):
+    def before_populate_obj(self) -> None:
         self.message_body = self.form.message.data
         del self.form["message"]
         self.reason = self.form.reason.data
@@ -471,7 +471,7 @@ class ThreadPostEdit(BaseThreadView, views.ObjectEdit):
         self.attachments_to_remove = self.form["attachments"].delete_files_index
         del self.form["attachments"]
 
-    def after_populate_obj(self):
+    def after_populate_obj(self) -> None:
         session = sa.orm.object_session(self.obj)
         uploads = current_app.extensions["uploads"]
         self.obj.body_html = self.message_body

@@ -71,7 +71,7 @@ def community2(db, user2):
     return community
 
 
-def test_home(client, community1, user1):
+def test_home(client, community1, user1) -> None:
     with client_login(client, user1):
         response = client.get(url_for("wiki.index", community_id=community1.slug))
         assert response.status_code == 302
@@ -82,7 +82,7 @@ def test_home(client, community1, user1):
         assert response.status_code == 200
 
 
-def test_create_page_initial_form(client, community1, user1):
+def test_create_page_initial_form(client, community1, user1) -> None:
     with client_login(client, user1):
         g.community = community1
         view = views.PageCreate()
@@ -102,7 +102,7 @@ def test_wiki_indexed(
     db: SQLAlchemy,
     client,
     monkeypatch,
-):
+) -> None:
     monkeypatch.setenv("TESTING_DIRECT_FUNCTION_CALL", "testing")
     SERVICES = ("security", "indexing")
     for svc_name in SERVICES:
@@ -141,7 +141,7 @@ def test_wiki_indexed(
         assert hit["object_key"] == page2.object_key
 
 
-def test_create_page(community1, app, admin_user, client):
+def test_create_page(community1, app, admin_user, client) -> None:
     community = community1
 
     with client_login(client, admin_user):

@@ -218,7 +218,7 @@ class User(Principal, UserMixin, db.Model):
         backref="followees",
     )
 
-    def __init__(self, password=None, **kwargs):
+    def __init__(self, password=None, **kwargs) -> None:
         Principal.__init__(self)
         UserMixin.__init__(self)
         db.Model.__init__(self, **kwargs)
@@ -232,27 +232,27 @@ class User(Principal, UserMixin, db.Model):
             return self.__password_strategy__.authenticate(self, password)
         return False
 
-    def set_password(self, password: str):
+    def set_password(self, password: str) -> None:
         """Encrypts and sets password."""
         self.password = self.__password_strategy__.process(self, password)
 
-    def follow(self, followee):
+    def follow(self, followee) -> None:
         if followee == self:
             msg = "User can't follow self"
             raise Exception(msg)
         self.followees.append(followee)
 
-    def unfollow(self, followee):
+    def unfollow(self, followee) -> None:
         if followee == self:
             msg = "User can't follow self"
             raise Exception(msg)
         i = self.followees.index(followee)
         del self.followees[i]
 
-    def join(self, group):
+    def join(self, group) -> None:
         self.groups.add(group)
 
-    def leave(self, group):
+    def leave(self, group) -> None:
         if group in self.groups:
             self.groups.remove(group)
 
@@ -298,7 +298,7 @@ class User(Principal, UserMixin, db.Model):
 
 
 @listens_for(User, "mapper_configured", propagate=True)
-def _add_user_indexes(mapper: Mapper, cls: type[User]):
+def _add_user_indexes(mapper: Mapper, cls: type[User]) -> None:
     # this is a functional index (indexes on a function result), we cannot define
     # it in __table_args__.
     #

@@ -18,7 +18,7 @@ import contextlib
 import os
 from inspect import isclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Never
 
 import sqlalchemy as sa
 from flask import Flask, appcontext_pushed, current_app, g
@@ -75,7 +75,7 @@ def fqcn(cls: Any) -> str:
 
 
 class IndexServiceState(ServiceState):
-    def __init__(self, service: WhooshIndexService, *args: Any, **kwargs: Any):
+    def __init__(self, service: WhooshIndexService, *args: Any, **kwargs: Any) -> None:
         super().__init__(service, *args, **kwargs)
         self.whoosh_base = None
         self.indexes: dict[str, Index] = {}
@@ -93,20 +93,20 @@ class IndexServiceState(ServiceState):
         return getattr(g, PENDING_INDEXATION_ATTR)
 
     @to_update.setter
-    def to_update(self, values: list[tuple[str, Entity]]):
+    def to_update(self, values: list[tuple[str, Entity]]) -> None:
         setattr(g, PENDING_INDEXATION_ATTR, values)
 
 
 class IndexService(Service):
     schemas: dict[str, DefaultSearchSchema]
 
-    def search(self, q: str, index_name: str = "default", **search_args):
+    def search(self, q: str, index_name: str = "default", **search_args) -> Never:
         raise NotImplementedError
 
-    def register_search_filter(self, func):
+    def register_search_filter(self, func) -> Never:
         raise NotImplementedError
 
-    def register_value_provider(self, func):
+    def register_value_provider(self, func) -> Never:
         raise NotImplementedError
 
 
@@ -116,14 +116,14 @@ class WhooshIndexService(IndexService):
     name = "indexing"
     AppStateClass = IndexServiceState
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.adapters_cls = [SAAdapter]
         self.adapted = {}
         self.schemas = {"default": DefaultSearchSchema()}
         self._listening = False
 
-    def init_app(self, app: Application):
+    def init_app(self, app: Application) -> None:
         super().init_app(app)
         state = app.extensions[self.name]
 
@@ -145,12 +145,12 @@ class WhooshIndexService(IndexService):
         appcontext_pushed.connect(self.clear_update_queue, app)
         signals.register_js_api.connect(self._do_register_js_api)
 
-    def _do_register_js_api(self, sender: Application):
+    def _do_register_js_api(self, sender: Application) -> None:
         app = sender
         js_api = app.js_api.setdefault("search", {})
         js_api["object_types"] = self.searchable_object_types()
 
-    def register_search_filter(self, func):
+    def register_search_filter(self, func) -> None:
         """Register a function that returns a query used for filtering search
         results. This query is And'ed with other filters.
 
@@ -159,7 +159,7 @@ class WhooshIndexService(IndexService):
         """
         self.app_state.search_filter_funcs.append(func)
 
-    def register_value_provider(self, func):
+    def register_value_provider(self, func) -> None:
         """Register a function that may alter content of indexable document.
 
         It is used in :meth:`get_document` and called after adapter has built
@@ -170,16 +170,16 @@ class WhooshIndexService(IndexService):
         """
         self.app_state.value_provider_funcs.append(func)
 
-    def clear_update_queue(self, app: Flask | None = None):
+    def clear_update_queue(self, app: Flask | None = None) -> None:
         self.app_state.to_update = []
 
-    def start(self, ignore_state: bool = False):
+    def start(self, ignore_state: bool = False) -> None:
         super().start(ignore_state)
         self.register_classes()
         self.init_indexes()
         self.clear_update_queue()
 
-    def init_indexes(self):
+    def init_indexes(self) -> None:
         """Create indexes for schemas."""
         state = self.app_state
 
@@ -199,7 +199,7 @@ class WhooshIndexService(IndexService):
 
             state.indexes[name] = index
 
-    def clear(self):
+    def clear(self) -> None:
         """Remove all content from indexes, and unregister all classes.
 
         After clear() the service is stopped. It must be started again
@@ -369,7 +369,7 @@ class WhooshIndexService(IndexService):
     def search_for_class(self, query, cls, index="default", **search_args):
         return self.search(query, Models=(fqcn(cls),), index=index, **search_args)
 
-    def register_classes(self):
+    def register_classes(self) -> None:
         state = self.app_state
         classes = (
             cls
@@ -380,7 +380,9 @@ class WhooshIndexService(IndexService):
             if cls not in state.indexed_classes:
                 self.register_class(cls, app_state=state)
 
-    def register_class(self, cls: type, app_state: IndexServiceState | None = None):
+    def register_class(
+        self, cls: type, app_state: IndexServiceState | None = None
+    ) -> None:
         """Register a model class."""
         state = app_state if app_state is not None else self.app_state
 
@@ -395,7 +397,7 @@ class WhooshIndexService(IndexService):
         state.indexed_classes.add(cls)
         state.indexed_fqcn.add(cls_fqcn)
 
-    def after_flush(self, session: Session, flush_context: UOWTransaction):
+    def after_flush(self, session: Session, flush_context: UOWTransaction) -> None:
         if not self.running or session is not db.session():
             return
 
@@ -415,7 +417,7 @@ class WhooshIndexService(IndexService):
 
                 to_update.append((key, obj))
 
-    def after_commit(self, session: Session):
+    def after_commit(self, session: Session) -> None:
         """Any db updates go through here.
 
         We check if any of these models have ``__searchable__`` fields,
@@ -488,7 +490,7 @@ class WhooshIndexService(IndexService):
 
         return document
 
-    def index_objects(self, objects, index="default"):
+    def index_objects(self, objects, index="default") -> None:
         """Bulk index a list of objects."""
         if not objects:
             return
@@ -526,7 +528,7 @@ service = WhooshIndexService()
 
 
 @dramatiq.actor
-def index_update(index: str, items: list[tuple[str, str, int, dict]]):
+def index_update(index: str, items: list[tuple[str, str, int, dict]]) -> None:
     """
     :param:index: index name
     :param:items: list of (operation, full class name, primary key, data) tuples.

@@ -35,7 +35,7 @@ __all__ = (
 )
 
 
-def path_from_url(url):
+def path_from_url(url) -> str:
     url = str(url)
     return f"/{'/'.join(URL.from_text(url).path)}"
 
@@ -87,7 +87,7 @@ def login(user, remember=False, force=False):
     return LoginContext()
 
 
-def cleanup_db(db: SQLAlchemy):
+def cleanup_db(db: SQLAlchemy) -> None:
     """Drop all the tables, in a way that doesn't raise integrity errors."""
 
     # Need to run this sequence twice for some reason
@@ -97,20 +97,20 @@ def cleanup_db(db: SQLAlchemy):
     db.drop_all()
 
 
-def _delete_tables(db: SQLAlchemy):
+def _delete_tables(db: SQLAlchemy) -> None:
     for table in reversed(db.metadata.sorted_tables):
         with contextlib.suppress(DatabaseError):
             db.session.execute(table.delete())
 
 
-def ensure_services_started(services: list[str]):
+def ensure_services_started(services: list[str]) -> None:
     for service_name in services:
         service = get_service(service_name)
         if not service.running:
             service.start()
 
 
-def stop_all_services(app: Application):
+def stop_all_services(app: Application) -> None:
     for service in app.service_manager.list_services():
         if service.running:
             service.stop()

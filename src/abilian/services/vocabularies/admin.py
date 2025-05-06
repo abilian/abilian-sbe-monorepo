@@ -185,7 +185,7 @@ class VocabularyPanel(AdminPanel):
         }
         return render_template("admin/vocabularies.html", **ctx)
 
-    def install_additional_rules(self, add_url_rule: Callable):
+    def install_additional_rules(self, add_url_rule: Callable) -> None:
         panel_endpoint = f".{self.id}"
         group_base = "/<string:group>/"
         add_url_rule(group_base, endpoint="group", view_func=self.group_view)
@@ -199,7 +199,7 @@ class VocabularyPanel(AdminPanel):
             f"{base}new", view_func=Create.as_view("new", view_endpoint=panel_endpoint)
         )
 
-    def url_value_preprocess(self, endpoint, view_args):
+    def url_value_preprocess(self, endpoint, view_args) -> None:
         model_name = view_args.pop("Model", None)
         group = view_args.pop("group", _MARKER)
 

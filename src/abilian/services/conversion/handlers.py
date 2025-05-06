@@ -69,10 +69,10 @@ class Handler(ABC):
     accepts_mime_types: list[str] = []
     produces_mime_types: list[str] = []
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         self.log = logger
 
-    def init_app(self, app: Flask):
+    def init_app(self, app: Flask) -> None:
         pass
 
     @property
@@ -282,7 +282,7 @@ class UnoconvPdfHandler(Handler):
     unoconv = "unoconv"
     _process: subprocess.Popen
 
-    def init_app(self, app):
+    def init_app(self, app) -> None:
         unoconv = app.config.get("UNOCONV_LOCATION")
         found = False
         execute_ok = False
@@ -345,7 +345,7 @@ class UnoconvPdfHandler(Handler):
             else:
                 cmd = [self.unoconv, *args]
 
-            def run_uno():
+            def run_uno() -> None:
                 try:
                     self._process = subprocess.Popen(
                         cmd, close_fds=True, cwd=bytes(self.tmp_dir)
@@ -407,7 +407,7 @@ class LibreOfficePdfHandler(Handler):
     soffice = "soffice"
     _process: subprocess.Popen
 
-    def init_app(self, app: Flask):
+    def init_app(self, app: Flask) -> None:
         soffice = app.config.get("SOFFICE_LOCATION")
 
         if soffice:
@@ -451,7 +451,7 @@ class LibreOfficePdfHandler(Handler):
                 str(in_fn),
             ]
 
-            def run_soffice():
+            def run_soffice() -> None:
                 try:
                     self._process = subprocess.Popen(
                         cmd, close_fds=True, cwd=str(self.tmp_dir)

@@ -99,7 +99,7 @@ class Tag(IdMixin, Model):
         sa.CheckConstraint(sa.sql.and_(sa.sql.func.trim(label) == label, label != "")),
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.label
 
     def __lt__(self, other):

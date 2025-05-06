@@ -44,7 +44,7 @@ class AuditableMeta:
 
     def __init__(
         self, name: str | None = None, id_attr: str | None = None, related: bool = False
-    ):
+    ) -> None:
         self.name = name
         self.id_attr = id_attr
         self.related = related
@@ -61,7 +61,7 @@ class AuditServiceState(ServiceState):
     # of audit entries
     creating_entries = False
 
-    def __init__(self, service: AuditService, *args: Any, **kwargs: Any):
+    def __init__(self, service: AuditService, *args: Any, **kwargs: Any) -> None:
         super().__init__(service, *args, **kwargs)
         self.all_model_classes = set()
         self.model_class_names = {}
@@ -73,14 +73,14 @@ class AuditService(Service):
 
     _listening = False
 
-    def init_app(self, app: Application):
+    def init_app(self, app: Application) -> None:
         super().init_app(app)
 
         if not self._listening:
             event.listen(Session, "after_flush", self.create_audit_entries)
             self._listening = True
 
-    def start(self, ignore_state: bool = False):
+    def start(self, ignore_state: bool = False) -> None:
         super().start(ignore_state)
         self.register_classes()
 
@@ -93,7 +93,7 @@ class AuditService(Service):
             return issubclass(model_or_class, Entity)
         return isinstance(model_or_class, Entity)
 
-    def register_classes(self):
+    def register_classes(self) -> None:
         state = self.app_state
         BaseModel = db.Model
         all_models = (
@@ -106,7 +106,7 @@ class AuditService(Service):
 
     def register_class(
         self, entity_class: Any, app_state: AuditServiceState | None = None
-    ):
+    ) -> None:
         if not hasattr(entity_class, "__table__"):
             return
 
@@ -138,7 +138,7 @@ class AuditService(Service):
             event.listen(attr, "append", self.collection_append, active_history=True)
             event.listen(attr, "remove", self.collection_remove, active_history=True)
 
-    def setup_auditable_entity(self, entity_class: Any):
+    def setup_auditable_entity(self, entity_class: Any) -> None:
         meta = AuditableMeta(entity_class.__name__, "id")
         entity_class.__auditable__ = meta
 
@@ -192,7 +192,7 @@ class AuditService(Service):
 
     def set_attribute(
         self, entity: Model, new_value: Any, old_value: Any, initiator: Any
-    ):
+    ) -> None:
         attr_name = initiator.key
         if old_value == new_value:
             return
@@ -215,15 +215,17 @@ class AuditService(Service):
         new_value = format_large_value(new_value)
         changes.set_column_changes(attr_name, old_value, new_value)
 
-    def collection_append(self, entity: Entity, value: Any, initiator: Any):
+    def collection_append(self, entity: Entity, value: Any, initiator: Any) -> None:
         changes = self._get_changes_for(entity)
         changes.collection_append(initiator.key, value)
 
-    def collection_remove(self, entity: Entity, value: Any, initiator: Any):
+    def collection_remove(self, entity: Entity, value: Any, initiator: Any) -> None:
         changes = self._get_changes_for(entity)
         changes.collection_remove(initiator.key, value)
 
-    def create_audit_entries(self, session: Session, flush_context: UOWTransaction):
+    def create_audit_entries(
+        self, session: Session, flush_context: UOWTransaction
+    ) -> None:
         if not self.running or self.app_state.creating_entries:
             return
 

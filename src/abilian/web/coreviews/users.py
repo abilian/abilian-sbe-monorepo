@@ -18,7 +18,7 @@ blueprint = Blueprint("users", __name__, url_prefix="/users")
 
 
 @blueprint.url_value_preprocessor
-def get_user(endpoint, values):
+def get_user(endpoint, values) -> None:
     try:
         user_id = values.pop("user_id")
         user = User.query.get(user_id)

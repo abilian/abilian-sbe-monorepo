@@ -197,7 +197,7 @@ class Babel(BabelBase):
         app: Flask,
         locale_selector: Callable | None = None,
         timezone_selector: Callable | None = None,
-    ):
+    ) -> None:
         if locale_selector is None:
             locale_selector = localeselector
         if timezone_selector is None:
@@ -224,7 +224,7 @@ class Babel(BabelBase):
         module_name: str,
         translations_dir: str = "translations",
         domain: str = "messages",
-    ):
+    ) -> None:
         """Add translations from external module.
 
         For example::

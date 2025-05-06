@@ -44,7 +44,7 @@ class _TagsForm(Form):
     .. seealso:: :py:meth:`~TagsExtension.entity_tags_form`
     """
 
-    def process(self, formdata=None, obj=None, data=None, **kwargs):
+    def process(self, formdata=None, obj=None, data=None, **kwargs) -> None:
         tags = None
         if obj is not None:
             tags = getattr(obj, TAGS_ATTR, set())
@@ -58,7 +58,7 @@ class TagsExtension:
     It is also available in templates as `tags`.
     """
 
-    def __init__(self, app: Flask):
+    def __init__(self, app: Flask) -> None:
         app.extensions["tags"] = self
         app.add_template_global(self, "tags")
         app.register_blueprint(tags_bp)
@@ -131,7 +131,7 @@ class TagsExtension:
         tags.add(tag)
         return tag
 
-    def remove(self, entity, tag=None, ns=None, label=None):
+    def remove(self, entity, tag=None, ns=None, label=None) -> None:
         if tag is None:
             assert None not in (ns, label)
             tag = self.get(ns, label)

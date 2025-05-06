@@ -253,7 +253,7 @@ def permissions(folder_id):
             ' }}">{{ group.name }}</a>'
         )
 
-        def __init__(self, e):
+        def __init__(self, e) -> None:
             render = render_template_string
             self.entry = e
             self.date = e.happened_at.strftime("%Y-%m-%d %H:%M")
@@ -1052,7 +1052,7 @@ def descendants_view(folder_id):
 
     descendants = []
 
-    def visit(path_id, level=0):
+    def visit(path_id, level=0) -> None:
         children = by_path.get(path_id, ())
 
         for child in children:

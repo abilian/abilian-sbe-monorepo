@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from collections.abc import Iterable
 
 
-def scan_packages(package_names: Iterable[str]):
+def scan_packages(package_names: Iterable[str]) -> None:
     """Scan all packages from the given list."""
     assert not isinstance(package_names, str)
 
@@ -16,7 +16,7 @@ def scan_packages(package_names: Iterable[str]):
         scan_package(package_name)
 
 
-def scan_package(package_name: str):
+def scan_package(package_name: str) -> None:
     """Import all modules in a package (recursively), for side effects."""
     assert isinstance(package_name, str)
 

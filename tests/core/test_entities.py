@@ -29,7 +29,7 @@ if TYPE_CHECKING:
 #     return session
 
 
-def test_dummy():
+def test_dummy() -> None:
     contact = DummyContact(first_name="John")
     assert contact.creator is None
     assert contact.owner is None
@@ -39,7 +39,7 @@ def test_dummy():
     contact.creator = user
 
 
-def test_auto_slug_property(session: Session):
+def test_auto_slug_property(session: Session) -> None:
     obj = DummyContact(name="a b c")
     session.add(obj)
     session.flush()
@@ -64,7 +64,7 @@ def test_auto_slug_property(session: Session):
     assert "\u002d" in slug
 
 
-def test_updated_at(session: Session):
+def test_updated_at(session: Session) -> None:
     contact = DummyContact()
     session.add(contact)
     session.commit()
@@ -77,7 +77,7 @@ def test_updated_at(session: Session):
     assert contact.updated_at > updated
 
 
-def test_auto_slug_1(session: Session):
+def test_auto_slug_1(session: Session) -> None:
     contact1 = DummyContact(name="Pacôme Hégésippe Adélard Ladislas")
     session.add(contact1)
     session.flush()
@@ -90,7 +90,7 @@ def test_auto_slug_1(session: Session):
     assert contact3.slug == "pacome-hegesippe-adelard-ladislas-1"
 
 
-def test_auto_slug_2(session: Session):
+def test_auto_slug_2(session: Session) -> None:
     # test when name is None
     contact2 = DummyContact()
     session.add(contact2)
@@ -99,7 +99,7 @@ def test_auto_slug_2(session: Session):
     assert contact2.slug == expected
 
 
-def test_polymorphic_update_timestamp(session: Session):
+def test_polymorphic_update_timestamp(session: Session) -> None:
     contact = DummyContact(name="Pacôme Hégésippe Adélard Ladislas")
     session.add(contact)
     session.flush()
@@ -112,7 +112,7 @@ def test_polymorphic_update_timestamp(session: Session):
     assert contact.updated_at > updated_at
 
 
-def test_meta(session: Session):
+def test_meta(session: Session) -> None:
     e = DummyContact(name="test")
     e.meta["key"] = "value"
     e.meta["number"] = 42
@@ -126,7 +126,7 @@ def test_meta(session: Session):
     assert e.meta["number"] == 42
 
 
-def test_entity_type():
+def test_entity_type() -> None:
     class MyType(Entity):
         pass
 
@@ -135,7 +135,7 @@ def test_entity_type():
     assert MyType._object_type() == expected
 
 
-def test_fixed_entity_type():
+def test_fixed_entity_type() -> None:
     class Fixed(Entity):
         entity_type = "some.fixed.module.fixed_type"
 
@@ -143,7 +143,7 @@ def test_fixed_entity_type():
     assert Fixed._object_type() == "some.fixed.module.fixed_type"
 
 
-def test_other_base():
+def test_other_base() -> None:
     class OtherBase(Entity):
         ENTITY_TYPE_BASE = "some.module"
 
@@ -151,7 +151,7 @@ def test_other_base():
     assert OtherBase._object_type() == "some.module.OtherBase"
 
 
-def test_inherited_base():
+def test_inherited_base() -> None:
     # test when ENTITY_TYPE_BASE is in ancestors
     class Base:
         ENTITY_TYPE_BASE = "from.ancestor"
@@ -163,26 +163,26 @@ def test_inherited_base():
     assert InheritedBase._object_type() == "from.ancestor.InheritedBase"
 
 
-def test_info_searchable():
+def test_info_searchable() -> None:
     info = SEARCHABLE
     assert isinstance(info, Info)
     assert info["searchable"]
 
 
-def test_info_not_searchable():
+def test_info_not_searchable() -> None:
     info = NOT_SEARCHABLE
     assert isinstance(info, Info)
     assert not info["searchable"]
 
 
-def test_info_searchable_and_auditable():
+def test_info_searchable_and_auditable() -> None:
     info = SEARCHABLE + AUDITABLE
     assert isinstance(info, Info)
     assert info["searchable"]
     assert info["auditable"]
 
 
-def test_info_searchable_or_auditable():
+def test_info_searchable_or_auditable() -> None:
     info = SEARCHABLE | AUDITABLE
     assert isinstance(info, Info)
     assert info["searchable"]

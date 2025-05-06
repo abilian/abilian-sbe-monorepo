@@ -73,7 +73,7 @@ def schedule_entities_reindex(entities):
 class NSView(View):
     """View a Namespace."""
 
-    def __init__(self, view_endpoint, *args, **kwargs):
+    def __init__(self, view_endpoint, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.__selected_tags = None
         self.view_endpoint = view_endpoint
@@ -217,7 +217,7 @@ class BaseTagView:
     Model = Tag
     Form = TagForm
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.extension = current_app.extensions["tags"]
 
@@ -237,7 +237,7 @@ class TagEdit(BaseTagView, ObjectEdit):
     has_changes = False
     _entities_to_reindex: list[Entity] = []
 
-    def after_populate_obj(self):
+    def after_populate_obj(self) -> None:
         session = sa.orm.object_session(self.obj)
         self.has_changes = self.obj in (session.dirty | session.deleted)
         if self.has_changes:
@@ -245,7 +245,7 @@ class TagEdit(BaseTagView, ObjectEdit):
             # before flush
             self._entities_to_reindex = get_entities_for_reindex(self.obj)
 
-    def commit_success(self):
+    def commit_success(self) -> None:
         if not (self.has_changes and self._entities_to_reindex):
             return
 
@@ -286,7 +286,7 @@ class TagPanel(AdminPanel):
 
         return render_template("admin/tags.html", namespaces=namespaces)
 
-    def install_additional_rules(self, add_url_rule: Callable):
+    def install_additional_rules(self, add_url_rule: Callable) -> None:
         panel_endpoint = f".{self.id}"
         ns_base = "/<string:ns>/"
         add_url_rule(

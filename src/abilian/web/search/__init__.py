@@ -17,14 +17,14 @@ if TYPE_CHECKING:
 # __all__ = ["BaseCriterion", "TextSearchCriterion"]
 
 
-def _do_register_js_api(sender: Application):
+def _do_register_js_api(sender: Application) -> None:
     app = sender
     js_api = app.js_api.setdefault("search", {})
     # hack to avoid url_for escape '%'
     js_api["live"] = f"{url_for('search.live', q='')}%QUERY"
 
 
-def register_plugin(app: Application):
+def register_plugin(app: Application) -> None:
     from .views import search
 
     app.register_blueprint(search)

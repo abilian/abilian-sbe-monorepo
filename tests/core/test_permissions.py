@@ -16,7 +16,7 @@ if TYPE_CHECKING:
     from abilian.core.sqlalchemy import SQLAlchemy
 
 
-def test_default_permissions(app: Flask, db: SQLAlchemy, session: Session):
+def test_default_permissions(app: Flask, db: SQLAlchemy, session: Session) -> None:
     class MyRestrictedType(Entity):
         __default_permissions__ = {
             security.READ: {security.ANONYMOUS},

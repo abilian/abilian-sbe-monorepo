@@ -44,7 +44,7 @@ def registry(app: Flask) -> Registry:
     return app.default_view
 
 
-def test_register_class(app: Flask, registry: Registry):
+def test_register_class(app: Flask, registry: Registry) -> None:
     registry.register(RegEntity, lambda ignored: "")
     assert RegEntity.entity_type in registry._map
 
@@ -73,7 +73,7 @@ def test_register_class(app: Flask, registry: Registry):
     obj = RegEntity4(id=2)
 
     @app.route("/regentities_path/<int:object_id>/view", endpoint="regentity4.view")
-    def dummy_default_view(object_id):
+    def dummy_default_view(object_id) -> None:
         pass
 
     assert registry.url_for(obj) == "/regentities_path/2/view"
@@ -87,7 +87,7 @@ def test_register_class(app: Flask, registry: Registry):
 
     @default_view(bp, RegEntity5)
     @bp.route("/<int:object_id>")
-    def view(object_id):
+    def view(object_id) -> None:
         pass
 
     obj = RegEntity5(id=3)

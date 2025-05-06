@@ -45,7 +45,7 @@ _actions = [
 ]
 
 
-def register_actions(state):
+def register_actions(state) -> None:
     if not actions.installed(state.app):
         return
     with state.app.app_context():

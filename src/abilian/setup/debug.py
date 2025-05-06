@@ -13,7 +13,7 @@ def setup_debug(app: Flask) -> None:
     init_debug_pages(app)
 
 
-def init_debug_toolbar(app: Flask):
+def init_debug_toolbar(app: Flask) -> None:
     if not app.debug or app.testing:
         return
 
@@ -36,13 +36,13 @@ def init_debug_toolbar(app: Flask):
             extensions.csrf.exempt(app.view_functions[view_name])
 
 
-def init_debug_pages(app: Flask):
+def init_debug_pages(app: Flask) -> None:
     # dev helper
     # during dev, one can go to /http_error/403 to see rendering of 403
     http_error_pages = Blueprint("http_error_pages", __name__)
 
     @http_error_pages.route("/<int:code>")
-    def error_page(code):
+    def error_page(code) -> None:
         """Helper for development to show 403, 404, 500..."""
         abort(code)
 

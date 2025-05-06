@@ -43,7 +43,7 @@ db = extensions.db
 warnings.simplefilter("ignore", category=sa.exc.SAWarning)
 
 
-def init_extensions(app: Flask):
+def init_extensions(app: Flask) -> None:
     """Initialize flask extensions, helpers and services."""
 
     extensions.redis.init_app(app)

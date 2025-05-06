@@ -64,7 +64,7 @@ class ActivityEntry(db.Model):
     _fk_target_id = Column(Integer, ForeignKey(Entity.id, ondelete="SET NULL"))
     target = relationship(Entity, foreign_keys=_fk_target_id)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         tpl = "<{}.ActivityEntry id={} actor={} verb={} object={} target={}>"
         return tpl.format(
             self.__class__.__module__,

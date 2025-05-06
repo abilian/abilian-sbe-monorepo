@@ -58,7 +58,7 @@ class FileUploadsExtension:
     A periodic task cleans the temporary repository.
     """
 
-    def __init__(self, app: Application):
+    def __init__(self, app: Application) -> None:
         app.register_blueprint(ac_blueprint)
 
         app.extensions["uploads"] = self
@@ -74,7 +74,7 @@ class FileUploadsExtension:
         path.mkdir(mode=0o775, parents=True, exist_ok=True)
         path.resolve()
 
-    def _do_register_js_api(self, sender: Application):
+    def _do_register_js_api(self, sender: Application) -> None:
         app = sender
         js_api = app.js_api.setdefault("upload", {})
         js_api["newFileUrl"] = url_for("uploads.new_file")
@@ -154,7 +154,7 @@ class FileUploadsExtension:
 
         return meta
 
-    def remove_file(self, user, handle):
+    def remove_file(self, user, handle) -> None:
         paths = (self.get_file(user, handle), self.get_metadata_file(user, handle))
 
         for file_path in paths:
@@ -164,7 +164,7 @@ class FileUploadsExtension:
                 except Exception:
                     logger.error("Error during remove file")
 
-    def clear_stalled_files(self):
+    def clear_stalled_files(self) -> None:
         """Scan upload directory and delete stalled files.
 
         Stalled files are files uploaded more than
@@ -200,7 +200,7 @@ class FileUploadsExtension:
 # hasnt finished yet, then the latest run is considered a misfire."
 @crontab("PERIODIC_CLEAN_UPLOAD_DIRECTORY")
 @dramatiq.actor()
-def periodic_clean_upload_directory():
+def periodic_clean_upload_directory() -> None:
     """This task should be run periodically.
 
     Default config sets up schedule using

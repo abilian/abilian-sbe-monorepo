@@ -155,7 +155,7 @@ class ContentRepository:
     def lock(self, obj) -> str:
         return "???"
 
-    def unlock(self, obj):
+    def unlock(self, obj) -> None:
         pass
 
     #

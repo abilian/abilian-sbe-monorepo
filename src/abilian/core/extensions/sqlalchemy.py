@@ -25,7 +25,7 @@ db = SQLAlchemy()
 @sa.event.listens_for(db.metadata, "before_drop")
 def _filter_metadata_for_connection(
     target: MetaData, connection: Connection, **kw: Any
-):
+) -> None:
     """Listener to control what indexes get created.
 
     Useful for skipping postgres-specific indexes on a sqlite for example.
@@ -43,7 +43,7 @@ def _filter_metadata_for_connection(
                 table.indexes.remove(idx)
 
 
-def _install_get_display_value(cls: Any):
+def _install_get_display_value(cls: Any) -> None:
     _MARK = object()
 
     def display_value(self, field_name, value=_MARK):

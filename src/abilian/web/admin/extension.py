@@ -32,7 +32,7 @@ class Admin:
     Note: this is quite different that a Django-style admin interface.
     """
 
-    def __init__(self, *panels: Any, **kwargs: Any):
+    def __init__(self, *panels: Any, **kwargs: Any) -> None:
         self.app = None
         self.panels: list[AdminPanel] = []
         self._panels_endpoints: dict[str, AdminPanel] = {}
@@ -56,7 +56,7 @@ class Admin:
         if app is not None:
             self.init_app(app)
 
-    def init_app(self, app: Flask):
+    def init_app(self, app: Flask) -> None:
         panels = app.config.get("ADMIN_PANELS", ())
 
         # resolve fully qualified name into an AdminPanel object
@@ -97,7 +97,7 @@ class Admin:
         self.app = app
         app.extensions["admin"] = self
 
-    def register_panel(self, panel: Any):
+    def register_panel(self, panel: Any) -> None:
         if self.app:
             msg = "Admin extension already initialized for app, cannot add more panel"
             raise ValueError(msg)
@@ -145,7 +145,7 @@ class Admin:
             endpoint: Any | None = None,
             view_func: Callable | None = None,
             **kwargs: Any,
-        ):
+        ) -> None:
             if not rule:
                 # '' is already used for panel get/post
                 msg = f"Invalid additional url rule: {rule!r}"
@@ -164,7 +164,7 @@ class Admin:
 
         return add_url_rule
 
-    def setup_blueprint(self):
+    def setup_blueprint(self) -> None:
         self.blueprint = Blueprint(
             "admin", __name__, template_folder="templates", url_prefix=f"/{_BP_PREFIX}"
         )
@@ -173,17 +173,17 @@ class Admin:
         self.blueprint.url_value_preprocessor(self.panel_preprocess_value)
 
         @self.blueprint.before_request
-        def check_security():
+        def check_security() -> None:
             user = unwrap(current_user)
             if not security.has_role(user, "admin"):
                 raise Forbidden
 
-    def panel_preprocess_value(self, endpoint: str, view_args: dict[Any, Any]):
+    def panel_preprocess_value(self, endpoint: str, view_args: dict[Any, Any]) -> None:
         panel = self._panels_endpoints.get(endpoint)
         if panel is not None:
             panel.url_value_preprocess(endpoint, view_args)
 
-    def build_breadcrumbs(self, endpoint: str, view_args: dict[Any, Any]):
+    def build_breadcrumbs(self, endpoint: str, view_args: dict[Any, Any]) -> None:
         g.breadcrumb.append(self.root_breadcrumb_item)
         g.nav["active"] = self.nav_paths.get(endpoint, self.nav_root.path)
         panel = self._panels_endpoints.get(endpoint)

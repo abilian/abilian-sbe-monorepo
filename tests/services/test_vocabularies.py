@@ -21,7 +21,7 @@ StateVoc = Vocabulary("defaultstates", group="", label="States")
 DocCatVoc = Vocabulary("categories", group="documents", label="Categories")
 
 
-def test_vocabulary_factory(session):
+def test_vocabulary_factory(session) -> None:
     assert Voc.__name__ == "VocabularyVoc"
     assert Voc.__tablename__ == "vocabulary_voc"
     assert Voc.Meta.name == "voc"
@@ -30,7 +30,7 @@ def test_vocabulary_factory(session):
     assert issubclass(Voc, BaseVocabulary)
 
 
-def test_vocabularies(session):
+def test_vocabularies(session) -> None:
     # test registered vocabularies
     assert vocabularies.vocabularies == {Voc, PriorityVoc, StateVoc, DocCatVoc}
 
@@ -43,7 +43,7 @@ def test_vocabularies(session):
     assert vocabularies.get_vocabulary("categories", "documents") is DocCatVoc
 
 
-def test_items(db, session):
+def test_items(db, session) -> None:
     db.create_all()
 
     IMMEDIATE = PriorityVoc(label="Immediate", position=0)
@@ -122,7 +122,7 @@ def test_items(db, session):
 
 
 @mark.skip
-def test_admin_panel_reorder(app, db, session, client, test_request_context):
+def test_admin_panel_reorder(app, db, session, client, test_request_context) -> None:
     db.create_all()
     items = [
         Voc(label="First", position=0),

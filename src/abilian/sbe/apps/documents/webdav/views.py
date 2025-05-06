@@ -42,13 +42,13 @@ __all__ = ["webdav"]
 
 # TODO: real logging
 class Logger:
-    def debug(self, msg):
+    def debug(self, msg) -> None:
         print(msg)
 
 
 # XXX: temporary debug info.
 @webdav.before_request
-def log_request():
+def log_request() -> None:
     litmus_msg = request.headers.get("X-Litmus")
     if litmus_msg:
         print()
@@ -58,7 +58,7 @@ def log_request():
 
 
 @webdav.before_request
-def only_admin():
+def only_admin() -> None:
     security = get_service("security")
 
     if not security.has_role(current_user, "admin"):
@@ -91,7 +91,7 @@ def get_object(path):
 
 
 @webdav.before_app_request
-def create_root_folder():
+def create_root_folder() -> None:
     # TODO: create root folder on repository startup instead.
     # assert repository.root_folder
     pass

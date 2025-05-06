@@ -62,7 +62,7 @@ class WikiPage(Entity):
 
     __table_args__ = (UniqueConstraint("title", "community_id"),)
 
-    def __init__(self, title="", body_src="", message="", *args, **kwargs):
+    def __init__(self, title="", body_src="", message="", *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.title = title
         self.create_revision(body_src, message)

@@ -38,7 +38,7 @@ MAIL_REPLY_MARKER = _l("_____Write above this line to post_____")
 
 
 @dramatiq.actor(max_retries=20, max_backoff=86400000)
-def send_post_by_email(post_id: int | str):
+def send_post_by_email(post_id: int | str) -> None:
     """Send a post to community members by email.
 
     max_retries = 20 (Dramatiq default)
@@ -206,7 +206,7 @@ def has_subtag(address: str) -> bool:
     return "+" in name
 
 
-def send_post_to_user(community, post, member):
+def send_post_to_user(community, post, member) -> None:
     """Send a post though SMTP.
 
     Configuring Flask-Mail
@@ -504,7 +504,7 @@ def process_email(message: email.message.Message) -> bool:
 
 @crontab("SCHEDULE_CHECK_MAILDIR")
 @dramatiq.actor(max_retries=20, max_backoff=86400000)
-def check_maildir():
+def check_maildir() -> None:
     """Check the MailDir for emails to be injected in Threads.
 
     This task is registered only if `INCOMING_MAIL_USE_MAILDIR` is True.

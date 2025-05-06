@@ -259,28 +259,28 @@ def delete_message(message_id):
 # [POST] /api/messages/MESSAGE_ID/likes	Liking a Message
 @restapi.route("/messages/<int:message_id>/likes", methods=["POST"])
 @login_required
-def like_message(message_id):
+def like_message(message_id) -> None:
     pass
 
 
 # [POST] /api/comments/COMMENT_ID/likes/LIKES_ID	Liking a Comment
 @restapi.route("/comments/<int:comment_id>/likes", methods=["POST"])
 @login_required
-def like_comment(comment_id):
+def like_comment(comment_id) -> None:
     pass
 
 
 # [DELETE] /api/messages/MESSAGE_ID/likes/LIKES_ID	Un-liking a Message
 @restapi.route("/messages/<int:message_id>/likes/<int:like_id>", methods=["DELETE"])
 @login_required
-def unlike_message(message_id, like_id):
+def unlike_message(message_id, like_id) -> None:
     pass
 
 
 # [DELETE] /api/comments/COMMENT_ID/likes/LIKES_ID
 @restapi.route("/comments/<int:comment_id>/likes/<int:like_id>", methods=["DELETE"])
 @login_required
-def unlike_comment(comment_id, like_id):
+def unlike_comment(comment_id, like_id) -> None:
     pass
 
 
@@ -316,5 +316,5 @@ def search_users():
 #
 @restapi.route("/feed")
 @login_required
-def get_feed():
+def get_feed() -> None:
     pass

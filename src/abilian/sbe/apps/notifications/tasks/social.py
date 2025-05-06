@@ -34,7 +34,7 @@ if TYPE_CHECKING:
 
 @crontab("SCHEDULE_SEND_DAILY_SOCIAL_DIGEST")
 @dramatiq.actor()
-def send_daily_social_digest_task():
+def send_daily_social_digest_task() -> None:
     logger.debug("Running job: send_daily_social_digest_task")
     with current_app.test_request_context("/tasks/send_daily_social_updates"):
         config = current_app.config
@@ -44,7 +44,7 @@ def send_daily_social_digest_task():
         send_daily_social_digest()
 
 
-def send_daily_social_digest():
+def send_daily_social_digest() -> None:
     for user in User.query.filter(User.can_login == True).all():
         preferences = get_service("preferences")
         prefs = preferences.get_preferences(user)
@@ -189,7 +189,7 @@ class CommunityDigest:
             and not self.updated_wiki_pages
         )
 
-    def update_from_activity(self, activity, user):
+    def update_from_activity(self, activity, user) -> None:
         actor = activity.actor
         obj = activity.object
 
@@ -205,10 +205,10 @@ class CommunityDigest:
         elif activity.verb == "update":
             self._update_for_update(actor, obj, user)
 
-    def _update_for_join(self, actor):
+    def _update_for_join(self, actor) -> None:
         self.new_members.append(actor)
 
-    def _update_for_post(self, actor, obj, user):
+    def _update_for_post(self, actor, obj, user) -> None:
         if obj is None:
             return
         if obj.id in self.seen_entities:
@@ -238,7 +238,7 @@ class CommunityDigest:
                 # exclude it to avoid duplicates but save the Post's actor
                 self.updated_conversations[obj.thread]["actors"].append(actor)
 
-    def _update_for_update(self, actor, obj, user):
+    def _update_for_update(self, actor, obj, user) -> None:
         if obj is None:
             return
         # special case for Wikipage, we want to know each updater

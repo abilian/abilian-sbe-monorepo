@@ -91,7 +91,7 @@ def get_params(names):
 class timer:
     """Decorator that mesures the time it takes to run a function."""
 
-    def __init__(self, callable):
+    def __init__(self, callable) -> None:
         self.__f = callable
 
     def __call__(self, *args, **kwargs):
@@ -115,7 +115,7 @@ class memoized:
     returned (not reevaluated).
     """
 
-    def __init__(self, func):
+    def __init__(self, func) -> None:
         self.func = func
         self.cache = {}
         functools.wraps(func)(self)
@@ -139,7 +139,7 @@ class memoized:
 
 # From http://flask.pocoo.org/snippets/44/
 class Pagination:
-    def __init__(self, page, per_page, total_count):
+    def __init__(self, page, per_page, total_count) -> None:
         self.page = page
         self.per_page = per_page
         self.total_count = total_count
@@ -204,13 +204,13 @@ class BasePresenter:
     Subclass to make it useful. Presenters are immutable.
     """
 
-    def __init__(self, model):
+    def __init__(self, model) -> None:
         self._model = model
 
     def __getattr__(self, key):
         return getattr(self._model, key)
 
-    def __setattr__(self, key, value):
+    def __setattr__(self, key, value) -> None:
         """Make presenter immutable."""
         if key == "_model":
             self.__dict__[key] = value

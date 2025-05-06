@@ -44,21 +44,21 @@ class MutationDict(Mutable, dict):
         self.update(state)
 
     # dict methods
-    def __setitem__(self, key: str, value: int | str):
+    def __setitem__(self, key: str, value: int | str) -> None:
         """Detect dictionary set events and emit change events."""
         dict.__setitem__(self, key, value)
         self.changed()
 
-    def __delitem__(self, key):
+    def __delitem__(self, key) -> None:
         """Detect dictionary del events and emit change events."""
         dict.__delitem__(self, key)
         self.changed()
 
-    def clear(self):
+    def clear(self) -> None:
         dict.clear(self)
         self.changed()
 
-    def update(self, other, **kw):
+    def update(self, other, **kw) -> None:
         dict.update(self, other, **kw)
         self.changed()
 
@@ -98,15 +98,15 @@ class MutationList(Mutable, list):
         return d
 
     # list methods
-    def __setitem__(self, idx, value):
+    def __setitem__(self, idx, value) -> None:
         list.__setitem__(self, idx, value)
         self.changed()
 
-    def __delitem__(self, idx: Any):
+    def __delitem__(self, idx: Any) -> None:
         list.__delitem__(self, idx)
         self.changed()
 
-    def insert(self, idx, value):
+    def insert(self, idx, value) -> None:
         list.insert(self, idx, value)
         self.changed()
 
@@ -128,7 +128,7 @@ class MutationList(Mutable, list):
         self.changed()
         return result
 
-    def append(self, item: Any):
+    def append(self, item: Any) -> None:
         list.append(self, item)
         self.changed()
 
@@ -137,19 +137,19 @@ class MutationList(Mutable, list):
         self.changed()
         return item
 
-    def remove(self, item):
+    def remove(self, item) -> None:
         list.remove(self, item)
         self.changed()
 
-    def reverse(self):
+    def reverse(self) -> None:
         list.reverse(self)
         self.changed()
 
-    def sort(self, *args, **kwargs):
+    def sort(self, *args, **kwargs) -> None:
         list.sort(self, *args, **kwargs)
         self.changed()
 
-    def extend(self, other):
+    def extend(self, other) -> None:
         list.extend(self, other)
         self.changed()
 

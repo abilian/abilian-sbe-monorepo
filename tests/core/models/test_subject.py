@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from abilian.core.sqlalchemy import SQLAlchemy
 
 
-def test_non_ascii_password():
+def test_non_ascii_password() -> None:
     """Ensure we can store and test non-ascii password without any
     UnicodeEncodeError."""
     user = User()
@@ -26,7 +26,7 @@ def test_non_ascii_password():
     assert user.authenticate("Hé")
 
 
-def test_user(app: Flask, db: SQLAlchemy):
+def test_user(app: Flask, db: SQLAlchemy) -> None:
     user = User(email="test@test.com")
     db.session.add(user)
     db.session.flush()
@@ -34,7 +34,7 @@ def test_user(app: Flask, db: SQLAlchemy):
     assert not user.is_online
 
 
-def test_group(app: Flask, db: SQLAlchemy):
+def test_group(app: Flask, db: SQLAlchemy) -> None:
     group = Group(name="test_group")
     db.session.add(group)
     db.session.flush()
@@ -42,7 +42,7 @@ def test_group(app: Flask, db: SQLAlchemy):
     assert group.members_count == 0
 
 
-def test_follow(app: Flask, db: SQLAlchemy):
+def test_follow(app: Flask, db: SQLAlchemy) -> None:
     user1 = User(email="test1@test.com")
     user2 = User(email="test2@test.com")
     db.session.add(user1)
@@ -58,7 +58,7 @@ def test_follow(app: Flask, db: SQLAlchemy):
     assert not user1.is_following(user2)
 
 
-def test_group_membership(app: Flask, db: SQLAlchemy):
+def test_group_membership(app: Flask, db: SQLAlchemy) -> None:
     user = User(email="test@test.com")
     db.session.add(user)
     group = Group(name="test_group")

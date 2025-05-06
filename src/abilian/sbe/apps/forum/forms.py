@@ -73,7 +73,7 @@ class BasePostForm(Form):
         label=_l("Attachments"), multiple=True, validators=[optional()]
     )
 
-    def validate_message(self, field):
+    def validate_message(self, field) -> None:
         css_sanitizer = CSSSanitizer(allowed_css_properties=ALLOWED_STYLES)
         field.data = bleach.clean(
             field.data,

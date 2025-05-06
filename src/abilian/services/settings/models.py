@@ -17,7 +17,7 @@ __all__ = ["Setting", "empty_value"]
 
 
 class TransformerRegistry:
-    def __init__(self):
+    def __init__(self) -> None:
         self.encoders: dict[str, Callable] = {}
         self.decoders: dict[str, Callable] = {}
 
@@ -35,7 +35,7 @@ class TransformerRegistry:
         type_: str,
         encoder: Callable | None = None,
         decoder: Callable | None = None,
-    ):
+    ) -> None:
         assert type_
         assert any((encoder, decoder))
 
@@ -83,7 +83,7 @@ class Setting(db.Model):
         return self._type
 
     @type.setter
-    def type(self, type_: str):
+    def type(self, type_: str) -> None:
         if not (
             type_ in self.transformers.encoders and type_ in self.transformers.decoders
         ):
@@ -100,7 +100,7 @@ class Setting(db.Model):
         return self.transformers.decode(self.type, self._value)
 
     @value.setter
-    def value(self, value):
+    def value(self, value) -> None:
         assert self.type
         self._value = self.transformers.encode(self.type, value)
         assert isinstance(self._value, str)

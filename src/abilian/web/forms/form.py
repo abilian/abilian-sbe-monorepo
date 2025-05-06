@@ -55,7 +55,7 @@ class FormContext:
         permission: Permission | None = None,
         user: User | None = None,
         obj: Any = None,
-    ):
+    ) -> None:
         self.permission = permission
         self.user = user
         self.obj = obj
@@ -94,7 +94,7 @@ class Form(FlaskForm):
     #: :class:`FormPermissions` instance
     _permissions: FormPermissions | None = None
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         permission = kwargs.pop("permission", None)
         user = kwargs.pop("user", None)
         obj = kwargs.get("obj")
@@ -184,7 +184,7 @@ if not _PATCHED:
 
     _wtforms_field_init = Field.__init__
 
-    def _core_field_init(self: Any, *args: Any, **kwargs: Any):
+    def _core_field_init(self: Any, *args: Any, **kwargs: Any) -> None:
         view_widget = None
         if "view_widget" in kwargs:
             view_widget = kwargs.pop("view_widget")

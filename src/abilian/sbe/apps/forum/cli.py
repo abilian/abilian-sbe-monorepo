@@ -15,13 +15,13 @@ from .tasks import check_maildir, process_email
 
 @click.command()
 @with_appcontext
-def inject_email(filename="-"):
+def inject_email(filename="-") -> None:
     """Read one email from stdin, parse it, forward it in a task to be
     persisted."""
     do_inject_email(filename)
 
 
-def do_inject_email(filename="-"):
+def do_inject_email(filename="-") -> None:
     parser = FeedParser()
 
     try:
@@ -58,7 +58,7 @@ def do_inject_email(filename="-"):
 
 @click.command()
 @with_appcontext
-def check_email():
+def check_email() -> None:
     """Read one email from current user Maildir, parse it, forward it in a
     task to be persisted."""
 

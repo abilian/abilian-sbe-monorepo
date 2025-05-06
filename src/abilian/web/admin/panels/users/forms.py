@@ -74,7 +74,7 @@ class UserAdminForm(BaseUserAdminForm):
         _l("Confirm new password"), widget=widgets.PasswordInput(autocomplete="off")
     )
 
-    def validate_password(self, field):
+    def validate_password(self, field) -> None:
         pwd = field.data
         confirmed = self["confirm_password"].data
 

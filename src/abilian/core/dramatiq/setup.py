@@ -43,7 +43,7 @@ def init_dramatiq_engine(app) -> None:
     # _print_dramatiq_config()
 
 
-def _setup_rate_limiter(app):
+def _setup_rate_limiter(app) -> None:
     # logger.debug("Add dramatiq rate limiter")
     redis_client = _rate_limiter_redis_client(app)
     backend = RateLimitRedisBackend(client=redis_client)

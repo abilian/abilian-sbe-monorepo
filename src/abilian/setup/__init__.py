@@ -29,7 +29,7 @@ if TYPE_CHECKING:
     from abilian.app import Application
 
 
-def setup_app(app: Application, plugins=None):
+def setup_app(app: Application, plugins=None) -> None:
     # At this point we have loaded all external config files:
     # SQLALCHEMY_DATABASE_URI is definitively fixed (it cannot be defined in
     # database AFAICT), and LOGGING_FILE cannot be set in DB settings.
@@ -94,17 +94,17 @@ def setup_app(app: Application, plugins=None):
     register_commands(app)
 
 
-def connect_signals():
+def connect_signals() -> None:
     appcontext_pushed.connect(install_id_generator)
     request_started.connect(setup_nav_and_breadcrumbs)
 
 
 # TODO: remove
-def install_id_generator(sender: Flask, **kwargs: Any):
+def install_id_generator(sender: Flask, **kwargs: Any) -> None:
     g.id_generator = count(start=1)
 
 
-def init_access_controllers(app: Application):
+def init_access_controllers(app: Application) -> None:
     app.add_access_controller(
         "static", allow_access_for_roles(ANONYMOUS), endpoint=True
     )

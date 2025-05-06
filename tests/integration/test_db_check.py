@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from abilian.app import Application
 
 
-def test_supported_db(app: Application):
+def test_supported_db(app: Application) -> None:
     # Not really a test, just a check that the test suite is configured
     # with a supported DB
     config = app.config

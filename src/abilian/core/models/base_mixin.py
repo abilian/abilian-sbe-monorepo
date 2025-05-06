@@ -17,7 +17,7 @@ from .owned import OwnedMixin
 class BaseMixin(IdMixin, TimestampedMixin, OwnedMixin):
     name: str
 
-    def __init__(self):
+    def __init__(self) -> None:
         OwnedMixin.__init__(self)
 
     def __repr__(self) -> str:
@@ -26,7 +26,7 @@ class BaseMixin(IdMixin, TimestampedMixin, OwnedMixin):
             f"instance at 0x{id(self):x} name={self.name!r} id={self.id}>"
         )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name or ""
 
     @property

@@ -32,7 +32,7 @@ DEFAULT_AVATAR_MD5 = hashlib.md5(DEFAULT_AVATAR.read_bytes()).hexdigest()  # noq
 class BaseImageView(BaseFileDownload):
     max_size = None
 
-    def __init__(self, max_size=None, *args, **kwargs):
+    def __init__(self, max_size=None, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         # Override class default value only if arg is specified in constructor.
         # This allows subclasses to easily override theses defaults.
@@ -107,7 +107,7 @@ class StaticImageView(BaseImageView):
 
     expire_vary_arg = "md5"
 
-    def __init__(self, image, *args, **kwargs):
+    def __init__(self, image, *args, **kwargs) -> None:
         """
         :param image: path to image file
         """
@@ -133,7 +133,7 @@ class BlobView(BaseImageView):
     expire_vary_arg = "md5"
     id_arg = "object_id"
 
-    def __init__(self, id_arg=None, *args, **kwargs):
+    def __init__(self, id_arg=None, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         if id_arg is not None:
             self.id_arg = id_arg

@@ -31,7 +31,7 @@ if typing.TYPE_CHECKING:
 _NULL_MARK = object()
 
 
-def _assert_uuid(uuid: Any):
+def _assert_uuid(uuid: Any) -> None:
     if not isinstance(uuid, UUID):
         msg = "Not an uuid.UUID instance"
         raise TypeError(msg, uuid)
@@ -48,7 +48,7 @@ class BlobStoreService(Service):
     name = "blob_store"
     AppStateClass = BlobStoreServiceState
 
-    def init_app(self, app: Application):
+    def init_app(self, app: Application) -> None:
         super().init_app(app)
 
         path = app.data_dir / "files"
@@ -96,7 +96,7 @@ class BlobStoreService(Service):
             return default
         return path
 
-    def set(self, uuid: UUID, content: Any, encoding: str | None = "utf-8"):
+    def set(self, uuid: UUID, content: Any, encoding: str | None = "utf-8") -> None:
         """Store binary content with uuid as key.
 
         :param:uuid: :class:`UUID` instance
@@ -120,7 +120,7 @@ class BlobStoreService(Service):
         with dest.open(mode, encoding=encoding) as file:
             file.write(content)
 
-    def delete(self, uuid: UUID):
+    def delete(self, uuid: UUID) -> None:
         """Delete file with given uuid.
 
         :param:uuid: :class:`UUID` instance
@@ -144,12 +144,12 @@ class BlobStoreService(Service):
             raise KeyError(msg, uuid)
         return value
 
-    def __setitem__(self, uuid: UUID, content: Any):
+    def __setitem__(self, uuid: UUID, content: Any) -> None:
         _assert_uuid(uuid)
 
         self.set(uuid, content)
 
-    def __delitem__(self, uuid: UUID):
+    def __delitem__(self, uuid: UUID) -> None:
         _assert_uuid(uuid)
 
         self.delete(uuid)
@@ -216,7 +216,7 @@ class SessionBlobStoreState(ServiceState):
                 transaction.commit()
             self.set_transaction(session, transaction._parent)
 
-    def begin(self, session: Session):
+    def begin(self, session: Session) -> None:
         if not self.running:
             return
 
@@ -227,7 +227,7 @@ class SessionBlobStoreState(ServiceState):
 
         transaction.begin()
 
-    def commit(self, session: Session):
+    def commit(self, session: Session) -> None:
         if not self.running:
             return
 
@@ -237,7 +237,7 @@ class SessionBlobStoreState(ServiceState):
 
         transaction.commit()
 
-    def flush(self, session: Session):
+    def flush(self, session: Session) -> None:
         # def flush(self, session: Session, flush_context: UOWTransaction):
         # when sqlalchemy is flushing it is done in a sub-transaction,
         # not the root one. So when calling our 'commit' from here
@@ -245,7 +245,7 @@ class SessionBlobStoreState(ServiceState):
         # written to repository.
         self.commit(session)
 
-    def rollback(self, session: Session):
+    def rollback(self, session: Session) -> None:
         if not self.running:
             return
 
@@ -266,11 +266,11 @@ class SessionBlobStoreService(Service):
     name = "session_blob_store"
     AppStateClass = SessionBlobStoreState
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         self.__listening = False
         super().__init__(*args, **kwargs)
 
-    def init_app(self, app: Application):
+    def init_app(self, app: Application) -> None:
         super().init_app(app)
 
         path = Path(app.instance_path, "tmp", "files_transactions")
@@ -283,7 +283,7 @@ class SessionBlobStoreService(Service):
         if not self.__listening:
             self.start_listening()
 
-    def start_listening(self):
+    def start_listening(self) -> None:
         self.__listening = True
         listen = sa.event.listen
         listen(Session, "after_transaction_create", self.create_transaction)
@@ -350,7 +350,7 @@ class SessionBlobStoreService(Service):
         uuid: UUID,
         content: IO | bytes | str,
         encoding: str = "utf-8",
-    ):
+    ) -> None:
         _assert_uuid(uuid)
         session = self._session_for(session)
         transaction = self.app_state.get_transaction(session)
@@ -359,7 +359,7 @@ class SessionBlobStoreService(Service):
             raise RuntimeError(msg)
         transaction.set(uuid, content, encoding)
 
-    def delete(self, session: Session | Blob, uuid: UUID):
+    def delete(self, session: Session | Blob, uuid: UUID) -> None:
         _assert_uuid(uuid)
 
         session = self._session_for(session)
@@ -422,7 +422,9 @@ class BlobStoreTransaction:
     to retrieve the path of the underlying content.
     """
 
-    def __init__(self, root_path: Path, parent: BlobStoreTransaction | None = None):
+    def __init__(
+        self, root_path: Path, parent: BlobStoreTransaction | None = None
+    ) -> None:
         self.tmp_folder = root_path / str(uuid1())
         # if parent is not None and parent.cleared:
         #   parent = None
@@ -436,11 +438,11 @@ class BlobStoreTransaction:
     def cleared(self) -> bool:
         return self._cleared
 
-    def __del__(self):
+    def __del__(self) -> None:
         if not self._cleared:
             self._clear()
 
-    def _clear(self):
+    def _clear(self) -> None:
         if self._cleared:
             return
 
@@ -453,14 +455,14 @@ class BlobStoreTransaction:
         del self._set
         self._cleared = True
 
-    def begin(self):
+    def begin(self) -> None:
         if not self.tmp_folder.exists():
             self.tmp_folder.mkdir(0o700)
 
-    def rollback(self):
+    def rollback(self) -> None:
         self._clear()
 
-    def commit(self):
+    def commit(self) -> None:
         """Merge modified objects into parent transaction.
 
         Once commited a transaction object is not usable anymore
@@ -477,7 +479,7 @@ class BlobStoreTransaction:
             self._commit_blob_store()
         self._clear()
 
-    def _commit_blob_store(self):
+    def _commit_blob_store(self) -> None:
         if self._cleared:
             return
         assert self._parent is None
@@ -492,7 +494,7 @@ class BlobStoreTransaction:
     def uuid_path(self, uuid: UUID) -> Path:
         return self.tmp_folder / str(uuid)
 
-    def _commit_parent(self):
+    def _commit_parent(self) -> None:
         parent = self._parent
         assert parent
         parent._deleted |= self._deleted
@@ -507,14 +509,14 @@ class BlobStoreTransaction:
         for uuid in self._set:
             self.uuid_path(uuid).replace(parent.uuid_path(uuid))
 
-    def _add_to(self, uuid: UUID, dest: set[UUID], other: set[UUID]):
+    def _add_to(self, uuid: UUID, dest: set[UUID], other: set[UUID]) -> None:
         """Add `item` to `dest` set, ensuring `item` is not present in `other`
         set."""
         _assert_uuid(uuid)
         other.discard(uuid)
         dest.add(uuid)
 
-    def delete(self, uuid: UUID):
+    def delete(self, uuid: UUID) -> None:
         self._add_to(uuid, self._deleted, self._set)
 
     def set(
@@ -522,7 +524,7 @@ class BlobStoreTransaction:
         uuid: UUID,
         content: IO | bytes | str,
         encoding: str | None = "utf-8",
-    ):
+    ) -> None:
         self.begin()
         self._add_to(uuid, self._set, self._deleted)
 

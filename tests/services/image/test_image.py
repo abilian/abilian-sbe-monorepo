@@ -15,7 +15,7 @@ def orig_image() -> bytes:
     return (Path(__file__).parent / "cat.jpg").open("rb").read()
 
 
-def test_get_save_format():
+def test_get_save_format() -> None:
     assert get_save_format("JPG") == "JPEG"
     assert get_save_format("JPEG") == "JPEG"
     assert get_save_format("PNG") == "PNG"
@@ -23,7 +23,7 @@ def test_get_save_format():
     assert get_save_format("unknown") == "JPEG"
 
 
-def test_fit(orig_image: bytes):
+def test_fit(orig_image: bytes) -> None:
     image = resize(orig_image, 500, 500)
     x, y = get_size(image)
     assert (x, y) == (500, 357)
@@ -35,11 +35,11 @@ def test_fit(orig_image: bytes):
     assert y == 518
 
 
-def test_scale(orig_image: bytes):
+def test_scale(orig_image: bytes) -> None:
     image = resize(orig_image, 500, 500, SCALE)
     assert get_size(image) == (500, 500)
 
 
-def test_crop(orig_image: bytes):
+def test_crop(orig_image: bytes) -> None:
     image = resize(orig_image, 500, 500, CROP)
     assert get_size(image) == (500, 500)

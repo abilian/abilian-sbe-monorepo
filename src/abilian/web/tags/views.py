@@ -33,7 +33,7 @@ class BaseTagView:
     Model = Tag
     Form = TagForm
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.extension = current_app.extensions["tags"]
 
@@ -104,12 +104,12 @@ class EntityTagManage(BaseEntityTagView, ObjectEdit):
     # operation: add or remove
     mode = None
 
-    def __init__(self, mode, *args, **kwargs):
+    def __init__(self, mode, *args, **kwargs) -> None:
         super(EntityTagManage, *args, **kwargs)
         assert mode in ("add", "remove")
         self.mode = mode
 
-    def form_valid(self, redirect_to=None):
+    def form_valid(self, redirect_to=None) -> None:
         ns = self.form.ns.data
         label = self.form.label.data
         op = getattr(self.extension, self.mode)

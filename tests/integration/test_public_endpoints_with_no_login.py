@@ -16,7 +16,7 @@ if TYPE_CHECKING:
     from abilian.app import Application
 
 
-def test_public_endpoints_with_no_login(client: FlaskClient, app: Application):
+def test_public_endpoints_with_no_login(client: FlaskClient, app: Application) -> None:
     warnings.simplefilter("ignore")
     security_service.start(ignore_state=True)
 

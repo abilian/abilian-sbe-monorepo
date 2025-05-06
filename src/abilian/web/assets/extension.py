@@ -19,16 +19,16 @@ if TYPE_CHECKING:
 class AssetManager:
     assets_bundles: dict[str, dict[str, Any]]
 
-    def __init__(self, app=None):
+    def __init__(self, app=None) -> None:
         if app is not None:
             self.init_app(app)
 
-    def init_app(self, app: Flask):
+    def init_app(self, app: Flask) -> None:
         self.init_assets(app)
         self.setup_asset_extension(app)
         self.register_base_assets(app)
 
-    def init_assets(self, app: Flask):
+    def init_assets(self, app: Flask) -> None:
         if app.debug:
             js_filters = None
         elif os.system("java -version 2> /dev/null") == 0:
@@ -61,7 +61,7 @@ class AssetManager:
                 "options": {"output": filename, "filters": js_filters}
             }
 
-    def setup_asset_extension(self, app: Flask):
+    def setup_asset_extension(self, app: Flask) -> None:
         assets = app.extensions["webassets"] = AssetsEnv(app)
         if app.debug:
             assets.debug = True
@@ -105,7 +105,7 @@ class AssetManager:
             "min", str(assets_dir), endpoint="webassets_static", roles=ANONYMOUS
         )
 
-    def register_base_assets(self, app: Flask):
+    def register_base_assets(self, app: Flask) -> None:
         """Register assets needed by Abilian.
 
         This is done in a separate method in order to allow applications
@@ -118,7 +118,7 @@ class AssetManager:
         self.register_asset("js", bundles.JS)
         self.register_i18n_js(app, *bundles.JS_I18N)
 
-    def register_asset(self, type_: str, *assets: Any):
+    def register_asset(self, type_: str, *assets: Any) -> None:
         """Register webassets bundle to be served on all pages.
 
         :param type_: `"css"`, `"js-top"` or `"js""`.
@@ -143,7 +143,7 @@ class AssetManager:
 
             self.assets_bundles[type_].setdefault("bundles", []).append(asset)
 
-    def register_i18n_js(self, app: Flask, *paths: str):
+    def register_i18n_js(self, app: Flask, *paths: str) -> None:
         """Register templates path translations files, like
         `select2/select2_locale_{lang}.js`.
 
@@ -163,7 +163,7 @@ class AssetManager:
                 else:
                     self.register_asset(f"js-i18n-{lang}", filename)
 
-    def finalize_assets_setup(self, app: Flask):
+    def finalize_assets_setup(self, app: Flask) -> None:
         assets = app.extensions["webassets"]
         assets_dir = Path(assets.directory)
         closure_base_args = [

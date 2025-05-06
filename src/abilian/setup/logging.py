@@ -23,12 +23,12 @@ def init_logging(app: Flask) -> None:
 
 
 class InterceptHandler(logging.Handler):
-    def emit(self, record):
+    def emit(self, record) -> None:
         logger_opt = logger.opt(depth=6, exception=record.exc_info)
         logger_opt.log(record.levelno, record.getMessage())
 
 
-def init_loguru(app: Flask):
+def init_loguru(app: Flask) -> None:
     """Register loguru as (sole) handler."""
     if app.debug:
         level = "DEBUG"

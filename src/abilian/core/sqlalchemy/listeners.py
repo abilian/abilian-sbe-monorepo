@@ -13,7 +13,9 @@ from sqlalchemy.event import listens_for
 
 
 @listens_for(sa.pool.Pool, "checkout")
-def ping_connection(dbapi_connection: Connection, connection_record, connection_proxy):
+def ping_connection(
+    dbapi_connection: Connection, connection_record, connection_proxy
+) -> None:
     """Ensure connections are valid.
 
     From: `http://docs.sqlalchemy.org/en/rel_0_8/core/pooling.html`
@@ -38,7 +40,7 @@ def ping_connection(dbapi_connection: Connection, connection_record, connection_
 # Make Sqlite a bit more well-behaved.
 #
 @sa.event.listens_for(Engine, "connect")
-def _set_sqlite_pragma(dbapi_connection: Any, connection_record: Any):
+def _set_sqlite_pragma(dbapi_connection: Any, connection_record: Any) -> None:
     if isinstance(dbapi_connection, sqlite3.Connection):  # pragma: no cover
         cursor = dbapi_connection.cursor()
         cursor.execute("PRAGMA foreign_keys=ON;")

@@ -74,7 +74,7 @@ class EventForm(Form):
         validators=[required()],
     )
 
-    def validate_description(self, field):
+    def validate_description(self, field) -> None:
         field.data = bleach.clean(
             field.data,
             tags=ALLOWED_TAGS,
@@ -83,7 +83,7 @@ class EventForm(Form):
             strip=True,
         )
 
-    def validate_end(self, field):
+    def validate_end(self, field) -> None:
         if self.start.data > self.end.data:
             raise ValidationError(_l("End date/time must be after start"))
 

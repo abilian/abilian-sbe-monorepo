@@ -116,7 +116,7 @@ class CommunityForm(Form):
 
     # FIXME: code duplicated from the user edit form (UserProfileForm).
     # Needs to be refactored.
-    def validate_image(self, field):
+    def validate_image(self, field) -> None:
         data = request.form.get("image")
         if not data:
             return

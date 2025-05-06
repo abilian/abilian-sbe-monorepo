@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 
 
 class JinjaManagerMixin(Flask):
-    def __init__(self):
+    def __init__(self) -> None:
         self._jinja_loaders = []
 
     #
@@ -70,7 +70,7 @@ class JinjaManagerMixin(Flask):
 
         return options
 
-    def register_jinja_loaders(self, *loaders: PackageLoader):
+    def register_jinja_loaders(self, *loaders: PackageLoader) -> None:
         """Register one or many `jinja2.Loader` instances for templates lookup.
 
         During application initialization plugins can register a loader so that

@@ -47,7 +47,7 @@ class UserPreferencesForm(Form):
         label=_l("Time zone"), validators=(required(),), default=babel.dates.LOCALTZ
     )
 
-    def validate_password(self, field: StringField):
+    def validate_password(self, field: StringField) -> None:
         pwd = field.data
         confirmed = self["confirm_password"].data
 
@@ -59,7 +59,7 @@ class UserPreferencesForm(Form):
                 )
             )
 
-    def validate_photo(self, field: FileField):
+    def validate_photo(self, field: FileField) -> None:
         data = request.form.get(field.name)
         if not data:
             return

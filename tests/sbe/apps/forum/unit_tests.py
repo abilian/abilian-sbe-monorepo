@@ -10,7 +10,7 @@ from abilian.sbe.apps.forum.tasks import process
 from .util import get_email_message_from_file
 
 
-def test_create_post():
+def test_create_post() -> None:
     thread = Thread(title="Test thread")
     post = thread.create_post()
     assert post in thread.posts
@@ -21,7 +21,7 @@ def test_create_post():
     assert post.name == "new title"
 
 
-def test_closed_property():
+def test_closed_property() -> None:
     thread = Thread(title="Test Thread")
     assert thread.closed is False
 
@@ -36,7 +36,7 @@ def test_closed_property():
     assert thread.meta["abilian.sbe.forum"]["closed"] is True
 
 
-def test_thread_closed_guard():
+def test_thread_closed_guard() -> None:
     thread = Thread(title="Test Thread")
     thread.create_post()
     thread.closed = True
@@ -73,7 +73,7 @@ def test_thread_closed_guard():
         p.thread = None
 
 
-def test_change_thread_copy_name():
+def test_change_thread_copy_name() -> None:
     thread = Thread(title="thread 1")
     thread2 = Thread(title="thread 2")
     post = Post(thread=thread, body_html="post content")
@@ -92,7 +92,7 @@ def test_change_thread_copy_name():
         "reply_no_textpart.email",
     ],
 )
-def test_task_process_email_ok(filename):
+def test_task_process_email_ok(filename) -> None:
     """Test the process_email function."""
 
     marker = "_____Write above this line to post_____"

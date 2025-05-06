@@ -152,7 +152,7 @@ def test_folder_indexed(
 
 
 @pytest.mark.skipif(sys.version_info >= (3, 0), reason="Doesn't work yet on Py3k")
-def test_explore_archive():
+def test_explore_archive() -> None:
     fd = open_file("content.zip")
     result = [("/".join(path), f) for path, f in explore_archive(fd)]
     assert result == [("", fd)]

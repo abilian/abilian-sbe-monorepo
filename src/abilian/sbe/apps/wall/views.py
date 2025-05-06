@@ -61,7 +61,7 @@ def files():
 
 
 class Attachment:
-    def __init__(self, url, name, owner, date, content_length, content_type):
+    def __init__(self, url, name, owner, date, content_length, content_type) -> None:
         self.url = url
         self.name = name
         self.owner = owner

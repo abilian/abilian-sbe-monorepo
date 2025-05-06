@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Never
 
 
 class PreferencePanel:
@@ -20,8 +20,8 @@ class PreferencePanel:
     def is_accessible(self) -> bool:
         return True
 
-    def get(self):
+    def get(self) -> Never:
         raise NotImplementedError
 
-    def post(self):
+    def post(self) -> Never:
         raise NotImplementedError

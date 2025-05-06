@@ -113,7 +113,7 @@ class SignalsDebugPanel(DebugPanel):
         template = jinja_env.get_or_select_template("debug_panels/signals_panel.html")
         return template.render(ctx)
 
-    def process_request(self, request):
+    def process_request(self, request) -> None:
         self.events = []
 
         if getattr(Signal.send, "__wrapped", False):

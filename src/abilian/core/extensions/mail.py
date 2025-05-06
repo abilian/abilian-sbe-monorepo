@@ -15,7 +15,7 @@ from abilian.core.logger_patch import patch_logger
 # patch flask.ext.mail.Message.send to always set enveloppe_from default mail
 # sender
 # FIXME: we'ld rather subclass Message and update all imports
-def _message_send(self: Any, connection: flask_mail.Connection):
+def _message_send(self: Any, connection: flask_mail.Connection) -> None:
     """Send a single message instance.
 
     If TESTING is True the message will not actually be sent.

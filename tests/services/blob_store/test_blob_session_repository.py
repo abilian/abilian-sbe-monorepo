@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from sqlalchemy.orm import Session
 
 
-def test_transaction_lifetime(session: Session):
+def test_transaction_lifetime(session: Session) -> None:
     state = session_blob_store.app_state
     root_transaction = state.get_transaction(session)
     assert isinstance(root_transaction, BlobStoreTransaction)
@@ -50,7 +50,7 @@ def test_transaction_lifetime(session: Session):
     assert current_transaction._parent is transaction
 
 
-def test_accessors_non_existent_entry(session: Session):
+def test_accessors_non_existent_entry(session: Session) -> None:
     # non existent
     u = uuid.uuid4()
     default = Path("/xxx/dont-care")
@@ -58,7 +58,7 @@ def test_accessors_non_existent_entry(session: Session):
     assert session_blob_store.get(session, u, default=default) is default
 
 
-def test_accessors_set_get_delete(session: Session):
+def test_accessors_set_get_delete(session: Session) -> None:
     # set
     content = b"my file content"
     u1 = uuid.uuid4()
@@ -81,7 +81,7 @@ def test_accessors_set_get_delete(session: Session):
     assert blob_store.get(u2) is not None
 
 
-def test_transaction(session: Session):
+def test_transaction(session: Session) -> None:
     u = uuid.uuid4()
     blob_store.set(u, b"first draft")
     path = session_blob_store.get(session, u)
@@ -168,7 +168,7 @@ def test_transaction(session: Session):
         assert path.open("rb").read() == b"transaction 2"
 
 
-def test_transaction_path(session: Session):
+def test_transaction_path(session: Session) -> None:
     """Test RepositoryTransaction create storage only when needed."""
     u = uuid.uuid4()
 

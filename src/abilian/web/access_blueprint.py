@@ -51,7 +51,7 @@ class AccessControlBlueprint(Blueprint):
         import_name: str,
         allowed_roles: None | str | Role | Collection[Role] = None,
         **kwargs: Any,
-    ):
+    ) -> None:
         """
         :param allowed_roles: role or list of roles required to access any view in this
             blueprint.
@@ -74,5 +74,5 @@ class AccessControlBlueprint(Blueprint):
                 )
             )
 
-    def allow_any(self, func):
+    def allow_any(self, func) -> None:
         pass

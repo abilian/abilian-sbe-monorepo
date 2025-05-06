@@ -40,7 +40,7 @@ def _default_comment_view(obj, obj_type, obj_id, **kwargs):
 
 
 @bp.record_once
-def register_default_view(state: BlueprintSetupState):
+def register_default_view(state: BlueprintSetupState) -> None:
     state.app.default_view.register(Comment, _default_comment_view)
 
 
@@ -95,7 +95,7 @@ class CommentEditView(BaseCommentView, ObjectEdit):
     def get_form_buttons(self, *args, **kwargs):
         return [COMMENT_BUTTON, CANCEL_BUTTON]
 
-    def after_populate_obj(self):
+    def after_populate_obj(self) -> None:
         obj_meta = self.obj.meta.setdefault("abilian.core.models.comment", {})
         history = obj_meta.setdefault("history", [])
         history.append(
@@ -117,7 +117,7 @@ class CommentCreateView(BaseCommentView, ObjectCreate):
 
     _message_success = _l("Comment added")
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
     def init_object(self, args, kwargs):

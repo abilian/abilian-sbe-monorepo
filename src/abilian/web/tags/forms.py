@@ -26,7 +26,7 @@ class TagsField(Field):
     widget = Select2(js_init="tags-select", multiple=True)
     view_widget = ListWidget()
 
-    def __init__(self, ns, *args, **kwargs):
+    def __init__(self, ns, *args, **kwargs) -> None:
         kwargs.setdefault("view_widget", self.view_widget)
         super().__init__(*args, **kwargs)
         self.ns = ns.strip()
@@ -53,7 +53,7 @@ class TagsField(Field):
         data = {t for t in data if t.ns == self.ns}
         return super().process_data(data)
 
-    def process_formdata(self, valuelist):
+    def process_formdata(self, valuelist) -> None:
         extension = current_app.extensions["tags"]
         valuelist = set(valuelist[0].split(";"))
         data = set()
@@ -70,7 +70,7 @@ class TagsField(Field):
 
         self.data = data
 
-    def populate_obj(self, obj, name):
+    def populate_obj(self, obj, name) -> None:
         extension = current_app.extensions["tags"]
         # all_tags is an InstrumentedSet. add/remove will result in DB
         # operations.

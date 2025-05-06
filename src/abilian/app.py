@@ -92,7 +92,7 @@ class Application(
     #: json serializable dict to land in Javascript under Abilian.api
     js_api: dict[str, Any]
 
-    def __init__(self, name: Any | None = None, *args: Any, **kwargs: Any):
+    def __init__(self, name: Any | None = None, *args: Any, **kwargs: Any) -> None:
         name = name or __name__
 
         Flask.__init__(self, name, *args, **kwargs)
@@ -113,7 +113,7 @@ class Application(
 
         return path
 
-    def configure(self, config: type | None):
+    def configure(self, config: type | None) -> None:
         if config:
             # This is usually the case for tests
             self.config.from_object(config)
@@ -138,7 +138,7 @@ class Application(
             logger.error("You must change the default secret config ('SECRET_KEY')")
             sys.exit()
 
-    def check_instance_folder(self, create=False):
+    def check_instance_folder(self, create=False) -> None:
         """Verify instance folder exists, is a directory, and has necessary
         permissions.
 
@@ -174,7 +174,7 @@ class Application(
         view_func: Callable,
         roles: Collection[Role] = (),
         **options: Any,
-    ):
+    ) -> None:
         """See :meth:`Flask.add_url_rule`.
 
         If `roles` parameter is present, it must be a
@@ -188,7 +188,9 @@ class Application(
                 endpoint, allow_access_for_roles(roles), endpoint=True
             )
 
-    def add_access_controller(self, name: str, func: Callable, endpoint: bool = False):
+    def add_access_controller(
+        self, name: str, func: Callable, endpoint: bool = False
+    ) -> None:
         """Add an access controller.
 
         If `name` is None it is added at application level, else if is
@@ -208,7 +210,7 @@ class Application(
 
     def add_static_url(
         self, url_path: str, directory: str, endpoint: str, roles: Collection[Role] = ()
-    ):
+    ) -> None:
         """Add a new url rule for static files.
 
         :param url_path: subpath from application static url path. No heading

@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Never
 
 from flask import g, json, jsonify, redirect, render_template_string, request
 from flask.views import MethodView as BaseView
@@ -61,7 +61,7 @@ class View(BaseView):
         assert not args
         return args, kwargs
 
-    def redirect(self, url):
+    def redirect(self, url) -> Never:
         """Shortcut all call stack and return response.
 
         usage: `self.response(url_for(...))`

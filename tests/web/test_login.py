@@ -6,7 +6,7 @@ from flask import Flask, jsonify, session
 from flask_login import current_user
 
 
-def test_test(app: Flask, client, login_user):
+def test_test(app: Flask, client, login_user) -> None:
     @app.route("/dump-session")
     def dump_session():
         user = current_user

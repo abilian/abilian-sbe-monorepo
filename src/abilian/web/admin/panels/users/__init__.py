@@ -25,7 +25,7 @@ class UsersPanel(AdminPanel):
     label = _l("Users")
     icon = "user"
 
-    def install_additional_rules(self, add_url_rule: Callable):
+    def install_additional_rules(self, add_url_rule: Callable) -> None:
         add_url_rule("/users", view_func=views.JsonUsersList.as_view("json_list"))
         add_url_rule("/new", view_func=views.UserCreate.as_view("new"))
         add_url_rule("/<int:user_id>", view_func=views.UserEdit.as_view("user"))

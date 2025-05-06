@@ -36,7 +36,7 @@ class FormPermissions:
         fields_read: dict[str, Collection[Role]] | None = None,
         fields_write: dict[str, Collection[Role]] | None = None,
         existing: Any | None = None,
-    ):
+    ) -> None:
         """
         :param default: default roles when not specified for field. Can be:
 

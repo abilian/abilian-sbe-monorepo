@@ -69,7 +69,7 @@ __all__ = [
 class FormField(BaseFormField):
     """Discard csrf_token on subform."""
 
-    def process(self, *args, **kwargs):
+    def process(self, *args, **kwargs) -> None:
         super().process(*args, **kwargs)
         # FIXME
         # if isinstance(self.form, SecureForm):
@@ -127,7 +127,7 @@ class FieldList(FilterFieldListMixin, BaseFieldList):
 class ModelFieldList(FilterFieldListMixin, BaseModelFieldList):
     """Filter empty entries before saving and refills before displaying."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         # build visible field list for widget. We must do it during form
@@ -176,7 +176,7 @@ class FileField(BaseFileField):
     blob = None
     blob_attr = "value"
 
-    def __init__(self, *args: Any, **kwargs: Any):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         try:
             self.multiple = kwargs.pop("multiple")
         except KeyError:
@@ -237,7 +237,7 @@ class FileField(BaseFileField):
         self.object_data = value
         return super().process_data(value)
 
-    def process_formdata(self, valuelist: list[str]):
+    def process_formdata(self, valuelist: list[str]) -> None:
         uploads = current_app.extensions["uploads"]
         if self.delete_files_index:
             self.data = None
@@ -264,7 +264,7 @@ class FileField(BaseFileField):
             self.data = stream
             self._has_uploads = True
 
-    def populate_obj(self, obj, name):
+    def populate_obj(self, obj, name) -> None:
         """Store file."""
         from abilian.core.models.blob import Blob
 
@@ -315,7 +315,7 @@ class DateTimeField(Field):
         validators: Any = None,
         use_naive: bool = True,
         **kwargs: Any,
-    ):
+    ) -> None:
         """
         :param use_naive: if `False`, dates are considered entered using user's
         timezone; different users with different timezones will see corrected
@@ -342,7 +342,7 @@ class DateTimeField(Field):
         dt_fmt = locale.datetime_formats["short"].format(time_fmt, date_fmt)
         return format_datetime(self.data, dt_fmt) if self.data else ""
 
-    def process_data(self, value: datetime):
+    def process_data(self, value: datetime) -> None:
         if value is not None:
             if not value.tzinfo:
                 if self.use_naive:
@@ -354,7 +354,7 @@ class DateTimeField(Field):
 
         super().process_data(value)
 
-    def process_formdata(self, valuelist: list[str]):
+    def process_formdata(self, valuelist: list[str]) -> None:
         if valuelist:
             date_str = " ".join(valuelist)
             locale = get_locale()
@@ -381,7 +381,7 @@ class DateTimeField(Field):
                 self.data = None
                 raise ValueError(self.gettext("Not a valid datetime value")) from e
 
-    def populate_obj(self, obj: Any, name: str):
+    def populate_obj(self, obj: Any, name: str) -> None:
         dt = self.data
         if dt and self.use_naive:
             dt = dt.replace(tzinfo=None)
@@ -394,7 +394,9 @@ class DateField(Field):
 
     widget = DateInput()
 
-    def __init__(self, label: str | None = None, validators: Any = None, **kwargs: Any):
+    def __init__(
+        self, label: str | None = None, validators: Any = None, **kwargs: Any
+    ) -> None:
         super().__init__(label, validators, **kwargs)
 
     def _value(self) -> str:
@@ -411,7 +413,7 @@ class DateField(Field):
         )
         return format_date(self.data, date_fmt) if self.data else ""
 
-    def process_formdata(self, valuelist: list[str]):
+    def process_formdata(self, valuelist: list[str]) -> None:
         valuelist = [i for i in valuelist if i.strip()]
 
         if valuelist:
@@ -441,7 +443,7 @@ class Select2Field(SelectField):
         return choices() if callable(choices) else choices
 
     @choices.setter
-    def choices(self, choices):
+    def choices(self, choices) -> None:
         self._choices = choices
 
 
@@ -455,7 +457,7 @@ class Select2MultipleField(SelectMultipleField):
         return choices() if callable(choices) else choices
 
     @choices.setter
-    def choices(self, choices):
+    def choices(self, choices) -> None:
         self._choices = choices
 
 
@@ -501,7 +503,7 @@ class QuerySelect2Field(SelectFieldBase):
         multiple=False,
         collection_class=list,
         **kwargs,
-    ):
+    ) -> None:
         if widget is None:
             widget = Select2(multiple=multiple)
 
@@ -573,7 +575,7 @@ class QuerySelect2Field(SelectFieldBase):
                 self._set_data(data)
         return self._data
 
-    def _set_data(self, data):
+    def _set_data(self, data) -> None:
         if self.multiple and not isinstance(data, self.collection_class):
             data = self.collection_class(data) if data else self.collection_class()
         self._data = data
@@ -604,7 +606,7 @@ class QuerySelect2Field(SelectFieldBase):
         for pk, obj in self._get_object_list():
             yield (pk, self.get_label(obj), predicate(obj))
 
-    def process_formdata(self, valuelist):
+    def process_formdata(self, valuelist) -> None:
         if not valuelist:
             self.data = [] if self.multiple else None
         else:
@@ -613,7 +615,7 @@ class QuerySelect2Field(SelectFieldBase):
                 valuelist = valuelist[0]
             self._formdata = valuelist
 
-    def pre_validate(self, form):
+    def pre_validate(self, form) -> None:
         if not self.allow_blank or self.data is not None:
             data = self.data
             if not self.multiple:
@@ -675,7 +677,7 @@ class JsonSelect2Field(SelectFieldBase):
         model_class=None,
         multiple=False,
         **kwargs,
-    ):
+    ) -> None:
         self.multiple = multiple
 
         if widget is None:
@@ -728,13 +730,13 @@ class JsonSelect2Field(SelectFieldBase):
             self._set_data(data)
         return self._data
 
-    def _set_data(self, data):
+    def _set_data(self, data) -> None:
         self._data = data
         self._formdata = None
 
     data = property(_get_data, _set_data)
 
-    def process_formdata(self, valuelist):
+    def process_formdata(self, valuelist) -> None:
         if not valuelist:
             self.data = [] if self.multiple else None
         else:
@@ -777,7 +779,7 @@ class JsonSelect2MultipleField(JsonSelect2Field):
 class LocaleSelectField(SelectField):
     widget = Select2()
 
-    def __init__(self, *args: Any, **kwargs: Any):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         kwargs["coerce"] = LocaleSelectField.coerce
         kwargs["choices"] = list(i18n.supported_app_locales())
         super().__init__(*args, **kwargs)
@@ -805,7 +807,7 @@ class LocaleSelectField(SelectField):
 class TimezoneField(SelectField):
     widget = Select2()
 
-    def __init__(self, *args: Any, **kwargs: Any):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         kwargs["coerce"] = babel.dates.get_timezone
         kwargs["choices"] = list(i18n.timezones_choices())
         super().__init__(*args, **kwargs)

@@ -14,7 +14,7 @@ class ViewTracker(Service):
     name = "viewtracker"
 
     @staticmethod
-    def record_hit(entity, user):
+    def record_hit(entity, user) -> None:
         # Using user_id here in case user is a threadload proxy
         views = View.query.filter(View.entity == entity, View.user_id == user.id)
         if views.count():

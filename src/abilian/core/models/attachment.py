@@ -108,7 +108,7 @@ class Attachment(Entity):
 
 @sa.event.listens_for(Attachment, "before_insert", propagate=True)
 @sa.event.listens_for(Attachment, "before_update", propagate=True)
-def set_attachment_name(mapper, connection, target):
+def set_attachment_name(mapper, connection, target) -> None:
     if target.name:
         return
 

@@ -39,7 +39,7 @@ class Blob(Model):
     uuid = Column(UUID(), unique=True, nullable=False, default=uuid.uuid4)
     meta = Column(JSONDict(), nullable=False, default=dict)
 
-    def __init__(self, value=None, *args, **kwargs):
+    def __init__(self, value=None, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         if self.uuid is None:
             self.uuid = uuid.uuid4()
@@ -82,7 +82,7 @@ class Blob(Model):
         return file.read_bytes()
 
     @value.setter
-    def value(self, value: bytes | str | IO):
+    def value(self, value: bytes | str | IO) -> None:
         """Store binary content to the repository and update
         `self.meta['md5']`.
 
@@ -107,7 +107,7 @@ class Blob(Model):
             self.meta["mimetype"] = content_type
 
     @value.deleter
-    def value(self):
+    def value(self) -> None:
         """Remove value from repository."""
         from abilian.services.blob_store import session_blob_store
 
@@ -131,7 +131,9 @@ class Blob(Model):
 
 
 @listens_for(sa.orm.Session, "after_flush")
-def _blob_propagate_delete_content(session: Session, flush_context: UOWTransaction):
+def _blob_propagate_delete_content(
+    session: Session, flush_context: UOWTransaction
+) -> None:
     deleted = (obj for obj in session.deleted if isinstance(obj, Blob))
     for blob in deleted:
         del blob.value

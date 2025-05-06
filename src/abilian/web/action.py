@@ -93,7 +93,7 @@ class NamedIconBase(Icon):
 
     template: Template
 
-    def __init__(self, name: str = ""):
+    def __init__(self, name: str = "") -> None:
         self.name = name
 
     def __html__(self) -> str:
@@ -123,7 +123,7 @@ class FAIconStacked(NamedIconBase):
         "</span>"
     )
 
-    def __init__(self, name, second, stack=""):
+    def __init__(self, name, second, stack="") -> None:
         """
         @param name: first icon name, support additional css classes.
 
@@ -163,7 +163,7 @@ class DynamicIcon(Icon):
         size: int | None = None,
         url_args: Callable | None = None,
         **fixed_url_args,
-    ):
+    ) -> None:
         self.endpoint = endpoint
         self.css = css
         self.fixed_url_args = {}
@@ -212,13 +212,13 @@ class StaticIcon(DynamicIcon):
         height: int = 12,
         css: str = "",
         size: int | None = None,
-    ):
+    ) -> None:
         super().__init__(endpoint, width, height, css, size, filename=filename)
 
 
 class Endpoint:
     # FIXME: *args doesn't seem to be relevant.
-    def __init__(self, name: str, *args: Any, **kwargs: Any):
+    def __init__(self, name: str, *args: Any, **kwargs: Any) -> None:
         self.name = name
         self.args = args
         self.kwargs = kwargs
@@ -273,7 +273,7 @@ class Action:
         template_string: Any | None = None,
         button: Any | None = None,
         css: Any | None = None,
-    ):
+    ) -> None:
         """
         :param endpoint: A :class:`Endpoint` instance, a string for a simple
         endpoint, a tuple ``(endpoint_name, kwargs)`` or a callable which
@@ -349,10 +349,10 @@ class Action:
         return self._get_and_call("title")
 
     @title.setter
-    def title(self, title: LazyString | str):
+    def title(self, title: LazyString | str) -> None:
         self._title = title
 
-    def _build_css_class(self):
+    def _build_css_class(self) -> None:
         css_cat = self.CSS_CLASS.format(
             action=self, category=self.category, name=self.name
         )
@@ -364,7 +364,7 @@ class Action:
         return self._get_and_call("description")
 
     @description.setter
-    def description(self, description: LazyString | str):
+    def description(self, description: LazyString | str) -> None:
         self._description = description
 
     @property
@@ -372,7 +372,7 @@ class Action:
         return self._get_and_call("icon")
 
     @icon.setter
-    def icon(self, icon):
+    def icon(self, icon) -> None:
         self._icon = icon
 
     @property
@@ -397,7 +397,7 @@ class Action:
         return endpoint
 
     @endpoint.setter
-    def endpoint(self, endpoint: Endpoint | None):
+    def endpoint(self, endpoint: Endpoint | None) -> None:
         self._endpoint = endpoint
 
     def available(self, context: dict[str, Any]) -> bool:
@@ -490,7 +490,7 @@ class ButtonAction(Action):
         btn_class: str = "default",
         *args: Any,
         **kwargs: Any,
-    ):
+    ) -> None:
         super().__init__(category, name, *args, **kwargs)
         self.submit_name = submit_name
         self.btn_class = btn_class
@@ -507,7 +507,7 @@ class ActionGroup(Action):
         "</div>"
     )
 
-    def __init__(self, category, name, items=(), *args, **kwargs):
+    def __init__(self, category, name, items=(), *args, **kwargs) -> None:
         super().__init__(category, name, *args, **kwargs)
         self.items = list(items)
 
@@ -543,7 +543,7 @@ class ActionGroupItem(Action):
     #: if True, add a divider in dropdowns
     divider = False
 
-    def __init__(self, category, name, divider=False, *args, **kwargs):
+    def __init__(self, category, name, divider=False, *args, **kwargs) -> None:
         super().__init__(category, name, *args, **kwargs)
         self.divider = divider
 
@@ -561,7 +561,7 @@ class ActionRegistry:
 
     __EXTENSION_NAME = "abilian:actions"
 
-    def init_app(self, app: Flask):
+    def init_app(self, app: Flask) -> None:
         if self.__EXTENSION_NAME in app.extensions:
             logger.warning(
                 "ActionRegistry.init_app: actions already enabled on this application"
@@ -586,7 +586,7 @@ class ActionRegistry:
         """Remove all registered actions."""
         self._state["categories"] = {}
 
-    def register(self, *actions: Any):
+    def register(self, *actions: Any) -> None:
         """Register `actions` in the current application. All `actions` must be
         an instance of :class:`.Action` or one of its subclasses.
 
@@ -640,7 +640,7 @@ class ActionRegistry:
         return current_app.extensions[self.__EXTENSION_NAME]
 
     @staticmethod
-    def _init_context(sender: Flask):
+    def _init_context(sender: Flask) -> None:
         g.action_context = {}
 
     @property

@@ -28,7 +28,7 @@ class VisiblePanel(PreferencePanel):
     def is_accessible(self) -> bool:
         return True
 
-    def get(self):
+    def get(self) -> str:
         return "Visible"
 
 
@@ -39,7 +39,7 @@ class AdminPanel(PreferencePanel):
         security = cast("SecurityService", get_service("security"))
         return security.has_role(current_user, "admin")
 
-    def get(self):
+    def get(self) -> str:
         return "Admin"
 
 
@@ -58,7 +58,7 @@ def app(config: type) -> Application:
     return app
 
 
-def test_preferences(app: Application, session: Session):
+def test_preferences(app: Application, session: Session) -> None:
     user = User(email="test@example.com")
     assert UserPreference.query.all() == []
 
@@ -81,7 +81,7 @@ def test_preferences(app: Application, session: Session):
     assert UserPreference.query.all() == []
 
 
-def test_preferences_with_various_types(app: Application, session: Session):
+def test_preferences_with_various_types(app: Application, session: Session) -> None:
     user = User(email="test@example.com")
     preference_service = PreferenceService()
 
@@ -97,7 +97,7 @@ def test_preferences_with_various_types(app: Application, session: Session):
 
 
 @pytest.mark.skip("FIXME ASAP")
-def test_visible_panels(app: Application, db: SQLAlchemy):
+def test_visible_panels(app: Application, db: SQLAlchemy) -> None:
     user = User(email="test@example.com")
 
     with app.test_request_context():

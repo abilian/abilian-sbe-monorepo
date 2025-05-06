@@ -41,7 +41,7 @@ class Cache:
             return path.read_text("utf8")
         return None
 
-    def set(self, key: CacheKey, value: str | bytes):
+    def set(self, key: CacheKey, value: str | bytes) -> None:
         path = self._path(key)
         path.parent.mkdir(parents=True, exist_ok=True)
         if key[0] == "txt":
@@ -53,5 +53,5 @@ class Cache:
 
     __setitem__ = set
 
-    def clear(self):
+    def clear(self) -> None:
         pass

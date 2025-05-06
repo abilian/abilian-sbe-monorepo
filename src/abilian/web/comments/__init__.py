@@ -12,5 +12,5 @@ if TYPE_CHECKING:
     from flask import Flask
 
 
-def register_plugin(app: Flask):
+def register_plugin(app: Flask) -> None:
     CommentExtension(app)

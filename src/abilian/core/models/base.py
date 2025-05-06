@@ -19,7 +19,7 @@ class Model(db.Model):
 
 
 class Info(dict):
-    def __init__(self, **kw: Any):
+    def __init__(self, **kw: Any) -> None:
         for k, v in kw.items():
             self[k] = v
 

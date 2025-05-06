@@ -42,21 +42,21 @@ def read_file(file_name: str) -> bytes:
 
 # To text
 @mark.skipif(not HAS_PDFTOTEXT, reason="requires poppler or poppler-util")
-def test_pdf_to_text(converter: Converter):
+def test_pdf_to_text(converter: Converter) -> None:
     blob = read_file("onepage.pdf")
     text = converter.to_text("", blob, "application/pdf")
     assert text
 
 
 @mark.skipif(not HAS_LIBREOFFICE, reason="requires libreoffice")
-def test_word_to_text(converter: Converter):
+def test_word_to_text(converter: Converter) -> None:
     blob = read_file("test.doc")
     text = converter.to_text("", blob, "application/msword")
     assert text
 
 
 @mark.skipif(not HAS_LIBREOFFICE, reason="requires libreoffice")
-def test_wordx_to_text(converter: Converter):
+def test_wordx_to_text(converter: Converter) -> None:
     blob = read_file("test.docx")
     text = converter.to_text("", blob, "application/msword")
     assert text
@@ -69,21 +69,21 @@ def test_wordx_to_text(converter: Converter):
 
 # To PDF
 @mark.skipif(not HAS_LIBREOFFICE, reason="requires libreoffice")
-def test_odt_to_pdf(converter: Converter):
+def test_odt_to_pdf(converter: Converter) -> None:
     blob = read_file("test.odt")
     pdf = converter.to_pdf("", blob, "application/vnd.oasis.opendocument.text")
     assert mime_sniffer.from_buffer(pdf) == "application/pdf"
 
 
 @mark.skipif(not HAS_LIBREOFFICE, reason="requires libreoffice")
-def test_word_to_pdf(converter: Converter):
+def test_word_to_pdf(converter: Converter) -> None:
     blob = read_file("test.doc")
     pdf = converter.to_pdf("", blob, "application/msword")
     assert mime_sniffer.from_buffer(pdf) == "application/pdf"
 
 
 @mark.skip("maybe bug due to ImageMagik settings")
-def test_image_to_pdf(converter: Converter):
+def test_image_to_pdf(converter: Converter) -> None:
     blob = read_file("picture.jpg")
     pdf = converter.to_pdf("", blob, "image/jpeg")
     assert mime_sniffer.from_buffer(pdf) == "application/pdf"
@@ -91,7 +91,7 @@ def test_image_to_pdf(converter: Converter):
 
 # To images
 @mark.skipif(not HAS_PDFTOTEXT, reason="requires poppler or poppler-util")
-def test_pdf_to_images(converter: Converter):
+def test_pdf_to_images(converter: Converter) -> None:
     if not os.popen("which pdftoppm").read().strip():
         warn("pdftoppm not found, skipping test")
         return
@@ -103,7 +103,7 @@ def test_pdf_to_images(converter: Converter):
 @mark.skipif(
     not HAS_PDFTOTEXT or not HAS_LIBREOFFICE, reason="requires poppler or poppler-util"
 )
-def test_word_to_images(converter: Converter):
+def test_word_to_images(converter: Converter) -> None:
     blob = read_file("test.doc")
     image = converter.to_image("", blob, "application/msword", 0)
     assert mime_sniffer.from_buffer(image) == "image/jpeg"

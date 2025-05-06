@@ -19,7 +19,9 @@ class SQLAlchemy(SAExtension):
     Add our custom driver hacks.
     """
 
-    def apply_driver_hacks(self, app: Flask, info: URL, options: dict[str, Any]):
+    def apply_driver_hacks(
+        self, app: Flask, info: URL, options: dict[str, Any]
+    ) -> None:
         super().apply_driver_hacks(app, info, options)
 
         if info.drivername == "sqlite":

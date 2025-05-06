@@ -13,7 +13,7 @@ from .models import Document
 
 @click.command()
 @with_appcontext
-def antivirus():
+def antivirus() -> None:
     """Schedule documents to antivirus scan."""
 
     documents = Document.query.filter(Document.content_blob != None).options(

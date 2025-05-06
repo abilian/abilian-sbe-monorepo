@@ -17,7 +17,7 @@ db = extensions.db
 
 
 class ErrorManagerMixin(Flask):
-    def setup_logging(self):
+    def setup_logging(self) -> None:
         # Force flask to create application logger before logging
         # configuration; else, flask will overwrite our settings
         assert self.logger
@@ -45,7 +45,7 @@ class ErrorManagerMixin(Flask):
 
         return super().handle_exception(e)
 
-    def _remove_session_save_objects(self):
+    def _remove_session_save_objects(self) -> None:
         """Used during exception handling in case we need to remove() session:
 
         keep instances and merge them in the new session.
@@ -78,18 +78,18 @@ class ErrorManagerMixin(Flask):
         if user is not None and isinstance(user, db.Model):
             request_ctx.user = session.merge(user, load=load)
 
-    def log_exception(self, exc_info):
+    def log_exception(self, exc_info) -> None:
         """Log exception only if Sentry is not used (this avoids getting error
         twice in Sentry)."""
         dsn = self.config.get("SENTRY_DSN")
         if not dsn:
             super().log_exception(exc_info)
 
-    def install_default_handlers(self):
+    def install_default_handlers(self) -> None:
         for http_error_code in (403, 404, 500):
             self.install_default_handler(http_error_code)
 
-    def install_default_handler(self, http_error_code: int):
+    def install_default_handler(self, http_error_code: int) -> None:
         """Install a default error handler for `http_error_code`.
 
         The default error handler renders a template named error404.html

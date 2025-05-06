@@ -33,7 +33,7 @@ class AbilianCsrf:
         "Please try to resubmit the form."
     )
 
-    def init_app(self, app):
+    def init_app(self, app) -> None:
         if "csrf" not in app.extensions:
             msg = (
                 'Please install flask_wtf.csrf.CSRFProtect() as "csrf" in '
@@ -56,16 +56,16 @@ class AbilianCsrf:
         request_started.connect(self.request_started, sender=app)
         app.before_request(self.before_request)
 
-    def flash_csrf_failed_message(self):
+    def flash_csrf_failed_message(self) -> None:
         flash(Markup(self.csrf_failed_message), "error")
 
-    def request_started(self, app):
+    def request_started(self, app) -> None:
         request.csrf_failed = False
 
-    def csrf_error_handler(self, reason):
+    def csrf_error_handler(self, reason) -> None:
         request.csrf_failed = reason
 
-    def before_request(self):
+    def before_request(self) -> None:
         req = unwrap(request)
         failed = req.csrf_failed
 

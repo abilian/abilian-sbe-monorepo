@@ -34,7 +34,7 @@ class WidgetTestModel(Entity):
     price = sa.Column(sa.Integer)
     email = sa.Column(sa.Text)
 
-    def __init__(self, *args, **kw):
+    def __init__(self, *args, **kw) -> None:
         super().__init__(*args, **kw)
         self._display_value_called = False
 
@@ -51,10 +51,10 @@ class DummyForm(Form):
     _groups = {"all": ["name", "price", "email"]}
 
 
-def test_table_view(app: Flask):
+def test_table_view(app: Flask) -> None:
     @default_view(app, WidgetTestModel)
     @app.route("/dummy_view/<object_id>")
-    def dummy_view(object_id):
+    def dummy_view(object_id) -> None:
         pass
 
     request_started.send(app)  # needed for deferJS tag
@@ -72,7 +72,7 @@ def test_table_view(app: Flask):
     assert "10000" in res
 
 
-def test_single_view(app: Flask):
+def test_single_view(app: Flask) -> None:
     model = WidgetTestModel(name="Renault Megane", price=10000, email="joe@example.com")
     panels = [Panel("main", Row("name"), Row("price"), Row("email"))]
     form = DummyForm(obj=model)
@@ -85,7 +85,7 @@ def test_single_view(app: Flask):
     assert "mailto:joe@example.com" in res
 
 
-def test_edit_view(app: Flask):
+def test_edit_view(app: Flask) -> None:
     g.deferred_js = []
     g.view = {"buttons": []}
 
@@ -106,33 +106,33 @@ EXPECTED = (
 )
 
 
-def test_http():
+def test_http() -> None:
     value = "http://example.com"
     result = linkify_url(value)
     assert result == EXPECTED
 
 
-def test_no_http():
+def test_no_http() -> None:
     value = "example.com"
     result = linkify_url(value)
     assert result == EXPECTED
 
 
-def test1():
+def test1() -> None:
     result = text2html("a")
     assert result == "a"
 
 
-def test2():
+def test2() -> None:
     result = text2html("a\nb")
     assert str(result) == "<p>a</p>\n<p>b</p>"
 
 
-def test3():
+def test3() -> None:
     result = text2html("a\n\nb")
     assert str(result) == "<p>a</p>\n<p>b</p>"
 
 
-def test4():
+def test4() -> None:
     result = text2html("a\n<a>toto</a>")
     assert str(result) == "<p>a</p>\n<p>&lt;a&gt;toto&lt;/a&gt;</p>"

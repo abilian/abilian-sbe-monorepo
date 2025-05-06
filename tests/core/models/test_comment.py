@@ -22,7 +22,7 @@ class CommentableContent(Entity):
     pass
 
 
-def test_commentable_interface():
+def test_commentable_interface() -> None:
     assert is_commentable(CommentableContent)
 
     instance = CommentableContent(name="test instance")
@@ -34,7 +34,7 @@ def test_commentable_interface():
     assert not is_commentable(object())
 
 
-def test_cannot_register_non_entities():
+def test_cannot_register_non_entities() -> None:
     class Dummy:
         pass
 
@@ -42,7 +42,7 @@ def test_cannot_register_non_entities():
         register(Dummy)  # type: ignore
 
 
-def test_default_ordering(app: Flask, db: SQLAlchemy):
+def test_default_ordering(app: Flask, db: SQLAlchemy) -> None:
     commentable = CommentableContent(name="commentable objet")
     db.session.add(commentable)
 
@@ -57,7 +57,7 @@ def test_default_ordering(app: Flask, db: SQLAlchemy):
     assert query.all() == [c1, c2]
 
 
-def test_default_ordering_reverse(app: Flask, db: SQLAlchemy):
+def test_default_ordering_reverse(app: Flask, db: SQLAlchemy) -> None:
     commentable = CommentableContent(name="commentable objet")
     db.session.add(commentable)
     now = datetime.now()

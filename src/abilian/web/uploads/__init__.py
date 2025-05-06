@@ -12,5 +12,5 @@ if TYPE_CHECKING:
     from abilian.app import Application
 
 
-def register_plugin(app: Application):
+def register_plugin(app: Application) -> None:
     FileUploadsExtension(app)

@@ -94,15 +94,15 @@ class AuthServiceState(ServiceState):
     bp_access_controllers: dict[str | None, list[Callable]]
     endpoint_access_controllers: dict[str, list[Callable]]
 
-    def __init__(self, service: AuthService, *args: Any, **kwargs: Any):
+    def __init__(self, service: AuthService, *args: Any, **kwargs: Any) -> None:
         super().__init__(service, *args, **kwargs)
         self.bp_access_controllers = {None: []}
         self.endpoint_access_controllers = {}
 
-    def add_bp_access_controller(self, blueprint: str, func: Callable):
+    def add_bp_access_controller(self, blueprint: str, func: Callable) -> None:
         self.bp_access_controllers.setdefault(blueprint, []).append(func)
 
-    def add_endpoint_access_controller(self, endpoint: str, func: Callable):
+    def add_endpoint_access_controller(self, endpoint: str, func: Callable) -> None:
         self.endpoint_access_controllers.setdefault(endpoint, []).append(func)
 
 
@@ -111,7 +111,7 @@ class AuthService(Service):
     AppStateClass = AuthServiceState
     login_url_prefix: str
 
-    def init_app(self, app: Flask):
+    def init_app(self, app: Flask) -> None:
         login_manager.init_app(app)
         login_manager.login_view = "login.login_form"
 
@@ -154,7 +154,7 @@ class AuthService(Service):
         user_loaded.send(app, user=user)
         return user
 
-    def user_logged_in(self, app: Application, user: User):
+    def user_logged_in(self, app: Application, user: User) -> None:
         # `g.user` is used as `current_user`, but `current_user` is actually looking
         # for `request.user` whereas `g` is on app local stack.
         #
@@ -174,7 +174,7 @@ class AuthService(Service):
             )
         )
 
-    def user_logged_out(self, app: Application, user: User):
+    def user_logged_out(self, app: Application, user: User) -> None:
         if hasattr(g, "user"):
             del g.user
             del g.logged_user
@@ -235,7 +235,7 @@ class AuthService(Service):
 
         return None
 
-    def update_user_session_data(self):
+    def update_user_session_data(self) -> None:
         user = current_user
         if current_user.is_anonymous:
             return
@@ -251,7 +251,7 @@ class AuthService(Service):
         refresh_login_session(user)
 
 
-def refresh_login_session(user: User):
+def refresh_login_session(user: User) -> None:
     now = datetime.utcnow()
     session = LoginSession.query.get_active_for(user)
     if not session:

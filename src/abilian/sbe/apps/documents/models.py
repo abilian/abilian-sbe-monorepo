@@ -116,7 +116,7 @@ class CmisObject(InheritSecurity, Entity):
     # Convenience default values
     content_length = 0
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         # ensure 'title' prevails over 'name'
         if "title" in kwargs and "name" in kwargs:
             title = kwargs.get("title")
@@ -689,7 +689,7 @@ class Document(BaseContent, PathAndSecurityIndexable):
         return lock
 
     @lock.setter
-    def lock(self, user):
+    def lock(self, user) -> None:
         """Allow to do `document.lock = user` to set a lock for user.
 
         If user is None, the lock is released.
@@ -701,7 +701,7 @@ class Document(BaseContent, PathAndSecurityIndexable):
         self.set_lock(user=user)
 
     @lock.deleter
-    def lock(self):
+    def lock(self) -> None:
         """Remove lock, if any.
 
         `del document.lock` can be safely done even if no lock is set.
@@ -711,7 +711,7 @@ class Document(BaseContent, PathAndSecurityIndexable):
             del meta["lock"]
             self.meta.changed()
 
-    def set_lock(self, user=None):
+    def set_lock(self, user=None) -> None:
         if user is None:
             user = current_user
 

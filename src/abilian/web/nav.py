@@ -24,7 +24,7 @@ if typing.TYPE_CHECKING:
     from abilian.web.action import Endpoint, Status
 
 
-def setup_nav_and_breadcrumbs(_app: Flask):
+def setup_nav_and_breadcrumbs(_app: Flask) -> None:
     """Listener for `request_started` event.
 
     If you want to customize first items of breadcrumbs, override
@@ -35,7 +35,7 @@ def setup_nav_and_breadcrumbs(_app: Flask):
     init_breadcrumbs()
 
 
-def init_breadcrumbs():
+def init_breadcrumbs() -> None:
     """Insert the first element in breadcrumbs.
 
     This happens during `request_started` event, which is triggered
@@ -51,7 +51,7 @@ class NavItem(Action):
 
     def __init__(
         self, category: str, name: str, divider: bool = False, *args: Any, **kwargs: Any
-    ):
+    ) -> None:
         category = f"navigation:{category}"
         super().__init__(category, name, *args, **kwargs)
         self.divider = divider
@@ -95,18 +95,18 @@ class NavGroup(NavItem):
 
     def __init__(
         self, category: str, name: str, items: tuple[NavItem] = (), *args, **kwargs
-    ):
+    ) -> None:
         super().__init__(category, name, *args, **kwargs)
         self.items = list(items)
         self._paths = {self.path}
         for i in self.items:
             self._paths.add(i.path)
 
-    def append(self, item: NavItem):
+    def append(self, item: NavItem) -> None:
         self.items.append(item)
         self._paths.add(item.path)
 
-    def insert(self, pos: int, item: NavItem):
+    def insert(self, pos: int, item: NavItem) -> None:
         self.items.insert(pos, item)
         self._paths.add(item.path)
 
@@ -155,7 +155,7 @@ class BreadcrumbItem:
         url: str | Endpoint = "#",
         icon: str | None = None,
         description: Any | None = None,
-    ):
+    ) -> None:
         # don't test 'label or...': if label is a lazy_gettext, it will be
         # resolved. If this item is created in a url_value_preprocessor, it will
         # setup i18n before auth has loaded user, so i18n will fallback on browser

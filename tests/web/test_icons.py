@@ -7,17 +7,17 @@ from __future__ import annotations
 from abilian.web.action import FAIcon, Glyphicon, StaticIcon
 
 
-def test_glyphicons():
+def test_glyphicons() -> None:
     icon = Glyphicon("ok")
     assert icon.__html__() == '<i class="glyphicon glyphicon-ok"></i>'
 
 
-def test_faicons():
+def test_faicons() -> None:
     icon = FAIcon("check")
     assert icon.__html__() == '<i class="fa fa-check"></i>'
 
 
-def test_staticicon(app):
+def test_staticicon(app) -> None:
     with app.test_request_context():
         icon = StaticIcon("path/to/icon.png")
         assert (

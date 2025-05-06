@@ -17,11 +17,11 @@ class Redis:
 
     client = None
 
-    def __init__(self, app: Flask | None = None):
+    def __init__(self, app: Flask | None = None) -> None:
         if app is not None:
             self.init_app(app)
 
-    def init_app(self, app: Flask):
+    def init_app(self, app: Flask) -> None:
         uri = app.config.get("REDIS_URI")
         if app.testing:
             return

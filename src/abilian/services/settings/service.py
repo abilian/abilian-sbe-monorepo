@@ -21,7 +21,7 @@ class SettingsNamespace:
     Basically it prefixes keys with namespace name and a colon.
     """
 
-    def __init__(self, name: str, service: SettingsService):
+    def __init__(self, name: str, service: SettingsService) -> None:
         self.name = name
         self.service = service
 
@@ -102,7 +102,7 @@ class SettingsService(Service):
         s = self._get_setting(key)
         return s.value
 
-    def set(self, key: str, value: Any, type_: str | None = None):
+    def set(self, key: str, value: Any, type_: str | None = None) -> None:
         try:
             s = self._get_setting(key)
         except KeyError as e:
@@ -116,7 +116,7 @@ class SettingsService(Service):
         db.session.add(s)
         s.value = value
 
-    def delete(self, key: str, silent: bool = True):
+    def delete(self, key: str, silent: bool = True) -> None:
         try:
             s = self._get_setting(key)
         except KeyError:

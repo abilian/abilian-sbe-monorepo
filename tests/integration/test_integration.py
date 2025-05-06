@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Never, cast
 
 from devtools import debug
 
@@ -36,7 +36,7 @@ def all_rules_to_test(app: Application) -> Iterator[Rule]:
     return sorted(rules, key=lambda r: r.endpoint)
 
 
-def test_all_simple_endpoints_with_no_login(client, app: Application):
+def test_all_simple_endpoints_with_no_login(client, app: Application) -> None:
     warnings.simplefilter("ignore")
     security_service.start(ignore_state=True)
 
@@ -54,7 +54,9 @@ def test_all_simple_endpoints_with_no_login(client, app: Application):
             raise
 
 
-def test_all_simple_endpoints_as_admin(client, app: Application, db: SQLAlchemy):
+def test_all_simple_endpoints_as_admin(
+    client, app: Application, db: SQLAlchemy
+) -> None:
     # FIXME: not done yet
     warnings.simplefilter("ignore")
     # app.services['security'].start()
@@ -90,11 +92,11 @@ def test_all_simple_endpoints_as_admin(client, app: Application, db: SQLAlchemy)
     print()
 
 
-def test_login_as_admin(client, db: SQLAlchemy):
+def test_login_as_admin(client, db: SQLAlchemy) -> None:
     login_as_admin(client, db)
 
 
-def test_failed_login(client, db: SQLAlchemy):
+def test_failed_login(client, db: SQLAlchemy) -> None:
     data = {"email": "test@example.com", "password": "admin"}
     r = client.post(url_for("login.login_post"), data=data)
     assert r.status_code == 401
@@ -103,7 +105,7 @@ def test_failed_login(client, db: SQLAlchemy):
 #
 # Util
 #
-def login_as_admin(client, db: SQLAlchemy):
+def login_as_admin(client, db: SQLAlchemy) -> None:
     email = "admin@example.com"
     password = "secret"  # noqa: S105
     user = User(email=email, can_login=True, password=password)
@@ -122,5 +124,5 @@ def login_as_admin(client, db: SQLAlchemy):
     assert r.status_code == 302
 
 
-def logout(client):
+def logout(client) -> Never:
     raise NotImplementedError

@@ -16,13 +16,13 @@ class ServiceManager:
 
     services: dict[str, Service] = field(factory=dict)
 
-    def add_service(self, name: str, service: Service):
+    def add_service(self, name: str, service: Service) -> None:
         self.services[name] = service
 
     def get_service(self, name: str) -> Service:
         return self.services[name]
 
-    def start_services(self, services: list[str] | None = None):
+    def start_services(self, services: list[str] | None = None) -> None:
         """Start all services. If a service is already running, nothing happens."""
         if services is None:
             services = self.services.values()
@@ -30,7 +30,7 @@ class ServiceManager:
             if not service.running:
                 service.start()
 
-    def stop_services(self):
+    def stop_services(self) -> None:
         """Stop all services. If a service is not running, nothing happens."""
         for service in self.services.values():
             if service.running:

@@ -96,10 +96,10 @@ class BaseVocabulary(db.Model, metaclass=_VocabularyMeta):
         label = None
         group = None
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.label
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         tpl = (
             "<{module}.{cls} id={id} label={label} position={position} "
             "active={active} default={default}>"
@@ -118,14 +118,14 @@ class BaseVocabulary(db.Model, metaclass=_VocabularyMeta):
 
 @sa.event.listens_for(BaseVocabulary, "before_insert", propagate=True)
 @sa.event.listens_for(BaseVocabulary, "before_update", propagate=True)
-def strip_label(mapper, connection, target):
+def strip_label(mapper, connection, target) -> None:
     """Strip labels at ORM level so the unique=True means something."""
     if target.label is not None:
         target.label = target.label.strip()
 
 
 @sa.event.listens_for(BaseVocabulary, "before_insert", propagate=True)
-def _before_insert(mapper, connection, target):
+def _before_insert(mapper, connection, target) -> None:
     """Set item to last position if position not defined."""
     if target.position is None:
         func = sa.sql.func

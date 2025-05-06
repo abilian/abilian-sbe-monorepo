@@ -23,7 +23,9 @@ if TYPE_CHECKING:
     from abilian.services.preferences.service import PreferenceService
 
 
-def test_unsubscribe(app: Application, client: Client, db: SQLAlchemy, app_context):
+def test_unsubscribe(
+    app: Application, client: Client, db: SQLAlchemy, app_context
+) -> None:
     user = User(
         email="user_1@example.com",
         password="abc",  # noqa: S106
@@ -50,7 +52,7 @@ def test_unsubscribe(app: Application, client: Client, db: SQLAlchemy, app_conte
     assert not prefs["sbe:notifications:daily"]
 
 
-def test_mail_templates(db: SQLAlchemy, app_context):
+def test_mail_templates(db: SQLAlchemy, app_context) -> None:
     # this actually tests that templates are parsed without errors, not the
     # rendered content
     user = User(email="user_1@example.com")

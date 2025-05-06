@@ -9,7 +9,7 @@ from abilian.core.entities import Entity
 # Not used in UI, currently.
 
 
-def add_to_recent_items(entity, type="ignored"):
+def add_to_recent_items(entity, type="ignored") -> None:
     if not isinstance(entity, Entity):
         return
     object_type = entity.object_type

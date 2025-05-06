@@ -9,7 +9,7 @@ import collections
 import re
 from datetime import datetime
 from inspect import isclass
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any, Never, cast
 
 import sqlalchemy as sa
 from flask import current_app
@@ -49,7 +49,7 @@ class ValidationError(Exception):
     pass
 
 
-def validation_listener(mapper: Mapper, connection: Connection, target: Any):
+def validation_listener(mapper: Mapper, connection: Connection, target: Any) -> None:
     if hasattr(target, "_validate"):
         target._validate()
 
@@ -61,17 +61,17 @@ event.listen(mapper, "before_update", validation_listener)
 #
 # CRUD events. TODO: connect to signals instead?
 #
-def before_insert_listener(mapper: Mapper, connection: Connection, target: Any):
+def before_insert_listener(mapper: Mapper, connection: Connection, target: Any) -> None:
     if hasattr(target, "_before_insert"):
         target._before_insert()
 
 
-def before_update_listener(mapper: Mapper, connection: Connection, target: Any):
+def before_update_listener(mapper: Mapper, connection: Connection, target: Any) -> None:
     if hasattr(target, "_before_update"):
         target._before_update()
 
 
-def before_delete_listener(mapper: Mapper, connection: Connection, target: Any):
+def before_delete_listener(mapper: Mapper, connection: Connection, target: Any) -> None:
     if hasattr(target, "_before_delete"):
         target._before_delete()
 
@@ -81,21 +81,21 @@ event.listen(mapper, "before_update", before_update_listener)
 event.listen(mapper, "before_delete", before_delete_listener)
 
 
-def auto_slug_on_insert(mapper: Mapper, connection: Connection, target: Any):
+def auto_slug_on_insert(mapper: Mapper, connection: Connection, target: Any) -> None:
     """Generate a slug from :prop:`Entity.auto_slug` for new entities, unless
     slug is already set."""
     if target.slug is None and target.name:
         target.slug = target.auto_slug
 
 
-def auto_slug_after_insert(mapper: Mapper, connection: Connection, target: Any):
+def auto_slug_after_insert(mapper: Mapper, connection: Connection, target: Any) -> None:
     """Generate a slug from entity_type and id, unless slug is already set."""
     if target.slug is None:
         target.slug = f"{target.entity_class.lower()}{target.SLUG_SEPARATOR}{target.id}"
 
 
 @event.listens_for(Session, "after_attach")
-def setup_default_permissions(session: Session, instance: Any):
+def setup_default_permissions(session: Session, instance: Any) -> None:
     """Setup default permissions on newly created entities according to.
 
     :attr:`Entity.__default_permissions__`.
@@ -110,7 +110,7 @@ def setup_default_permissions(session: Session, instance: Any):
     _setup_default_permissions(instance)
 
 
-def _setup_default_permissions(instance: Any):
+def _setup_default_permissions(instance: Any) -> None:
     """Separate method to conveniently call it from scripts for example."""
     from abilian.services import get_service
 
@@ -239,7 +239,9 @@ class EntityMeta(BaseMeta):
         event.listen(cls, "after_insert", auto_slug_after_insert)
         return cls
 
-    def __init__(cls, classname: str, bases: tuple[type, ...], d: dict[str, Any]):
+    def __init__(
+        cls, classname: str, bases: tuple[type, ...], d: dict[str, Any]
+    ) -> None:
         bases = cls.__bases__
         super().__init__(classname, bases, d)
 
@@ -367,7 +369,7 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
     __searchable__: frozenset = frozenset()
     __auditable__: frozenset = frozenset()
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         db.Model.__init__(self, *args, **kwargs)
         BaseMixin.__init__(self)
 
@@ -474,7 +476,7 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
     def _indexable_tag_text(self) -> str:
         return " ".join(str(tag.label) for tag in self._indexable_tags)
 
-    def clone(self):
+    def clone(self) -> Never:
         """Copy an entity: copy every field, except the id and sqlalchemy
         internals, without forgetting about the n-n relationships.
 
@@ -498,7 +500,7 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
 
 # TODO: make this unecessary
 @event.listens_for(Entity, "class_instrument", propagate=True)
-def register_metadata(cls: type[Entity]):
+def register_metadata(cls: type[Entity]) -> None:
     # TODO: use SQLAlchemy 0.8 introspection
     if hasattr(cls, "__table__") and cls.__table__ is not None:
         columns = cls.__table__.columns
@@ -512,7 +514,7 @@ def register_metadata(cls: type[Entity]):
 @event.listens_for(Session, "before_flush")
 def polymorphic_update_timestamp(
     session: Session, flush_context: UOWTransaction, instances: Any
-):
+) -> None:
     """This listener ensures an update statement is emited for "entity" table
     to update 'updated_at'.
 

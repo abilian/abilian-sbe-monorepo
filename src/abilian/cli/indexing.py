@@ -35,7 +35,7 @@ COMMIT = object()
 @click.option("--progressive/--no-progressive")
 @click.option("--clear/--no-clear")
 @with_appcontext
-def reindex(clear: bool, progressive: bool, batch_size: int):
+def reindex(clear: bool, progressive: bool, batch_size: int) -> None:
     """Reindex all content; optionally clear index before.
 
     All is done in asingle transaction by default.
@@ -51,7 +51,7 @@ def reindex(clear: bool, progressive: bool, batch_size: int):
 
 
 class Reindexer:
-    def __init__(self, clear: bool, progressive: bool, batch_size: int):
+    def __init__(self, clear: bool, progressive: bool, batch_size: int) -> None:
         self.clear = clear
         self.progressive = progressive
         self.batch_size = int(batch_size or 0)
@@ -66,7 +66,7 @@ class Reindexer:
         strategy = progressive_mode if self.progressive else single_transaction
         self.strategy = strategy(self.index, clear=self.clear)
 
-    def reindex_all(self):
+    def reindex_all(self) -> None:
         next(self.strategy)  # starts generator
 
         indexed_classes = self.index_service.app_state.indexed_classes
@@ -79,7 +79,7 @@ class Reindexer:
         with contextlib.suppress(StopIteration):
             self.strategy.close()
 
-    def reindex_class(self, cls: Entity):
+    def reindex_class(self, cls: Entity) -> None:
         current_object_type = cls._object_type()
 
         if not self.clear and current_object_type not in self.cleared:
@@ -123,7 +123,7 @@ class Reindexer:
 
         self.strategy.send(COMMIT)
 
-    def reindex_batch(self, query, current_object_type, adapter, bar):
+    def reindex_batch(self, query, current_object_type, adapter, bar) -> None:
         count = 0
         for obj in query.yield_per(1000):
             count += 1
