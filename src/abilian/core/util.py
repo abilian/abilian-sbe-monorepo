@@ -233,8 +233,7 @@ def encode_string(string_or_bytes: str | bytes) -> bytes:
 
     if isinstance(string_or_bytes, str):
         return string_or_bytes.encode()
-    else:
-        return string_or_bytes
+    return string_or_bytes
 
 
 def md5(data: str | bytes | None):

@@ -33,8 +33,7 @@ class MutationDict(Mutable, dict):
 
             # this call will raise ValueError
             return Mutable.coerce(key, value)
-        else:
-            return value
+        return value
 
     #  pickling support. see:
     #  http://docs.sqlalchemy.org/en/rel_0_8/orm/extensions/mutable.html#supporting-pickling
@@ -89,8 +88,7 @@ class MutationList(Mutable, list):
 
             # this call will raise ValueError
             return Mutable.coerce(key, value)
-        else:
-            return value
+        return value
 
     #  pickling support. see:
     #  http://docs.sqlalchemy.org/en/rel_0_8/orm/extensions/mutable.html#supporting-pickling
@@ -227,21 +225,19 @@ class UUID(sa.types.TypeDecorator):
     def load_dialect_impl(self, dialect: Dialect) -> CHAR:
         if dialect.name == "postgresql":
             return dialect.type_descriptor(sa.dialects.postgresql.UUID())
-        else:
-            return dialect.type_descriptor(sa.types.CHAR(32))
+        return dialect.type_descriptor(sa.types.CHAR(32))
 
     def process_bind_param(
         self, value: None | str | uuid.UUID, dialect: Dialect
     ) -> str | None:
         if value is None:
             return value
-        elif dialect.name == "postgresql":
+        if dialect.name == "postgresql":
             return str(value)
-        else:
-            if not isinstance(value, uuid.UUID):
-                value = uuid.UUID(value)
-            # hexstring
-            return value.hex
+        if not isinstance(value, uuid.UUID):
+            value = uuid.UUID(value)
+        # hexstring
+        return value.hex
 
     def process_result_value(
         self, value: str | None, dialect: Dialect
@@ -251,8 +247,7 @@ class UUID(sa.types.TypeDecorator):
     def compare_against_backend(self, dialect, conn_type):
         if dialect.name == "postgresql":
             return isinstance(conn_type, sa.dialects.postgresql.UUID)
-        else:
-            return isinstance(conn_type, sa.types.CHAR)
+        return isinstance(conn_type, sa.types.CHAR)
 
 
 class Locale(sa.types.TypeDecorator):

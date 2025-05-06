@@ -29,7 +29,7 @@ def url_for(obj: Any, **kw: Any) -> str:
     except KeyError:
         if hasattr(obj, "_url"):
             return obj._url
-        elif hasattr(obj, "url"):
+        if hasattr(obj, "url"):
             return obj.url
 
     raise BuildError(repr(obj), kw, "GET")

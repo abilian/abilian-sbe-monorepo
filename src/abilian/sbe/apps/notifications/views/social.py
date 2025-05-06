@@ -49,8 +49,7 @@ def debug_social():
 
     if status:
         return msg.html
-    else:
-        return "No message sent."
+    return "No message sent."
 
 
 @route("/unsubscribe_sbe/<token>/", methods=["GET", "POST"])
@@ -65,10 +64,9 @@ def unsubscribe_sbe(token: str) -> str:
             "notifications/confirm-unsubscribe.html", token=token
         )
 
-    elif request.method == "POST":
+    if request.method == "POST":
         preferences = cast(PreferenceService, get_service("preferences"))
         preferences.set_preferences(user, **{"sbe:notifications:daily": False})
         db.session.commit()
         return render_template_i18n("notifications/unsubscribed.html", token=token)
-    else:
-        raise MethodNotAllowed
+    raise MethodNotAllowed

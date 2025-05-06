@@ -135,12 +135,11 @@ def change_view_style(folder_id):
                 ".folder_view", folder_id=folder_id, community_id=folder.community.slug
             )
         )
-    else:
-        return redirect(
-            url_for(
-                ".folder_view", folder_id=folder_id, community_id=folder.community.slug
-            )
+    return redirect(
+        url_for(
+            ".folder_view", folder_id=folder_id, community_id=folder.community.slug
         )
+    )
 
 
 @route("/folder/<int:folder_id>/json")
@@ -352,7 +351,7 @@ def permissions_update(folder_id):
             )
         )
 
-    elif action == "add-user-role":
+    if action == "add-user-role":
         role = request.form.get("role").lower()
         user_id = int(request.form.get("user"))
         user = User.query.get(user_id)
@@ -366,7 +365,7 @@ def permissions_update(folder_id):
             )
         )
 
-    elif action == "add-group-role":
+    if action == "add-group-role":
         role = request.form.get("role").lower()
         group_id = int(request.form.get("group"))
         group = Group.query.get(group_id)
@@ -380,77 +379,76 @@ def permissions_update(folder_id):
             )
         )
 
-    else:
-        action, args = request.form.items()[0]
-        role, object_id = args.split(":")
-        role = role.lower()
-        object_id = int(object_id)
+    action, args = request.form.items()[0]
+    role, object_id = args.split(":")
+    role = role.lower()
+    object_id = int(object_id)
 
-        if action == "delete-user-role":
-            user = User.query.get(object_id)
-            # remove role in a subtransaction, to prevent manager shoot himself in the
-            # foot
-            transaction = db.session.begin_nested()
-            security.ungrant_role(user, role, folder)
+    if action == "delete-user-role":
+        user = User.query.get(object_id)
+        # remove role in a subtransaction, to prevent manager shoot himself in the
+        # foot
+        transaction = db.session.begin_nested()
+        security.ungrant_role(user, role, folder)
 
-            if (
-                user == current_user
-                and role == "manager"
-                and not has_permission(current_user, "manage", folder, inherit=True)
-            ):
-                transaction.rollback()
-                flash(
-                    _(
-                        'Cannot remove "manager" local role for yourself: you '
-                        'don\'t have "manager" role (either by security inheritance '
-                        "or by group membership)"
-                    ),
-                    "error",
-                )
-            else:
-                reindex_tree(folder)
-                transaction.commit()
-                flash(
-                    _("Role {role} for user {user} removed on folder {folder}").format(
-                        role=role, user=user.name, folder=folder.name
-                    ),
-                    "success",
-                )
-        elif action == "delete-group-role":
-            group = Group.query.get(object_id)
-            # remove role in a subtransaction, to prevent manager shoot himself in the
-            # foot
-            transaction = db.session.begin_nested()
-            security.ungrant_role(group, role, folder)
-
-            if role == "manager" and not has_permission(
-                current_user, "manage", folder, inherit=True
-            ):
-                transaction.rollback()
-                flash(
-                    _(
-                        'Cannot remove "manager" local role for group "{group}": you'
-                        ' don\'t have "manager" role by security inheritance or by '
-                        "local role"
-                    ).format(group=group.name),
-                    "error",
-                )
-            else:
-                flash(
-                    _(
-                        "Role {role} for group {group} removed on folder {folder}"
-                    ).format(role=role, group=group.name, folder=folder.name),
-                    "success",
-                )
-                reindex_tree(folder)
-                transaction.commit()
-
-        db.session.commit()
-        return redirect(
-            url_for(
-                ".permissions", folder_id=folder_id, community_id=folder.community.slug
+        if (
+            user == current_user
+            and role == "manager"
+            and not has_permission(current_user, "manage", folder, inherit=True)
+        ):
+            transaction.rollback()
+            flash(
+                _(
+                    'Cannot remove "manager" local role for yourself: you '
+                    'don\'t have "manager" role (either by security inheritance '
+                    "or by group membership)"
+                ),
+                "error",
             )
+        else:
+            reindex_tree(folder)
+            transaction.commit()
+            flash(
+                _("Role {role} for user {user} removed on folder {folder}").format(
+                    role=role, user=user.name, folder=folder.name
+                ),
+                "success",
+            )
+    elif action == "delete-group-role":
+        group = Group.query.get(object_id)
+        # remove role in a subtransaction, to prevent manager shoot himself in the
+        # foot
+        transaction = db.session.begin_nested()
+        security.ungrant_role(group, role, folder)
+
+        if role == "manager" and not has_permission(
+            current_user, "manage", folder, inherit=True
+        ):
+            transaction.rollback()
+            flash(
+                _(
+                    'Cannot remove "manager" local role for group "{group}": you'
+                    ' don\'t have "manager" role by security inheritance or by '
+                    "local role"
+                ).format(group=group.name),
+                "error",
+            )
+        else:
+            flash(
+                _(
+                    "Role {role} for group {group} removed on folder {folder}"
+                ).format(role=role, group=group.name, folder=folder.name),
+                "success",
+            )
+            reindex_tree(folder)
+            transaction.commit()
+
+    db.session.commit()
+    return redirect(
+        url_for(
+            ".permissions", folder_id=folder_id, community_id=folder.community.slug
         )
+    )
 
 
 @route("/folder/<int:folder_id>/permissions_export")
@@ -606,32 +604,31 @@ def folder_post(folder_id: int) -> Response:
     if action == "edit":
         return folder_edit(folder)
 
-    elif action == "upload":
+    if action == "upload":
         return upload_new(folder)
 
-    elif action == "download":
+    if action == "download":
         return download_multiple(folder)
 
-    elif action == "delete":
+    if action == "delete":
         return delete_multiple(folder)
 
-    elif action == "new":
+    if action == "new":
         return create_subfolder(folder)
 
-    elif action == "move":
+    if action == "move":
         return move_multiple(folder)
 
-    elif action == "change-owner":
+    if action == "change-owner":
         return change_owner(folder)
 
-    else:
-        # Probably an error or a hack attempt.
-        # Logger will inform sentry if enabled
-        logger.remove()
-        logger.add(sys.stderr, format=tracing_formatter)
-        logger.error("Unknown folder action.")
-        flash(_("Unknown action."), "error")
-        return redirect(url_for(folder))
+    # Probably an error or a hack attempt.
+    # Logger will inform sentry if enabled
+    logger.remove()
+    logger.add(sys.stderr, format=tracing_formatter)
+    logger.error("Unknown folder action.")
+    flash(_("Unknown action."), "error")
+    return redirect(url_for(folder))
 
 
 def folder_edit(folder):

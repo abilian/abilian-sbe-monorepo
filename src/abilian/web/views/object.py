@@ -289,20 +289,19 @@ class ObjectEdit(ObjectView):
     def edit(self, redirect_to=None):
         if self.validate():
             return self.form_valid(redirect_to=redirect_to)
-        else:
-            if request.csrf_failed:
-                errors = self.form.errors
-                csrf_failed = errors.pop("csrf_token", False)
-                if csrf_failed and not errors:
-                    # failed only because of invalid/expired csrf, no error on
-                    # form
-                    return self.form_csrf_invalid()
+        if request.csrf_failed:
+            errors = self.form.errors
+            csrf_failed = errors.pop("csrf_token", False)
+            if csrf_failed and not errors:
+                # failed only because of invalid/expired csrf, no error on
+                # form
+                return self.form_csrf_invalid()
 
-            resp = self.form_invalid()
-            if resp:
-                return resp
+        resp = self.form_invalid()
+        if resp:
+            return resp
 
-            flash(_("Please fix the error(s) below"), "error")
+        flash(_("Please fix the error(s) below"), "error")
 
         # if we end here then something wrong has happened: show form with error
         # messages
@@ -387,8 +386,7 @@ class ObjectEdit(ObjectView):
 
             if redirect_to:
                 return redirect(redirect_to)
-            else:
-                return self.redirect_to_view()
+            return self.redirect_to_view()
 
     def form_invalid(self):
         """When a form doesn't validate this method is called.

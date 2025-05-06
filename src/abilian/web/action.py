@@ -429,8 +429,7 @@ class Action:
 
         if callable(self.condition):
             return self.condition(context)
-        else:
-            return bool(self.condition)
+        return bool(self.condition)
 
     def render(self, **kwargs: Any) -> Markup:
         if not self.template:

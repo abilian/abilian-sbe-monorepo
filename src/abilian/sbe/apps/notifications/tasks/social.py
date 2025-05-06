@@ -73,8 +73,7 @@ def send_daily_social_digest_to(user: User) -> int:
     if message:
         mail.send(message)
         return 1
-    else:
-        return 0
+    return 0
 
 
 def make_message(user: User) -> Message | None:

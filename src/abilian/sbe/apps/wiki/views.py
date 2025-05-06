@@ -249,33 +249,32 @@ class PageEdit(BasePageView, ObjectEdit):
             if self.last_revision.body_src == current.body_src and self.form.validate():
                 # only title change? cannot show diff: save if valid
                 return self.form_valid()
-            else:
-                edited_src = field.data
-                field.data = current.body_src
-                edited_diff = [
-                    l
-                    for l in difflib.ndiff(
-                        self.last_revision.body_src.splitlines(True),
-                        edited_src.splitlines(True),
-                    )
-                    if l[0] != "?"
-                ]
-                current_diff = [
-                    l
-                    for l in difflib.ndiff(
-                        self.last_revision.body_src.splitlines(True),
-                        current.body_src.splitlines(True),
-                    )
-                    if l[0] != "?"
-                ]
-                ctx = {
-                    "current": current,
-                    "current_diff": current_diff,
-                    "edited_diff": edited_diff,
-                }
-                field.errors.append(
-                    Markup(render_template("wiki/edit_conflict_error.html", **ctx))
+            edited_src = field.data
+            field.data = current.body_src
+            edited_diff = [
+                l
+                for l in difflib.ndiff(
+                    self.last_revision.body_src.splitlines(True),
+                    edited_src.splitlines(True),
                 )
+                if l[0] != "?"
+            ]
+            current_diff = [
+                l
+                for l in difflib.ndiff(
+                    self.last_revision.body_src.splitlines(True),
+                    current.body_src.splitlines(True),
+                )
+                if l[0] != "?"
+            ]
+            ctx = {
+                "current": current,
+                "current_diff": current_diff,
+                "edited_diff": edited_diff,
+            }
+            field.errors.append(
+                Markup(render_template("wiki/edit_conflict_error.html", **ctx))
+            )
 
         return None
 

@@ -197,23 +197,22 @@ class Converter:
                 ret[f"EXIF:{decoded!s}"] = value
             return ret
 
-        else:
-            if mime_type != "application/pdf":
-                content = self.to_pdf(digest, content, mime_type)
+        if mime_type != "application/pdf":
+            content = self.to_pdf(digest, content, mime_type)
 
-            with make_temp_file(content) as in_fn:
-                pdfinfo = poppler_bin_util("pdfinfo") or "pdfinfo"
-                try:
-                    output = subprocess.check_output([pdfinfo, in_fn])
-                except OSError:  # pragma: no cover
-                    logger.error("Conversion failed, probably pdfinfo is not installed")
-                    raise
+        with make_temp_file(content) as in_fn:
+            pdfinfo = poppler_bin_util("pdfinfo") or "pdfinfo"
+            try:
+                output = subprocess.check_output([pdfinfo, in_fn])
+            except OSError:  # pragma: no cover
+                logger.error("Conversion failed, probably pdfinfo is not installed")
+                raise
 
-            ret = {}
-            for line in output.split(b"\n"):
-                if b":" in line:
-                    key, value = line.strip().split(b":", 1)
-                    key = str(key)
-                    ret[f"PDF:{key}"] = str(value.strip(), errors="replace")
+        ret = {}
+        for line in output.split(b"\n"):
+            if b":" in line:
+                key, value = line.strip().split(b":", 1)
+                key = str(key)
+                ret[f"PDF:{key}"] = str(value.strip(), errors="replace")
 
-            return ret
+        return ret

@@ -72,5 +72,4 @@ class SbeNotificationsPanel(PreferencePanel):
             db.session.commit()
             flash(_("Preferences saved."), "info")
             return redirect(url_for(".sbe_notifications"))
-        else:
-            return render_template("preferences/sbe_notifications.html", form=form)
+        return render_template("preferences/sbe_notifications.html", form=form)

@@ -47,11 +47,10 @@ class ContentRepository:
         """
         if id:
             return self.get_object_by_id(id)
-        elif path:
+        if path:
             return self.get_object_by_path(path)
-        else:
-            msg = "id or path must be not null."
-            raise ValueError(msg)
+        msg = "id or path must be not null."
+        raise ValueError(msg)
 
     #
     # Id based navigation
@@ -98,8 +97,7 @@ class ContentRepository:
         obj = self.root_folder.get_object_by_path(path)
         if obj is None or not obj.is_folder:
             return None
-        else:
-            return obj
+        return obj
 
     def get_document_by_path(self, path: str) -> Document | None:
         """Gets the document with the given `path`.
@@ -109,8 +107,7 @@ class ContentRepository:
         obj = self.root_folder.get_object_by_path(path)
         if obj is None or not obj.is_document:
             return None
-        else:
-            return obj
+        return obj
 
     #
     # COPY / MOVE support

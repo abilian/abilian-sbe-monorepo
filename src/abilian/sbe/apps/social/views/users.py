@@ -230,8 +230,7 @@ def user_post(user_id):
     if return_url:
         # TODO: security check
         return redirect(return_url)
-    else:
-        return redirect(url_for(".user_view", user_id=user_id))
+    return redirect(url_for(".user_view", user_id=user_id))
 
 
 #

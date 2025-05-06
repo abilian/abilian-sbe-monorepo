@@ -75,7 +75,7 @@ lint.extend-ignore = [
     "PYI024", # Use `typing.NamedTuple` instead of `collections.namedtuple`
     "RET503", # Missing explicit `return` at the end of function able to return non-`None` value
     "RET504", # Unnecessary variable assignment before `return` statement
-    "RET505", # Unnecessary `else` after `return` statement
+#    "RET505", # Unnecessary `else` after `return` statement
     #
     "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
     #

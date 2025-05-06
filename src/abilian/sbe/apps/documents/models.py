@@ -170,8 +170,7 @@ class CmisObject(InheritSecurity, Entity):
     def path(self) -> str:
         if self.parent:
             return f"{self.parent.path}/{self.title}"
-        else:
-            return ""
+        return ""
 
     @property
     def is_folder(self) -> bool:
@@ -398,11 +397,10 @@ class Folder(PathAndSecurityIndexable, CmisObject):
                 last_name = principal.last_name or ""
                 first_name = principal.first_name or ""
                 return last_name.lower(), first_name.lower()
-            elif isinstance(principal, Group):
+            if isinstance(principal, Group):
                 return principal.name
-            else:
-                msg = f"Bad class here: {type(principal)}"
-                raise TypeError(msg)
+            msg = f"Bad class here: {type(principal)}"
+            raise TypeError(msg)
 
         return sorted(assignments, key=key)
 

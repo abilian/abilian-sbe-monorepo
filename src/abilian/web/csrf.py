@@ -31,8 +31,7 @@ def field() -> CSRFTokenField | None:
     if current_app.config.get("WTF_CSRF_ENABLED"):
         form = FlaskForm()
         return form.csrf_token
-    else:
-        return None
+    return None
 
 
 def time_limit():

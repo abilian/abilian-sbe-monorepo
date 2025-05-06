@@ -404,7 +404,7 @@ def members_post() -> Response:
         db.session.commit()
         return redirect(url_for(".members", community_id=community.slug))
 
-    elif action == "delete":
+    if action == "delete":
         membership_id = int(request.form["membership"])
         membership = Membership.query.get(membership_id)
         if membership.user_id != user_id:
@@ -418,9 +418,8 @@ def members_post() -> Response:
         db.session.commit()
         return redirect(url_for(".members", community_id=community.slug))
 
-    else:
-        msg = f"Unknown action: {action!r}"
-        raise BadRequest(msg)
+    msg = f"Unknown action: {action!r}"
+    raise BadRequest(msg)
 
 
 MEMBERS_EXPORT_HEADERS = [

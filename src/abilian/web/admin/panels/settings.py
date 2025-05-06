@@ -78,9 +78,9 @@ class SessionLifeTimeKey(Key):
         if td:
             if field == "days":
                 return td.days
-            elif field == "hours":
+            if field == "hours":
                 return int(td.seconds / 3600)
-            elif field == "minutes":
+            if field == "minutes":
                 return int(td.seconds % 3600 / 60)
         return 0
 

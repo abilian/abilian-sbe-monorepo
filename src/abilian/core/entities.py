@@ -316,11 +316,10 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
         if cls.__module__ == __name__ and cls.__name__ == "Entity":
             return {"polymorphic_on": "_entity_type"}
 
-        else:
-            return {
-                "polymorphic_identity": cls.entity_type,
-                "inherit_condition": cls.id == Entity.id,
-            }
+        return {
+            "polymorphic_identity": cls.entity_type,
+            "inherit_condition": cls.id == Entity.id,
+        }
 
     #: The name is a string that is shown to the user; it could be a title
     #: for document, a folder name, etc.

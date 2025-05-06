@@ -38,8 +38,7 @@ class CommunityTabAction(Action):
         endpoint = self.endpoint
         if endpoint:
             return endpoint
-        else:
-            return url_for(f"{self.name}.index")
+        return url_for(f"{self.name}.index")
 
     def is_current(self) -> bool:
         return g.current_tab == self.name

@@ -328,20 +328,19 @@ class DateTimeField(Field):
     def _value(self) -> str:
         if self.raw_data:
             return " ".join(self.raw_data)
-        else:
-            locale = get_locale()
-            date_fmt = locale.date_formats["short"].pattern
-            # force numerical months and 4 digit years
-            date_fmt = (
-                date_fmt.replace("MMMM", "MM")
-                .replace("MMM", "MM")
-                .replace("yyyy", "y")
-                .replace("yy", "y")
-                .replace("y", "yyyy")
-            )
-            time_fmt = locale.time_formats["short"]
-            dt_fmt = locale.datetime_formats["short"].format(time_fmt, date_fmt)
-            return format_datetime(self.data, dt_fmt) if self.data else ""
+        locale = get_locale()
+        date_fmt = locale.date_formats["short"].pattern
+        # force numerical months and 4 digit years
+        date_fmt = (
+            date_fmt.replace("MMMM", "MM")
+            .replace("MMM", "MM")
+            .replace("yyyy", "y")
+            .replace("yy", "y")
+            .replace("y", "yyyy")
+        )
+        time_fmt = locale.time_formats["short"]
+        dt_fmt = locale.datetime_formats["short"].format(time_fmt, date_fmt)
+        return format_datetime(self.data, dt_fmt) if self.data else ""
 
     def process_data(self, value: datetime):
         if value is not None:
@@ -401,17 +400,16 @@ class DateField(Field):
     def _value(self) -> str:
         if self.raw_data:
             return " ".join(self.raw_data)
-        else:
-            date_fmt = get_locale().date_formats["short"].pattern
-            # force numerical months and 4 digit years
-            date_fmt = (
-                date_fmt.replace("MMMM", "MM")
-                .replace("MMM", "MM")
-                .replace("yyyy", "y")
-                .replace("yy", "y")
-                .replace("y", "yyyy")
-            )
-            return format_date(self.data, date_fmt) if self.data else ""
+        date_fmt = get_locale().date_formats["short"].pattern
+        # force numerical months and 4 digit years
+        date_fmt = (
+            date_fmt.replace("MMMM", "MM")
+            .replace("MMM", "MM")
+            .replace("yyyy", "y")
+            .replace("yy", "y")
+            .replace("y", "yyyy")
+        )
+        return format_date(self.data, date_fmt) if self.data else ""
 
     def process_formdata(self, valuelist: list[str]):
         valuelist = [i for i in valuelist if i.strip()]
@@ -788,9 +786,9 @@ class LocaleSelectField(SelectField):
     def coerce(value: Locale | None) -> Locale | None:
         if isinstance(value, babel.Locale):
             return value
-        elif isinstance(value, str):
+        if isinstance(value, str):
             return babel.Locale.parse(value)
-        elif value is None:
+        if value is None:
             return None
 
         msg = f"Value cannot be converted to Locale(), or is not None, {value!r}"

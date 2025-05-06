@@ -192,8 +192,7 @@ def date_fmt(value, format="EE, d MMMM y"):
     """
     if isinstance(value, date):
         return babel.format_date(value, format)
-    else:
-        return babel.format_date(local_dt(value), format)
+    return babel.format_date(local_dt(value), format)
 
 
 def babel2datepicker(pattern: DateTimePattern) -> str:
@@ -247,9 +246,8 @@ def to_timestamp(dt):
 def abbrev(s: str, max_size: int) -> str:
     if len(s) <= max_size:
         return s
-    else:
-        h = max_size // 2 - 1
-        return f"{s[0:h]}...{s[-h:]}"
+    h = max_size // 2 - 1
+    return f"{s[0:h]}...{s[-h:]}"
 
 
 def bool2check(val, true="\u2713", false=""):

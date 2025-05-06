@@ -230,8 +230,7 @@ class User(Principal, UserMixin, db.Model):
     def authenticate(self, password: str) -> bool:
         if self.password and self.password != "*":  # noqa: S105
             return self.__password_strategy__.authenticate(self, password)
-        else:
-            return False
+        return False
 
     def set_password(self, password: str):
         """Encrypts and sets password."""

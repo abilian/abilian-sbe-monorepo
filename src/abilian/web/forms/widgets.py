@@ -147,8 +147,7 @@ class View:
         specific_template = self.options.get(specific_template_name)
         if specific_template:
             return [specific_template, default_template]
-        else:
-            return [default_template]
+        return [default_template]
 
 
 # TODO: rewrite
@@ -1158,9 +1157,8 @@ class DefaultViewWidget:
         value = field.object_data
         if isinstance(value, str):
             return text2html(value)
-        else:
-            # [], None and other must be rendered using empty string
-            return str(value or "")
+        # [], None and other must be rendered using empty string
+        return str(value or "")
 
 
 class BooleanWidget(wtforms.widgets.CheckboxInput):

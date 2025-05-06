@@ -149,5 +149,4 @@ class UserPreferencesPanel(PreferencePanel):
             db.session.commit()
             flash(_("Preferences saved."), "info")
             return redirect(url_for(".user"))
-        else:
-            return render_template("preferences/user.html", form=form)
+        return render_template("preferences/user.html", form=form)

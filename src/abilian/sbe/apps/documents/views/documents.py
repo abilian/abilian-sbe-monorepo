@@ -118,8 +118,7 @@ def document_edit(doc_id, folder_id=None):
 
     if folder:
         return redirect(url_for(folder))
-    else:
-        return redirect(url_for(doc))
+    return redirect(url_for(doc))
 
 
 @route("/doc/<int:doc_id>/viewers", methods=["GET"])
@@ -227,7 +226,7 @@ def checkin_checkout(doc_id):
 
         if action == "lock":
             return redirect(url_for(doc))
-        elif action == "checkout":
+        if action == "checkout":
             return document_download(doc_id, attach=True)
 
     if action == "unlock":
@@ -355,10 +354,9 @@ def document_preview(doc_id):
             url_for(".document_view_pdf", community_id=g.community.slug, doc_id=doc.id)
         )
 
-    else:
-        return redirect(
-            url_for(".document_download", community_id=g.community.slug, doc_id=doc.id)
-        )
+    return redirect(
+        url_for(".document_download", community_id=g.community.slug, doc_id=doc.id)
+    )
 
 
 @route("/doc/<int:doc_id>/view_pdf")

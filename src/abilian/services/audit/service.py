@@ -91,8 +91,7 @@ class AuditService(Service):
 
         if isclass(model_or_class):
             return issubclass(model_or_class, Entity)
-        else:
-            return isinstance(model_or_class, Entity)
+        return isinstance(model_or_class, Entity)
 
     def register_classes(self):
         state = self.app_state

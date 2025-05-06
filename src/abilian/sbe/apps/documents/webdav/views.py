@@ -160,8 +160,7 @@ def put(path):
     if obj is not None:
         if not obj.is_document:
             return "", HTTP_METHOD_NOT_ALLOWED, {}
-        else:
-            status = HTTP_NO_CONTENT
+        status = HTTP_NO_CONTENT
     else:
         parent_folder = repository.get_folder_by_path(parent_path)
         if parent_folder is None:
@@ -201,10 +200,9 @@ def copy_or_move(path):
     if dest_obj:
         if overwrite == "F":
             return "", HTTP_PRECONDITION_FAILED, {}
-        else:
-            repository.delete_object(dest_obj)
-            db.session.flush()
-            status = HTTP_NO_CONTENT
+        repository.delete_object(dest_obj)
+        db.session.flush()
+        status = HTTP_NO_CONTENT
 
     dest_folder = repository.get_folder_by_path(dest_parent_path)
     if dest_folder is None:
@@ -259,9 +257,8 @@ def lock(path):
     if repository.is_locked(obj):
         if not repository.can_unlock(obj):
             return "", 423, {}
-        else:
-            headers = {"Lock-Token": f"urn:uuid:{token}"}
-            return "TODO", HTTP_OK, headers
+        headers = {"Lock-Token": f"urn:uuid:{token}"}
+        return "TODO", HTTP_OK, headers
 
     token = repository.lock(obj)
 
@@ -321,10 +318,9 @@ def unlock(path):
     if repository.is_locked(obj):
         if not repository.can_unlock(obj):
             return "", 423, {}
-        else:
-            repository.unlock(obj)
-            db.session.commit()
-            return "", HTTP_NO_CONTENT, {}
+        repository.unlock(obj)
+        db.session.commit()
+        return "", HTTP_NO_CONTENT, {}
 
     return "", HTTP_NO_CONTENT, {}
     #     if (backend.isLocked(doc.getRef())) {

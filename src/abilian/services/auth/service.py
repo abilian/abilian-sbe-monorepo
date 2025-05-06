@@ -225,10 +225,9 @@ class AuthService(Service):
 
             if verdict is True:
                 return None
-            else:
-                if user.is_anonymous:
-                    return self.redirect_to_login()
-                raise Forbidden
+            if user.is_anonymous:
+                return self.redirect_to_login()
+            raise Forbidden
 
         # default policy
         if current_app.config.get("PRIVATE_SITE") and user.is_anonymous:

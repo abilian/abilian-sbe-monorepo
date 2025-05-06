@@ -25,8 +25,7 @@ class Cache:
     def get(self, key: CacheKey) -> str | bytes | None:
         if key[0] == "txt":
             return self.get_text(key)
-        else:
-            return self.get_bytes(key)
+        return self.get_bytes(key)
 
     __getitem__ = get
 
@@ -34,15 +33,13 @@ class Cache:
         if key in self:
             path = self._path(key)
             return path.read_bytes()
-        else:
-            return None
+        return None
 
     def get_text(self, key: CacheKey) -> str | None:
         if key in self:
             path = self._path(key)
             return path.read_text("utf8")
-        else:
-            return None
+        return None
 
     def set(self, key: CacheKey, value: str | bytes):
         path = self._path(key)
