@@ -3,7 +3,7 @@ name = "abilian-sbe"
 version = "1.1.14"
 description = "Social Business platform (entreprise collaboration and information management)"
 readme = "README.md"
-requires-python = ">=3.10,<3.13"
+requires-python = ">=3.11,<3.13"
 license = "LGPL-2.0-or-later"
 authors = [{ name = "Abilian SAS", email = "sales@abilian.com" }]
 dependencies = [
@@ -18,6 +18,7 @@ dependencies = [
     "flask-mail>=0.9.1",
     "flask-migrate>=4.0.5,<4.1.0",
     "flask-login>=0.6.3,<0.7.0",
+    "flask-super>=0.2.8",
     "flask-talisman>=1.1.0,<1.2.0",
     # Transitive dependencies, but called explicitly in our code
     "Babel",
@@ -90,9 +91,6 @@ dependencies = [
     "pytest>=8.3.3",
     "hyperlink>=21.0.0",
     "python-dotenv>=1.0.1",
-    "flask-super>=0.2.8",
-    "termcolor >= 2.5.0",
-    "cleez >= 0.1.13",
 ]
 
 [project.urls]
@@ -142,6 +140,7 @@ dev-dependencies = [
     "snoop>=0.6.0",
     "pytest-archon>=0.0.6",
     "typeguard>=4.4.1",
+    "auto-type-annotate>=1.1.1",
 ]
 
 [tool.pytest.ini_options]

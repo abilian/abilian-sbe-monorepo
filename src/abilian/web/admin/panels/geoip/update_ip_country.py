@@ -7,7 +7,7 @@
 Resulting file file is written in curent working directory.
 """
 
-# from __future__ import annotations
+from __future__ import annotations
 
 # import csv
 # import ssl
@@ -29,7 +29,7 @@ MMDB_FILENAME = "ip_country.mmdb"
 
 
 # def fetch_csv_db(csv_db_path: Path) -> None:
-#     with urllib.request.urlopen(  # noqa: S310
+#     with urllib.request.urlopen(
 #         CSV_DB, context=ssl.create_default_context(cafile=certifi.where())
 #     ) as response:
 #         csv_db_path.write_bytes(response.read())
