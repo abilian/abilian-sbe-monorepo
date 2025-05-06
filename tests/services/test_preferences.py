@@ -14,12 +14,12 @@ from abilian.services import get_service, security_service
 from abilian.services.preferences.models import UserPreference
 from abilian.services.preferences.panel import PreferencePanel
 from abilian.services.preferences.service import PreferenceService
-from abilian.services.security import SecurityService
 
 if TYPE_CHECKING:
     from sqlalchemy.orm import Session
 
     from abilian.core.sqlalchemy import SQLAlchemy
+    from abilian.services.security import SecurityService
 
 
 class VisiblePanel(PreferencePanel):
@@ -36,7 +36,7 @@ class AdminPanel(PreferencePanel):
     id = label = "admin"
 
     def is_accessible(self) -> bool:
-        security = cast(SecurityService, get_service("security"))
+        security = cast("SecurityService", get_service("security"))
         return security.has_role(current_user, "admin")
 
     def get(self):
@@ -50,7 +50,7 @@ def app(config: type) -> Application:
     setup_app(app)
 
     with app.app_context():
-        prefs = cast(PreferenceService, get_service("preferences"))
+        prefs = cast("PreferenceService", get_service("preferences"))
         prefs.app_state.panels = []
         prefs.register_panel(VisiblePanel(), app)
         prefs.register_panel(AdminPanel(), app)

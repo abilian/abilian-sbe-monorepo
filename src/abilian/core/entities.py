@@ -30,7 +30,7 @@ if TYPE_CHECKING:
 
     from abilian.core.models.subjects import User
     from abilian.core.models.tag import Tag
-    from abilian.services.security import Permission
+    from abilian.services.security import Permission, SecurityService
 
 __all__ = (
     "Entity",
@@ -113,9 +113,8 @@ def setup_default_permissions(session: Session, instance: Any):
 def _setup_default_permissions(instance: Any):
     """Separate method to conveniently call it from scripts for example."""
     from abilian.services import get_service
-    from abilian.services.security import SecurityService
 
-    security = cast(SecurityService, get_service("security"))
+    security = cast("SecurityService", get_service("security"))
     for permission, roles in instance.__default_permissions__:
         if permission == "create":
             # use str for comparison instead of `abilian.services.security.CREATE`

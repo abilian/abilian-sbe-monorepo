@@ -111,7 +111,7 @@ def login_as_admin(client, db: SQLAlchemy):
     # Needed for grant_role to not raise an exception
     db.session.add(user)
 
-    security = cast(SecurityService, get_service("security"))
+    security = cast("SecurityService", get_service("security"))
     security.grant_role(user, ADMIN)
 
     db.session.add(user)

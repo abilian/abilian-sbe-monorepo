@@ -44,7 +44,7 @@ class ThreadAction(ForumAction):
 
 
 def is_admin(context):
-    security = cast(SecurityService, get_service("security"))
+    security = cast("SecurityService", get_service("security"))
     return security.has_role(current_user, ADMIN, object=context.get("object"))
 
 

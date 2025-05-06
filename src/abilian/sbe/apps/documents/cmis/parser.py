@@ -46,11 +46,11 @@ class Entry:
 
     @property
     def name(self) -> str:
-        return cast(str, self.properties["cmis:name"].value)
+        return cast("str", self.properties["cmis:name"].value)
 
     @property
     def type(self) -> str:
-        return cast(str, self.properties["cmis:objectTypeId"].value)
+        return cast("str", self.properties["cmis:objectTypeId"].value)
 
 
 class Property:

@@ -8,7 +8,6 @@ from flask_login import current_user
 from wtforms import Field
 
 from abilian.core.entities import Entity
-from abilian.core.models.subjects import User
 from abilian.services import get_service
 from abilian.services.security import (
     ANONYMOUS,
@@ -22,6 +21,8 @@ from abilian.services.security import (
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Collection
+
+    from abilian.core.models.subjects import User
 
 
 class FormPermissions:
@@ -113,7 +114,7 @@ class FormPermissions:
         user: User | None = None,
     ) -> bool:
         if user is None:
-            user = cast(User, current_user)
+            user = cast("User", current_user)
         if obj is not None and not isinstance(obj, Entity):
             # permission/role can be set only on entities
             return True
@@ -153,5 +154,5 @@ class FormPermissions:
             else:
                 roles.extend(r)
 
-        security = cast(SecurityService, get_service("security"))
+        security = cast("SecurityService", get_service("security"))
         return security.has_role(user, role=roles, object=obj)

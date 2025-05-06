@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import html
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 import sqlalchemy as sa
 import sqlalchemy.orm
@@ -18,7 +18,6 @@ from werkzeug.datastructures import MultiDict
 from abilian.core.models.subjects import User, gen_random_password
 from abilian.i18n import _
 from abilian.services import get_service
-from abilian.services.security import SecurityService
 from abilian.services.security.models import ADMIN, Role
 from abilian.web.nav import BreadcrumbItem
 from abilian.web.util import url_for
@@ -27,6 +26,9 @@ from abilian.web.views.images import user_photo_url
 
 from .forms import UserAdminForm, UserCreateForm
 
+if TYPE_CHECKING:
+    from abilian.services.security import SecurityService
+
 MUGSHOT_SIZE = 45
 
 
@@ -34,7 +36,7 @@ class JsonUsersList(base.JSONView):
     """JSON user list for datatable."""
 
     def data(self, *args, **kw) -> dict:
-        security = cast(SecurityService, get_service("security"))
+        security = cast("SecurityService", get_service("security"))
         length = int(kw.get("iDisplayLength", 0))
         start = int(kw.get("iDisplayStart", 0))
         sort_col = int(kw.get("iSortCol_0", 1))

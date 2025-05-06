@@ -11,13 +11,14 @@ from flask_login import current_user
 from loguru import logger
 
 from abilian.services import get_service
-from abilian.services.indexing.service import IndexService
 
 from .models import Membership
 
 if TYPE_CHECKING:
     from whoosh.query.compound import Or
     from whoosh.query.terms import Term
+
+    from abilian.services.indexing.service import IndexService
 
 _COMMUNITY_CONTENT_FIELDNAME = "is_community_content"
 _COMMUNITY_CONTENT_FIELD = wf.BOOLEAN()
@@ -36,7 +37,7 @@ _FIELDS = [
 
 def init_app(app: Flask) -> None:
     """Add community fields to indexing service schema."""
-    indexing = cast(IndexService, get_service("indexing"))
+    indexing = cast("IndexService", get_service("indexing"))
     indexing.register_search_filter(filter_user_communities)
     indexing.register_value_provider(mark_non_community_content)
 

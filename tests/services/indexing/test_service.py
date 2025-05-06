@@ -11,7 +11,6 @@ from pytest import fixture, mark
 
 from abilian.core.entities import Entity
 from abilian.services import get_service
-from abilian.services.indexing.service import WhooshIndexService
 from tests.util import redis_available
 
 if TYPE_CHECKING:
@@ -20,6 +19,7 @@ if TYPE_CHECKING:
     from sqlalchemy.orm import Session
 
     from abilian.app import Application
+    from abilian.services.indexing.service import WhooshIndexService
 
 
 class IndexedContact(Entity):
@@ -30,7 +30,7 @@ class IndexedContact(Entity):
 
 @fixture
 def svc(app: Application) -> Iterator[WhooshIndexService]:
-    _svc = cast(WhooshIndexService, get_service("indexing"))
+    _svc = cast("WhooshIndexService", get_service("indexing"))
     with app.app_context():
         _svc.start(ignore_state=True)
         yield _svc

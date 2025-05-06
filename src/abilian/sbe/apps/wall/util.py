@@ -72,7 +72,7 @@ def get_recent_entries(
     limit = min(num * 2, 100)
     entries: list[ActivityEntry] = []
     deleted = False
-    security = cast(SecurityService, get_service("security"))
+    security = cast("SecurityService", get_service("security"))
     has_permission = security.has_permission
 
     for entry in query.yield_per(limit):

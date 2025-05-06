@@ -76,7 +76,7 @@ lint.extend-ignore = [
     "S704", # Unsafe use of `markupsafe.Markup` detected
     # More
     "SIM115", # Use context handler for opening files
-    "TC006", # Add quotes to type expression in `typing.cast()`
+#    "TC006", # Add quotes to type expression in `typing.cast()`
     # Missing copyright
     "CPY001",
     # Don't "fix" these

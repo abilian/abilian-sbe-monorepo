@@ -20,13 +20,14 @@ from abilian.sbe.apps.forum.tasks import (
 )
 from abilian.sbe.apps.forum.views import ThreadCreate
 from abilian.services import get_service, security_service
-from abilian.services.indexing.service import IndexService
 from tests.util import client_login, redis_available
 
 from .util import get_string_from_file
 
 if TYPE_CHECKING:
     from flask_sqlalchemy import SQLAlchemy
+
+    from abilian.services.indexing.service import IndexService
 
 
 def test_posts_ordering(db: SQLAlchemy, community1):
@@ -51,7 +52,7 @@ def test_posts_ordering(db: SQLAlchemy, community1):
 @pytest.mark.skipif(not redis_available(), reason="requires redis connection")
 def test_thread_indexed(app, db: SQLAlchemy, community1, community2, monkeypatch):
     monkeypatch.setenv("TESTING_DIRECT_FUNCTION_CALL", "testing")
-    index_svc = cast(IndexService, get_service("indexing"))
+    index_svc = cast("IndexService", get_service("indexing"))
     index_svc.start()
     security_service.start()
 

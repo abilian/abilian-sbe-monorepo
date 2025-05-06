@@ -9,12 +9,12 @@ from typing import TYPE_CHECKING, Any, cast
 from flask import Blueprint
 
 from abilian.services.security import ANONYMOUS, Role
-from abilian.services.security.service import SecurityService
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Collection
 
     from abilian.core.models.subjects import User
+    from abilian.services.security.service import SecurityService
 
 
 def allow_anonymous(user: User, roles: Collection[Role], **kwargs: Any) -> bool:
@@ -35,7 +35,7 @@ def allow_access_for_roles(roles: Collection[Role] | Role) -> Callable:
     def check_role(user: User, roles: Collection[Role], **kwargs):
         from abilian.services import get_service
 
-        security: SecurityService = cast(SecurityService, get_service("security"))
+        security: SecurityService = cast("SecurityService", get_service("security"))
         return security.has_role(user, valid_roles)
 
     return check_role

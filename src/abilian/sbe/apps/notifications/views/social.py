@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from flask import request
 from flask_login import current_user
@@ -21,9 +21,11 @@ from abilian.sbe.apps.notifications.tasks.social import (
 )
 from abilian.services import get_service
 from abilian.services.auth.views import get_token_status
-from abilian.services.preferences.service import PreferenceService
 
 from . import notifications
+
+if TYPE_CHECKING:
+    from abilian.services.preferences.service import PreferenceService
 
 __all__ = ()
 
@@ -65,7 +67,7 @@ def unsubscribe_sbe(token: str) -> str:
         )
 
     if request.method == "POST":
-        preferences = cast(PreferenceService, get_service("preferences"))
+        preferences = cast("PreferenceService", get_service("preferences"))
         preferences.set_preferences(user, **{"sbe:notifications:daily": False})
         db.session.commit()
         return render_template_i18n("notifications/unsubscribed.html", token=token)

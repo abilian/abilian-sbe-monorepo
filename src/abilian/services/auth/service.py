@@ -149,7 +149,7 @@ class AuthService(Service):
             return None
 
         app = unwrap(current_app)
-        auth_service = cast(AuthService, get_service(AuthService.name))
+        auth_service = cast("AuthService", get_service(AuthService.name))
         auth_service.user_logged_in(app, user)
         user_loaded.send(app, user=user)
         return user

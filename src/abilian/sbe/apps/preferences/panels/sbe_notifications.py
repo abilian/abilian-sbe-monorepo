@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from flask import flash, redirect, render_template, request, url_for
 from werkzeug.exceptions import Forbidden
@@ -15,9 +15,11 @@ from abilian.core.extensions import db
 from abilian.i18n import _, _l
 from abilian.services import get_service
 from abilian.services.preferences.panel import PreferencePanel
-from abilian.services.preferences.service import PreferenceService
 from abilian.web import csrf
 from abilian.web.forms import Form, widgets
+
+if TYPE_CHECKING:
+    from abilian.services.preferences.service import PreferenceService
 
 
 class SbeNotificationsForm(Form):
@@ -39,7 +41,7 @@ class SbeNotificationsPanel(PreferencePanel):
         if not self.is_accessible():
             raise Forbidden
 
-        preferences = cast(PreferenceService, get_service("preferences"))
+        preferences = cast("PreferenceService", get_service("preferences"))
         # preferences = app.services["preferences"]
         data = {}
         prefs = preferences.get_preferences()

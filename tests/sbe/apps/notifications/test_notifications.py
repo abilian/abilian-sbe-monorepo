@@ -13,7 +13,6 @@ from abilian.sbe.apps.notifications.tasks.social import (
     generate_unsubscribe_token,
 )
 from abilian.services import get_service
-from abilian.services.preferences.service import PreferenceService
 from abilian.web import url_for
 
 if TYPE_CHECKING:
@@ -21,6 +20,7 @@ if TYPE_CHECKING:
     from werkzeug import Client
 
     from abilian.app import Application
+    from abilian.services.preferences.service import PreferenceService
 
 
 def test_unsubscribe(app: Application, client: Client, db: SQLAlchemy, app_context):
@@ -32,7 +32,7 @@ def test_unsubscribe(app: Application, client: Client, db: SQLAlchemy, app_conte
     db.session.add(user)
     db.session.commit()
 
-    preferences = cast(PreferenceService, get_service("preferences"))
+    preferences = cast("PreferenceService", get_service("preferences"))
     preferences.set_preferences(user, **{"sbe:notifications:daily": True})
     token = generate_unsubscribe_token(user)
     url = url_for("notifications.unsubscribe_sbe", token=token)
