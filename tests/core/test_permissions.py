@@ -27,15 +27,17 @@ def test_default_permissions(app: Flask, db: SQLAlchemy, session: Session):
 
     assert isinstance(MyRestrictedType.__default_permissions__, frozenset)
 
-    expected = frozenset({
-        (security.READ, frozenset({security.ANONYMOUS})),
-        #
-        (security.WRITE, frozenset({security.OWNER})),
-        #
-        (security.CREATE, frozenset({security.WRITER})),
-        #
-        (security.DELETE, frozenset({security.OWNER})),
-    })
+    expected = frozenset(
+        {
+            (security.READ, frozenset({security.ANONYMOUS})),
+            #
+            (security.WRITE, frozenset({security.OWNER})),
+            #
+            (security.CREATE, frozenset({security.WRITER})),
+            #
+            (security.DELETE, frozenset({security.OWNER})),
+        }
+    )
     assert MyRestrictedType.__default_permissions__ == expected
 
     db.create_all()  # create missing 'mytype' table

@@ -803,11 +803,13 @@ class FileInput:
                     except Exception:
                         # FIXME: when does it happen ?
                         size = 0
-                existing.append({
-                    "file": data,
-                    "size": size,
-                    "delete": idx in field.delete_files_index,
-                })
+                existing.append(
+                    {
+                        "file": data,
+                        "size": size,
+                        "delete": idx in field.delete_files_index,
+                    }
+                )
                 if hasattr(data, "filename"):
                     existing[-1]["filename"] = data.filename
                 elif blob and isinstance(blob, Blob):
@@ -824,12 +826,14 @@ class FileInput:
             if file_ is None:
                 continue
             meta = uploads.get_metadata(current_user, handle)
-            uploaded.append({
-                "file": file_,
-                "handle": handle,
-                "filename": meta.get("filename", handle),
-                "size": file_.stat().st_size,
-            })
+            uploaded.append(
+                {
+                    "file": file_,
+                    "handle": handle,
+                    "filename": meta.get("filename", handle),
+                    "size": file_.stat().st_size,
+                }
+            )
 
         return uploaded
 
@@ -1163,21 +1167,23 @@ class DefaultViewWidget:
 
 class BooleanWidget(wtforms.widgets.CheckboxInput):
     # valid data-* options when using boostrap-switch
-    _ON_OFF_VALID_OPTIONS = frozenset((
-        "animate",
-        "indeterminate",
-        "inverse",
-        "radio-all-off",
-        "on-color",
-        "off-color",
-        "on-text",
-        "off-text",
-        "label-text",
-        "handle-width",
-        "label-width",
-        "base-class",
-        "wrapper-class",
-    ))
+    _ON_OFF_VALID_OPTIONS = frozenset(
+        (
+            "animate",
+            "indeterminate",
+            "inverse",
+            "radio-all-off",
+            "on-color",
+            "off-color",
+            "on-text",
+            "off-text",
+            "label-text",
+            "handle-width",
+            "label-width",
+            "base-class",
+            "wrapper-class",
+        )
+    )
     on_off_options: dict[str, Any]
 
     def __init__(self, *args: Any, **kwargs: Any):

@@ -393,11 +393,13 @@ def process(message: email.message.Message, marker: str) -> tuple[str, list[dict
         content_disposition = part.get("Content-Disposition")
 
         if content_disposition not in [None, "inline"]:
-            attachments.append({
-                "filename": part.get_filename(),
-                "content_type": part.get_content_type(),
-                "data": part.get_payload(decode=True),
-            })
+            attachments.append(
+                {
+                    "filename": part.get_filename(),
+                    "content_type": part.get_content_type(),
+                    "data": part.get_payload(decode=True),
+                }
+            )
 
         elif content_type in ["text/plain", "text/html"]:
             subtype = part.get_content_subtype()

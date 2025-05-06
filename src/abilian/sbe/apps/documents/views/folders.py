@@ -136,9 +136,7 @@ def change_view_style(folder_id):
             )
         )
     return redirect(
-        url_for(
-            ".folder_view", folder_id=folder_id, community_id=folder.community.slug
-        )
+        url_for(".folder_view", folder_id=folder_id, community_id=folder.community.slug)
     )
 
 
@@ -435,9 +433,9 @@ def permissions_update(folder_id):
             )
         else:
             flash(
-                _(
-                    "Role {role} for group {group} removed on folder {folder}"
-                ).format(role=role, group=group.name, folder=folder.name),
+                _("Role {role} for group {group} removed on folder {folder}").format(
+                    role=role, group=group.name, folder=folder.name
+                ),
                 "success",
             )
             reindex_tree(folder)
@@ -445,9 +443,7 @@ def permissions_update(folder_id):
 
     db.session.commit()
     return redirect(
-        url_for(
-            ".permissions", folder_id=folder_id, community_id=folder.community.slug
-        )
+        url_for(".permissions", folder_id=folder_id, community_id=folder.community.slug)
     )
 
 
@@ -1020,14 +1016,18 @@ def descendants_view(folder_id):
     root_path_ids = f"{folder._indexable_parent_ids}/{folder.id}"
     index_service = get_service("indexing")
 
-    filters = wq.And([
-        wq.Term("community_id", folder.community.id),
-        wq.Term("parent_ids", root_path_ids),
-        wq.Or([
-            wq.Term("object_type", Folder.entity_type),
-            wq.Term("object_type", Document.entity_type),
-        ]),
-    ])
+    filters = wq.And(
+        [
+            wq.Term("community_id", folder.community.id),
+            wq.Term("parent_ids", root_path_ids),
+            wq.Or(
+                [
+                    wq.Term("object_type", Folder.entity_type),
+                    wq.Term("object_type", Document.entity_type),
+                ]
+            ),
+        ]
+    )
 
     results = index_service.search("", filter=filters, limit=None)
     by_path = {}

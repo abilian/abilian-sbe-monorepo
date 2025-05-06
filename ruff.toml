@@ -75,10 +75,9 @@ lint.extend-ignore = [
     "PYI024", # Use `typing.NamedTuple` instead of `collections.namedtuple`
     "RET503", # Missing explicit `return` at the end of function able to return non-`None` value
     "RET504", # Unnecessary variable assignment before `return` statement
-#    "RET505", # Unnecessary `else` after `return` statement
     #
     "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
-    #
+    # Security-related
     "S301", # `pickle`...
     "S403", # `pickle`, `cPickle`, `dill`, and `shelve` modules are possibly insecure
     "S404", # `subprocess` module is possibly insecure
@@ -88,21 +87,19 @@ lint.extend-ignore = [
     "S607", # Starting a process with a partial executable path
     "S701", # By default, jinja2 sets `autoescape` to `False`.
     "S704", # Unsafe use of `markupsafe.Markup` detected
-    #
-    "SIM102", # Use a single `if` statement instead of nested `if` statements
-    "SIM108", # Use ternary operator
-    "SIM115", # Use context handler for opening files
-    "SIM117", # Use a single `with` statement with multiple contexts instead of nested `with` statements
-    "SLF001", # Private member accessed
     # More
+    "SIM115", # Use context handler for opening files
     "T201", # `print` found
-    "TRY002", # Create you own exception class
     "TC006", # Add quotes to type expression in `typing.cast()`
     "RUF052", # Local dummy variable is accessed
     "RUF036", # `None` not at the end of the type annotation.
     "FURB189", # Subclassing `dict` can be error prone, use `collections.UserDict` instead
     # Missing copyright
     "CPY001",
+    # Don't "fix" these
+    "SIM102", # Use a single `if` statement instead of nested `if` statements
+    "SIM108", # Use ternary operator
+    "SLF001", # Private member accessed
 ]
 
 [lint.per-file-ignores]

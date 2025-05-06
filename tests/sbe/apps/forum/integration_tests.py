@@ -108,13 +108,12 @@ def test_create_thread_informative_member(
     data = {"title": title, "message": content, "__action": "create"}
 
     mail = app.extensions["mail"]
-    with client_login(client, user):
-        with mail.record_messages():
-            data["send_by_email"] = "y"  # actually should not be in html form
-            response = client.post(url, data=data)
-            assert response.status_code == 302
-            # FIXME: this doesn't pass
-            # assert len(outbox) == 0
+    with client_login(client, user), mail.record_messages():
+        data["send_by_email"] = "y"  # actually should not be in html form
+        response = client.post(url, data=data)
+        assert response.status_code == 302
+        # FIXME: this doesn't pass
+        # assert len(outbox) == 0
 
 
 @pytest.mark.skip("Require fixing dramatiq tests to not loose session in test context")
