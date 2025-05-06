@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Never
+from typing import TYPE_CHECKING, Any, NoReturn
 
 from flask import g, json, jsonify, redirect, render_template_string, request
 from flask.views import MethodView as BaseView
@@ -23,7 +23,7 @@ class Redirect(HTTPException):
 
 
 class View(BaseView):
-    """Base class to use for all class based views.
+    """Base class to use for all class-based views.
 
     The view instance is accessible in :data:`g <flask.g>` and is set in
     :meth:`actions context <abilian.web.action.ActionRegistry.context>`.
@@ -61,7 +61,7 @@ class View(BaseView):
         assert not args
         return args, kwargs
 
-    def redirect(self, url) -> Never:
+    def redirect(self, url) -> NoReturn:
         """Shortcut all call stack and return response.
 
         usage: `self.response(url_for(...))`
