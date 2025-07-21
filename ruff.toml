@@ -63,6 +63,7 @@ lint.extend-ignore = [
     "PYI024", # Use `typing.NamedTuple` instead of `collections.namedtuple`
     "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
     "SIM115", # Use context handler for opening files
+    "PLC0415",
     # Missing copyright
     "CPY001",
     #
