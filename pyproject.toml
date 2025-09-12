@@ -142,6 +142,7 @@ dev-dependencies = [
     "typeguard>=4.4.1",
     "auto-type-annotate>=1.1.1",
     "ty>=0.0.0a7",
+    "pyrefly>=0.32.0",
 ]
 
 [tool.pytest.ini_options]
