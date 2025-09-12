@@ -1,19 +1,23 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import inspect
-from collections.abc import Callable
 from operator import attrgetter, itemgetter
 from typing import TYPE_CHECKING, Any
 
 from flask import Blueprint, url_for
-from flask.blueprints import BlueprintSetupState
 from whoosh.searching import Hit
 
-from abilian.core.entities import Entity
 from abilian.core.extensions import db
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from flask.blueprints import BlueprintSetupState
+
     from abilian.app import Application
+    from abilian.core.entities import Entity
 
 
 class Registry:
@@ -22,10 +26,10 @@ class Registry:
     There is one registry per application instance.
     """
 
-    def __init__(self, *args: Any, **kwargs: Any):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         self._map: dict[str, Callable] = {}
 
-    def register(self, entity: Entity | type[Entity], url_func: Callable):
+    def register(self, entity: Entity | type[Entity], url_func: Callable) -> None:
         """Associate a `url_func` with entity's type.
 
         :param:entity: an :class:`abilian.core.extensions.db.Model` class or
@@ -96,7 +100,7 @@ class default_view:
         id_attr: str = "object_id",
         endpoint: Any | None = None,
         kw_func: Any | None = None,
-    ):
+    ) -> None:
         self.app_or_blueprint = app_or_blueprint
         self.is_bp = isinstance(app_or_blueprint, Blueprint)
         self.entity = entity
@@ -129,7 +133,7 @@ class default_view:
         if self.is_bp:
 
             @self.app_or_blueprint.record_once
-            def set_default_view(state: BlueprintSetupState):
+            def set_default_view(state: BlueprintSetupState) -> None:
                 state.app.default_view.register(self.entity, default_url)
 
         else:

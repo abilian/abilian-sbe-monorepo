@@ -1,8 +1,13 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Notifications."""
 
 from __future__ import annotations
 
-from abilian.sbe.app import Application
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from abilian.app import Application
 
 # Constants
 TOKEN_SERIALIZER_NAME = "unsubscribe_sbe"  # noqa: S105

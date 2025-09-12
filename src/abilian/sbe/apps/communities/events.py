@@ -1,17 +1,21 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Lightweight integration and denormalisation using events (signals)."""
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from blinker import ANY
 
-from abilian.core.entities import Entity
-from abilian.core.models.subjects import User
 from abilian.core.signals import activity
 from abilian.sbe.apps.documents.models import Document
 
 from .models import Community
+
+if TYPE_CHECKING:
+    from abilian.core.entities import Entity
+    from abilian.core.models.subjects import User
 
 
 @activity.connect_via(ANY)

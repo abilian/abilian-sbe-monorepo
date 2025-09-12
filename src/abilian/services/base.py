@@ -1,15 +1,19 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
-from collections.abc import Callable
 from functools import wraps
 from typing import TYPE_CHECKING, Any
 
+from attrs import mutable
 from flask import current_app
 from loguru import logger
 
 from abilian.core.util import fqcn
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from abilian.app import Application
 
 
@@ -17,18 +21,12 @@ class ServiceNotRegisteredError(Exception):
     pass
 
 
+@mutable
 class ServiceState:
     """Service state stored in Application.extensions."""
 
-    #: reference to :class:`Service` instance
     service: Service
-
-    running = False
-
-    def __init__(self, service: Service, running: bool = False):
-        self.service = service
-        self.running = running
-        self.logger = logger
+    running: bool = False
 
 
 class Service:
@@ -40,7 +38,7 @@ class Service:
     #: service name in Application.extensions / Application.services
     name = ""
 
-    def __init__(self, app: Any | None = None):
+    def __init__(self, app: Any | None = None) -> None:
         if self.name is None:
             msg = f"Service must have a name ({fqcn(self.__class__)})"
             raise ValueError(msg)
@@ -49,21 +47,21 @@ class Service:
         if app:
             self.init_app(app)
 
-    def init_app(self, app: Application):
+    def init_app(self, app: Application) -> None:
         app.extensions[self.name] = self.AppStateClass(self)
-        app.services[self.name] = self
+        app.service_manager.add_service(self.name, self)
 
-    def start(self, ignore_state: bool = False):
+    def start(self, ignore_state: bool = False) -> None:
         """Starts the service."""
-        self.logger.debug("Start service")
+        # self.logger.debug("Start service")
         self._toggle_running(True, ignore_state)
 
-    def stop(self, ignore_state: bool = False):
+    def stop(self, ignore_state: bool = False) -> None:
         """Stops the service."""
-        self.logger.debug("Stop service")
+        # self.logger.debug("Stop service")
         self._toggle_running(False, ignore_state)
 
-    def _toggle_running(self, run_state: bool, ignore_state: bool = False):
+    def _toggle_running(self, run_state: bool, ignore_state: bool = False) -> None:
         state = self.app_state
         run_state = bool(run_state)
         if not ignore_state:

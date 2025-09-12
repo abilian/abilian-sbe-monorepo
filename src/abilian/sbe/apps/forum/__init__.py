@@ -1,8 +1,16 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Forum module."""
 
 from __future__ import annotations
 
-from abilian.sbe.app import Application
+from typing import TYPE_CHECKING, cast
+
+from abilian.services import get_service
+
+if TYPE_CHECKING:
+    from abilian.app import Application
+    from abilian.services.indexing.service import WhooshIndexService
 
 
 def register_plugin(app: Application) -> None:
@@ -21,7 +29,8 @@ def register_plugin(app: Application) -> None:
     ):
         forum.record_once(register_actions)
     app.register_blueprint(forum)
-    app.services["indexing"].adapters_cls.insert(0, ThreadIndexAdapter)
+    indexing_service = cast("WhooshIndexService", get_service("indexing"))
+    indexing_service.adapters_cls.insert(0, ThreadIndexAdapter)
     # tasks.init_app(app)
 
     app.cli.add_command(check_email)

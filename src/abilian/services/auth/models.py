@@ -1,10 +1,12 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 from datetime import datetime
 
 from flask import request
 from flask_login import current_user
-from flask_sqlalchemy import BaseQuery
+from flask_sqlalchemy.query import Query
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
@@ -14,7 +16,7 @@ from abilian.core.models.subjects import User
 _MARK = object()
 
 
-class LoginSessionQuery(BaseQuery):
+class LoginSessionQuery(Query):
     def get_active_for(
         self, user: User, user_agent: object = _MARK, ip_address: object = _MARK
     ) -> LoginSession:

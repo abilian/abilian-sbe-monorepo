@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Base class for entities, objects that are managed by the Abilian framwework
 (unlike SQLAlchemy models which are considered lower-level)."""
 
@@ -7,15 +9,13 @@ import collections
 import re
 from datetime import datetime
 from inspect import isclass
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any, Never, cast
 
 import sqlalchemy as sa
 from flask import current_app
 from sqlalchemy import event
-from sqlalchemy.engine.base import Connection
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import Mapper, Session, mapper
-from sqlalchemy.orm.unitofwork import UOWTransaction
 from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.types import Integer, String, UnicodeText
 
@@ -25,9 +25,12 @@ from .sqlalchemy import JSONDict
 from .util import friendly_fqcn, memoized, slugify
 
 if TYPE_CHECKING:
+    from sqlalchemy.engine.base import Connection
+    from sqlalchemy.orm.unitofwork import UOWTransaction
+
     from abilian.core.models.subjects import User
     from abilian.core.models.tag import Tag
-    from abilian.services.security import Permission
+    from abilian.services.security import Permission, SecurityService
 
 __all__ = (
     "Entity",
@@ -46,7 +49,7 @@ class ValidationError(Exception):
     pass
 
 
-def validation_listener(mapper: Mapper, connection: Connection, target: Any):
+def validation_listener(mapper: Mapper, connection: Connection, target: Any) -> None:
     if hasattr(target, "_validate"):
         target._validate()
 
@@ -58,17 +61,17 @@ event.listen(mapper, "before_update", validation_listener)
 #
 # CRUD events. TODO: connect to signals instead?
 #
-def before_insert_listener(mapper: Mapper, connection: Connection, target: Any):
+def before_insert_listener(mapper: Mapper, connection: Connection, target: Any) -> None:
     if hasattr(target, "_before_insert"):
         target._before_insert()
 
 
-def before_update_listener(mapper: Mapper, connection: Connection, target: Any):
+def before_update_listener(mapper: Mapper, connection: Connection, target: Any) -> None:
     if hasattr(target, "_before_update"):
         target._before_update()
 
 
-def before_delete_listener(mapper: Mapper, connection: Connection, target: Any):
+def before_delete_listener(mapper: Mapper, connection: Connection, target: Any) -> None:
     if hasattr(target, "_before_delete"):
         target._before_delete()
 
@@ -78,21 +81,21 @@ event.listen(mapper, "before_update", before_update_listener)
 event.listen(mapper, "before_delete", before_delete_listener)
 
 
-def auto_slug_on_insert(mapper: Mapper, connection: Connection, target: Any):
+def auto_slug_on_insert(mapper: Mapper, connection: Connection, target: Any) -> None:
     """Generate a slug from :prop:`Entity.auto_slug` for new entities, unless
     slug is already set."""
     if target.slug is None and target.name:
         target.slug = target.auto_slug
 
 
-def auto_slug_after_insert(mapper: Mapper, connection: Connection, target: Any):
+def auto_slug_after_insert(mapper: Mapper, connection: Connection, target: Any) -> None:
     """Generate a slug from entity_type and id, unless slug is already set."""
     if target.slug is None:
         target.slug = f"{target.entity_class.lower()}{target.SLUG_SEPARATOR}{target.id}"
 
 
 @event.listens_for(Session, "after_attach")
-def setup_default_permissions(session: Session, instance: Any):
+def setup_default_permissions(session: Session, instance: Any) -> None:
     """Setup default permissions on newly created entities according to.
 
     :attr:`Entity.__default_permissions__`.
@@ -107,12 +110,11 @@ def setup_default_permissions(session: Session, instance: Any):
     _setup_default_permissions(instance)
 
 
-def _setup_default_permissions(instance: Any):
+def _setup_default_permissions(instance: Any) -> None:
     """Separate method to conveniently call it from scripts for example."""
     from abilian.services import get_service
-    from abilian.services.security import SecurityService
 
-    security = cast(SecurityService, get_service("security"))
+    security = cast("SecurityService", get_service("security"))
     for permission, roles in instance.__default_permissions__:
         if permission == "create":
             # use str for comparison instead of `abilian.services.security.CREATE`
@@ -191,7 +193,7 @@ class EntityMeta(BaseMeta):
     ) -> Any:
         if d["__module__"] != EntityMeta.__module__ or classname != "Entity":
             if not any(issubclass(b, _EntityInherit) for b in bases):
-                bases = (_EntityInherit,) + bases
+                bases = (_EntityInherit, *bases)
                 d["id"] = _EntityInherit.id
 
             if d.get("entity_type") is None:
@@ -212,10 +214,11 @@ class EntityMeta(BaseMeta):
                 if isinstance(default_permissions, collections.abc.Mapping):
                     default_permissions = default_permissions.items()
                 elif not isinstance(default_permissions, collections.abc.Set):
-                    raise TypeError(
+                    msg = (
                         "__default_permissions__ is neither a dict or set, "
                         f"cannot create class {classname}"
                     )
+                    raise TypeError(msg)
 
                 # also ensure that `roles` set is immutable, too
                 default_permissions = frozenset(
@@ -229,15 +232,16 @@ class EntityMeta(BaseMeta):
         cls = BaseMeta.__new__(mcs, classname, bases, d)
 
         if not issubclass(cls.query_class, EntityQuery):
-            raise TypeError(
-                f"query_class is not a subclass of EntityQuery: {cls.query_class!r}"
-            )
+            msg = f"query_class is not a subclass of EntityQuery: {cls.query_class!r}"
+            raise TypeError(msg)
 
         event.listen(cls, "before_insert", auto_slug_on_insert)
         event.listen(cls, "after_insert", auto_slug_after_insert)
         return cls
 
-    def __init__(cls, classname: str, bases: tuple[type, ...], d: dict[str, Any]):
+    def __init__(
+        cls, classname: str, bases: tuple[type, ...], d: dict[str, Any]
+    ) -> None:
         bases = cls.__bases__
         super().__init__(classname, bases, d)
 
@@ -313,11 +317,10 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
         if cls.__module__ == __name__ and cls.__name__ == "Entity":
             return {"polymorphic_on": "_entity_type"}
 
-        else:
-            return {
-                "polymorphic_identity": cls.entity_type,
-                "inherit_condition": cls.id == Entity.id,
-            }
+        return {
+            "polymorphic_identity": cls.entity_type,
+            "inherit_condition": cls.id == Entity.id,
+        }
 
     #: The name is a string that is shown to the user; it could be a title
     #: for document, a folder name, etc.
@@ -366,7 +369,7 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
     __searchable__: frozenset = frozenset()
     __auditable__: frozenset = frozenset()
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         db.Model.__init__(self, *args, **kwargs)
         BaseMixin.__init__(self)
 
@@ -410,7 +413,7 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
         permission on this object."""
         from abilian.services import get_security_service
         from abilian.services.indexing import indexable_role
-        from abilian.services.security import READ, Admin, Anonymous, Creator, Owner
+        from abilian.services.security import ADMIN, ANONYMOUS, CREATOR, OWNER, READ
 
         result: list[str] = []
         security = get_security_service()
@@ -418,12 +421,12 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
         # roles - required to match when user has a global role
         assignments = security.get_permissions_assignments(permission=READ, obj=self)
         allowed_roles = assignments.get(READ, set())
-        allowed_roles.add(Admin)
+        allowed_roles.add(ADMIN)
 
         for role in allowed_roles:
             result.append(indexable_role(role))
 
-        for role, attr in ((Creator, "creator"), (Owner, "owner")):
+        for role, attr in ((CREATOR, "creator"), (OWNER, "owner")):
             if role in allowed_roles:
                 user = getattr(self, attr)
                 if user:
@@ -442,7 +445,7 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
 
         # Anonymous is a role listed in role assignments
         # - legacy when there wasn't permission-role assignments
-        principals.discard(Anonymous)
+        principals.discard(ANONYMOUS)
 
         # if Anonymous in principals:
         #     # it's a role listed in role assignments - legacy when there wasn't
@@ -473,7 +476,7 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
     def _indexable_tag_text(self) -> str:
         return " ".join(str(tag.label) for tag in self._indexable_tags)
 
-    def clone(self):
+    def clone(self) -> Never:
         """Copy an entity: copy every field, except the id and sqlalchemy
         internals, without forgetting about the n-n relationships.
 
@@ -497,7 +500,7 @@ class Entity(Indexable, BaseMixin, Model, metaclass=EntityMeta):
 
 # TODO: make this unecessary
 @event.listens_for(Entity, "class_instrument", propagate=True)
-def register_metadata(cls: type[Entity]):
+def register_metadata(cls: type[Entity]) -> None:
     # TODO: use SQLAlchemy 0.8 introspection
     if hasattr(cls, "__table__") and cls.__table__ is not None:
         columns = cls.__table__.columns
@@ -511,7 +514,7 @@ def register_metadata(cls: type[Entity]):
 @event.listens_for(Session, "before_flush")
 def polymorphic_update_timestamp(
     session: Session, flush_context: UOWTransaction, instances: Any
-):
+) -> None:
     """This listener ensures an update statement is emited for "entity" table
     to update 'updated_at'.
 

@@ -1,19 +1,23 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import json
-from collections.abc import Callable
 from datetime import timedelta
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
 
 from abilian.core.extensions import db
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
 __all__ = ["Setting", "empty_value"]
 
 
 class TransformerRegistry:
-    def __init__(self):
+    def __init__(self) -> None:
         self.encoders: dict[str, Callable] = {}
         self.decoders: dict[str, Callable] = {}
 
@@ -31,7 +35,7 @@ class TransformerRegistry:
         type_: str,
         encoder: Callable | None = None,
         decoder: Callable | None = None,
-    ):
+    ) -> None:
         assert type_
         assert any((encoder, decoder))
 
@@ -45,10 +49,10 @@ _transformers = TransformerRegistry()
 
 
 class _EmptyValue:
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return False
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "<Empty Value>"
 
 
@@ -79,13 +83,12 @@ class Setting(db.Model):
         return self._type
 
     @type.setter
-    def type(self, type_: str):
+    def type(self, type_: str) -> None:
         if not (
             type_ in self.transformers.encoders and type_ in self.transformers.decoders
         ):
-            raise ValueError(
-                f'Invalid type "{type_}": no encoder and/or decoder registered'
-            )
+            msg = f'Invalid type "{type_}": no encoder and/or decoder registered'
+            raise ValueError(msg)
         self._type = type_
 
     @property
@@ -97,7 +100,7 @@ class Setting(db.Model):
         return self.transformers.decode(self.type, self._value)
 
     @value.setter
-    def value(self, value):
+    def value(self, value) -> None:
         assert self.type
         self._value = self.transformers.encode(self.type, value)
         assert isinstance(self._value, str)

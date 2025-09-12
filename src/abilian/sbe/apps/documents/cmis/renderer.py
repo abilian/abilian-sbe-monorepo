@@ -1,10 +1,13 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from flask import render_template
 
-from abilian.sbe.apps.documents.models import Document, Folder
+if TYPE_CHECKING:
+    from abilian.sbe.apps.documents.models import Document, Folder
 
 # TEMP
 ROOT = "http://localhost:5000/cmis/atompub"
@@ -44,7 +47,8 @@ class Entry:
         elif self.obj.sbe_type == "cmis:document":
             result = render_template("cmis/document.xml", **ctx)
         else:
-            raise Exception(f"Unknown base object type: {self.obj.sbe_type}")
+            msg = f"Unknown base object type: {self.obj.sbe_type}"
+            raise Exception(msg)
 
         if "no_xml_header" not in options:
             result = XML_HEADER + result

@@ -1,5 +1,6 @@
-"""Singleton for Dramatiq task manager, to permit lazy declaration of actors.
-"""
+# Copyright (c) 2012-2024, Abilian SAS
+
+"""Singleton for Dramatiq task manager, to permit lazy declaration of actors."""
 
 from __future__ import annotations
 

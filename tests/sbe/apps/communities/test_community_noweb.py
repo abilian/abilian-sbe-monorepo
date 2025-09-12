@@ -1,18 +1,18 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Tests from test_community are currently refactored using pytest in this
 module."""
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
 from unittest import mock
 
 import pytest
 import sqlalchemy as sa
-from sqlalchemy.orm import Session
 
 from abilian.core.entities import Entity
 from abilian.core.models.subjects import User
-from abilian.core.sqlalchemy import SQLAlchemy
-from abilian.sbe.app import Application
 from abilian.sbe.apps.communities import signals, views
 from abilian.sbe.apps.communities.models import (
     MEMBER,
@@ -25,11 +25,17 @@ from abilian.sbe.apps.documents.models import Folder
 from abilian.services import index_service, security_service
 from tests.util import login
 
+if TYPE_CHECKING:
+    from sqlalchemy.orm import Session
+
+    from abilian.app import Application
+    from abilian.core.sqlalchemy import SQLAlchemy
+
 # from .. import signals, views
 # from ..models import MEMBER, READER, Community, CommunityIdColumn, community_content
 
 
-@pytest.fixture()
+@pytest.fixture
 def community(db_session: Session) -> Community:
     community = Community(name="My Community")
     db_session.add(community)
@@ -51,10 +57,8 @@ def test_default_view_kw() -> None:
     # and no community_id in kwargs. and ValueError is properly raised
     dummy = type("Dummy", (object,), {"community": None})()
 
-    with pytest.raises(ValueError) as exc_info:
+    with pytest.raises(ValueError, match="Cannot find community_id value"):
         views.default_view_kw({}, dummy, "dummy", 1)
-
-    assert exc_info.value.args == ("Cannot find community_id value",)
 
 
 def test_default_url(app: Application, community: Community) -> None:
@@ -102,7 +106,7 @@ def test_membership(community: Community, db: SQLAlchemy) -> None:
     signals.membership_removed.connect(when_removed)
 
     # invalid role
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Invalid role"):
         community.set_membership(user, "dummy role name")
 
     assert not when_set.called
@@ -172,7 +176,7 @@ def test_community_content_decorator(community: Community, db: SQLAlchemy) -> No
     @community_content
     class CommunityContent(Entity):
         community_id = CommunityIdColumn()
-        community = sa.orm.relation(Community, foreign_keys=[community_id])
+        community = sa.orm.relationship(Community, foreign_keys=[community_id])
 
     sa.orm.configure_mappers()
     conn = db.session.connection()

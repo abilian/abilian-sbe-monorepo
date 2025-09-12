@@ -1,23 +1,29 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 import pytest
 from pytest import fixture
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session
 
-from abilian.sbe.app import Application
 from abilian.sbe.apps.documents.models import Document, Folder
 from abilian.sbe.apps.documents.repository import ContentRepository
 
+if TYPE_CHECKING:
+    from flask import Flask
+    from sqlalchemy.orm import Session
 
-@fixture()
-def repository(app: Application) -> ContentRepository:
+
+@fixture
+def repository(app: Flask) -> ContentRepository:
     repository = ContentRepository()
     repository.init_app(app)
     return repository
 
 
-@fixture()
+@fixture
 def root(session: Session) -> Folder:
     root = Folder(title="")
     session.add(root)
@@ -92,7 +98,7 @@ def test_copy_nested_folders(root: Folder, repository: ContentRepository) -> Non
 def test_move_nested_folders(root: Folder, repository: ContentRepository) -> None:
     folder1 = root.create_subfolder("folder1")
     folder2 = root.create_subfolder("folder2")
-    subfolder = folder1.create_subfolder("subfolder")
+    folder1.create_subfolder("subfolder")
 
     repository.move_object(folder1, folder2)
 
@@ -141,7 +147,7 @@ def test_delete(root: Folder, repository: ContentRepository, session: Session) -
 
     # test delete tree
     folder = root.create_subfolder("folder")
-    sub = folder.create_subfolder("subfolder")
+    folder.create_subfolder("subfolder")
     doc = folder.create_document("doc")
     session.flush()
 

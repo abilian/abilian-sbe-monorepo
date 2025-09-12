@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import abc
@@ -7,7 +9,7 @@ from sqlalchemy import CheckConstraint, Column, ForeignKey, Integer, UnicodeText
 from sqlalchemy.orm import backref, relationship
 
 from abilian.core.entities import Entity, EntityQuery
-from abilian.services.security import CREATE, DELETE, WRITE, Anonymous, Owner
+from abilian.services.security import ANONYMOUS, CREATE, DELETE, OWNER, WRITE
 
 #: name of backref on target :class:`Entity` object
 ATTRIBUTE = "__comments__"
@@ -29,7 +31,8 @@ def register(cls: type[Entity]) -> type:
           ...
     """
     if not issubclass(cls, Entity):
-        raise ValueError("Class must be a subclass of abilian.core.entities.Entity")
+        msg = "Class must be a subclass of abilian.core.entities.Entity"
+        raise TypeError(msg)
 
     Commentable.register(cls)
     return cls
@@ -65,7 +68,7 @@ class Comment(Entity):
     """A Comment related to an :class:`Entity`."""
 
     __tablename__ = "comment"
-    __default_permissions__ = {WRITE: {Owner}, DELETE: {Owner}, CREATE: {Anonymous}}
+    __default_permissions__ = {WRITE: {OWNER}, DELETE: {OWNER}, CREATE: {ANONYMOUS}}
 
     entity_id = Column(Integer, ForeignKey(Entity.id), nullable=False)
 
@@ -91,7 +94,7 @@ class Comment(Entity):
     def history(self):
         return self.meta.get("abilian.core.models.comment", {}).get("history", [])
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         class_ = self.__class__
         mod_ = class_.__module__
         classname = class_.__name__

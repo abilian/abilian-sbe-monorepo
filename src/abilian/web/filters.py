@@ -1,13 +1,14 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Add a few specific filters to Jinja2."""
 
 from __future__ import annotations
 
 import re
 from calendar import timegm
-from collections.abc import Callable
 from datetime import date, datetime
 from functools import wraps
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import bleach
 import dateutil.parser
@@ -15,7 +16,6 @@ import flask_babel as babel
 from babel.dates import DateTimePattern, format_timedelta, parse_pattern
 from deprecated import deprecated
 from jinja2 import Environment, pass_eval_context
-from jinja2.nodes import EvalContext
 from markupsafe import Markup, escape
 from pytz import utc
 from werkzeug.routing import BuildError
@@ -23,6 +23,11 @@ from werkzeug.routing import BuildError
 from abilian.core.util import local_dt, slugify, utc_dt
 
 from .util import url_for
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from jinja2.nodes import EvalContext
 
 NNSP = "\u202f"  # narrow no-break space
 
@@ -54,11 +59,9 @@ _PARAGRAPH_RE = re.compile(r"(?:\r\n|\r|\n){2,}")
 @autoescape
 def paragraphs(value: str) -> str:
     """Blank lines delimitates paragraphs."""
-    result = "\n\n".join(
-        "<p>{}</p>".format(p.strip().replace("\n", Markup("<br />\n")))
-        for p in _PARAGRAPH_RE.split(escape(value))
-    )
-    return result
+    paragraphs = _PARAGRAPH_RE.split(escape(value))
+    paragraphs = [p.strip().replace("\n", Markup("<br />\n")) for p in paragraphs]
+    return "\n\n".join(f"<p>{p}</p>" for p in paragraphs)
 
 
 def labelize(s: str) -> str:
@@ -144,8 +147,8 @@ def age(
     delta = dt - now
 
     if date_threshold is not None:
-        dy, dw, dd = dt_cal = dt.isocalendar()
-        ny, nw, nd = now_cal = now.isocalendar()
+        dy, _dw, _dd = dt_cal = dt.isocalendar()
+        ny, _nw, _nd = now_cal = now.isocalendar()
 
         if dt_cal != now_cal:
             # not same day
@@ -157,7 +160,7 @@ def age(
             if remove_year:
                 date_fmt = date_fmt.replace("y", "").strip()
                 # remove leading or trailing spaces, comma, etc...
-                date_fmt = re.sub("^[^A-Za-z]*|[^A-Za-z]*$", "", date_fmt)
+                date_fmt = re.sub(r"^[^A-Za-z]*|[^A-Za-z]*$", "", date_fmt)
 
             fmt = fmt.format(time_fmt, date_fmt)
             return babel.format_datetime(dt, format=fmt)
@@ -189,8 +192,7 @@ def date_fmt(value, format="EE, d MMMM y"):
     """
     if isinstance(value, date):
         return babel.format_date(value, format)
-    else:
-        return babel.format_date(local_dt(value), format)
+    return babel.format_date(local_dt(value), format)
 
 
 def babel2datepicker(pattern: DateTimePattern) -> str:
@@ -244,9 +246,8 @@ def to_timestamp(dt):
 def abbrev(s: str, max_size: int) -> str:
     if len(s) <= max_size:
         return s
-    else:
-        h = max_size // 2 - 1
-        return f"{s[0:h]}...{s[-h:]}"
+    h = max_size // 2 - 1
+    return f"{s[0:h]}...{s[-h:]}"
 
 
 def bool2check(val, true="\u2713", false=""):
@@ -272,7 +273,7 @@ def obj_to_url(obj):
         return ""
 
 
-def init_filters(env: Environment):
+def init_filters(env: Environment) -> None:
     env.filters["nl2br"] = nl2br
     env.filters["paragraphs"] = paragraphs
     env.filters["date_age"] = date_age

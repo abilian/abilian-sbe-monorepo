@@ -1,15 +1,18 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from flask import g
-from flask import url_for as url_for_orig
-from flask.blueprints import BlueprintSetupState
+from flask import g, url_for as url_for_orig
 from flask_babel import lazy_gettext as _l
 from flask_login import current_user
 
 from abilian.web.action import Action, Endpoint, actions
 from abilian.web.nav import NavItem
+
+if TYPE_CHECKING:
+    from flask.blueprints import BlueprintSetupState
 
 __all__ = ["register_actions"]
 
@@ -35,8 +38,7 @@ class CommunityTabAction(Action):
         endpoint = self.endpoint
         if endpoint:
             return endpoint
-        else:
-            return url_for(f"{self.name}.index")
+        return url_for(f"{self.name}.index")
 
     def is_current(self) -> bool:
         return g.current_tab == self.name

@@ -1,19 +1,25 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
 
-from collections.abc import Iterator
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 import sqlalchemy as sa
 from pytest import fixture, mark
-from sqlalchemy.orm import Session
 
-from abilian.app import Application
 from abilian.core.entities import Entity
 from abilian.services import get_service
-from abilian.services.indexing.service import WhooshIndexService
 from tests.util import redis_available
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+    from sqlalchemy.orm import Session
+
+    from abilian.app import Application
+    from abilian.services.indexing.service import WhooshIndexService
 
 
 class IndexedContact(Entity):
@@ -22,15 +28,15 @@ class IndexedContact(Entity):
     name = sa.Column(sa.UnicodeText)
 
 
-@fixture()
+@fixture
 def svc(app: Application) -> Iterator[WhooshIndexService]:
-    _svc = cast(WhooshIndexService, get_service("indexing"))
+    _svc = cast("WhooshIndexService", get_service("indexing"))
     with app.app_context():
         _svc.start(ignore_state=True)
         yield _svc
 
 
-def test_app_state(app: Application, svc: WhooshIndexService):
+def test_app_state(app: Application, svc: WhooshIndexService) -> None:
     state = svc.app_state
     assert IndexedContact in state.indexed_classes
     assert IndexedContact.entity_type in svc.adapted
@@ -40,7 +46,7 @@ def test_app_state(app: Application, svc: WhooshIndexService):
 @mark.skipif(not redis_available(), reason="requires redis connection")
 def test_index_only_after_final_commit(
     app: Application, session: Session, svc: WhooshIndexService
-):
+) -> None:
     contact = IndexedContact(name="John Doe")
 
     state = svc.app_state
@@ -62,7 +68,7 @@ def test_index_only_after_final_commit(
     assert state.to_update == []
 
 
-def test_clear(app: Application, svc: WhooshIndexService):
+def test_clear(app: Application, svc: WhooshIndexService) -> None:
     # just check no exception happens
     svc.clear()
 

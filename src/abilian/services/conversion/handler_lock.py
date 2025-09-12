@@ -1,10 +1,17 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
+from __future__ import annotations
+
 import functools
-from collections.abc import Callable
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from filelock import FileLock, Timeout
 
 from .exceptions import ConversionError
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 LOCK_EXPIRE = 1800  # 30 min, in case many request in //
 LOCK_DIR = []
@@ -13,8 +20,7 @@ LOCK_FILES = {}
 
 def init_conversion_lock_dir(instance_path: str) -> None:
     lock_dir = Path(instance_path) / "lock"
-    if not lock_dir.exists():
-        lock_dir.mkdir(parents=True)
+    lock_dir.mkdir(parents=True, exist_ok=True)
     LOCK_DIR.append(lock_dir)
 
 

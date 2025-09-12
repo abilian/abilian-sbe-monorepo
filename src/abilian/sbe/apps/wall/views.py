@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 from datetime import date
@@ -59,7 +61,7 @@ def files():
 
 
 class Attachment:
-    def __init__(self, url, name, owner, date, content_length, content_type):
+    def __init__(self, url, name, owner, date, content_length, content_type) -> None:
         self.url = url
         self.name = name
         self.owner = owner
@@ -142,7 +144,7 @@ def group_monthly(objects):
     def grouper(entity):
         return entity.date.year, entity.date.month
 
-    def format_month(year, month):
+    def format_month(year, month) -> str:
         month = format_date(date(year, month, 1), "MMMM").capitalize()
         return f"{month} {year}"
 

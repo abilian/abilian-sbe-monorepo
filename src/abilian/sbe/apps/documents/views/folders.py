@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import contextlib
@@ -8,12 +10,11 @@ import re
 import sys
 import tempfile
 import traceback
-from collections.abc import Iterator
 from datetime import datetime
 from functools import partial
 from io import StringIO
 from itertools import takewhile
-from typing import IO, Any
+from typing import IO, TYPE_CHECKING, Any
 from urllib.parse import quote
 from zipfile import ZipFile, is_zipfile
 
@@ -36,9 +37,7 @@ from flask_login import current_user
 from loguru import logger
 from markupsafe import Markup
 from sqlalchemy import func
-from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import InternalServerError
-from werkzeug.wrappers import Response
 from xlwt import Workbook, easyxf
 
 from abilian.core.extensions import db
@@ -70,12 +69,18 @@ from .util import (
 )
 from .views import community_blueprint
 
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+    from werkzeug.datastructures import FileStorage
+    from werkzeug.wrappers import Response
+
 route = community_blueprint.route
 
 __all__ = ()
 
 
-def tracing_formatter(record: dict):
+def tracing_formatter(record: dict) -> str:
     """Add trace to the logger.
 
     Taken from loguru documentation."""
@@ -109,7 +114,8 @@ def folder_view(folder_id):
     elif view_style == "gallery_view":
         resp = render_template("documents/folder_gallery_view.html", **ctx)
     else:
-        raise InternalServerError("Unknown value for sbe_doc_view_style")
+        msg = "Unknown value for sbe_doc_view_style"
+        raise InternalServerError(msg)
 
     return resp
 
@@ -129,12 +135,9 @@ def change_view_style(folder_id):
                 ".folder_view", folder_id=folder_id, community_id=folder.community.slug
             )
         )
-    else:
-        return redirect(
-            url_for(
-                ".folder_view", folder_id=folder_id, community_id=folder.community.slug
-            )
-        )
+    return redirect(
+        url_for(".folder_view", folder_id=folder_id, community_id=folder.community.slug)
+    )
 
 
 @route("/folder/<int:folder_id>/json")
@@ -250,7 +253,7 @@ def permissions(folder_id):
             ' }}">{{ group.name }}</a>'
         )
 
-        def __init__(self, e):
+        def __init__(self, e) -> None:
             render = render_template_string
             self.entry = e
             self.date = e.happened_at.strftime("%Y-%m-%d %H:%M")
@@ -272,7 +275,8 @@ def permissions(folder_id):
                     'On {date}, {manager} has revoked role "{role}" from {principal}'
                 )
             else:
-                raise Exception(f"Unknown audit entry type {e.op}")
+                msg = f"Unknown audit entry type {e.op}"
+                raise Exception(msg)
 
             principal = ""
             if self.entry.user:
@@ -345,7 +349,7 @@ def permissions_update(folder_id):
             )
         )
 
-    elif action == "add-user-role":
+    if action == "add-user-role":
         role = request.form.get("role").lower()
         user_id = int(request.form.get("user"))
         user = User.query.get(user_id)
@@ -359,7 +363,7 @@ def permissions_update(folder_id):
             )
         )
 
-    elif action == "add-group-role":
+    if action == "add-group-role":
         role = request.form.get("role").lower()
         group_id = int(request.form.get("group"))
         group = Group.query.get(group_id)
@@ -373,77 +377,74 @@ def permissions_update(folder_id):
             )
         )
 
-    else:
-        action, args = request.form.items()[0]
-        role, object_id = args.split(":")
-        role = role.lower()
-        object_id = int(object_id)
+    action, args = request.form.items()[0]
+    role, object_id = args.split(":")
+    role = role.lower()
+    object_id = int(object_id)
 
-        if action == "delete-user-role":
-            user = User.query.get(object_id)
-            # remove role in a subtransaction, to prevent manager shoot himself in the
-            # foot
-            transaction = db.session.begin_nested()
-            security.ungrant_role(user, role, folder)
+    if action == "delete-user-role":
+        user = User.query.get(object_id)
+        # remove role in a subtransaction, to prevent manager shoot himself in the
+        # foot
+        transaction = db.session.begin_nested()
+        security.ungrant_role(user, role, folder)
 
-            if (
-                user == current_user
-                and role == "manager"
-                and not has_permission(current_user, "manage", folder, inherit=True)
-            ):
-                transaction.rollback()
-                flash(
-                    _(
-                        'Cannot remove "manager" local role for yourself: you '
-                        'don\'t have "manager" role (either by security inheritance '
-                        "or by group membership)"
-                    ),
-                    "error",
-                )
-            else:
-                reindex_tree(folder)
-                transaction.commit()
-                flash(
-                    _("Role {role} for user {user} removed on folder {folder}").format(
-                        role=role, user=user.name, folder=folder.name
-                    ),
-                    "success",
-                )
-        elif action == "delete-group-role":
-            group = Group.query.get(object_id)
-            # remove role in a subtransaction, to prevent manager shoot himself in the
-            # foot
-            transaction = db.session.begin_nested()
-            security.ungrant_role(group, role, folder)
-
-            if role == "manager" and not has_permission(
-                current_user, "manage", folder, inherit=True
-            ):
-                transaction.rollback()
-                flash(
-                    _(
-                        'Cannot remove "manager" local role for group "{group}": you'
-                        ' don\'t have "manager" role by security inheritance or by '
-                        "local role"
-                    ).format(group=group.name),
-                    "error",
-                )
-            else:
-                flash(
-                    _(
-                        "Role {role} for group {group} removed on folder {folder}"
-                    ).format(role=role, group=group.name, folder=folder.name),
-                    "success",
-                )
-                reindex_tree(folder)
-                transaction.commit()
-
-        db.session.commit()
-        return redirect(
-            url_for(
-                ".permissions", folder_id=folder_id, community_id=folder.community.slug
+        if (
+            user == current_user
+            and role == "manager"
+            and not has_permission(current_user, "manage", folder, inherit=True)
+        ):
+            transaction.rollback()
+            flash(
+                _(
+                    'Cannot remove "manager" local role for yourself: you '
+                    'don\'t have "manager" role (either by security inheritance '
+                    "or by group membership)"
+                ),
+                "error",
             )
-        )
+        else:
+            reindex_tree(folder)
+            transaction.commit()
+            flash(
+                _("Role {role} for user {user} removed on folder {folder}").format(
+                    role=role, user=user.name, folder=folder.name
+                ),
+                "success",
+            )
+    elif action == "delete-group-role":
+        group = Group.query.get(object_id)
+        # remove role in a subtransaction, to prevent manager shoot himself in the
+        # foot
+        transaction = db.session.begin_nested()
+        security.ungrant_role(group, role, folder)
+
+        if role == "manager" and not has_permission(
+            current_user, "manage", folder, inherit=True
+        ):
+            transaction.rollback()
+            flash(
+                _(
+                    'Cannot remove "manager" local role for group "{group}": you'
+                    ' don\'t have "manager" role by security inheritance or by '
+                    "local role"
+                ).format(group=group.name),
+                "error",
+            )
+        else:
+            flash(
+                _("Role {role} for group {group} removed on folder {folder}").format(
+                    role=role, group=group.name, folder=folder.name
+                ),
+                "success",
+            )
+            reindex_tree(folder)
+            transaction.commit()
+
+    db.session.commit()
+    return redirect(
+        url_for(".permissions", folder_id=folder_id, community_id=folder.community.slug)
+    )
 
 
 @route("/folder/<int:folder_id>/permissions_export")
@@ -599,32 +600,31 @@ def folder_post(folder_id: int) -> Response:
     if action == "edit":
         return folder_edit(folder)
 
-    elif action == "upload":
+    if action == "upload":
         return upload_new(folder)
 
-    elif action == "download":
+    if action == "download":
         return download_multiple(folder)
 
-    elif action == "delete":
+    if action == "delete":
         return delete_multiple(folder)
 
-    elif action == "new":
+    if action == "new":
         return create_subfolder(folder)
 
-    elif action == "move":
+    if action == "move":
         return move_multiple(folder)
 
-    elif action == "change-owner":
+    if action == "change-owner":
         return change_owner(folder)
 
-    else:
-        # Probably an error or a hack attempt.
-        # Logger will inform sentry if enabled
-        logger.remove()
-        logger.add(sys.stderr, format=tracing_formatter)
-        logger.error("Unknown folder action.")
-        flash(_("Unknown action."), "error")
-        return redirect(url_for(folder))
+    # Probably an error or a hack attempt.
+    # Logger will inform sentry if enabled
+    logger.remove()
+    logger.add(sys.stderr, format=tracing_formatter)
+    logger.error("Unknown folder action.")
+    flash(_("Unknown action."), "error")
+    return redirect(url_for(folder))
 
 
 def folder_edit(folder):
@@ -857,6 +857,10 @@ def move_multiple(folder: Folder) -> Response:
 
     target_folder = content_repository.get_folder_by_id(target_folder_id)
 
+    if not target_folder:
+        msg = "Target folder not found"
+        raise InternalServerError(msg)
+
     if folder == target_folder:
         flash(
             _(
@@ -1048,7 +1052,7 @@ def descendants_view(folder_id):
 
     descendants = []
 
-    def visit(path_id, level=0):
+    def visit(path_id, level=0) -> None:
         children = by_path.get(path_id, ())
 
         for child in children:

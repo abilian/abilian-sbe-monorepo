@@ -1,16 +1,21 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
 
-from collections.abc import Callable
-from typing import Any
+from typing import TYPE_CHECKING, Any, NoReturn
 
 from flask import g, json, jsonify, redirect, render_template_string, request
-from flask.typing import ResponseReturnValue
 from flask.views import MethodView as BaseView
 from werkzeug.exceptions import HTTPException
 
 from abilian.web.action import actions
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from flask.typing import ResponseReturnValue
 
 
 class Redirect(HTTPException):
@@ -18,7 +23,7 @@ class Redirect(HTTPException):
 
 
 class View(BaseView):
-    """Base class to use for all class based views.
+    """Base class to use for all class-based views.
 
     The view instance is accessible in :data:`g <flask.g>` and is set in
     :meth:`actions context <abilian.web.action.ActionRegistry.context>`.
@@ -56,7 +61,7 @@ class View(BaseView):
         assert not args
         return args, kwargs
 
-    def redirect(self, url):
+    def redirect(self, url) -> NoReturn:
         """Shortcut all call stack and return response.
 
         usage: `self.response(url_for(...))`
@@ -108,7 +113,10 @@ class JSONView(View):
     def get(self, *args: Any, **kwargs: Any) -> ResponseReturnValue:
         data = self.data(*args, **kwargs)
         best_mime = request.accept_mimetypes.best_match(
-            ["text/html", "application/json"]
+            [
+                "text/html",
+                "application/json",
+            ]
         )
         if best_mime == "application/json":
             return jsonify(data)

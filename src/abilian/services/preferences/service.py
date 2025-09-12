@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """User preference service.
 
 Notes:
@@ -17,11 +19,9 @@ from werkzeug.exceptions import InternalServerError
 
 from abilian.core import signals
 from abilian.core.extensions import db
-from abilian.core.models.subjects import User
 from abilian.i18n import _, _l
 from abilian.services.auth.service import user_menu
 from abilian.services.base import Service, ServiceState
-from abilian.services.preferences.panel import PreferencePanel
 from abilian.web.action import Endpoint
 from abilian.web.nav import BreadcrumbItem, NavItem
 
@@ -29,6 +29,8 @@ from .models import UserPreference
 
 if TYPE_CHECKING:
     from abilian.app import Application
+    from abilian.core.models.subjects import User
+    from abilian.services.preferences.panel import PreferencePanel
 
 _PREF_NAV_ITEM = NavItem(
     "user",
@@ -47,7 +49,7 @@ class PreferenceState(ServiceState):
     blueprint: Blueprint
     blueprint_registered: bool
 
-    def __init__(self, service: PreferenceService, *args: Any, **kwargs: Any):
+    def __init__(self, service: PreferenceService, *args: Any, **kwargs: Any) -> None:
         super().__init__(service, *args, **kwargs)
         self.panels = []
         self.nav_paths = {}
@@ -62,7 +64,7 @@ class PreferenceService(Service):
     name = "preferences"
     AppStateClass = PreferenceState
 
-    def init_app(self, app: Application, *panels: Any):
+    def init_app(self, app: Application, *panels: Any) -> None:
         super().init_app(app)
 
         with app.app_context():
@@ -80,7 +82,7 @@ class PreferenceService(Service):
             user = current_user
         return {pref.key: pref.value for pref in user.preferences}
 
-    def set_preferences(self, user: User | None = None, **kwargs: Any):
+    def set_preferences(self, user: User | None = None, **kwargs: Any) -> None:
         """Set preferences from keyword arguments."""
         if user is None:
             user = current_user
@@ -93,7 +95,7 @@ class PreferenceService(Service):
                 d[k] = UserPreference(user=user, key=k, value=v)
                 db.session.add(d[k])
 
-    def clear_preferences(self, user: User | None = None):
+    def clear_preferences(self, user: User | None = None) -> None:
         """Clear the user preferences."""
         if user is None:
             user = current_user
@@ -103,12 +105,11 @@ class PreferenceService(Service):
         #  http://docs.sqlalchemy.org/en/rel_0_7/orm/session.html#deleting-from-collections
         user.preferences = []
 
-    def register_panel(self, panel: PreferencePanel, app: Flask | None = None):
+    def register_panel(self, panel: PreferencePanel, app: Flask | None = None) -> None:
         state = self.app_state if app is None else app.extensions[self.name]
         if state.blueprint_registered:
-            raise ValueError(
-                "Extension already initialized for app, cannot add more panel"
-            )
+            msg = "Preferences extension already initialized for app, cannot add more panel"
+            raise ValueError(msg)
 
         state.panels.append(panel)
         panel.preferences = self
@@ -116,6 +117,8 @@ class PreferenceService(Service):
         endpoint = panel.id
         abs_endpoint = f"preferences.{endpoint}"
 
+        assert hasattr(panel, "get")
+        assert hasattr(panel, "post")
         if hasattr(panel, "get"):
             state.blueprint.add_url_rule(rule, endpoint, panel.get)
         if hasattr(panel, "post"):
@@ -126,7 +129,7 @@ class PreferenceService(Service):
             label=panel.label, icon=None, url=Endpoint(abs_endpoint)
         )
 
-    def setup_blueprint(self, app: Flask):
+    def setup_blueprint(self, app: Flask) -> None:
         bp = self.app_state.blueprint = Blueprint(
             "preferences",
             __name__,
@@ -137,9 +140,11 @@ class PreferenceService(Service):
         # we need to delay blueprint registration to allow adding more panels during
         # initialization
         @signals.components_registered.connect_via(app)
-        def register_bp(app: Flask):
+        def register_bp(app: Flask) -> None:
+            pref_service = app.extensions[self.name]
+            assert not pref_service.blueprint_registered
             app.register_blueprint(bp)
-            app.extensions[self.name].blueprint_registered = True
+            pref_service.blueprint_registered = True
 
         self.app_state.root_breadcrumb_item = BreadcrumbItem(
             label=_("Preferences"), url=Endpoint("preferences.index")
@@ -179,7 +184,7 @@ class PreferenceService(Service):
             # Should not happen.
             raise InternalServerError
 
-    def build_breadcrumbs(self, endpoint, view_args):
+    def build_breadcrumbs(self, endpoint, view_args) -> None:
         state = self.app_state
         g.nav["active"] = _PREF_NAV_ITEM.path
         g.breadcrumb.append(state.root_breadcrumb_item)

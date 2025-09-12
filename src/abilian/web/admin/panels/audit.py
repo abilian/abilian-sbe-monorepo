@@ -1,8 +1,10 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
-from collections.abc import Callable
 from datetime import datetime
 from itertools import chain
+from typing import TYPE_CHECKING
 
 import pytz
 import sqlalchemy as sa
@@ -28,6 +30,9 @@ from abilian.services.security import SecurityAudit
 from abilian.web.admin import AdminPanel
 from abilian.web.util import url_for
 from abilian.web.views.base import JSONView
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 def format_date_for_input(date):
@@ -88,7 +93,7 @@ class AuditPanel(AdminPanel):
     label = "Audit trail"
     icon = "list-alt"
 
-    def install_additional_rules(self, add_url_rule: Callable):
+    def install_additional_rules(self, add_url_rule: Callable) -> None:
         add_url_rule("/search_users", view_func=JSONUserSearch.as_view("search_users"))
 
     def get(self) -> str:
@@ -261,14 +266,14 @@ class BaseEntryPresenter:
         ' }}">{{ group.name }}</a>'
     )
 
-    def __init__(self, user, date):
+    def __init__(self, user, date) -> None:
         self.user = user
         self.date = local_dt(date)
 
     def __lt__(self, other):
         return self.date < other.date
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.user!r}, {self.date!r} @ {id(self)})"
 
     @staticmethod
@@ -280,7 +285,7 @@ class BaseEntryPresenter:
 
 
 class AuditEntryPresenter(BaseEntryPresenter):
-    def __init__(self, entry: AuditEntry):
+    def __init__(self, entry: AuditEntry) -> None:
         assert isinstance(entry, AuditEntry)
         super().__init__(entry.user, entry.happened_at)
         self.entry = entry
@@ -313,7 +318,8 @@ class AuditEntryPresenter(BaseEntryPresenter):
         elif e.op == 2:
             msg = _('{user} has deleted {entity_type}: {entity_id} "{entity}"')
         else:
-            raise Exception(f"Bad entry type: {e.type}")
+            msg = f"Bad entry type: {e.type}"
+            raise Exception(msg)
 
         self.msg = Markup(
             msg.format(
@@ -328,7 +334,7 @@ class AuditEntryPresenter(BaseEntryPresenter):
 
 
 class SecurityEntryPresenter(BaseEntryPresenter):
-    def __init__(self, entry: SecurityAudit):
+    def __init__(self, entry: SecurityAudit) -> None:
         assert isinstance(entry, SecurityAudit)
         super().__init__(entry.manager, entry.happened_at)
         self.entry = entry
@@ -379,13 +385,15 @@ class SecurityEntryPresenter(BaseEntryPresenter):
                     '{manager} has revoked role "{role}" from {principal} on {entity}'
                 )
             else:
-                raise Exception(f"Invalid entity op: {e.op}")
+                msg = f"Invalid entity op: {e.op}"
+                raise Exception(msg)
         elif e.op == e.GRANT:
             msg = _('{manager} has given role "{role}" to {principal}')
         elif e.op == e.REVOKE:
             msg = _('{manager} has revoked role "{role}" from {principal}')
         else:
-            raise Exception(f"Invalid entity op: {e.op}")
+            msg = f"Invalid entity op: {e.op}"
+            raise Exception(msg)
 
         self.msg = Markup(
             msg.format(manager=manager, principal=principal, role=e.role, entity=entity)

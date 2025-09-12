@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Activity Service.
 
 See: http://activitystrea.ms/specs/json/1.0/
@@ -9,8 +11,8 @@ TODO: Look wether other attributes from the spec need to be implemented.
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import Column, ForeignKey
@@ -18,6 +20,9 @@ from sqlalchemy.types import DateTime, Integer, String, Text
 
 from abilian.core.entities import Entity, db
 from abilian.core.models.subjects import User
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 __all__ = ["ActivityEntry"]
 
@@ -59,7 +64,7 @@ class ActivityEntry(db.Model):
     _fk_target_id = Column(Integer, ForeignKey(Entity.id, ondelete="SET NULL"))
     target = relationship(Entity, foreign_keys=_fk_target_id)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         tpl = "<{}.ActivityEntry id={} actor={} verb={} object={} target={}>"
         return tpl.format(
             self.__class__.__module__,

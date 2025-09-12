@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
@@ -13,7 +15,7 @@ class Message1(Entity):
     pass
 
 
-@fixture()
+@fixture
 def activity_service(app, db):
     service = ActivityService()
     service.start()
@@ -21,7 +23,7 @@ def activity_service(app, db):
     service.stop()
 
 
-def test(app, session, activity_service):
+def test(app, session, activity_service) -> None:
     service = activity_service
     user = User(email="test@example.com")
     message = Message1(creator=user, owner=user, name="test message")

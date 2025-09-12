@@ -1,11 +1,14 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import sqlalchemy as sa
 import sqlalchemy.orm
 from flask import current_app, send_file
-from flask.blueprints import BlueprintSetupState
 from werkzeug.exceptions import BadRequest
 from werkzeug.utils import redirect
 
@@ -19,6 +22,9 @@ from abilian.web.views import BaseObjectView, ObjectCreate, ObjectDelete, Object
 
 from .forms import AttachmentForm
 
+if TYPE_CHECKING:
+    from flask.blueprints import BlueprintSetupState
+
 bp = AccessControlBlueprint("attachments", __name__, url_prefix="/attachments")
 
 
@@ -30,7 +36,7 @@ def _default_attachment_view(obj, obj_type, obj_id, **kwargs):
 
 
 @bp.record_once
-def register_default_view(state: BlueprintSetupState):
+def register_default_view(state: BlueprintSetupState) -> None:
     state.app.default_view.register(Attachment, _default_attachment_view)
 
 
@@ -54,10 +60,12 @@ class BaseAttachmentView:
             self.entity = Entity.query.get(entity_id)
 
         if self.entity is None:
-            raise BadRequest("No entity provided")
+            msg = "No entity provided"
+            raise BadRequest(msg)
 
         if not supports_attachments(self.entity):
-            raise BadRequest("This entity is doesn't support attachments")
+            msg = "This entity is doesn't support attachments"
+            raise BadRequest(msg)
 
         extension = current_app.extensions["attachments"]
         self.Form = extension.manager(self.entity).Form

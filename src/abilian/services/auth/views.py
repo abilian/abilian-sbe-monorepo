@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Login-related views (login / logout / password reminder / ...).
 
 Notes:
@@ -10,7 +12,7 @@ import contextlib
 import secrets
 import string
 from datetime import datetime
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from urllib.parse import urljoin, urlparse
 
 from flask import (
@@ -32,20 +34,23 @@ from itsdangerous import (
     TimedSerializer,
     URLSafeTimedSerializer,
 )
+from loguru import logger
 from sqlalchemy import sql
 from sqlalchemy.orm.exc import NoResultFound
-from werkzeug.datastructures import ImmutableMultiDict
-from werkzeug.wrappers import Response
 
 from abilian.core.extensions import csrf, db
 from abilian.core.models.subjects import User
 from abilian.core.signals import auth_failed
 from abilian.core.util import md5, unwrap
 from abilian.i18n import _, render_template_i18n
-from abilian.services.security import Anonymous
+from abilian.services.security import ANONYMOUS
 from abilian.web.access_blueprint import AccessControlBlueprint
 
 from .models import LoginSession
+
+if TYPE_CHECKING:
+    from werkzeug.datastructures import ImmutableMultiDict
+    from werkzeug.wrappers import Response
 
 __all__ = ("login",)
 
@@ -53,7 +58,7 @@ login = AccessControlBlueprint(
     "login",
     __name__,
     url_prefix="/user",
-    allowed_roles=Anonymous,
+    allowed_roles=ANONYMOUS,
     template_folder="templates",
 )
 route = login.route
@@ -203,7 +208,7 @@ def forgotten_pw(new_user: bool = False) -> str | Response | tuple[str, int]:
 
 @route("/reset_password/<token>")
 def reset_password(token: str) -> str | Response:
-    expired, invalid, user = reset_password_token_status(token)
+    expired, invalid, _user = reset_password_token_status(token)
     if invalid:
         flash(_("Invalid reset password token."), "error")
     elif expired:
@@ -256,10 +261,7 @@ def reset_password_post(token: str) -> Response:
     db.session.commit()
 
     flash(
-        _(
-            "Your password has been changed. "
-            "You can now login with your new password"
-        ),
+        _("Your password has been changed. You can now login with your new password"),
         "success",
     )
 
@@ -280,7 +282,7 @@ def get_serializer(name: str) -> TimedSerializer:
     return URLSafeTimedSerializer(secret_key=secret_key, salt=salt)
 
 
-def send_reset_password_instructions(user: User):
+def send_reset_password_instructions(user: User) -> None:
     """Send the reset password instructions email for the specified user.
 
     :param user: The user to send the instructions to
@@ -329,7 +331,7 @@ def get_token_status(
     try:
         data = serializer.loads(token, max_age=max_age)
     except SignatureExpired:
-        d, data = serializer.loads_unsafe(token)
+        _d, data = serializer.loads_unsafe(token)
         expired = True
     except BadSignature:
         invalid = True
@@ -341,7 +343,7 @@ def get_token_status(
     return expired, invalid, user
 
 
-def send_mail(subject: str, recipient: str, template: str, **context: Any):
+def send_mail(subject: str, recipient: str, template: str, **context: Any) -> None:
     """Send an email using the Flask-Mail extension.
 
     :param subject: Email subject
@@ -359,7 +361,7 @@ def send_mail(subject: str, recipient: str, template: str, **context: Any):
     # msg.html = render_template('%s/%s.html' % ctx, **context)
 
     mail = current_app.extensions.get("mail")
-    current_app.logger.debug("Sending mail...")
+    logger.debug("Sending mail...")
     mail.send(msg)
 
 
@@ -367,14 +369,14 @@ def send_mail(subject: str, recipient: str, template: str, **context: Any):
 # Logging
 #
 @user_logged_in.connect
-def log_session_start(app: Flask, user: User):
+def log_session_start(app: Flask, user: User) -> None:
     session = LoginSession.new()
     db.session.add(session)
     db.session.commit()
 
 
 @user_logged_out.connect
-def log_session_end(app: Flask, user: User):
+def log_session_end(app: Flask, user: User) -> None:
     if user.is_anonymous:
         return
 
@@ -399,7 +401,7 @@ def check_for_redirect(target: str) -> str:
 
     # exceptions may happen if route is not found for example
     with contextlib.suppress(Exception):
-        endpoint, ignored = ctx.url_adapter.match(url.path, "GET")
+        endpoint, _ignored = ctx.url_adapter.match(url.path, "GET")
         if "." in endpoint and endpoint.rsplit(".", 1)[0] == "login":
             # don't redirect to any login view after successful login
             return ""

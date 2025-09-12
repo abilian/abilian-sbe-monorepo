@@ -1,9 +1,12 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
 
 import imghdr
 from io import BytesIO
+from typing import TYPE_CHECKING
 
 import babel.dates
 import PIL.Image
@@ -17,7 +20,9 @@ from abilian.i18n import _, _l, get_default_locale
 from abilian.services.preferences.panel import PreferencePanel
 from abilian.web import csrf
 from abilian.web.forms import Form, fields, required, widgets
-from abilian.web.forms.fields import FileField
+
+if TYPE_CHECKING:
+    from abilian.web.forms.fields import FileField
 
 
 class UserPreferencesForm(Form):
@@ -42,7 +47,7 @@ class UserPreferencesForm(Form):
         label=_l("Time zone"), validators=(required(),), default=babel.dates.LOCALTZ
     )
 
-    def validate_password(self, field: StringField):
+    def validate_password(self, field: StringField) -> None:
         pwd = field.data
         confirmed = self["confirm_password"].data
 
@@ -54,7 +59,7 @@ class UserPreferencesForm(Form):
                 )
             )
 
-    def validate_photo(self, field: FileField):
+    def validate_photo(self, field: FileField) -> None:
         data = request.form.get(field.name)
         if not data:
             return
@@ -90,7 +95,7 @@ class UserPreferencesPanel(PreferencePanel):
     id = "user"
     label = _l("About me")
 
-    def is_accessible(self):
+    def is_accessible(self) -> bool:
         return True
 
     def get(self):
@@ -144,5 +149,4 @@ class UserPreferencesPanel(PreferencePanel):
             db.session.commit()
             flash(_("Preferences saved."), "info")
             return redirect(url_for(".user"))
-        else:
-            return render_template("preferences/user.html", form=form)
+        return render_template("preferences/user.html", form=form)

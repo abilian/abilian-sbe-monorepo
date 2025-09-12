@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import dramatiq_abort.backends
@@ -21,16 +23,28 @@ def init_dramatiq_engine(app) -> None:
     if dramatiq.app is not None:
         # ensure only one initialization, especially during tests
         return
+
     logger.debug("Setting up Dramatiq")
+    logger.debug(f"SERVER_NAME: '{app.config.get('SERVER_NAME')}'")
+    # for k in (
+    #     "DRAMATIQ_RATE_LIMIT_REDIS_URL",
+    #     "DRAMATIQ_BROKER_URL",
+    #     "DEFAULT_DRAMATIQ_RATE_LIMIT_REDIS_URL",
+    # ):
+    #     logger.debug(f"{k}: '{app.config.get(k)}'")
+
     dramatiq.init_app(app)
+
     _setup_rate_limiter(app)
     _add_dramatiq_abortable(app)
     _register_scheduler(app)
-    _print_dramatiq_config()
+
+    # Only for debug
+    # _print_dramatiq_config()
 
 
-def _setup_rate_limiter(app):
-    logger.debug("Add dramatiq rate limiter")
+def _setup_rate_limiter(app) -> None:
+    # logger.debug("Add dramatiq rate limiter")
     redis_client = _rate_limiter_redis_client(app)
     backend = RateLimitRedisBackend(client=redis_client)
     # rate limit is 6/min
@@ -44,11 +58,12 @@ def _rate_limiter_redis_client(app) -> redis.Redis:
         redis_url = app.config.get("DRAMATIQ_BROKER_URL")
     if not redis_url:
         redis_url = DEFAULT_DRAMATIQ_RATE_LIMIT_REDIS_URL
+    logger.debug(f"Dramatiq Redis URL: '{redis_url}'")
     return redis.Redis.from_url(redis_url)
 
 
 def _register_scheduler(app) -> None:
-    logger.debug("Register scheduler")
+    # logger.debug("Register scheduler")
     app.cli.add_command(scheduler)
 
 
@@ -77,7 +92,7 @@ def _add_dramatiq_abortable(app) -> None:
     abort(message_id, mode=AbortMode.CANCEL)
     abort(message.message_id, mode=AbortMode.ABORT, abort_timeout=2000)
     """
-    logger.debug("Add dramatiq abortable")
+    # logger.debug("Add dramatiq abortable")
     redis_client = _abortable_redis_client(app)
     backend = dramatiq_abort.backends.RedisBackend(client=redis_client)
     abortable = Abortable(backend=backend)

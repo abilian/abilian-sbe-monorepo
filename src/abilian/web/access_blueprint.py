@@ -1,15 +1,20 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
 
-from collections.abc import Callable, Collection
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from flask import Blueprint
 
-from abilian.core.models.subjects import User
-from abilian.services.security import Anonymous, Role
-from abilian.services.security.service import SecurityService
+from abilian.services.security import ANONYMOUS, Role
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Collection
+
+    from abilian.core.models.subjects import User
+    from abilian.services.security.service import SecurityService
 
 
 def allow_anonymous(user: User, roles: Collection[Role], **kwargs: Any) -> bool:
@@ -23,14 +28,14 @@ def allow_access_for_roles(roles: Collection[Role] | Role) -> Callable:
         roles = (roles,)
     valid_roles = frozenset(roles)
 
-    if Anonymous in valid_roles:
+    if ANONYMOUS in valid_roles:
         return allow_anonymous
 
     # FIXME: parameter not used. Why?
     def check_role(user: User, roles: Collection[Role], **kwargs):
         from abilian.services import get_service
 
-        security: SecurityService = cast(SecurityService, get_service("security"))
+        security: SecurityService = cast("SecurityService", get_service("security"))
         return security.has_role(user, valid_roles)
 
     return check_role
@@ -46,7 +51,7 @@ class AccessControlBlueprint(Blueprint):
         import_name: str,
         allowed_roles: None | str | Role | Collection[Role] = None,
         **kwargs: Any,
-    ):
+    ) -> None:
         """
         :param allowed_roles: role or list of roles required to access any view in this
             blueprint.
@@ -69,5 +74,5 @@ class AccessControlBlueprint(Blueprint):
                 )
             )
 
-    def allow_any(self, func):
+    def allow_any(self, func) -> None:
         pass

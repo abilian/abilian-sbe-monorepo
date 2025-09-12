@@ -7,9 +7,10 @@
   },
   "devDependencies": {
     "htmlhint": "^1.1.4",
-    "less": "^4.2.0"
+    "less": "^4.2.1"
   },
   "dependencies": {
-    "lessc": "^1.0.2"
+    "lessc": "^1.0.2",
+    "markdown-toc": "^1.2.0"
   }
 }

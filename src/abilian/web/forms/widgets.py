@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Reusable widgets to be included in views.
 
 NOTE: code is currently quite messy. Needs to be refactored.
@@ -9,9 +11,8 @@ import base64
 import html
 import re
 from collections import namedtuple
-from collections.abc import Sequence
 from datetime import datetime
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from urllib import parse
 
 import bleach
@@ -23,13 +24,14 @@ from flask_babel import format_date, format_datetime, format_number, get_locale
 from flask_login import current_user
 from flask_wtf.file import FileField
 from markupsafe import Markup
-from sqlalchemy.orm.mapper import Mapper
 from wtforms import Field, FieldList, Form, FormField, IntegerField, Label, StringField
-from wtforms.widgets import Input
-from wtforms.widgets import PasswordInput as BasePasswordInput
-from wtforms.widgets import Select
-from wtforms.widgets import TextArea as BaseTextArea
-from wtforms.widgets import html_params
+from wtforms.widgets import (
+    Input,
+    PasswordInput as BasePasswordInput,
+    Select,
+    TextArea as BaseTextArea,
+    html_params,
+)
 from wtforms_alchemy import ModelFieldList
 
 from abilian.core.entities import Entity
@@ -41,6 +43,11 @@ from abilian.web import url_for
 from abilian.web.filters import babel2datepicker, labelize
 
 from .util import babel2datetime
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from sqlalchemy.orm.mapper import Mapper
 
 __all__ = [
     "AjaxMainTableView",
@@ -114,7 +121,7 @@ def linkify_url(value: str) -> str:
 
 def text2html(text: str) -> Markup | str:
     text = text.strip()
-    if re.search("<(p|br)>", text.lower()):
+    if re.search(r"<(p|br)>", text.lower()):
         return text
     if "\n" not in text:
         return text
@@ -126,7 +133,7 @@ def text2html(text: str) -> Markup | str:
 
 
 class Column:
-    def __init__(self, **kw):
+    def __init__(self, **kw) -> None:
         for k, w in kw.items():
             setattr(self, k, w)
 
@@ -140,8 +147,7 @@ class View:
         specific_template = self.options.get(specific_template_name)
         if specific_template:
             return [specific_template, default_template]
-        else:
-            return [default_template]
+        return [default_template]
 
 
 # TODO: rewrite
@@ -152,7 +158,9 @@ class BaseTableView(View):
 
     columns: list[dict[str, Any]]
 
-    def __init__(self, columns: list[dict[str, Any]], options: Any | None = None):
+    def __init__(
+        self, columns: list[dict[str, Any]], options: Any | None = None
+    ) -> None:
         if self.show_search is None:
             self.show_search = self.show_controls
 
@@ -165,7 +173,7 @@ class BaseTableView(View):
             self.show_search = self.options.get("show_search", self.show_controls)
             self.paginate = self.options.get("paginate", self.paginate)
 
-    def init_columns(self, columns: Sequence[str | dict[str, Any]]):
+    def init_columns(self, columns: Sequence[str | dict[str, Any]]) -> None:
         # TODO
         default_width = f"{(0.99 / len(columns) * 100):2.0f}%"
         for col in columns:
@@ -260,16 +268,14 @@ class BaseTableView(View):
                 url = build_url(entity)
                 text = html.escape(value.name)
                 cell = Markup(f'<a href="{url}">{text}</a>')
-            elif isinstance(value, str) and (
-                value.startswith("http://") or value.startswith("www.")
-            ):
+            elif isinstance(value, str) and (value.startswith(("http://", "www."))):
                 cell = Markup(linkify_url(value))
             elif value in (True, False):
                 cell = "\u2713" if value else ""  # Unicode "Check mark"
             elif isinstance(value, list):
                 cell = "; ".join(value)
             else:
-                if not isinstance(value, (Markup,) + (str,)):
+                if not isinstance(value, (Markup, str)):
                     if value is None:
                         value = ""
                     else:
@@ -312,7 +318,7 @@ class AjaxMainTableView(View):
         search_criterions: tuple = (),
         name: str | None = None,
         options: dict[str, Any] | None = None,
-    ):
+    ) -> None:
         self.columns = []
         self.init_columns(columns)
         self.ajax_source = ajax_source
@@ -321,7 +327,7 @@ class AjaxMainTableView(View):
         self.save_state = name is not None
         self.options = options or {}
 
-    def init_columns(self, columns: Sequence[str | dict[str, Any]]):
+    def init_columns(self, columns: Sequence[str | dict[str, Any]]) -> None:
         # TODO: compute the correct width for each column.
         default_width = 0.99 / len(columns)
         for col in columns:
@@ -435,9 +441,7 @@ class AjaxMainTableView(View):
                 cell = Markup(
                     f'<a href="{url_for(value)}">{html.escape(value.name)}</a>'
                 )
-            elif isinstance(value, str) and (
-                value.startswith("http://") or value.startswith("www.")
-            ):
+            elif isinstance(value, str) and (value.startswith(("http://", "www."))):
                 cell = Markup(linkify_url(value))
             elif col.get("linkable"):
                 cell = Markup(
@@ -456,7 +460,7 @@ class AjaxMainTableView(View):
 class SingleView(View):
     """View on a single object."""
 
-    def __init__(self, form: Form, *panels: Panel, **options: Any):
+    def __init__(self, form: Form, *panels: Panel, **options: Any) -> None:
         self.form = form
         self.panels = panels
         self.options = options
@@ -563,7 +567,7 @@ class Panel:
     designs eventually.
     """
 
-    def __init__(self, label: str, *rows: Row):
+    def __init__(self, label: str, *rows: Row) -> None:
         self.label = label
         self.rows = rows
 
@@ -573,7 +577,7 @@ class Panel:
     def __getitem__(self, item):
         return self.rows[item]
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.rows)
 
 
@@ -585,7 +589,7 @@ class Row:
     designs eventually.
     """
 
-    def __init__(self, *cols: str):
+    def __init__(self, *cols: str) -> None:
         self.cols = cols
 
     def __iter__(self):
@@ -594,7 +598,7 @@ class Row:
     def __getitem__(self, item):
         return self.cols[item]
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.cols)
 
 
@@ -602,7 +606,7 @@ class ModelWidget:
     edit_template = "widgets/model_widget_edit.html"
     view_template = "widgets/model_widget_view.html"
 
-    def __init__(self, edit_template=None, view_template=None):
+    def __init__(self, edit_template=None, view_template=None) -> None:
         if edit_template is not None:
             self.edit_template = edit_template
         if view_template is not None:
@@ -654,7 +658,7 @@ class TextInput(wtforms.widgets.TextInput):
         input_type: Any | None = None,
         pre_icon: Any | None = None,
         post_icon: Any | None = None,
-    ):
+    ) -> None:
         super().__init__(input_type)
 
         if pre_icon is not None:
@@ -708,14 +712,15 @@ class TextArea(BaseTextArea):
         rows: int | None = None,
         *args: Any,
         **kwargs: Any,
-    ):
+    ) -> None:
         super().__init__(*args, **kwargs)
 
         if resizeable not in self._resizeable_valid:
-            raise ValueError(
+            msg = (
                 f"Invalid value for resizeable: {resizeable}, "
                 f"valid values are: {self._resizeable_valid!r}"
             )
+            raise ValueError(msg)
         if resizeable:
             self.resizeable = f"resizeable-{resizeable}"
         else:
@@ -742,7 +747,7 @@ class FileInput:
     file-inputs-into-shape-with-bootstrap-3/
     """
 
-    def __init__(self, template: str = "widgets/file_input.html"):
+    def __init__(self, template: str = "widgets/file_input.html") -> None:
         self.template = template
 
     def __call__(self, field, **kwargs):
@@ -849,7 +854,7 @@ class ImageInput(FileInput):
         height: int = 120,
         resize_mode: str = image.CROP,
         valid_extensions: tuple[str, str, str] = ("jpg", "jpeg", "png"),
-    ):
+    ) -> None:
         super().__init__(template=template)
         self.resize_mode = resize_mode
         self.valid_extensions = valid_extensions
@@ -895,7 +900,7 @@ class ImageInput(FileInput):
             return ""
         return image.resize(data, width, height, mode=self.resize_mode)
 
-    def get_b64_thumb_url(self, img):
+    def get_b64_thumb_url(self, img) -> str:
         if not img:
             return ""
         try:
@@ -1033,7 +1038,7 @@ class TimeInput(Input):
         showInputs: bool = False,
         disableFocus: bool = False,
         modalBackdrop: bool = False,
-    ):
+    ) -> None:
         super().__init__()
 
         if template is not None:
@@ -1088,7 +1093,7 @@ class DateTimeInput:
     """if corresponding field.raw_data exist it is used to initialize default
     date & time (raw_data example: ["10/10/16 | 09:00"])"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.date = DateInput()
         self.time = TimeInput()
 
@@ -1158,9 +1163,8 @@ class DefaultViewWidget:
         value = field.object_data
         if isinstance(value, str):
             return text2html(value)
-        else:
-            # [], None and other must be rendered using empty string
-            return str(value or "")
+        # [], None and other must be rendered using empty string
+        return str(value or "")
 
 
 class BooleanWidget(wtforms.widgets.CheckboxInput):
@@ -1184,7 +1188,7 @@ class BooleanWidget(wtforms.widgets.CheckboxInput):
     )
     on_off_options: dict[str, Any]
 
-    def __init__(self, *args: Any, **kwargs: Any):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         self.on_off_mode = kwargs.pop("on_off_mode", False)
         self.on_off_options = {}
         on_off_options = kwargs.pop("on_off_options", {})
@@ -1204,14 +1208,14 @@ class BooleanWidget(wtforms.widgets.CheckboxInput):
 
         return super().__call__(field, **kwargs)
 
-    def render_view(self, field, **kwargs):
+    def render_view(self, field, **kwargs) -> str:
         return "\u2713" if field.object_data else ""  # Text_type "Check mark"
 
 
 class PasswordInput(BasePasswordInput):
     """Supports setting 'autocomplete' at instanciation time."""
 
-    def __init__(self, *args: Any, **kwargs: Any):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         self.autocomplete = kwargs.pop("autocomplete", None)
         super().__init__(*args, **kwargs)
 
@@ -1219,14 +1223,14 @@ class PasswordInput(BasePasswordInput):
         kwargs.setdefault("autocomplete", self.autocomplete)
         return super().__call__(field, **kwargs)
 
-    def render_view(self, field, **kwargs):
+    def render_view(self, field, **kwargs) -> str:
         return "*****"
 
 
 class FloatWidget(wtforms.widgets.TextInput):
     """In view mode, format float number to 'precision' decimal."""
 
-    def __init__(self, precision=None):
+    def __init__(self, precision=None) -> None:
         self.precision = precision
         if precision is not None:
             self._fmt = f".{precision:d}f"
@@ -1268,7 +1272,7 @@ class HoursWidget(TextInput):
     post_icon = _l("hour(s)")
     input_type = "number"
 
-    def render_view(self, field, **kwargs):
+    def render_view(self, field, **kwargs) -> str:
         val = field.object_data
         unit = "h"
 
@@ -1276,7 +1280,7 @@ class HoursWidget(TextInput):
             return ""
 
         # \u00A0: non-breakable whitespace
-        return f"{val}\u00A0{unit}"
+        return f"{val}\u00a0{unit}"
 
 
 class MoneyWidget(TextInput):
@@ -1288,7 +1292,7 @@ class MoneyWidget(TextInput):
     post_icon = "€"
     input_type = "number"
 
-    def render_view(self, field, **kwargs):
+    def render_view(self, field, **kwargs) -> str:
         val = field.object_data
         unit = "€"
 
@@ -1297,14 +1301,13 @@ class MoneyWidget(TextInput):
 
         if val > 1000:
             unit = "k€"
-            # pylint: disable=W1633
-            val = int(round(val / 1000.0))
+            val = round(val / 1000.0)
 
         # `format_currency()` is not used since it display numbers with cents
         # units, which we don't want
         #
         # \u00A0: non-breakable whitespace
-        return f"{format_number(val)}\u00A0{unit}"
+        return f"{format_number(val)}\u00a0{unit}"
 
 
 class EmailWidget(TextInput):
@@ -1357,7 +1360,7 @@ class RichTextWidget:
     }
     profile = "standard"
 
-    def __init__(self, allowed_tags=None, template=None, profile=None):
+    def __init__(self, allowed_tags=None, template=None, profile=None) -> None:
         if allowed_tags is not None:
             self.allowed_tags = allowed_tags
         if template is not None:
@@ -1377,7 +1380,7 @@ class ListWidget(wtforms.widgets.ListWidget):
 
     def __init__(
         self, html_tag: str = "ul", prefix_label: bool = True, show_label: bool = True
-    ):
+    ) -> None:
         super().__init__(html_tag, prefix_label)
         self.show_label = show_label
 
@@ -1418,7 +1421,7 @@ class FieldListWidget:
     view_template = "widgets/fieldlist_view.html"
     template = "widgets/fieldlist.html"
 
-    def __init__(self, template=None, view_template=None):
+    def __init__(self, template=None, view_template=None) -> None:
         if template is not None:
             self.template = template
         if view_template is not None:
@@ -1447,7 +1450,7 @@ class TabularFieldListWidget:
       Show sub-forms as a list of forms
     """
 
-    def __init__(self, template="widgets/tabular_fieldlist_widget.html"):
+    def __init__(self, template="widgets/tabular_fieldlist_widget.html") -> None:
         self.template = template
 
     def __call__(self, field, **kwargs):
@@ -1465,7 +1468,7 @@ class TabularFieldListWidget:
 
 
 class ModelListWidget:
-    def __init__(self, template="widgets/horizontal_table.html"):
+    def __init__(self, template="widgets/horizontal_table.html") -> None:
         self.template = template
 
     def render_view(self, field, **kwargs):
@@ -1513,7 +1516,7 @@ class Select2(Select):
         js_init: str = "select2",
         *args: Any,
         **kwargs: Any,
-    ):
+    ) -> None:
         super().__init__(*args, **kwargs)
         self.js_init = js_init
 
@@ -1572,7 +1575,7 @@ class Select2Ajax:
         format_result=None,
         format_selection=None,
         values_builder=None,
-    ):
+    ) -> None:
         self.template = template
         self.multiple = multiple
         self.values_builder = (

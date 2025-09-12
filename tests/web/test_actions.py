@@ -1,11 +1,18 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
+
+import operator
+from typing import TYPE_CHECKING
 
 import pytest
 from flask import Flask
-from flask.ctx import AppContext
 from markupsafe import Markup
 
 from abilian.web.action import Action, Glyphicon, StaticIcon, actions
+
+if TYPE_CHECKING:
+    from flask.ctx import AppContext
 
 BASIC = Action("cat_1", "basic", "Basic Action", url="http://some.where", icon="ok")
 CONDITIONAL = Action(
@@ -13,7 +20,7 @@ CONDITIONAL = Action(
     "conditional",
     "Conditional Action",
     url="http://condition.al",
-    condition=lambda ctx: ctx["show_all"],
+    condition=operator.itemgetter("show_all"),
     icon=Glyphicon("hand-right"),
     button="warning",
 )
@@ -36,7 +43,7 @@ def ctx(app: Flask, app_context: AppContext):
     return app_context
 
 
-def setup_actions(app: Flask):
+def setup_actions(app: Flask) -> None:
     # fix singleton multiple initialization:
     if actions.installed(app):
         actions.clear()
@@ -49,13 +56,13 @@ def setup_actions(app: Flask):
     actions.context["show_all"] = True
 
 
-def test_installed(app: Flask):
+def test_installed(app: Flask) -> None:
     assert actions.installed()  # test current_app (==self.app)
     assert actions.installed(app)
     assert not actions.installed(Flask("dummyapp"))
 
 
-def test_actions(app: Flask):
+def test_actions(app: Flask) -> None:
     all_actions = actions.actions()
     assert "cat_1" in all_actions
     assert "cat_2:sub" in all_actions
@@ -63,7 +70,7 @@ def test_actions(app: Flask):
     assert all_actions["cat_2:sub"] == [OTHER_CAT]
 
 
-def test_for_category(app: Flask):
+def test_for_category(app: Flask) -> None:
     cat_1 = actions.for_category("cat_1")
     assert cat_1 == [BASIC, CONDITIONAL]
 
@@ -71,12 +78,12 @@ def test_for_category(app: Flask):
     assert cat_2 == [OTHER_CAT]
 
 
-def test_conditional(app: Flask, app_context: AppContext):
+def test_conditional(app: Flask, app_context: AppContext) -> None:
     actions.context["show_all"] = False
     assert actions.for_category("cat_1") == [BASIC]
 
 
-def test_enabled(app: Flask):
+def test_enabled(app: Flask) -> None:
     assert CONDITIONAL.enabled
     assert actions.for_category("cat_1") == [BASIC, CONDITIONAL]
 
@@ -85,13 +92,13 @@ def test_enabled(app: Flask):
     assert actions.for_category("cat_1") == [BASIC]
 
 
-def test_action_url_from_context():
+def test_action_url_from_context() -> None:
     url = OTHER_CAT.url({"for": "having", "2 keys": "in context"})
     assert url == "http://count?2"
     assert OTHER_CAT.url({}) == "http://count?0"
 
 
-def test_render(app: Flask):
+def test_render(app: Flask) -> None:
     assert BASIC.render() == Markup(
         '<a class="action action-cat_1 action-cat_1-basic" '
         'href="http://some.where">'

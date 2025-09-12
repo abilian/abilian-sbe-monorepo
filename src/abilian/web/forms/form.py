@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Extensions to WTForms fields, widgets and validators."""
 
 from __future__ import annotations
@@ -5,7 +7,7 @@ from __future__ import annotations
 import typing
 from collections import OrderedDict
 from functools import partial
-from typing import Any
+from typing import Any, Self
 
 from flask import g, has_app_context
 from flask_login import current_user
@@ -16,13 +18,13 @@ from wtforms_alchemy import model_form_factory
 
 from abilian.core.entities import Entity
 from abilian.core.logger_patch import patch_logger
-from abilian.core.models.subjects import User
 from abilian.i18n import _, _n
-from abilian.services.security import Permission
 
 from .widgets import DefaultViewWidget
 
 if typing.TYPE_CHECKING:
+    from abilian.core.models.subjects import User
+    from abilian.services.security import Permission
     from abilian.web.forms import FormPermissions
 
 
@@ -53,12 +55,12 @@ class FormContext:
         permission: Permission | None = None,
         user: User | None = None,
         obj: Any = None,
-    ):
+    ) -> None:
         self.permission = permission
         self.user = user
         self.obj = obj
 
-    def __enter__(self) -> FormContext:
+    def __enter__(self) -> Self:
         if not has_app_context():
             return self
 
@@ -92,7 +94,7 @@ class Form(FlaskForm):
     #: :class:`FormPermissions` instance
     _permissions: FormPermissions | None = None
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         permission = kwargs.pop("permission", None)
         user = kwargs.pop("user", None)
         obj = kwargs.get("obj")
@@ -180,14 +182,14 @@ _PATCHED = False
 if not _PATCHED:
     Field.view_template = None
 
-    _wtforms_Field_init = Field.__init__
+    _wtforms_field_init = Field.__init__
 
-    def _core_field_init(self: Any, *args: Any, **kwargs: Any):
+    def _core_field_init(self: Any, *args: Any, **kwargs: Any) -> None:
         view_widget = None
         if "view_widget" in kwargs:
             view_widget = kwargs.pop("view_widget")
 
-        _wtforms_Field_init(self, *args, **kwargs)
+        _wtforms_field_init(self, *args, **kwargs)
         if view_widget is None:
             view_widget = self.widget
 
@@ -197,27 +199,25 @@ if not _PATCHED:
     Field.__init__ = _core_field_init
     del _core_field_init
 
-    def _core_field_repr(self):
+    def _core_field_repr(self) -> str:
         """`__repr__` that shows the name of the field instance.
 
         Useful for tracing field errors (like in Sentry).
         """
-        return "<{}.{} at 0x{:x} name={!r}>".format(
-            self.__class__.__module__, self.__class__.__name__, id(self), self.name
-        )
+        return f"<{self.__class__.__module__}.{self.__class__.__name__} at 0x{id(self):x} name={self.name!r}>"
 
     patch_logger.info(f"{Field.__module__}.Field.__repr__")
     Field.__repr__ = _core_field_repr
     del _core_field_repr
 
     #  support 'widget_options' for some custom widgets
-    _wtforms_Field_render = Field.__call__
+    _wtforms_field_render = Field.__call__
 
     def _core_field_render(self, **kwargs):
         if "widget_options" in kwargs and not kwargs["widget_options"]:
             kwargs.pop("widget_options")
 
-        return _wtforms_Field_render(self, **kwargs)
+        return _wtforms_field_render(self, **kwargs)
 
     patch_logger.info(Field.__call__)
     Field.__call__ = _core_field_render

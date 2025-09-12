@@ -1,11 +1,17 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 import jinja2
 
-from abilian.sbe.app import Application
 from abilian.services.preferences import preferences
 
 from .panels.sbe_notifications import SbeNotificationsPanel
+
+if TYPE_CHECKING:
+    from abilian.app import Application
 
 
 def register_plugin(app: Application) -> None:

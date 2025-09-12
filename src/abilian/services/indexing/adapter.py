@@ -1,21 +1,25 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Objects to schema adapters."""
 
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from operator import attrgetter
-from typing import Any
+from typing import TYPE_CHECKING, Any, Never
 
 import sqlalchemy as sa
-from loguru import logger
-from sqlalchemy.orm.session import Session
 from whoosh.fields import ID, TEXT, Schema
 
-from abilian.core.entities import Entity
 from abilian.core.extensions import db
-from abilian.core.models import Model
 
 from .schema import accent_folder
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm.session import Session
+
+    from abilian.core.entities import Entity
+    from abilian.core.models import Model
 
 __all__ = ["SAAdapter", "SchemaAdapter"]
 
@@ -27,19 +31,19 @@ class SchemaAdapter(ABC):
     for document.
     """
 
-    def __init__(self, model_class, schema):
+    def __init__(self, model_class, schema) -> None:
         """
         :param:model_class: class of objects instances to be adapted
         :param:schema: :class:`whoosh.fields.Schema` instance
         """
 
     @staticmethod
-    def can_adapt(obj_cls):
+    def can_adapt(obj_cls) -> Never:
         """Return True if this class can adapt objects of class `obj_cls`."""
         raise NotImplementedError
 
     @abstractmethod
-    def retrieve(self, pk, **data):
+    def retrieve(self, pk, **data) -> Never:
         """Returns an object instance given its identifier and optional data
         kwargs.
 
@@ -50,7 +54,7 @@ class SchemaAdapter(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_document(self, obj):
+    def get_document(self, obj) -> Never:
         raise NotImplementedError
 
 
@@ -80,7 +84,7 @@ class SAAdapter(SchemaAdapter):
 
     doc_attrs: dict[str, Any]
 
-    def __init__(self, model_class: type[Model], schema: Schema):
+    def __init__(self, model_class: type[Model], schema: Schema) -> None:
         """
         :param:model_class: a sqlalchemy model class
         :param:schema: :class:`whoosh.fields.Schema` instance
@@ -106,7 +110,7 @@ class SAAdapter(SchemaAdapter):
                 result += cls.__index_to__
         return tuple(result)
 
-    def _build_doc_attrs(self, model_class: type[Model], schema: Schema):
+    def _build_doc_attrs(self, model_class: type[Model], schema: Schema) -> None:
         mapper = sa.inspect(model_class)
 
         args = self.doc_attrs
@@ -114,7 +118,9 @@ class SAAdapter(SchemaAdapter):
         # After all field have been discovered, we add the missing ones.
         field_definitions = {}
 
-        def setup_field(attr_name: str, field_name: tuple[str, type | ID] | str):
+        def setup_field(
+            attr_name: str, field_name: tuple[str, type | ID] | str
+        ) -> None:
             field_def = False
             if not isinstance(field_name, str):
                 field_name, field_def = field_name
@@ -159,13 +165,13 @@ class SAAdapter(SchemaAdapter):
             if field_def is False:
                 field_def = TEXT(stored=True, analyzer=accent_folder)
 
-            logger.debug(
-                "Adding field to schema:\n  Model: {model}\n"
-                '  Field: "{field_name}" {field_def}',
-                model=model_class._object_type(),
-                field_name=field_name,
-                field_def=field_def,
-            )
+            # logger.debug(
+            #     "Adding field to schema:\n  Model: {model}\n"
+            #     '  Field: "{field_name}" {field_def}',
+            #     model=model_class._object_type(),
+            #     field_name=field_name,
+            #     field_def=field_def,
+            # )
             schema.add(field_name, field_def)
 
     def retrieve(self, pk: int, _session: Session | None = None, **data: Any) -> Entity:

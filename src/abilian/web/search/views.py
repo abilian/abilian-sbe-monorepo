@@ -1,7 +1,10 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
 
+import operator
 from collections import OrderedDict
 from functools import partial
 
@@ -40,7 +43,7 @@ def friendly_fqcn(fqcn):
 
 
 @search.url_value_preprocessor
-def init_search(endpoint, values):
+def init_search(endpoint, values) -> None:
     q = request.args.get("q", "")
     try:
         page = max(int(request.args.get("page", 1)), 1)
@@ -117,7 +120,7 @@ def search_main(q="", page=1):
             link = page_url(object_type=typename)
             by_object_type.append((classname, count, link, is_active))
 
-        by_object_type.sort(key=lambda t: t[0])
+        by_object_type.sort(key=operator.itemgetter(0))
 
     if by_object_type:
         # Insert 'all' to clear all filters

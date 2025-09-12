@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 from functools import singledispatch
@@ -154,7 +156,7 @@ class ActivityEntryPresenter(BasePresenter):
 
 
 @singledispatch
-def get_body(object):
+def get_body(object) -> str:
     return ""
 
 

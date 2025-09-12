@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import contextlib
@@ -10,14 +12,12 @@ import shutil
 import subprocess
 import threading
 import traceback
-from abc import ABC, ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from base64 import b64decode, b64encode
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from xmlrpc.client import ServerProxy
 
-from devtools import debug
-from flask import Flask
 from loguru import logger
 from magic import Magic
 
@@ -26,6 +26,9 @@ from abilian.services.image import resize
 from .exceptions import ConversionError
 from .handler_lock import acquire_lock
 from .util import get_tmp_dir, make_temp_file
+
+if TYPE_CHECKING:
+    from flask import Flask
 
 
 def poppler_bin_util(util: str) -> str:
@@ -66,10 +69,10 @@ class Handler(ABC):
     accepts_mime_types: list[str] = []
     produces_mime_types: list[str] = []
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         self.log = logger
 
-    def init_app(self, app: Flask):
+    def init_app(self, app: Flask) -> None:
         pass
 
     @property
@@ -118,7 +121,8 @@ class PdfToTextHandler(Handler):
             try:
                 subprocess.check_call([pdftotext, in_fn, out_fn])
             except Exception as e:
-                raise ConversionError("pdftotext failed") from e
+                msg = "pdftotext failed"
+                raise ConversionError(msg) from e
 
             converted = open(out_fn, "rb").read()
             try:
@@ -143,9 +147,10 @@ class AbiwordTextHandler(Handler):
 
     def convert(self, blob: bytes, **kw):
         tmp_dir = self.tmp_dir
-        with make_temp_file(blob, suffix=".doc") as in_fn, make_temp_file(
-            suffix=".txt"
-        ) as out_fn:
+        with (
+            make_temp_file(blob, suffix=".doc") as in_fn,
+            make_temp_file(suffix=".txt") as out_fn,
+        ):
             try:
                 subprocess.check_call(
                     [
@@ -157,7 +162,8 @@ class AbiwordTextHandler(Handler):
                     cwd=bytes(tmp_dir),
                 )
             except Exception as e:
-                raise ConversionError("abiword failed") from e
+                msg = "abiword failed"
+                raise ConversionError(msg) from e
 
             converted = open(out_fn, "rb").read()
             try:
@@ -185,9 +191,10 @@ class AbiwordPDFHandler(Handler):
     produces_mime_types = ["application/pdf"]
 
     def convert(self, blob: bytes, **kw):
-        with make_temp_file(blob, suffix=".doc") as in_fn, make_temp_file(
-            suffix=".pdf"
-        ) as out_fn:
+        with (
+            make_temp_file(blob, suffix=".doc") as in_fn,
+            make_temp_file(suffix=".pdf") as out_fn,
+        ):
             try:
                 subprocess.check_call(
                     [
@@ -199,7 +206,8 @@ class AbiwordPDFHandler(Handler):
                     cwd=bytes(self.tmp_dir),
                 )
             except Exception as e:
-                raise ConversionError("abiword failed") from e
+                msg = "abiword failed"
+                raise ConversionError(msg) from e
 
             converted = Path(out_fn).read_bytes()
             return converted
@@ -217,7 +225,8 @@ class ImageMagickHandler(Handler):
                 converted = open(out_fn, "rb").read()
                 return converted
             except Exception as e:
-                raise ConversionError("convert failed") from e
+                msg = "convert failed"
+                raise ConversionError(msg) from e
 
 
 class PdfToPpmHandler(Handler):
@@ -238,10 +247,11 @@ class PdfToPpmHandler(Handler):
                 for fn in file_list:
                     converted = resize(open(fn, "rb").read(), size, size)
                     converted_images.append(converted)
-
-                return converted_images
             except Exception as e:
-                raise ConversionError("pdftoppm failed") from e
+                msg = "pdftoppm failed"
+                raise ConversionError(msg) from e
+            else:
+                return converted_images
             finally:
                 for fn in file_list:
                     with contextlib.suppress(OSError):
@@ -272,7 +282,7 @@ class UnoconvPdfHandler(Handler):
     unoconv = "unoconv"
     _process: subprocess.Popen
 
-    def init_app(self, app):
+    def init_app(self, app) -> None:
         unoconv = app.config.get("UNOCONV_LOCATION")
         found = False
         execute_ok = False
@@ -314,26 +324,28 @@ class UnoconvPdfHandler(Handler):
             cmd = [self.unoconv, "--version"]
 
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-        out, err = process.communicate()
+        out, _err = process.communicate()
         return out
 
     def convert(self, blob, **kw):
         """Convert using unoconv converter."""
         timeout = self.run_timeout
-        with make_temp_file(blob) as in_fn, make_temp_file(
-            prefix="tmp-unoconv-", suffix=".pdf"
-        ) as out_fn:
+        with (
+            make_temp_file(blob) as in_fn,
+            make_temp_file(prefix="tmp-unoconv-", suffix=".pdf") as out_fn,
+        ):
             args = ["-f", "pdf", "-o", out_fn, in_fn]
             # Hack for my Mac, FIXME later
             if Path("/Applications/LibreOffice.app/Contents/program/python").exists():
                 cmd = [
                     "/Applications/LibreOffice.app/Contents/program/python",
                     "/usr/local/bin/unoconv",
-                ] + args
+                    *args,
+                ]
             else:
-                cmd = [self.unoconv] + args
+                cmd = [self.unoconv, *args]
 
-            def run_uno():
+            def run_uno() -> None:
                 try:
                     self._process = subprocess.Popen(
                         cmd, close_fds=True, cwd=bytes(self.tmp_dir)
@@ -343,7 +355,8 @@ class UnoconvPdfHandler(Handler):
                     logger.opt(exception=True).error(
                         "run_uno error: {error}", error=str(e)
                     )
-                    raise ConversionError("unoconv failed") from e
+                    msg = "unoconv failed"
+                    raise ConversionError(msg) from e
 
             run_thread = threading.Thread(target=run_uno)
             run_thread.start()
@@ -362,7 +375,8 @@ class UnoconvPdfHandler(Handler):
                                 process=self._process,
                             )
 
-                    raise ConversionError(f"Conversion timeout ({timeout})")
+                    msg = f"Conversion timeout ({timeout})"
+                    raise ConversionError(msg)
 
                 converted = open(out_fn).read()
                 return converted
@@ -393,7 +407,7 @@ class LibreOfficePdfHandler(Handler):
     soffice = "soffice"
     _process: subprocess.Popen
 
-    def init_app(self, app: Flask):
+    def init_app(self, app: Flask) -> None:
         soffice = app.config.get("SOFFICE_LOCATION")
 
         if soffice:
@@ -437,7 +451,7 @@ class LibreOfficePdfHandler(Handler):
                 str(in_fn),
             ]
 
-            def run_soffice():
+            def run_soffice() -> None:
                 try:
                     self._process = subprocess.Popen(
                         cmd, close_fds=True, cwd=str(self.tmp_dir)
@@ -472,10 +486,10 @@ class LibreOfficePdfHandler(Handler):
                                 process=self._process,
                             )
 
-                    raise ConversionError(f"Conversion timeout ({timeout})")
+                    msg = f"Conversion timeout ({timeout})"
+                    raise ConversionError(msg)
 
                 out_fn = f"{os.path.splitext(in_fn)[0]}.pdf"
-                debug(in_fn, out_fn)
                 converted = open(out_fn, "rb").read()
                 return converted
             finally:
@@ -525,8 +539,7 @@ class CloudoooPdfHandler(Handler):
 
         converted = b64decode(data)
         new_key = hashlib.md5(converted).hexdigest()  # noqa: S324
-        with open(f"data/{new_key}.blob", "wb") as fd:
-            fd.write(converted)
+        Path(f"data/{new_key}.blob").write_bytes(converted)
         return new_key
 
 
@@ -539,7 +552,8 @@ class WvwareTextHandler(Handler):
             try:
                 subprocess.check_call(["wvText", in_fn, out_fn])
             except Exception as e:
-                raise ConversionError("wxText failed") from e
+                msg = "wxText failed"
+                raise ConversionError(msg) from e
 
             converted = open(out_fn, "rb").read()
 

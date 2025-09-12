@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
@@ -77,7 +79,7 @@ class CommentRelated(db.Model):
     text = Column(UnicodeText, default="")
 
 
-def test_audit(app, session):
+def test_audit(app, session) -> None:
     create_root_user()
     audit_service.start()
     assert len(AuditEntry.query.all()) == 0
@@ -147,7 +149,7 @@ def test_audit(app, session):
     assert all(e.entity is None for e in entries)
 
 
-def test_audit_related(app, session):
+def test_audit_related(app, session) -> None:
     create_root_user()
     audit_service.start()
 
@@ -236,7 +238,7 @@ def test_audit_related(app, session):
     assert entry.entity == account
 
 
-def test_audit_collections(app, session):
+def test_audit_collections(app, session) -> None:
     create_root_user()
     audit_service.start()
 

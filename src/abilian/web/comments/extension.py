@@ -1,15 +1,19 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
 
-from flask import Flask
+from typing import TYPE_CHECKING
 
 from abilian.core.models import comment as comments
 from abilian.web import url_for
 
 from .forms import CommentForm
-from .views import COMMENT_BUTTON
-from .views import bp as blueprint
+from .views import COMMENT_BUTTON, bp as blueprint
+
+if TYPE_CHECKING:
+    from flask import Flask
 
 
 class CommentExtension:
@@ -18,7 +22,7 @@ class CommentExtension:
     It is also available in templates as `comments`.
     """
 
-    def __init__(self, app: Flask):
+    def __init__(self, app: Flask) -> None:
         app.extensions["comments"] = self
         app.add_template_global(self, "comments")
         app.register_blueprint(blueprint)

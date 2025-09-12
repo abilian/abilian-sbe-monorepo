@@ -1,49 +1,61 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import re
+from typing import TYPE_CHECKING
 
 from flask import g, url_for
-from flask_sqlalchemy import SQLAlchemy
 from pytest import fixture
 from toolz import first
 
-from abilian.app import Application
 from abilian.core.models.subjects import User
 from abilian.sbe.apps.communities.models import READER, Community
 from abilian.sbe.apps.wiki import views
 from abilian.sbe.apps.wiki.models import WikiPage
+from abilian.services import get_service
+from tests.util import client_login
 
-from ....util import client_login
+if TYPE_CHECKING:
+    from flask_sqlalchemy import SQLAlchemy
+
+    from abilian.app import Application
 
 
-@fixture()
+@fixture
 def user1(db):
     user = User(
-        email="user_1@example.com", password="azerty", can_login=True  # noqa: S106
+        email="user_1@example.com",
+        password="azerty",  # noqa: S106
+        can_login=True,
     )
     db.session.add(user)
     return user
 
 
-@fixture()
+@fixture
 def user2(db):
     user = User(
-        email="user_2@example.com", password="azerty", can_login=True  # noqa: S106
+        email="user_2@example.com",
+        password="azerty",  # noqa: S106
+        can_login=True,
     )
     db.session.add(user)
     return user
 
 
-@fixture()
+@fixture
 def user3(db):
     user = User(
-        email="user_3@example.com", password="azerty", can_login=True  # noqa: S106
+        email="user_3@example.com",
+        password="azerty",  # noqa: S106
+        can_login=True,
     )
     db.session.add(user)
     return user
 
 
-@fixture()
+@fixture
 def community1(db, user1):
     community = Community(name="Community 1")
     community.set_membership(user1, READER)
@@ -51,7 +63,7 @@ def community1(db, user1):
     return community
 
 
-@fixture()
+@fixture
 def community2(db, user2):
     community = Community(name="Community 2")
     community.set_membership(user2, READER)
@@ -59,7 +71,7 @@ def community2(db, user2):
     return community
 
 
-def test_home(client, community1, user1):
+def test_home(client, community1, user1) -> None:
     with client_login(client, user1):
         response = client.get(url_for("wiki.index", community_id=community1.slug))
         assert response.status_code == 302
@@ -70,7 +82,7 @@ def test_home(client, community1, user1):
         assert response.status_code == 200
 
 
-def test_create_page_initial_form(client, community1, user1):
+def test_create_page_initial_form(client, community1, user1) -> None:
     with client_login(client, user1):
         g.community = community1
         view = views.PageCreate()
@@ -90,15 +102,15 @@ def test_wiki_indexed(
     db: SQLAlchemy,
     client,
     monkeypatch,
-):
+) -> None:
     monkeypatch.setenv("TESTING_DIRECT_FUNCTION_CALL", "testing")
     SERVICES = ("security", "indexing")
-    for _svc in SERVICES:
-        svc = app.services[_svc]
+    for svc_name in SERVICES:
+        svc = get_service(svc_name)
         if not svc.running:
             svc.start()
 
-    svc = app.services["indexing"]
+    get_service("indexing")
 
     with client_login(client, admin_user):
         page1 = WikiPage(title="Community 1", community=community1)
@@ -129,7 +141,7 @@ def test_wiki_indexed(
         assert hit["object_key"] == page2.object_key
 
 
-def test_create_page(community1, app, admin_user, client):
+def test_create_page(community1, app, admin_user, client) -> None:
     community = community1
 
     with client_login(client, admin_user):
@@ -163,7 +175,7 @@ def test_create_page(community1, app, admin_user, client):
             for l in response.get_data(as_text=True).split("\n")
             if 'name="page_id"' in l
         )
-        m = re.search('value="(.*?)"', line)
+        m = re.search(r'value="(.*?)"', line)
         page_id = int(m.group(1))
 
         url = url_for("wiki.page_changes", community_id=community.slug, title=title)

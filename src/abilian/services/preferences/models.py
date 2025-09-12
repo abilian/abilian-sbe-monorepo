@@ -1,10 +1,11 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Models for user preferences."""
 
 from __future__ import annotations
 
-from flask_sqlalchemy import BaseQuery
 from sqlalchemy import Column, ForeignKey, Integer, String, UniqueConstraint
-from sqlalchemy.orm import backref, relation
+from sqlalchemy.orm import backref, relationship
 
 from abilian.core.extensions import db
 from abilian.core.models.subjects import User
@@ -21,7 +22,7 @@ class UserPreference(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
 
     #: The user who set this preference.
-    user = relation(
+    user = relationship(
         User, backref=backref("preferences", cascade="all, delete, delete-orphan")
     )
     user_id = Column(ForeignKey(User.id))
@@ -31,5 +32,3 @@ class UserPreference(db.Model):
 
     #: The value
     value = Column(JSON, nullable=False)
-
-    query: BaseQuery

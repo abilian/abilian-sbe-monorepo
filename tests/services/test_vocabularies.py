@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import sqlalchemy as sa
@@ -7,8 +9,7 @@ from pytest import mark, raises
 from abilian.services.vocabularies.models import BaseVocabulary, Vocabulary
 from abilian.services.vocabularies.service import vocabularies
 from abilian.web import url_for
-
-from ..util import path_from_url
+from tests.util import path_from_url
 
 # DefaultVoc = Vocabulary('defaultstates', group='', label='States')
 
@@ -20,7 +21,7 @@ StateVoc = Vocabulary("defaultstates", group="", label="States")
 DocCatVoc = Vocabulary("categories", group="documents", label="Categories")
 
 
-def test_vocabulary_factory(session):
+def test_vocabulary_factory(session) -> None:
     assert Voc.__name__ == "VocabularyVoc"
     assert Voc.__tablename__ == "vocabulary_voc"
     assert Voc.Meta.name == "voc"
@@ -29,7 +30,7 @@ def test_vocabulary_factory(session):
     assert issubclass(Voc, BaseVocabulary)
 
 
-def test_vocabularies(session):
+def test_vocabularies(session) -> None:
     # test registered vocabularies
     assert vocabularies.vocabularies == {Voc, PriorityVoc, StateVoc, DocCatVoc}
 
@@ -42,7 +43,7 @@ def test_vocabularies(session):
     assert vocabularies.get_vocabulary("categories", "documents") is DocCatVoc
 
 
-def test_items(db, session):
+def test_items(db, session) -> None:
     db.create_all()
 
     IMMEDIATE = PriorityVoc(label="Immediate", position=0)
@@ -79,24 +80,24 @@ def test_items(db, session):
     assert labels == expected_ordering
 
     # test db-side constraint for non-empty labels
-    with raises(sa.exc.IntegrityError):
-        with session.begin_nested():
-            v = PriorityVoc(label="   ", position=6)
-            session.add(v)
+    with session.begin_nested():
+        v = PriorityVoc(label="   ", position=6)
+        session.add(v)
+        with raises(sa.exc.IntegrityError):
             session.flush()
 
     # test unique labels constraint
-    with raises(sa.exc.IntegrityError):
-        with session.begin_nested():
-            v = PriorityVoc(label="Immediate")
-            session.add(v)
+    with session.begin_nested():
+        v = PriorityVoc(label="Immediate")
+        session.add(v)
+        with raises(sa.exc.IntegrityError):
             session.flush()
 
     # test unique position constraint
-    with raises(sa.exc.IntegrityError):
-        with session.begin_nested():
-            v = PriorityVoc(label="New one", position=1)
-            session.add(v)
+    with session.begin_nested():
+        v = PriorityVoc(label="New one", position=1)
+        session.add(v)
+        with raises(sa.exc.IntegrityError):
             session.flush()
 
     # test by_position without results
@@ -121,7 +122,7 @@ def test_items(db, session):
 
 
 @mark.skip
-def test_admin_panel_reorder(app, db, session, client, test_request_context):
+def test_admin_panel_reorder(app, db, session, client, test_request_context) -> None:
     db.create_all()
     items = [
         Voc(label="First", position=0),

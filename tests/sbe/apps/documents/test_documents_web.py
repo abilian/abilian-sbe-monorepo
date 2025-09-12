@@ -1,26 +1,30 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 from io import BytesIO
 from pathlib import Path
-from typing import IO
+from typing import IO, TYPE_CHECKING
 from zipfile import ZipFile
 
 import flask_mail
 from flask import g, get_flashed_messages
-from flask.testing import FlaskClient
 from pytest import fixture, mark
 from toolz import first
 from werkzeug.datastructures import FileStorage
 
-from abilian.core.sqlalchemy import SQLAlchemy
-from abilian.sbe.app import Application
 from abilian.sbe.apps.communities.models import WRITER, Community
 from abilian.sbe.apps.communities.presenters import CommunityPresenter
 from abilian.sbe.apps.documents.models import Folder
 from abilian.sbe.apps.documents.views import util as view_util
 from abilian.web.util import url_for
+from tests.util import client_login, path_from_url, redis_available
 
-from ....util import client_login, path_from_url, redis_available
+if TYPE_CHECKING:
+    from flask.testing import FlaskClient
+
+    from abilian.app import Application
+    from abilian.core.sqlalchemy import SQLAlchemy
 
 
 def open_file(filename: str) -> IO[bytes]:
@@ -32,7 +36,7 @@ def uid_from_url(url):
     return int(url.split("/")[-1])
 
 
-@fixture()
+@fixture
 def community(community1: Community, db: SQLAlchemy) -> Community:
     community = community1
     user = community.test_user
@@ -177,7 +181,7 @@ def test_image_upload(client: FlaskClient, community: Community) -> None:
 
 
 @mark.skipif(not redis_available(), reason="requires redis connection")
-def test_binary_upload(client, community):
+def test_binary_upload(client, community) -> None:
     name = "random.bin"
     user = community.test_user
     with client_login(client, user):
@@ -193,7 +197,7 @@ def test_binary_upload(client, community):
 @mark.skipif(not redis_available(), reason="requires redis connection")
 def test_zip_upload_uncompress(
     community: Community, db: SQLAlchemy, client: FlaskClient
-):
+) -> None:
     subfolder = Folder(title="folder 1", parent=community.folder)
     db.session.add(subfolder)
     db.session.flush()

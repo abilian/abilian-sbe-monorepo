@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Field filters for WTForm."""
 
 from __future__ import annotations

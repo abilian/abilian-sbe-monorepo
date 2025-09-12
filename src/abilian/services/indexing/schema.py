@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
@@ -27,7 +29,7 @@ from whoosh.support.charset import accent_map
 
 from abilian.core.models.subjects import Group, Principal, User
 from abilian.core.util import unwrap
-from abilian.services.security.models import Anonymous, Role
+from abilian.services.security.models import ANONYMOUS, Role
 
 accent_folder = (
     RegexTokenizer(r"\w+")
@@ -93,11 +95,11 @@ def indexable_role(role_or_principal: Role | Principal) -> str:
 
     if isinstance(role_or_principal, AnonymousUserMixin):
         # transform anonymous user to anonymous role
-        role_or_principal = Anonymous
+        role_or_principal = ANONYMOUS
 
     if isinstance(role_or_principal, User) and role_or_principal.is_anonymous:
         # transform anonymous user to anonymous role
-        role_or_principal = Anonymous
+        role_or_principal = ANONYMOUS
 
     if isinstance(role_or_principal, Role):
         return f"role:{role_or_principal.name}"

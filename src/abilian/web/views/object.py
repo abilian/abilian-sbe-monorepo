@@ -1,8 +1,11 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Class based views."""
 
 from __future__ import annotations
 
 import contextlib
+from typing import Never
 
 import sqlalchemy as sa
 import sqlalchemy.exc
@@ -17,9 +20,9 @@ from abilian.core.signals import activity
 from abilian.i18n import _, _l
 from abilian.services import get_service
 from abilian.services.security import CREATE, DELETE, READ, WRITE
+from abilian.web import csrf, forms, nav
+from abilian.web.action import ButtonAction, Endpoint, actions
 
-from .. import csrf, forms, nav
-from ..action import ButtonAction, Endpoint, actions
 from .base import JSONView, View
 
 
@@ -48,7 +51,9 @@ class BaseObjectView(View):
     #: generic templates with a custom base
     base_template = "base.html"
 
-    def __init__(self, Model=None, pk=None, base_template=None, *args, **kwargs):
+    def __init__(
+        self, Model=None, pk=None, base_template=None, *args, **kwargs
+    ) -> None:
         super().__init__(*args, **kwargs)
         cls = self.__class__
         self.pk = pk if pk is not None else cls.pk
@@ -65,7 +70,7 @@ class BaseObjectView(View):
 
         return args, kwargs
 
-    def breadcrumb(self):
+    def breadcrumb(self) -> None:
         """Return :class:`..nav.BreadcrumbItem` instance for this object.
 
         This method may return a list of BreadcrumbItem instances.
@@ -125,7 +130,9 @@ class ObjectView(BaseObjectView):
     # TODO
     form: object
 
-    def __init__(self, Model=None, pk=None, Form=None, template=None, *args, **kwargs):
+    def __init__(
+        self, Model=None, pk=None, Form=None, template=None, *args, **kwargs
+    ) -> None:
         super().__init__(Model, pk, *args, **kwargs)
         cls = self.__class__
         self.Form = Form if Form is not None else cls.Form
@@ -216,7 +223,7 @@ class ObjectEdit(ObjectView):
         message_success=None,
         *args,
         **kwargs,
-    ):
+    ) -> None:
         super().__init__(Model, pk, Form, *args, template=template, **kwargs)
         if view_endpoint is not None:
             self.view_endpoint = view_endpoint
@@ -270,10 +277,12 @@ class ObjectEdit(ObjectView):
         for button in self._buttons:
             if action == button.name:
                 if not button.available({"view": self}):
-                    raise ValueError(f'Action "{action.encode("utf-8")}" not available')
+                    msg = f'Action "{action.encode("utf-8")}" not available'
+                    raise ValueError(msg)
                 break
         else:
-            raise ValueError(f'Unknown action: "{action.encode("utf-8")}"')
+            msg = f'Unknown action: "{action.encode("utf-8")}"'
+            raise ValueError(msg)
 
         self.action = action
         self.button = button
@@ -285,26 +294,25 @@ class ObjectEdit(ObjectView):
     def edit(self, redirect_to=None):
         if self.validate():
             return self.form_valid(redirect_to=redirect_to)
-        else:
-            if request.csrf_failed:
-                errors = self.form.errors
-                csrf_failed = errors.pop("csrf_token", False)
-                if csrf_failed and not errors:
-                    # failed only because of invalid/expired csrf, no error on
-                    # form
-                    return self.form_csrf_invalid()
+        if request.csrf_failed:
+            errors = self.form.errors
+            csrf_failed = errors.pop("csrf_token", False)
+            if csrf_failed and not errors:
+                # failed only because of invalid/expired csrf, no error on
+                # form
+                return self.form_csrf_invalid()
 
-            resp = self.form_invalid()
-            if resp:
-                return resp
+        resp = self.form_invalid()
+        if resp:
+            return resp
 
-            flash(_("Please fix the error(s) below"), "error")
+        flash(_("Please fix the error(s) below"), "error")
 
         # if we end here then something wrong has happened: show form with error
         # messages
         return self.get()
 
-    def before_populate_obj(self):
+    def before_populate_obj(self) -> None:
         """This method is called after form has been validated and before
         calling `form.populate_obj()`.
 
@@ -317,11 +325,11 @@ class ObjectEdit(ObjectView):
             store_image(image)
         """
 
-    def after_populate_obj(self):
+    def after_populate_obj(self) -> None:
         """Called after `self.obj` values have been updated, and `self.obj`
         attached to an ORM session."""
 
-    def handle_commit_exception(self, exc):
+    def handle_commit_exception(self, exc) -> None:
         """Hook point to handle exception that may happen during commit.
 
         It is the responsability of this method to perform a rollback if it is
@@ -333,7 +341,7 @@ class ObjectEdit(ObjectView):
         """
         return
 
-    def commit_success(self):
+    def commit_success(self) -> None:
         """Called after object has been successfully saved to database."""
 
     def validate(self):
@@ -383,10 +391,9 @@ class ObjectEdit(ObjectView):
 
             if redirect_to:
                 return redirect(redirect_to)
-            else:
-                return self.redirect_to_view()
+            return self.redirect_to_view()
 
-    def form_invalid(self):
+    def form_invalid(self) -> None:
         """When a form doesn't validate this method is called.
 
         It may return a :class:`Flask.Response` instance, to handle specific
@@ -412,7 +419,7 @@ class ObjectEdit(ObjectView):
         current_app.extensions["csrf-handler"].flash_csrf_failed_message()
         return self.get()
 
-    def send_activity(self):
+    def send_activity(self) -> None:
         activity.send(
             self,
             actor=g.user,
@@ -422,7 +429,7 @@ class ObjectEdit(ObjectView):
         )
 
     @property
-    def activity_target(self):
+    def activity_target(self) -> None:
         """Return `target` to use when creating activity."""
         return
 
@@ -448,7 +455,7 @@ class ObjectCreate(ObjectEdit):
     #: set to `True` to show 'Save and add new' button
     chain_create_allowed = False
 
-    def __init__(self, chain_create_allowed=None, *args, **kwargs):
+    def __init__(self, chain_create_allowed=None, *args, **kwargs) -> None:
         if chain_create_allowed is not None:
             self.chain_create_allowed = bool(chain_create_allowed)
 
@@ -550,7 +557,7 @@ class JSONBaseSearch(JSONView):
     Model = None
     minimum_input_length = 2
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         Model = kwargs.pop("Model", self.Model)
         minimum_input_length = kwargs.pop(
             "minimum_input_length", self.minimum_input_length
@@ -575,10 +582,10 @@ class JSONBaseSearch(JSONView):
 
         return {"results": results}
 
-    def get_results(self, q, *args, **kwargs):
+    def get_results(self, q, *args, **kwargs) -> Never:
         raise NotImplementedError
 
-    def get_item(self, obj):
+    def get_item(self, obj) -> Never:
         """Return a result item.
 
         :param obj: Instance object

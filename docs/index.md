@@ -13,4 +13,4 @@ Abilian SBE is used by several major customers in production, since mid 2013.
 
 ## Installation
 
-See [installation instructions](installation.md).
+See [installation instructions](./installation.md).

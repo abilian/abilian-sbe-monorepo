@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Conversion service.
 
 Hardcoded to manage only conversion to PDF, to text and to image series.

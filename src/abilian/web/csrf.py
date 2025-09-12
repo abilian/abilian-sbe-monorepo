@@ -1,12 +1,18 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
-from collections.abc import Callable
 from functools import wraps
+from typing import TYPE_CHECKING
 
 from flask import Blueprint, current_app, request
 from flask_wtf import FlaskForm
 from werkzeug.exceptions import Forbidden
-from wtforms.csrf.core import CSRFTokenField
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from wtforms.csrf.core import CSRFTokenField
 
 csrf_blueprint = Blueprint("csrf", __name__, url_prefix="/csrf")
 
@@ -25,8 +31,7 @@ def field() -> CSRFTokenField | None:
     if current_app.config.get("WTF_CSRF_ENABLED"):
         form = FlaskForm()
         return form.csrf_token
-    else:
-        return None
+    return None
 
 
 def time_limit():
@@ -79,7 +84,8 @@ def protect(view: Callable) -> Callable:
     def csrf_check(*args, **kwargs):
         # an empty form is used to validate current csrf token and only that!
         if not FlaskForm().validate():
-            raise Forbidden("CSRF validation failed.")
+            msg = "CSRF validation failed."
+            raise Forbidden(msg)
 
         return view(*args, **kwargs)
 

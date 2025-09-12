@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 from unittest import mock
@@ -8,12 +10,11 @@ from markdown import Markdown
 
 from abilian.sbe.apps.wiki.markup import SBEWikiLinkExtension
 from abilian.sbe.apps.wiki.models import WikiPage
-
-from ....util import client_login
+from tests.util import client_login
 
 
 @pytest.mark.parametrize("text", ["TOTO", "x 123", "/#$", "/*€("])
-def test_wikilink_extension(text, db):
+def test_wikilink_extension(text, db) -> None:
     qtext = str(quote_plus(text.encode("utf-8")))
     wikilink = f"[[{text}]]"
 
@@ -49,7 +50,7 @@ def test_wikilink_extension(text, db):
     check(False)
 
 
-def test_new_page(user, client):
+def test_new_page(user, client) -> None:
     with client_login(client, user):
         page = WikiPage(title="Some page", body_src="abc")
         assert page.title == "Some page"
@@ -63,7 +64,7 @@ def test_new_page(user, client):
         assert revision.author == user
 
 
-def test_rename_page(user):
+def test_rename_page(user) -> None:
     page = WikiPage(title="Some page", body_src="abc")
     assert page.title == "Some page"
     assert page.name == "Some page"
@@ -77,7 +78,7 @@ def test_rename_page(user):
     assert page.name == "Name"
 
 
-def test_create_revision(user, client):
+def test_create_revision(user, client) -> None:
     with client_login(client, user):
         page = WikiPage("abc")
         page.create_revision("def", "page updated")

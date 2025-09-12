@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
@@ -10,7 +12,6 @@ from flask_wtf.file import FileField, file_required
 from werkzeug.exceptions import BadRequest, NotFound
 from werkzeug.utils import secure_filename
 
-from abilian.core.models.subjects import User
 from abilian.core.util import unwrap
 from abilian.web import csrf, url_for
 from abilian.web.access_blueprint import AccessControlBlueprint
@@ -18,6 +19,7 @@ from abilian.web.forms import Form
 from abilian.web.views import JSONView, View
 
 if typing.TYPE_CHECKING:
+    from abilian.core.models.subjects import User
     from abilian.web.uploads import FileUploadsExtension
 
 
@@ -55,9 +57,10 @@ class NewUploadView(BaseUploadsView, JSONView):
         form = UploadForm()
 
         if not form.validate():
-            raise BadRequest("File is missing.")
+            msg = "File is missing."
+            raise BadRequest(msg)
 
-        uploaded = form["file"].data
+        uploaded = form["file"].data[0]
         filename = secure_filename(uploaded.filename)
         mimetype = uploaded.mimetype
         self.handle = self.uploads.add_file(

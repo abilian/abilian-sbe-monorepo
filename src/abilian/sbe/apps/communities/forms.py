@@ -1,11 +1,12 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import imghdr
 
 import sqlalchemy as sa
 from flask import request
-from flask_babel import gettext as _
-from flask_babel import lazy_gettext as _l
+from flask_babel import gettext as _, lazy_gettext as _l
 from PIL import Image
 from wtforms import BooleanField, StringField, TextAreaField
 from wtforms.validators import ValidationError, data_required, optional
@@ -115,7 +116,7 @@ class CommunityForm(Form):
 
     # FIXME: code duplicated from the user edit form (UserProfileForm).
     # Needs to be refactored.
-    def validate_image(self, field):
+    def validate_image(self, field) -> None:
         data = request.form.get("image")
         if not data:
             return

@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Forum views."""
 
 from __future__ import annotations
@@ -16,16 +18,16 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 from abilian.core.util import utc_dt
 from abilian.i18n import _, _l
+from abilian.sbe.apps.communities.blueprint import CommunityBlueprint
+from abilian.sbe.apps.communities.common import activity_time_format, object_viewers
 from abilian.sbe.apps.communities.security import is_manager
+from abilian.sbe.apps.communities.views import default_view_kw
 from abilian.services.viewtracker import viewtracker
 from abilian.web import url_for, views
 from abilian.web.action import ButtonAction, Endpoint
 from abilian.web.nav import BreadcrumbItem
 from abilian.web.views import default_view
 
-from ..communities.blueprint import CommunityBlueprint
-from ..communities.common import activity_time_format, object_viewers
-from ..communities.views import default_view_kw
 from .forms import PostEditForm, PostForm, ThreadForm
 from .models import Post, PostAttachment, Thread
 from .tasks import send_post_by_email
@@ -48,7 +50,7 @@ def post_kw_view_func(kw, obj, obj_type, obj_id, **kwargs):
 
 
 @forum.url_value_preprocessor
-def init_forum_values(endpoint, values):
+def init_forum_values(endpoint, values) -> None:
     g.current_tab = "forum"
 
     g.breadcrumb.append(
@@ -70,6 +72,7 @@ def get_nb_viewers(entities):
         ]
 
         return Counter(threads)
+    return None
 
 
 def get_viewed_posts(entities):
@@ -116,6 +119,7 @@ def get_viewed_times(entities):
                 entity_viewed_times[view.entity] += viewed_times[view.id]
 
         return entity_viewed_times
+    return None
 
 
 @route("/")
@@ -174,7 +178,7 @@ def group_monthly(entities_list):
     def grouper(entity):
         return entity.created_at.year, entity.created_at.month
 
-    def format_month(year, month):
+    def format_month(year, month) -> str:
         month = format_date(date(year, month, 1), "MMMM").capitalize()
         return f"{month} {year}"
 
@@ -289,7 +293,7 @@ class ThreadCreate(BaseThreadView, views.ObjectCreate):
         self.thread = self.obj
         return args, kwargs
 
-    def before_populate_obj(self):
+    def before_populate_obj(self) -> None:
         del self.form["attachments"]
         self.message_body = self.form.message.data
         del self.form["message"]
@@ -300,7 +304,7 @@ class ThreadCreate(BaseThreadView, views.ObjectCreate):
             )
             del self.form["send_by_email"]
 
-    def after_populate_obj(self):
+    def after_populate_obj(self) -> None:
         if self.thread.community is None:
             self.thread.community = g.community._model
 
@@ -333,7 +337,7 @@ class ThreadCreate(BaseThreadView, views.ObjectCreate):
                 attachment.set_content(f.read(), mimetype)
             session.add(attachment)
 
-    def commit_success(self):
+    def commit_success(self) -> None:
         if self.send_by_email:
             message = send_post_by_email.send(self.post.id)
             # task = send_post_by_email.delay(self.post.id)
@@ -373,7 +377,7 @@ class ThreadPostCreate(ThreadCreate):
         )
         return args, kwargs
 
-    def after_populate_obj(self):
+    def after_populate_obj(self) -> None:
         super().after_populate_obj()
         session = sa.orm.object_session(self.obj)
         session.expunge(self.obj)
@@ -414,7 +418,8 @@ class ThreadCloseView(BaseThreadView, views.object.BaseObjectView):
         args, kwargs = super().prepare_args(args, kwargs)
         action = kwargs["action"] = request.form.get("action")
         if action not in self._VALID_ACTIONS:
-            raise BadRequest(f"Unknown action: {action!r}")
+            msg = f"Unknown action: {action!r}"
+            raise BadRequest(msg)
 
         return args, kwargs
 
@@ -436,7 +441,7 @@ class ThreadPostEdit(BaseThreadView, views.ObjectEdit):
     Model = Post
     pk = "object_id"
 
-    def can_send_by_mail(self):
+    def can_send_by_mail(self) -> bool:
         # post edit: don't notify every time
         return False
 
@@ -454,7 +459,7 @@ class ThreadPostEdit(BaseThreadView, views.ObjectEdit):
         kwargs["message"] = self.obj.body_html
         return kwargs
 
-    def before_populate_obj(self):
+    def before_populate_obj(self) -> None:
         self.message_body = self.form.message.data
         del self.form["message"]
         self.reason = self.form.reason.data
@@ -466,7 +471,7 @@ class ThreadPostEdit(BaseThreadView, views.ObjectEdit):
         self.attachments_to_remove = self.form["attachments"].delete_files_index
         del self.form["attachments"]
 
-    def after_populate_obj(self):
+    def after_populate_obj(self) -> None:
         session = sa.orm.object_session(self.obj)
         uploads = current_app.extensions["uploads"]
         self.obj.body_html = self.message_body

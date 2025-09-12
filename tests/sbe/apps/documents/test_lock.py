@@ -1,19 +1,23 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 from datetime import datetime, timedelta
+from typing import TYPE_CHECKING
 from unittest import mock
 
 import pytest
 from flask_login import login_user
 from pytz import UTC
-from sqlalchemy.orm import Session
 
 from abilian.core.models.subjects import User
-from abilian.sbe.app import Application
 from abilian.sbe.apps.documents import lock
 from abilian.sbe.apps.documents.lock import Lock
+from tests.util import redis_available
 
-from ....util import redis_available
+if TYPE_CHECKING:
+    from flask import Flask
+    from sqlalchemy.orm import Session
 
 
 def test_lock() -> None:
@@ -29,7 +33,7 @@ def test_lock() -> None:
 
 
 @pytest.mark.skipif(not redis_available(), reason="requires redis connection")
-def test_lock2(app: Application, session: Session) -> None:
+def test_lock2(app: Flask, session: Session) -> None:
     user = User(
         email="test@example.com", first_name="Joe", last_name="Smith", can_login=True
     )

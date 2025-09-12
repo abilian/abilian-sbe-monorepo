@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Various tools that don't belong some place specific."""
 
 from __future__ import annotations
@@ -89,7 +91,7 @@ def get_params(names):
 class timer:
     """Decorator that mesures the time it takes to run a function."""
 
-    def __init__(self, callable):
+    def __init__(self, callable) -> None:
         self.__f = callable
 
     def __call__(self, *args, **kwargs):
@@ -113,7 +115,7 @@ class memoized:
     returned (not reevaluated).
     """
 
-    def __init__(self, func):
+    def __init__(self, func) -> None:
         self.func = func
         self.cache = {}
         functools.wraps(func)(self)
@@ -137,30 +139,30 @@ class memoized:
 
 # From http://flask.pocoo.org/snippets/44/
 class Pagination:
-    def __init__(self, page, per_page, total_count):
+    def __init__(self, page, per_page, total_count) -> None:
         self.page = page
         self.per_page = per_page
         self.total_count = total_count
 
     @property
-    def pages(self):
-        return int(ceil(self.total_count / float(self.per_page)))
+    def pages(self) -> int:
+        return ceil(self.total_count / float(self.per_page))
 
     @property
-    def has_prev(self):
+    def has_prev(self) -> bool:
         return self.page > 1
 
     @property
-    def prev(self):
+    def prev(self) -> int | None:
         return self.page - 1 if self.has_prev else None
 
     @property
-    def has_next(self):
+    def has_next(self) -> bool:
         return self.page < self.pages
 
     # pylint: disable=W1653
     @property
-    def next(self):
+    def next(self) -> int | None:
         return self.page + 1 if self.has_next else None
 
     def iter_pages(self, left_edge=2, left_current=2, right_current=5, right_edge=2):
@@ -183,7 +185,8 @@ _NOT_WORD_RE = re.compile(r"[^\w\s]+", flags=re.UNICODE)
 def slugify(value: str, separator: str = "-") -> str:
     """Slugify an Unicode string, to make it URL friendly."""
     if not isinstance(value, str):
-        raise TypeError("value must be a Unicode string")
+        msg = "value must be a Unicode string"
+        raise TypeError(msg)
 
     value = _NOT_WORD_RE.sub(" ", value)
     value = unicodedata.normalize("NFKD", value)
@@ -201,18 +204,19 @@ class BasePresenter:
     Subclass to make it useful. Presenters are immutable.
     """
 
-    def __init__(self, model):
+    def __init__(self, model) -> None:
         self._model = model
 
     def __getattr__(self, key):
         return getattr(self._model, key)
 
-    def __setattr__(self, key, value):
+    def __setattr__(self, key, value) -> None:
         """Make presenter immutable."""
         if key == "_model":
             self.__dict__[key] = value
         else:
-            raise AttributeError("Can't set attribute on a presenter.")
+            msg = "Can't set attribute on a presenter."
+            raise AttributeError(msg)
 
     @classmethod
     def wrap_collection(cls, models):
@@ -229,8 +233,7 @@ def encode_string(string_or_bytes: str | bytes) -> bytes:
 
     if isinstance(string_or_bytes, str):
         return string_or_bytes.encode()
-    else:
-        return string_or_bytes
+    return string_or_bytes
 
 
 def md5(data: str | bytes | None):

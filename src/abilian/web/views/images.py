@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Blueprint for views of dynamic images."""
 
 from __future__ import annotations
@@ -30,7 +32,7 @@ DEFAULT_AVATAR_MD5 = hashlib.md5(DEFAULT_AVATAR.read_bytes()).hexdigest()  # noq
 class BaseImageView(BaseFileDownload):
     max_size = None
 
-    def __init__(self, max_size=None, *args, **kwargs):
+    def __init__(self, max_size=None, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         # Override class default value only if arg is specified in constructor.
         # This allows subclasses to easily override theses defaults.
@@ -43,10 +45,12 @@ class BaseImageView(BaseFileDownload):
         try:
             size = int(size)
         except ValueError as e:
-            raise BadRequest(f'Invalid value for "s": {size:d}. Not an integer.') from e
+            msg = f'Invalid value for "s": {size:d}. Not an integer.'
+            raise BadRequest(msg) from e
 
         if self.max_size is not None and size > self.max_size:
-            raise BadRequest(f"Size too large: {size:d} (max: {self.max_size:d})")
+            msg = f"Size too large: {size:d} (max: {self.max_size:d})"
+            raise BadRequest(msg)
 
         kwargs["size"] = size
 
@@ -103,7 +107,7 @@ class StaticImageView(BaseImageView):
 
     expire_vary_arg = "md5"
 
-    def __init__(self, image, *args, **kwargs):
+    def __init__(self, image, *args, **kwargs) -> None:
         """
         :param image: path to image file
         """
@@ -111,7 +115,8 @@ class StaticImageView(BaseImageView):
         self.image_path = Path(image)
         if not self.image_path.exists():
             p = str(self.image_path)
-            raise ValueError(f"Invalid image path: {p!r}")
+            msg = f"Invalid image path: {p!r}"
+            raise ValueError(msg)
 
     def prepare_args(self, args, kwargs):
         kwargs["image"] = self.image_path.open("rb")
@@ -128,7 +133,7 @@ class BlobView(BaseImageView):
     expire_vary_arg = "md5"
     id_arg = "object_id"
 
-    def __init__(self, id_arg=None, *args, **kwargs):
+    def __init__(self, id_arg=None, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         if id_arg is not None:
             self.id_arg = id_arg
@@ -139,7 +144,8 @@ class BlobView(BaseImageView):
         try:
             blob_id = int(blob_id)
         except ValueError as e:
-            raise BadRequest(f"Invalid blob id: {blob_id!r}") from e
+            msg = f"Invalid blob id: {blob_id!r}"
+            raise BadRequest(msg) from e
 
         blob = Blob.query.get(blob_id)
         if not blob:
@@ -215,7 +221,7 @@ def user_url_args(user: User, size: int) -> tuple[str, dict[str, Any]]:
     if not user.is_anonymous:
         endpoint = "images.user_photo"
         kwargs["user_id"] = user.id
-        content = user.photo if user.photo else (user.name + user.email).encode("utf-8")
+        content = user.photo or (user.name + user.email).encode("utf-8")
         kwargs["md5"] = hashlib.md5(content).hexdigest()  # noqa: S324
 
     return endpoint, kwargs

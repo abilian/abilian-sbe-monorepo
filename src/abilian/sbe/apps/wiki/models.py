@@ -1,6 +1,9 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from flask_login import current_user
 from sqlalchemy import (
@@ -14,9 +17,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.event import listens_for
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import backref, relationship
-from sqlalchemy.orm.attributes import Event
-from sqlalchemy.util.langhelpers import _symbol
+from sqlalchemy.orm import Mapped, backref, relationship
 
 from abilian.core.entities import Entity, db
 from abilian.core.models import SEARCHABLE
@@ -28,6 +29,10 @@ from abilian.sbe.apps.communities.models import (
 )
 from abilian.sbe.apps.documents.models import BaseContent
 
+if TYPE_CHECKING:
+    from sqlalchemy.orm.attributes import Event
+    from sqlalchemy.util.langhelpers import _symbol
+
 __all__ = ["WikiPage", "WikiPageAttachment", "WikiPageRevision"]
 
 
@@ -36,9 +41,10 @@ class WikiPage(Entity):
     __tablename__ = "wiki_page"
 
     # : The title for this page
-    _title = Column("title", Unicode(200), nullable=False, index=True)
+    _title: Mapped[str] = Column("title", Unicode(200), nullable=False, index=True)
 
     community_id = CommunityIdColumn()
+
     #: The community this page belongs to
     community = relationship(
         Community,
@@ -56,15 +62,15 @@ class WikiPage(Entity):
 
     __table_args__ = (UniqueConstraint("title", "community_id"),)
 
-    def __init__(self, title="", body_src="", message="", *args, **kwargs):
+    def __init__(self, title="", body_src="", message="", *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.title = title
         self.create_revision(body_src, message)
 
-    # title is defined has an hybrid property to allow name <-> title sync
+    # title is defined as a hybrid property to allow name <-> title sync
     # (2 way)
     @hybrid_property
-    def title(self: str) -> str:
+    def title(self) -> str:
         return self._title
 
     @title.setter

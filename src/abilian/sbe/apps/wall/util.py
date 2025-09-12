@@ -1,10 +1,11 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Some functions to retrieve activity entries."""
 
 # TODO: move to the activity service ?
-
 from __future__ import annotations
 
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import sqlalchemy as sa
 from flask import g
@@ -12,13 +13,15 @@ from flask_login import current_user
 from werkzeug.exceptions import Forbidden
 
 from abilian.core.extensions import db
-from abilian.core.models.subjects import User
 from abilian.sbe.apps.communities.models import Membership
-from abilian.sbe.apps.communities.presenters import CommunityPresenter
 from abilian.sbe.apps.documents.models import Document, Folder
 from abilian.services import get_service
 from abilian.services.activity import ActivityEntry
-from abilian.services.security import READ, Admin, SecurityService
+from abilian.services.security import ADMIN, READ, SecurityService
+
+if TYPE_CHECKING:
+    from abilian.core.models.subjects import User
+    from abilian.sbe.apps.communities.presenters import CommunityPresenter
 
 
 def get_recent_entries(
@@ -27,7 +30,7 @@ def get_recent_entries(
     community: CommunityPresenter | None = None,
 ) -> list[Any]:
     # Check just in case
-    if not current_user.has_role(Admin):
+    if not current_user.has_role(ADMIN):
         if community and not community.has_member(current_user):
             raise Forbidden
 
@@ -47,7 +50,7 @@ def get_recent_entries(
     #
     # we use communities ids instead of object because as of sqlalchemy 0.8 the
     # 'in_' operator cannot be used with relationships, only foreign keys values
-    if not community and not current_user.has_role(Admin):
+    if not community and not current_user.has_role(ADMIN):
         community_ids = Membership.query.filter(
             Membership.user_id == current_user.id
         ).values(Membership.community_id)
@@ -69,7 +72,7 @@ def get_recent_entries(
     limit = min(num * 2, 100)
     entries: list[ActivityEntry] = []
     deleted = False
-    security = cast(SecurityService, get_service("security"))
+    security = cast("SecurityService", get_service("security"))
     has_permission = security.has_permission
 
     for entry in query.yield_per(limit):

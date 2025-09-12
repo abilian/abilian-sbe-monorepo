@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
@@ -25,7 +27,7 @@ class EditForm(ModelForm):
     default = BooleanField(_l("Default"), default=False)
     active = BooleanField(_l("Active"), default=True)
 
-    def validate_label(self, field):
+    def validate_label(self, field) -> None:
         field.data = bleach.clean(
             field.data, tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRIBUTES, strip=True
         )

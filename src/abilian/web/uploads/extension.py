@@ -1,25 +1,30 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
 
 import json
 import time
-from io import BufferedReader
-from pathlib import PosixPath
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from uuid import UUID, uuid1
 
 from flask import current_app
 from loguru import logger
 
-from abilian.app import Application
 from abilian.core import signals
 from abilian.core.dramatiq.scheduler import crontab
 from abilian.core.dramatiq.singleton import dramatiq
-from abilian.core.models.subjects import User
 from abilian.web import url_for
 
 from .views import ac_blueprint
+
+if TYPE_CHECKING:
+    from io import BufferedReader
+    from pathlib import Path
+
+    from abilian.app import Application
+    from abilian.core.models.subjects import User
 
 CHUNK_SIZE = 64 * 1024
 
@@ -53,10 +58,11 @@ class FileUploadsExtension:
     A periodic task cleans the temporary repository.
     """
 
-    def __init__(self, app: Application):
+    def __init__(self, app: Application) -> None:
+        app.register_blueprint(ac_blueprint)
+
         app.extensions["uploads"] = self
         app.add_template_global(self, "uploads")
-        app.register_blueprint(ac_blueprint)
         signals.register_js_api.connect(self._do_register_js_api)
 
         self.config: dict[str, Any] = {}
@@ -65,17 +71,15 @@ class FileUploadsExtension:
         app.config["FILE_UPLOADS"] = self.config
 
         path = self.UPLOAD_DIR = app.data_dir / "uploads"
-        if not path.exists():
-            path.mkdir(mode=0o775, parents=True)
-
+        path.mkdir(mode=0o775, parents=True, exist_ok=True)
         path.resolve()
 
-    def _do_register_js_api(self, sender: Application):
+    def _do_register_js_api(self, sender: Application) -> None:
         app = sender
         js_api = app.js_api.setdefault("upload", {})
         js_api["newFileUrl"] = url_for("uploads.new_file")
 
-    def user_dir(self, user: User) -> PosixPath:
+    def user_dir(self, user: User) -> Path:
         if user.is_anonymous:
             user_id = "anonymous"
         else:
@@ -106,7 +110,7 @@ class FileUploadsExtension:
 
         return handle
 
-    def get_file(self, user: User, handle: str) -> PosixPath | None:
+    def get_file(self, user: User, handle: str) -> Path | None:
         """Retrieve a file for a user.
 
         :returns: a :class:`pathlib.Path` instance to this file,
@@ -126,7 +130,7 @@ class FileUploadsExtension:
 
         return file_path
 
-    def get_metadata_file(self, user: User, handle: str) -> PosixPath | None:
+    def get_metadata_file(self, user: User, handle: str) -> Path | None:
         content = self.get_file(user, handle)
         if content is None:
             return None
@@ -150,7 +154,7 @@ class FileUploadsExtension:
 
         return meta
 
-    def remove_file(self, user, handle):
+    def remove_file(self, user, handle) -> None:
         paths = (self.get_file(user, handle), self.get_metadata_file(user, handle))
 
         for file_path in paths:
@@ -160,7 +164,7 @@ class FileUploadsExtension:
                 except Exception:
                     logger.error("Error during remove file")
 
-    def clear_stalled_files(self):
+    def clear_stalled_files(self) -> None:
         """Scan upload directory and delete stalled files.
 
         Stalled files are files uploaded more than
@@ -196,7 +200,7 @@ class FileUploadsExtension:
 # hasnt finished yet, then the latest run is considered a misfire."
 @crontab("PERIODIC_CLEAN_UPLOAD_DIRECTORY")
 @dramatiq.actor()
-def periodic_clean_upload_directory():
+def periodic_clean_upload_directory() -> None:
     """This task should be run periodically.
 
     Default config sets up schedule using

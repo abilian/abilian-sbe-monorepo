@@ -1,8 +1,11 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Base classes for file download."""
 
 from __future__ import annotations
 
 from datetime import datetime, timedelta
+from typing import Never
 
 from flask import Response, request, send_file
 from werkzeug.exceptions import BadRequest
@@ -28,7 +31,7 @@ class BaseFileDownload(View):
         expire_offset=None,
         expire_vary_arg=None,
         as_attachment=None,
-    ):
+    ) -> None:
         # Override class default value only if arg is specified in constructor.
         # This allows subclasses to easily override these defaults.
         if set_expire is not None:
@@ -42,9 +45,11 @@ class BaseFileDownload(View):
 
         if self.set_expire:
             if not self.expire_offset:
-                raise ValueError("expire_offset is not set")
+                msg = "expire_offset is not set"
+                raise ValueError(msg)
             if not self.expire_vary_arg:
-                raise ValueError("expire_vary_arg is not set")
+                msg = "expire_vary_arg is not set"
+                raise ValueError(msg)
 
     def prepare_args(self, args, kwargs):
         if self.set_expire:
@@ -56,23 +61,22 @@ class BaseFileDownload(View):
                 # We must refuse to serve an image with expiry date set up
                 # to maybe 1 year from now.
                 # Check the code that has generated this url!
-                raise BadRequest(
-                    f"File version marker is missing ({self.expire_vary_arg!r}=?)"
-                )
+                msg = f"File version marker is missing ({self.expire_vary_arg!r}=?)"
+                raise BadRequest(msg)
 
         args, kwargs = super().prepare_args(args, kwargs)
         kwargs["attach"] = request.args.get("attach", self.as_attachment, type=bool)
         return args, kwargs
 
-    def make_response(self, *args, **kwargs):
+    def make_response(self, *args, **kwargs) -> Never:
         # for example: return flask.make_response(...)
         # or: return flask.send_file(...)
         raise NotImplementedError
 
-    def get_filename(self, *args, **kwargs):
+    def get_filename(self, *args, **kwargs) -> Never:
         raise NotImplementedError
 
-    def get_content_type(self, *args, **kwargs):
+    def get_content_type(self, *args, **kwargs) -> Never:
         raise NotImplementedError
 
     def get(self, attach: bool, *args, **kwargs):
@@ -92,7 +96,7 @@ class BaseFileDownload(View):
         self.set_cache_headers(response)
         return response
 
-    def set_cache_headers(self, response):
+    def set_cache_headers(self, response) -> None:
         if self.set_expire:
             response.cache_control.public = False
             response.cache_control.private = True
@@ -101,7 +105,7 @@ class BaseFileDownload(View):
 
 
 class BaseBlobDownload(BaseFileDownload):
-    def get_blob(self, *args, **kwargs):
+    def get_blob(self, *args, **kwargs) -> Never:
         raise NotImplementedError
 
     def prepare_args(self, args, kwargs):

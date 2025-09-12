@@ -1,7 +1,10 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
 
+import operator
 import sys
 
 from blinker import Namespace, Signal
@@ -17,13 +20,13 @@ class ActionDebugPanel(DebugPanel):
     user_enable = True
     has_content = True
 
-    def nav_title(self):
+    def nav_title(self) -> str:
         return "Actions"
 
-    def title(self):
+    def title(self) -> str:
         return "Actions"
 
-    def url(self):
+    def url(self) -> str:
         return ""
 
     def content(self) -> str:
@@ -47,7 +50,7 @@ class ActionDebugPanel(DebugPanel):
                     d["url"] = "<Exception>"
                 actions_for_template.append(d)
 
-        actions_for_template.sort(key=lambda x: (x["category"], x["title"]))
+        actions_for_template.sort(key=operator.itemgetter("category", "title"))
 
         ctx = {"actions": actions_for_template}
 
@@ -65,13 +68,13 @@ class SignalsDebugPanel(DebugPanel):
 
     events: list[dict] = []
 
-    def nav_title(self):
+    def nav_title(self) -> str:
         return "Signals"
 
-    def title(self):
+    def title(self) -> str:
         return "Signals"
 
-    def url(self):
+    def url(self) -> str:
         return ""
 
     def content(self) -> str:
@@ -101,7 +104,7 @@ class SignalsDebugPanel(DebugPanel):
                     }
                     signals.append(d)
 
-        signals.sort(key=lambda d: (d["module_name"], d["ns_name"], d["signal_name"]))
+        signals.sort(key=operator.itemgetter("module_name", "ns_name", "signal_name"))
 
         ctx = {"signals": signals, "events": self.events}
 
@@ -110,7 +113,7 @@ class SignalsDebugPanel(DebugPanel):
         template = jinja_env.get_or_select_template("debug_panels/signals_panel.html")
         return template.render(ctx)
 
-    def process_request(self, request):
+    def process_request(self, request) -> None:
         self.events = []
 
         if getattr(Signal.send, "__wrapped", False):

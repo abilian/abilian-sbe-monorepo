@@ -1,16 +1,24 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any, cast
 
 import whoosh.fields as wf
 import whoosh.query as wq
 from flask import Flask, g
 from flask_login import current_user
 from loguru import logger
-from whoosh.query.compound import Or
-from whoosh.query.terms import Term
+
+from abilian.services import get_service
 
 from .models import Membership
+
+if TYPE_CHECKING:
+    from whoosh.query.compound import Or
+    from whoosh.query.terms import Term
+
+    from abilian.services.indexing.service import IndexService
 
 _COMMUNITY_CONTENT_FIELDNAME = "is_community_content"
 _COMMUNITY_CONTENT_FIELD = wf.BOOLEAN()
@@ -29,7 +37,7 @@ _FIELDS = [
 
 def init_app(app: Flask) -> None:
     """Add community fields to indexing service schema."""
-    indexing = app.services["indexing"]
+    indexing = cast("IndexService", get_service("indexing"))
     indexing.register_search_filter(filter_user_communities)
     indexing.register_value_provider(mark_non_community_content)
 
@@ -66,7 +74,10 @@ def filter_user_communities() -> Or | Term:
 
         if communities:
             communities = wq.And(
-                [wq.Term(_COMMUNITY_CONTENT_FIELDNAME, True), wq.Or(communities)]
+                [
+                    wq.Term(_COMMUNITY_CONTENT_FIELDNAME, True),
+                    wq.Or(communities),
+                ]
             )
             filter_q = wq.Or([filter_q, communities])
 

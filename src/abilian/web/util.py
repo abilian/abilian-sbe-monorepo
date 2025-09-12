@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """A few utility functions.
 
 See https://docs.djangoproject.com/en/dev/topics/http/shortcuts/ for
@@ -8,8 +10,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from flask import current_app
-from flask import url_for as flask_url_for
+from flask import current_app, url_for as flask_url_for
 from flask.helpers import send_from_directory
 from werkzeug.routing import BuildError
 
@@ -28,7 +29,7 @@ def url_for(obj: Any, **kw: Any) -> str:
     except KeyError:
         if hasattr(obj, "_url"):
             return obj._url
-        elif hasattr(obj, "url"):
+        if hasattr(obj, "url"):
             return obj.url
 
     raise BuildError(repr(obj), kw, "GET")

@@ -7,6 +7,8 @@ Create Date: 2017-05-24 20:19:54.896355
 """
 
 # revision identifiers, used by Alembic.
+from __future__ import annotations
+
 revision = "1f4631da751b"
 down_revision = "946bada3d9d5"
 branch_labels = None

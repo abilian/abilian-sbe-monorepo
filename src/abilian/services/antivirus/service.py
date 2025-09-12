@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
@@ -9,8 +11,7 @@ import pathlib
 from loguru import logger
 
 from abilian.core.models.blob import Blob
-
-from ..base import Service
+from abilian.services.base import Service
 
 try:
     from clamd import ClamdError, ClamdUnixSocket

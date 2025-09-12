@@ -1,3 +1,7 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
+from __future__ import annotations
+
 from flask import current_app, g, session
 
 from abilian.core.entities import Entity
@@ -5,7 +9,7 @@ from abilian.core.entities import Entity
 # Not used in UI, currently.
 
 
-def add_to_recent_items(entity, type="ignored"):
+def add_to_recent_items(entity, type="ignored") -> None:
     if not isinstance(entity, Entity):
         return
     object_type = entity.object_type

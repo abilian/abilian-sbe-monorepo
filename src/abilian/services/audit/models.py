@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Audit Service: logs modifications to audited objects.
 
 Only subclasses of Entity are auditable, at this point.
@@ -14,7 +16,6 @@ import pickle
 from datetime import datetime
 from typing import Any
 
-from flask import current_app
 from loguru import logger
 from sqlalchemy import LargeBinary
 from sqlalchemy.orm import relationship
@@ -35,7 +36,7 @@ RELATED = 1 << 7
 class Changes:
     """Trace object modifications."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.columns = {}
         self.collections = {}
 
@@ -52,14 +53,14 @@ class Changes:
 
         return c
 
-    def set_column_changes(self, name: str, old_value: Any, new_value: Any):
+    def set_column_changes(self, name: str, old_value: Any, new_value: Any) -> None:
         self.columns[name] = (old_value, new_value)
 
-    def set_related_changes(self, name: str, changes: Changes):
+    def set_related_changes(self, name: str, changes: Changes) -> None:
         assert isinstance(changes, Changes)
         self.columns[name] = changes
 
-    def _collection_change(self, name: str, value: Any, add: bool):
+    def _collection_change(self, name: str, value: Any, add: bool) -> None:
         colls = self.collections
         to_add, to_remove = colls.setdefault(name, (set(), set()))
         if not add:
@@ -71,10 +72,10 @@ class Changes:
         if value in to_remove:
             to_remove.remove(value)
 
-    def collection_append(self, name: str, value: Any):
+    def collection_append(self, name: str, value: Any) -> None:
         self._collection_change(name, value, add=True)
 
-    def collection_remove(self, name: str, value: Any):
+    def collection_remove(self, name: str, value: Any) -> None:
         self._collection_change(name, value, add=False)
 
     def __bool__(self) -> bool:
@@ -107,7 +108,7 @@ class AuditEntry(db.Model):
 
     # query: BaseQuery
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "<AuditEntry id={} op={} user={} {}entity=<{} id={}>>".format(
             repr(self.id),
             {CREATION: "CREATION", DELETION: "DELETION", UPDATE: "UPDATE"}[self.op],
@@ -147,7 +148,7 @@ class AuditEntry(db.Model):
             if isinstance(changes, dict):
                 changes = Changes.from_legacy(changes)
 
-            def fix_migration(changes):
+            def fix_migration(changes) -> None:
                 # Fix for migration Python 2 -> Python 3
                 items = list(vars(changes).items())
                 for k, v in items:
@@ -179,7 +180,7 @@ class AuditEntry(db.Model):
 
         return changes
 
-    def set_changes(self, changes: Changes):
+    def set_changes(self, changes: Changes) -> None:
         changes = self._format_changes(changes)
         self.changes_pickle = pickle.dumps(changes, protocol=2)
 
@@ -202,9 +203,9 @@ class AuditEntry(db.Model):
                         # TODO: Temp fix for errors that happen during
                         # migration
                         try:
-                            val = val.decode("utf-8")
+                            val = val.decode()
                         except UnicodeDecodeError:
-                            current_app.logger.error(
+                            logger.exception(
                                 "A Unicode error happened on changes {changes}",
                                 changes=repr(changes),
                             )

@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Base Flask application class, used by tests or to be extended in real
 applications."""
 
@@ -8,7 +10,6 @@ from functools import partial
 import sqlalchemy as sa
 from flask import Flask, g, render_template
 from flask.globals import request_ctx
-from loguru import logger
 
 from abilian.core import extensions
 
@@ -16,7 +17,7 @@ db = extensions.db
 
 
 class ErrorManagerMixin(Flask):
-    def setup_logging(self):
+    def setup_logging(self) -> None:
         # Force flask to create application logger before logging
         # configuration; else, flask will overwrite our settings
         assert self.logger
@@ -44,7 +45,7 @@ class ErrorManagerMixin(Flask):
 
         return super().handle_exception(e)
 
-    def _remove_session_save_objects(self):
+    def _remove_session_save_objects(self) -> None:
         """Used during exception handling in case we need to remove() session:
 
         keep instances and merge them in the new session.
@@ -77,55 +78,27 @@ class ErrorManagerMixin(Flask):
         if user is not None and isinstance(user, db.Model):
             request_ctx.user = session.merge(user, load=load)
 
-    def log_exception(self, exc_info):
+    def log_exception(self, exc_info) -> None:
         """Log exception only if Sentry is not used (this avoids getting error
         twice in Sentry)."""
         dsn = self.config.get("SENTRY_DSN")
         if not dsn:
             super().log_exception(exc_info)
 
-    def init_sentry(self):
-        """Install Sentry handler if config defines 'SENTRY_DSN'."""
-        dsn = self.config.get("SENTRY_DSN")
-        if not dsn:
-            return
-
-        try:
-            import sentry_sdk
-        except ImportError:
-            logger.error(
-                'SENTRY_DSN is defined in config but package "sentry-sdk"'
-                " is not installed."
-            )
-            return
-
-        from sentry_sdk.integrations.flask import FlaskIntegration
-        from sentry_sdk.integrations.redis import RedisIntegration
-        from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
-
-        sentry_sdk.init(
-            dsn=dsn,
-            integrations=[
-                FlaskIntegration(),
-                SqlalchemyIntegration(),
-                RedisIntegration(),
-            ],
-        )
-
-    def install_default_handlers(self):
+    def install_default_handlers(self) -> None:
         for http_error_code in (403, 404, 500):
             self.install_default_handler(http_error_code)
 
-    def install_default_handler(self, http_error_code: int):
+    def install_default_handler(self, http_error_code: int) -> None:
         """Install a default error handler for `http_error_code`.
 
         The default error handler renders a template named error404.html
         for http_error_code 404.
         """
-        logger.debug(
-            "Set Default HTTP error handler for status code {http_error_code}",
-            http_error_code=http_error_code,
-        )
+        # logger.debug(
+        #     "Set Default HTTP error handler for status code {http_error_code}",
+        #     http_error_code=http_error_code,
+        # )
         handler = partial(self.handle_http_error, http_error_code)
         self.errorhandler(http_error_code)(handler)
 

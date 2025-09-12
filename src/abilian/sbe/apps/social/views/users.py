@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import pkgutil
@@ -121,14 +123,14 @@ def users_dt_json():
         name = escape(user.name or "")
 
         cell0 = (
-            '<a href="{url}"><img src="{src}" width="{size}" height="{size}">'
-            "</a>".format(url=user_url, src=mugshot, size=MUGSHOT_SIZE)
+            f'<a href="{user_url}"><img src="{mugshot}" width="{MUGSHOT_SIZE}" height="{MUGSHOT_SIZE}">'
+            "</a>"
         )
         cell1 = f'<div class="info"><a href="{user_url}">{name}</a></div>'
         cell2 = age(user.created_at)
         cell3 = age(user.last_active)
+        _cell4 = ""  # TODO: follow / unfollow?
 
-        cell4 = ""  # TODO: follow / unfollow?
         data.append([cell0, cell1, cell2, cell3])
 
     result = {
@@ -221,14 +223,14 @@ def user_post(user_id):
     elif action == "unfollow":
         current_user.unfollow(user)
     else:
-        raise Exception("Should not happen")
+        msg = "Should not happen"
+        raise Exception(msg)
     db.session.commit()
 
     if return_url:
         # TODO: security check
         return redirect(return_url)
-    else:
-        return redirect(url_for(".user_view", user_id=user_id))
+    return redirect(url_for(".user_view", user_id=user_id))
 
 
 #

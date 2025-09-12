@@ -1,20 +1,26 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Decorators and helpers to check access to communities."""
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from functools import wraps
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from flask import g
 from flask_login import current_user
 from werkzeug.exceptions import Forbidden
-from werkzeug.wrappers import Response
 
-from abilian.core.models.subjects import User
-from abilian.sbe.apps.communities.presenters import CommunityPresenter
 from abilian.services import security_service
 from abilian.services.security import MANAGE
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from werkzeug.wrappers import Response
+
+    from abilian.core.models.subjects import User
+    from abilian.sbe.apps.communities.presenters import CommunityPresenter
 
 
 def require_admin(func: Callable) -> Callable:

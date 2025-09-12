@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
@@ -11,7 +13,7 @@ from abilian.services import settings_service
 from abilian.services.settings.models import Setting, empty_value
 
 
-def test_type_set():
+def test_type_set() -> None:
     s = Setting()
     # registered base type: no failure
     s.type = "int"
@@ -19,7 +21,7 @@ def test_type_set():
     s.type = "json"
     s.type = "string"
 
-    with raises(ValueError):
+    with raises(ValueError, match="Invalid type"):
         s.type = "dummy type name"
 
 
@@ -38,24 +40,26 @@ OBJ = [1, 2, "été", {"1": "1", "2": "2"}]
         ("json", OBJ),
     ],
 )
-def test_set_get(type_: str, value: Any):
+def test_set_get(type_: str, value: Any) -> None:
     s = Setting(key="key", type=type_)
     s.value = value
     assert s.value == value
 
 
-def test_empty_value():
+def test_empty_value() -> None:
     s = Setting(key="key", type="json")
     assert s.value == empty_value
 
 
-def test_service_facade(app, session):
+def test_service_facade(app, session) -> None:
     settings_service.set("key_1", 42, "int")
     session.flush()
     assert settings_service.get("key_1") == 42
 
     # new key with no type: raise error:
-    with raises(ValueError):
+    with raises(
+        ValueError, match="tried to set a new key without specifiying its type"
+    ):
         settings_service.set("key_err", 42)
 
     # key already with type_, this should not raise an error
@@ -95,7 +99,7 @@ def test_service_facade(app, session):
     assert settings_service.as_dict(prefix="key_") == {"key_1": 1, "key_2": 2}
 
 
-def test_namespace(app, session):
+def test_namespace(app, session) -> None:
     ns = settings_service.namespace("test")
     ns.set("1", 42, "int")
     session.flush()

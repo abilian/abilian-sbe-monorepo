@@ -1,8 +1,10 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import difflib
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from urllib.parse import quote
 
 import sqlalchemy as sa
@@ -20,7 +22,6 @@ from markdown import markdown
 from markupsafe import Markup
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.exceptions import NotFound
-from werkzeug.wrappers import Response
 from whoosh.searching import Hit
 
 from abilian.core.extensions import db
@@ -29,10 +30,7 @@ from abilian.core.util import unwrap
 from abilian.i18n import _, _l, _n
 from abilian.sbe.apps.communities.blueprint import CommunityBlueprint
 from abilian.sbe.apps.communities.common import object_viewers
-from abilian.sbe.apps.communities.models import Community
-from abilian.sbe.apps.communities.presenters import CommunityPresenter
 from abilian.sbe.apps.communities.views import default_view_kw as community_dv_kw
-from abilian.services.security.models import Permission
 from abilian.services.viewtracker import viewtracker
 from abilian.web import csrf
 from abilian.web.action import Endpoint, actions
@@ -43,6 +41,13 @@ from abilian.web.views.base import Redirect
 
 from .forms import WikiPageForm
 from .models import WikiPage, WikiPageAttachment, WikiPageRevision
+
+if TYPE_CHECKING:
+    from werkzeug.wrappers import Response
+
+    from abilian.sbe.apps.communities.models import Community
+    from abilian.sbe.apps.communities.presenters import CommunityPresenter
+    from abilian.services.security.models import Permission
 
 wiki = CommunityBlueprint(
     "wiki", __name__, url_prefix="/wiki", template_folder="templates"
@@ -244,33 +249,32 @@ class PageEdit(BasePageView, ObjectEdit):
             if self.last_revision.body_src == current.body_src and self.form.validate():
                 # only title change? cannot show diff: save if valid
                 return self.form_valid()
-            else:
-                edited_src = field.data
-                field.data = current.body_src
-                edited_diff = [
-                    l
-                    for l in difflib.ndiff(
-                        self.last_revision.body_src.splitlines(True),
-                        edited_src.splitlines(True),
-                    )
-                    if l[0] != "?"
-                ]
-                current_diff = [
-                    l
-                    for l in difflib.ndiff(
-                        self.last_revision.body_src.splitlines(True),
-                        current.body_src.splitlines(True),
-                    )
-                    if l[0] != "?"
-                ]
-                ctx = {
-                    "current": current,
-                    "current_diff": current_diff,
-                    "edited_diff": edited_diff,
-                }
-                field.errors.append(
-                    Markup(render_template("wiki/edit_conflict_error.html", **ctx))
+            edited_src = field.data
+            field.data = current.body_src
+            edited_diff = [
+                l
+                for l in difflib.ndiff(
+                    self.last_revision.body_src.splitlines(True),
+                    edited_src.splitlines(True),
                 )
+                if l[0] != "?"
+            ]
+            current_diff = [
+                l
+                for l in difflib.ndiff(
+                    self.last_revision.body_src.splitlines(True),
+                    current.body_src.splitlines(True),
+                )
+                if l[0] != "?"
+            ]
+            ctx = {
+                "current": current,
+                "current_diff": current_diff,
+                "edited_diff": edited_diff,
+            }
+            field.errors.append(
+                Markup(render_template("wiki/edit_conflict_error.html", **ctx))
+            )
 
         return None
 
@@ -493,7 +497,7 @@ def wiki_help():
 
 
 @route("/export")
-def wiki_export():
+def wiki_export() -> str:
     # TODO
     return "Not done yet"
 

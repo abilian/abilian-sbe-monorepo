@@ -1,15 +1,19 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from flask import g, request, url_for
-from flask.blueprints import BlueprintSetupState
 from flask_login import current_user
 
 from abilian.i18n import _l
 from abilian.services import get_service
-from abilian.services.security import Admin, SecurityService
+from abilian.services.security import ADMIN, SecurityService
 from abilian.web.action import Action, FAIcon, ModalActionMixin, actions
+
+if TYPE_CHECKING:
+    from flask.blueprints import BlueprintSetupState
 
 
 class ForumAction(Action):
@@ -40,11 +44,11 @@ class ThreadAction(ForumAction):
 
 
 def is_admin(context):
-    security = cast(SecurityService, get_service("security"))
-    return security.has_role(current_user, Admin, object=context.get("object"))
+    security = cast("SecurityService", get_service("security"))
+    return security.has_role(current_user, ADMIN, object=context.get("object"))
 
 
-def is_in_thread(context):
+def is_in_thread(context) -> bool:
     thread = context.get("object")
     return not thread
 
@@ -54,7 +58,7 @@ def is_closed(context):
     return thread.closed
 
 
-def not_closed(context):
+def not_closed(context) -> bool:
     return not is_closed(context)
 
 

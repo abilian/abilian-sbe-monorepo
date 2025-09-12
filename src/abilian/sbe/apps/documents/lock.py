@@ -1,14 +1,18 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 from datetime import datetime, timedelta
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import dateutil.parser
 from flask import current_app
 from flask_login import current_user
 
-from abilian.core.models.subjects import User
 from abilian.core.util import utcnow
+
+if TYPE_CHECKING:
+    from abilian.core.models.subjects import User
 
 DEFAULT_LIFETIME = 3600
 
@@ -28,7 +32,8 @@ class Lock:
             try:
                 date = dateutil.parser.parse(date)
             except Exception as e:
-                raise ValueError(f"Error parsing date: {date!r}") from e
+                msg = f"Error parsing date: {date!r}"
+                raise ValueError(msg) from e
 
         self.date = date
 

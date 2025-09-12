@@ -1,6 +1,8 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Never
 
 
 class PreferencePanel:
@@ -15,11 +17,11 @@ class PreferencePanel:
     id: str
     label: Any
 
-    def is_accessible(self):
+    def is_accessible(self) -> bool:
         return True
 
-    def get(self):
+    def get(self) -> Never:
         raise NotImplementedError
 
-    def post(self):
+    def post(self) -> Never:
         raise NotImplementedError

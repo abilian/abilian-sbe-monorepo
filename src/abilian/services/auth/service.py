@@ -1,29 +1,32 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
-import typing
-from collections.abc import Callable
 from datetime import datetime, timedelta
-from typing import Any
+from typing import TYPE_CHECKING, Any, cast
 
 from flask import Flask, current_app, g, redirect, request, url_for
 from flask_babel import lazy_gettext as _l
 from flask_login import current_user, login_user, user_logged_in, user_logged_out
 from loguru import logger
 from werkzeug.exceptions import Forbidden
-from werkzeug.wrappers import Response
 
 from abilian.core.extensions import db, login_manager
 from abilian.core.models.subjects import User
 from abilian.core.signals import user_loaded
 from abilian.core.util import unwrap
-from abilian.services import Service, ServiceState
+from abilian.services import Service, ServiceState, get_service
 from abilian.web.action import DynamicIcon, actions
 from abilian.web.nav import NavGroup, NavItem
 
 from .models import LoginSession
 from .views import login as login_views
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from werkzeug.wrappers import Response
+
     from abilian.app import Application
 
 __all__ = ["AuthService", "user_menu"]
@@ -88,15 +91,18 @@ _ACTIONS = (
 class AuthServiceState(ServiceState):
     """State class for :class:`AuthService`"""
 
-    def __init__(self, service: AuthService, *args: Any, **kwargs: Any):
-        super().__init__(service, *args, **kwargs)
-        self.bp_access_controllers: dict[str | None, list[Callable]] = {None: []}
-        self.endpoint_access_controllers: dict[str, list[Callable]] = {}
+    bp_access_controllers: dict[str | None, list[Callable]]
+    endpoint_access_controllers: dict[str, list[Callable]]
 
-    def add_bp_access_controller(self, blueprint: str, func: Callable):
+    def __init__(self, service: AuthService, *args: Any, **kwargs: Any) -> None:
+        super().__init__(service, *args, **kwargs)
+        self.bp_access_controllers = {None: []}
+        self.endpoint_access_controllers = {}
+
+    def add_bp_access_controller(self, blueprint: str, func: Callable) -> None:
         self.bp_access_controllers.setdefault(blueprint, []).append(func)
 
-    def add_endpoint_access_controller(self, endpoint: str, func: Callable):
+    def add_endpoint_access_controller(self, endpoint: str, func: Callable) -> None:
         self.endpoint_access_controllers.setdefault(endpoint, []).append(func)
 
 
@@ -105,7 +111,7 @@ class AuthService(Service):
     AppStateClass = AuthServiceState
     login_url_prefix: str
 
-    def init_app(self, app: Flask):
+    def init_app(self, app: Flask) -> None:
         login_manager.init_app(app)
         login_manager.login_view = "login.login_form"
 
@@ -143,11 +149,12 @@ class AuthService(Service):
             return None
 
         app = unwrap(current_app)
-        app.services[AuthService.name].user_logged_in(app, user)
+        auth_service = cast("AuthService", get_service(AuthService.name))
+        auth_service.user_logged_in(app, user)
         user_loaded.send(app, user=user)
         return user
 
-    def user_logged_in(self, app: Application, user: User):
+    def user_logged_in(self, app: Application, user: User) -> None:
         # `g.user` is used as `current_user`, but `current_user` is actually looking
         # for `request.user` whereas `g` is on app local stack.
         #
@@ -167,7 +174,7 @@ class AuthService(Service):
             )
         )
 
-    def user_logged_out(self, app: Application, user: User):
+    def user_logged_out(self, app: Application, user: User) -> None:
         if hasattr(g, "user"):
             del g.user
             del g.logged_user
@@ -218,10 +225,9 @@ class AuthService(Service):
 
             if verdict is True:
                 return None
-            else:
-                if user.is_anonymous:
-                    return self.redirect_to_login()
-                raise Forbidden
+            if user.is_anonymous:
+                return self.redirect_to_login()
+            raise Forbidden
 
         # default policy
         if current_app.config.get("PRIVATE_SITE") and user.is_anonymous:
@@ -229,7 +235,7 @@ class AuthService(Service):
 
         return None
 
-    def update_user_session_data(self):
+    def update_user_session_data(self) -> None:
         user = current_user
         if current_user.is_anonymous:
             return
@@ -245,7 +251,7 @@ class AuthService(Service):
         refresh_login_session(user)
 
 
-def refresh_login_session(user: User):
+def refresh_login_session(user: User) -> None:
     now = datetime.utcnow()
     session = LoginSession.query.get_active_for(user)
     if not session:

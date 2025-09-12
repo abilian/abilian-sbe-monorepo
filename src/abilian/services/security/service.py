@@ -1,8 +1,9 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Security service, manages roles and permissions."""
 
 from __future__ import annotations
 
-from collections.abc import Callable, Collection
 from functools import wraps
 from itertools import chain
 from typing import TYPE_CHECKING, Any
@@ -12,43 +13,44 @@ from flask import g
 from flask_login import current_user
 from sqlalchemy import sql
 from sqlalchemy.orm import Session, object_session, subqueryload
-from sqlalchemy.sql.selectable import Exists
 
 from abilian.core.entities import Entity
 from abilian.core.extensions import db
-from abilian.core.extensions.login import AnonymousUser
-from abilian.core.models import Model
 from abilian.core.models.subjects import Group, Principal, User
 from abilian.core.util import unwrap
 from abilian.services import Service, ServiceState
 from abilian.services.security.models import (
+    ADMIN,
+    ANONYMOUS,
+    AUTHENTICATED,
     CREATE,
+    CREATOR,
     DELETE,
     MANAGE,
+    MANAGER,
+    OWNER,
     PERMISSIONS_ATTR,
     READ,
+    READER,
     WRITE,
-    Admin,
-)
-from abilian.services.security.models import Anonymous as AnonymousRole
-from abilian.services.security.models import (
-    Authenticated,
-    Creator,
+    WRITER,
     FolderishModel,
     InheritSecurity,
-    Manager,
-    Owner,
     Permission,
     PermissionAssignment,
-    Reader,
     Role,
     RoleAssignment,
     SecurityAudit,
-    Writer,
 )
 
 if TYPE_CHECKING:
+    from collections.abc import Callable, Collection
+
+    from sqlalchemy.sql.selectable import Exists
+
     from abilian.app import Application
+    from abilian.core.extensions.login import AnonymousUser
+    from abilian.core.models import Model
 
 
 #: list of legacy supported permissions when not using :class:`Permission`
@@ -66,11 +68,11 @@ __all__ = [
 #: default security matrix
 DEFAULT_PERMISSION_ROLE: dict[Permission, frozenset[Role]] = {}
 prm = DEFAULT_PERMISSION_ROLE
-prm[MANAGE] = frozenset({Admin, Manager})
-prm[WRITE] = frozenset({Admin, Manager, Writer})
-prm[CREATE] = frozenset({Admin, Manager, Writer})
-prm[DELETE] = frozenset({Admin, Manager, Writer})
-prm[READ] = frozenset({Admin, Manager, Writer, Reader})
+prm[MANAGE] = frozenset({ADMIN, MANAGER})
+prm[WRITE] = frozenset({ADMIN, MANAGER, WRITER})
+prm[CREATE] = frozenset({ADMIN, MANAGER, WRITER})
+prm[DELETE] = frozenset({ADMIN, MANAGER, WRITER})
+prm[READ] = frozenset({ADMIN, MANAGER, WRITER, READER})
 del prm
 
 
@@ -166,17 +168,17 @@ class SecurityService(Service):
     name = "security"
     AppStateClass = SecurityServiceState
 
-    def init_app(self, app: Application):
+    def init_app(self, app: Application) -> None:
         super().init_app(app)
         state = app.extensions[self.name]
         state.use_cache = True
 
-    def _needs_flush(self):
+    def _needs_flush(self) -> None:
         """Mark next security queries needs DB flush to have up to date
         information."""
         self.app_state.needs_db_flush = True
 
-    def clear(self):
+    def clear(self) -> None:
         pass
 
     def _current_user_manager(self, session: Session | None = None) -> User:
@@ -196,8 +198,7 @@ class SecurityService(Service):
             # the other session, because it can make weird, hard-to-debug
             # errors related to session.identity_map.
             return session.query(User).get(user.id)
-        else:
-            return user
+        return user
 
     # security log
     @require_flush
@@ -210,7 +211,7 @@ class SecurityService(Service):
         )
 
     # inheritance
-    def set_inherit_security(self, obj: FolderishModel, inherit_security: bool):
+    def set_inherit_security(self, obj: FolderishModel, inherit_security: bool) -> None:
         assert isinstance(obj, InheritSecurity)
         assert isinstance(obj, Entity)
 
@@ -257,7 +258,7 @@ class SecurityService(Service):
         """
         assert principal
         if hasattr(principal, "is_anonymous") and principal.is_anonymous:
-            return [AnonymousRole]
+            return [ANONYMOUS]
 
         query = db.session.query(RoleAssignment.role)
         if isinstance(principal, Group):
@@ -278,7 +279,7 @@ class SecurityService(Service):
         roles = {i[0] for i in query.all()}
 
         if object is not None:
-            for attr, role in (("creator", Creator), ("owner", Owner)):
+            for attr, role in (("creator", CREATOR), ("owner", OWNER)):
                 if getattr(object, attr) == principal:
                     roles.add(role)
         return list(roles)
@@ -310,8 +311,8 @@ class SecurityService(Service):
         query = query.filter(RoleAssignment.object == object)
         principals = {(ra.user or ra.group) for ra in query.all()}
 
-        if object is not None and role in (Creator, Owner):
-            p = object.creator if role == Creator else object.owner
+        if object is not None and role in (CREATOR, OWNER):
+            p = object.creator if role == CREATOR else object.owner
             if p:
                 principals.add(p)
 
@@ -359,7 +360,9 @@ class SecurityService(Service):
     def _has_role_cache(self, principal: Principal) -> bool:
         return hasattr(principal, "__roles_cache__")
 
-    def _set_role_cache(self, principal: Principal, cache: dict[str | None, set[Role]]):
+    def _set_role_cache(
+        self, principal: Principal, cache: dict[str | None, set[Role]]
+    ) -> None:
         principal.__roles_cache__ = cache
 
     def _fill_role_cache(
@@ -380,7 +383,7 @@ class SecurityService(Service):
     @require_flush
     def _fill_role_cache_batch(
         self, principals: Collection[Principal], overwrite: bool = False
-    ):
+    ) -> None:
         """Fill role cache for `principals` (Users and/or Groups), in order to
         avoid too many queries when checking role access with 'has_role'."""
         if not self.app_state.use_cache:
@@ -438,7 +441,7 @@ class SecurityService(Service):
 
             self._set_role_cache(user, all_roles)
 
-    def _clear_role_cache(self, principal: Principal):
+    def _clear_role_cache(self, principal: Principal) -> None:
         if hasattr(principal, "__roles_cache__"):
             del principal.__roles_cache__
 
@@ -477,20 +480,20 @@ class SecurityService(Service):
             role = (role,)
 
         # admin & manager always have role
-        valid_roles = frozenset((Admin, Manager) + tuple(role))
+        valid_roles = frozenset((ADMIN, MANAGER, *tuple(role)))
 
-        if AnonymousRole in valid_roles:
+        if ANONYMOUS in valid_roles:
             # everybody has the role 'Anonymous'
             return True
 
         if (
-            Authenticated in valid_roles
+            AUTHENTICATED in valid_roles
             and isinstance(principal, User)
             and not principal.is_anonymous
         ):
             return True
 
-        if principal is AnonymousRole or (
+        if principal is ANONYMOUS or (
             hasattr(principal, "is_anonymous") and principal.is_anonymous
         ):
             # anonymous user, and anonymous role isn't in valid_roles
@@ -503,10 +506,10 @@ class SecurityService(Service):
         if object:
             assert isinstance(object, Entity)
             object_key = f"{object.object_type}:{object.id!s}"
-            if Creator in role:
+            if CREATOR in role:
                 if object.creator == principal:
                     return True
-            if Owner in role:
+            if OWNER in role:
                 if object.owner == principal:
                     return True
 
@@ -525,7 +528,7 @@ class SecurityService(Service):
 
     def grant_role(
         self, principal: Principal, role: Role | str, obj: Model | None = None
-    ):
+    ) -> None:
         """Grant `role` to `user` (either globally, if `obj` is None, or on the
         specific `obj`)."""
         assert principal
@@ -541,7 +544,7 @@ class SecurityService(Service):
             "group": None,
         }
 
-        if principal is AnonymousRole or (
+        if principal is ANONYMOUS or (
             hasattr(principal, "is_anonymous") and principal.is_anonymous
         ):
             args["anonymous"] = True
@@ -588,7 +591,7 @@ class SecurityService(Service):
 
     def ungrant_role(
         self, principal: Principal, role: Role | str, object: Model | None = None
-    ):
+    ) -> None:
         """Ungrant `role` to `user` (either globally, if `object` is None, or
         on the specific `object`)."""
 
@@ -609,7 +612,7 @@ class SecurityService(Service):
             RoleAssignment.role == role, RoleAssignment.object == object
         )
 
-        if principal is AnonymousRole or (
+        if principal is ANONYMOUS or (
             hasattr(principal, "is_anonymous") and principal.is_anonymous
         ):
             args["anonymous"] = True
@@ -648,7 +651,7 @@ class SecurityService(Service):
         results = []
         for ra in role_assignments:
             if ra.anonymous:
-                principal = AnonymousRole
+                principal = ANONYMOUS
             elif ra.user:
                 principal = ra.user
             else:
@@ -704,7 +707,7 @@ class SecurityService(Service):
         valid_roles = {res[0] for res in valid_roles.yield_per(1000)}
 
         # complete with defaults
-        valid_roles |= {Admin}  # always have all permissions
+        valid_roles |= {ADMIN}  # always have all permissions
         valid_roles |= DEFAULT_PERMISSION_ROLE.get(permission, set())
 
         # FIXME: obj.__class__ could define default permisssion matrix too
@@ -718,10 +721,10 @@ class SecurityService(Service):
 
         # FIXME: query permission_role: global and on object
 
-        if AnonymousRole in valid_roles:
+        if ANONYMOUS in valid_roles:
             return True
 
-        if Authenticated in valid_roles and not user.is_anonymous:
+        if AUTHENTICATED in valid_roles and not user.is_anonymous:
             return True
 
         # first test global roles, then object local roles
@@ -731,7 +734,7 @@ class SecurityService(Service):
                 obj = obj.parent
                 checked_objs.append(obj)
 
-        principals = [user] + list(user.groups)
+        principals = [user, *list(user.groups)]
         self._fill_role_cache_batch(principals)
 
         return any(
@@ -796,7 +799,7 @@ class SecurityService(Service):
             sa.sql.and_(
                 PA.permission == permission,
                 PA.object_id == id_column,
-                (RA.c.role == PA.role) | (PA.role == AnonymousRole),
+                (RA.c.role == PA.role) | (PA.role == ANONYMOUS),
                 (RA.c.object_id == PA.object_id) | (RA.c.object_id == None),
             )
         )
@@ -807,7 +810,7 @@ class SecurityService(Service):
         # expressions cannot.
         is_admin = sa.sql.exists([1]).where(
             sa.sql.and_(
-                RA.c.role == Admin,
+                RA.c.role == ADMIN,
                 (RA.c.object_id == id_column) | (RA.c.object_id == None),
                 principal_filter,
             )
@@ -821,8 +824,8 @@ class SecurityService(Service):
                     PA.permission == permission,
                     PA.object_id == id_column,
                     sa.sql.or_(
-                        (PA.role == Owner) & (owner == user),
-                        (PA.role == Creator) & (creator == user),
+                        (PA.role == OWNER) & (owner == user),
+                        (PA.role == CREATOR) & (creator == user),
                     ),
                 )
             )
@@ -864,7 +867,7 @@ class SecurityService(Service):
 
     def add_permission(
         self, permission: Permission, role: Role, obj: Model | None = None
-    ):
+    ) -> None:
         session = None
         if obj is not None:
             session = object_session(obj)
@@ -882,7 +885,7 @@ class SecurityService(Service):
 
     def delete_permission(
         self, permission: Permission, role: Role, obj: Model | None = None
-    ):
+    ) -> None:
         session = None
         if obj is not None:
             session = object_session(obj)

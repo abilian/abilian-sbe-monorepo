@@ -1,15 +1,17 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 from datetime import datetime, timedelta
+from typing import TYPE_CHECKING, cast
 from unittest import mock
 
 import pytest
 from flask import url_for
 from flask_login import login_user
-from flask_sqlalchemy import SQLAlchemy
 
 from abilian.sbe.apps.communities.models import MANAGER, MEMBER
-from abilian.sbe.apps.forum.cli import _inject_email
+from abilian.sbe.apps.forum.cli import do_inject_email
 from abilian.sbe.apps.forum.models import Post, Thread
 from abilian.sbe.apps.forum.tasks import (
     build_reply_email_address,
@@ -17,13 +19,18 @@ from abilian.sbe.apps.forum.tasks import (
     send_post_by_email,
 )
 from abilian.sbe.apps.forum.views import ThreadCreate
-from abilian.services import security_service
+from abilian.services import get_service, security_service
+from tests.util import client_login, redis_available
 
-from ....util import client_login, redis_available
 from .util import get_string_from_file
 
+if TYPE_CHECKING:
+    from flask_sqlalchemy import SQLAlchemy
 
-def test_posts_ordering(db: SQLAlchemy, community1):
+    from abilian.services.indexing.service import IndexService
+
+
+def test_posts_ordering(db: SQLAlchemy, community1) -> None:
     thread = Thread(community=community1, title="test ordering")
     db.session.add(thread)
     t1 = datetime(2014, 6, 20, 15, 0, 0)
@@ -35,7 +42,7 @@ def test_posts_ordering(db: SQLAlchemy, community1):
     assert [p.id for p in thread.posts] == [p1_id, p2_id]
 
     # set post1 created after post2
-    t1 = t1 + timedelta(minutes=2)
+    t1 += timedelta(minutes=2)
     p1.created_at = t1
     db.session.flush()
     db.session.expire(thread)  # force thread.posts refreshed from DB
@@ -43,9 +50,11 @@ def test_posts_ordering(db: SQLAlchemy, community1):
 
 
 @pytest.mark.skipif(not redis_available(), reason="requires redis connection")
-def test_thread_indexed(app, db: SQLAlchemy, community1, community2, monkeypatch):
+def test_thread_indexed(
+    app, db: SQLAlchemy, community1, community2, monkeypatch
+) -> None:
     monkeypatch.setenv("TESTING_DIRECT_FUNCTION_CALL", "testing")
-    index_svc = app.services["indexing"]
+    index_svc = cast("IndexService", get_service("indexing"))
     index_svc.start()
     security_service.start()
 
@@ -71,7 +80,7 @@ def test_thread_indexed(app, db: SQLAlchemy, community1, community2, monkeypatch
     assert hit["object_key"] == thread2.object_key
 
 
-def test_forum_home(client, community1, login_admin):
+def test_forum_home(client, community1, login_admin) -> None:
     response = client.get(url_for("forum.index", community_id=community1.slug))
     assert response.status_code == 200
 
@@ -79,13 +88,13 @@ def test_forum_home(client, community1, login_admin):
 @pytest.mark.skip("Require fixing dramatiq tests to not loose session in test context")
 def test_create_thread_informative_member(
     app, db: SQLAlchemy, client, community1, monkeypatch
-):
+) -> None:
     """Test with 'informative' community.
 
     No mail sent, unless user is MANAGER
     """
 
-    def commit_success_no_task(self):
+    def commit_success_no_task(self) -> None:
         if self.send_by_email:
             send_post_by_email(self.post.id)
 
@@ -102,25 +111,24 @@ def test_create_thread_informative_member(
     data = {"title": title, "message": content, "__action": "create"}
 
     mail = app.extensions["mail"]
-    with client_login(client, user):
-        with mail.record_messages() as outbox:
-            data["send_by_email"] = "y"  # actually should not be in html form
-            response = client.post(url, data=data)
-            assert response.status_code == 302
-            # FIXME: this doesn't pass
-            # assert len(outbox) == 0
+    with client_login(client, user), mail.record_messages():
+        data["send_by_email"] = "y"  # actually should not be in html form
+        response = client.post(url, data=data)
+        assert response.status_code == 302
+        # FIXME: this doesn't pass
+        # assert len(outbox) == 0
 
 
 @pytest.mark.skip("Require fixing dramatiq tests to not loose session in test context")
 def test_create_thread_informative_manager(
     app, db: SQLAlchemy, client, community1, monkeypatch
-):
+) -> None:
     """Test with 'informative' community.
 
     No mail sent, unless user is MANAGER
     """
 
-    def commit_success_no_task(self):
+    def commit_success_no_task(self) -> None:
         if self.send_by_email:
             send_post_by_email(self.post.id)
 
@@ -151,7 +159,7 @@ def test_create_thread_informative_manager(
             assert len(outbox) == 0
 
 
-def test_build_reply_email_address(app):
+def test_build_reply_email_address(app) -> None:
     post = mock.Mock()
     post.id = 2
     post.thread_id = 3
@@ -164,13 +172,13 @@ def test_build_reply_email_address(app):
     assert result == expected
 
 
-def test_extract_mail_destination_1(app):
+def test_extract_mail_destination_1(app) -> None:
     test_address = "test+P-en-3-4-c33d74de7b0cc35a086c539c0e8f4fc3@example.com"
     infos = extract_email_destination(test_address)
     assert infos == ("en", "3", "4")
 
 
-def test_extract_mail_destination_2(app):
+def test_extract_mail_destination_2(app) -> None:
     test_address = (
         "John Q Public <test+P-en-3-4-c33d74de7b0cc35a086c539c0e8f4fc3@example.com>"
     )
@@ -178,7 +186,7 @@ def test_extract_mail_destination_2(app):
     assert infos == ("en", "3", "4")
 
 
-def test_extract_mail_destination_3(app):
+def test_extract_mail_destination_3(app) -> None:
     test_address = (
         '"John Q Public" <test+P-en-3-4-c33d74de7b0cc35a086c539c0e8f4fc3@example.com>'
     )
@@ -187,7 +195,7 @@ def test_extract_mail_destination_3(app):
 
 
 @pytest.mark.skip("Require fixing dramatiq tests to not loose session in test context")
-def test_create_thread_and_post(community1, client, app, db):
+def test_create_thread_and_post(community1, client, app, db) -> None:
     community = community1
     user = community.test_user
 
@@ -252,14 +260,14 @@ def test_create_thread_and_post(community1, client, app, db):
 @pytest.mark.skip("Require fixing dramatiq tests to not loose session in test context")
 @mock.patch("fileinput.input")
 @mock.patch("abilian.sbe.apps.forum.cli.process_email")
-def test_parse_forum_email(mock_process_email, mock_email):
+def test_parse_forum_email(mock_process_email, mock_email) -> None:
     """No processing is tested only parsing into a email.message and
     verifying inject_email() logic."""
     # first load a test email returned by the mock_email
     mock_email.return_value = get_string_from_file("notification.email")
 
     # test the parsing function
-    _inject_email()
+    do_inject_email()
 
     # assert the email is read
     assert mock_email.called
@@ -273,6 +281,6 @@ def test_parse_forum_email(mock_process_email, mock_email):
     assert not mock_process_email.delay.called
 
     mock_email.return_value = get_string_from_file("defects.email")
-    _inject_email()
+    do_inject_email()
     assert mock_email.called
     assert not mock_process_email.delay.called

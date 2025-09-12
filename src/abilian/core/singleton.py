@@ -1,13 +1,19 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from sqlalchemy.engine.interfaces import Dialect
 from sqlalchemy.types import String, TypeDecorator
+
+if TYPE_CHECKING:
+    from sqlalchemy.engine.interfaces import Dialect
 
 
 class ValueSingletonMeta(type):
     __instances__: dict[str, Any]
+
+    attr: str
 
     def __new__(
         mcs: type[ValueSingletonMeta],
@@ -28,12 +34,7 @@ class ValueSingletonMeta(type):
             value_instance = super().__call__(value, *args, **kwargs)
             cls.__instances__[getattr(value_instance, cls.attr)] = value_instance
 
-        result = cls.__instances__[value.lower()]
-
-        # from devtools import debug
-        # debug(result)
-        # assert False
-        return result
+        return cls.__instances__[value.lower()]
 
 
 class UniqueName(metaclass=ValueSingletonMeta):
@@ -45,7 +46,7 @@ class UniqueName(metaclass=ValueSingletonMeta):
     __slots__ = ("__name", "_hash")
     attr = "name"
 
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         self.__name = str(name).strip().lower()
         self._hash = hash(self.__name)
 
@@ -53,7 +54,7 @@ class UniqueName(metaclass=ValueSingletonMeta):
     def name(self) -> str:
         return self.__name
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.name!r})"
 
     def __str__(self) -> str:
@@ -83,7 +84,7 @@ class UniqueNameType(TypeDecorator):
     Type: type
     default_max_length = 100
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         assert self.Type is not None
         kwargs.setdefault("length", self.default_max_length)
         super().__init__(*args, **kwargs)

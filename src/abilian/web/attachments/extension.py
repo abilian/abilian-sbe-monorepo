@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
@@ -10,8 +12,7 @@ from abilian.services.security import READ, WRITE, security
 from abilian.web import url_for
 
 from .forms import AttachmentForm
-from .views import UPLOAD_BUTTON
-from .views import bp as blueprint
+from .views import UPLOAD_BUTTON, bp as blueprint
 
 _MANAGER_ATTR = "__attachments_manager__"
 
@@ -22,7 +23,7 @@ class AttachmentExtension:
     It is also available in templates as `attachments`.
     """
 
-    def __init__(self, app: Flask):
+    def __init__(self, app: Flask) -> None:
         app.extensions["attachments"] = self
         app.add_template_global(self, "attachments")
         app.register_blueprint(blueprint)
@@ -72,7 +73,7 @@ class AttachmentsManager:
 
     def __init__(
         self, Form=AttachmentForm, macros_template="macros/attachment_default.html"
-    ):
+    ) -> None:
         self.Form = Form
         self.macros_template = macros_template
 

@@ -1,12 +1,16 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Parses and produces XML documents specified by the standard."""
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from lxml import etree, objectify
 from lxml.builder import ElementMaker
-from lxml.etree import _Element
+
+if TYPE_CHECKING:
+    from lxml.etree import _Element
 
 E = ElementMaker(namespace="DAV:")
 

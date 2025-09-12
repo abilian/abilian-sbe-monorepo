@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
@@ -9,29 +11,28 @@ from flask import current_app, url_for
 from flask_assets import Bundle
 from webassets.filter import get_filter
 
-from abilian.services.security import Anonymous
+from abilian.services.security import ANONYMOUS
 
 from .filters import register_filters
-from .mixin import AssetManagerMixin
 
 if typing.TYPE_CHECKING:
     from abilian.app import Application
 
 
-def init_app(app: Application):
+def init_app(app: Application) -> None:
     register_filters()
 
     assets = app.extensions["webassets"]
     assets.append_path(RESOURCES_DIR, "/static/abilian")
     app.add_static_url(
-        "abilian", RESOURCES_DIR, endpoint="abilian_static", roles=Anonymous
+        "abilian", RESOURCES_DIR, endpoint="abilian_static", roles=ANONYMOUS
     )
 
     with app.app_context():
         requirejs_config()
 
 
-def requirejs_config():
+def requirejs_config() -> None:
     assets = current_app.extensions["webassets"]
     config = assets.requirejs_config
 

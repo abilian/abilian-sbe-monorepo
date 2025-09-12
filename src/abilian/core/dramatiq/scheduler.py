@@ -1,11 +1,16 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 from collections import namedtuple
-from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from loguru import logger
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 Job = namedtuple("Job", ["actor", "key"])
 
@@ -20,7 +25,7 @@ _actor_registry = set()
 
 def crontab(crontab: str) -> Callable:
     def decorator(func: Callable) -> Callable:
-        logger.debug("Registering cron job: {func}", func=str(func))
+        # logger.debug("Registering cron job: {func}", func=str(func))
         job = Job(actor=func, key=crontab)
         _actor_registry.add(job)
         return func
@@ -38,7 +43,7 @@ def crontab_from_config(config: dict, job: Job) -> str:
     return schedule
 
 
-def run_scheduler(config: dict):
+def run_scheduler(config: dict) -> int:
     scheduler = BlockingScheduler()
     scheduler.remove_all_jobs()
 
@@ -50,11 +55,11 @@ def run_scheduler(config: dict):
                 actor=str(job.actor),
             )
             continue
-        logger.debug(
-            "Registering cron job: {actor} {crontab}",
-            actor=str(job.actor),
-            crontab=crontab_content,
-        )
+        # logger.debug(
+        #     "Registering cron job: {actor} {crontab}",
+        #     actor=str(job.actor),
+        #     crontab=crontab_content,
+        # )
 
         scheduler.add_job(
             job.actor.send,

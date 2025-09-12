@@ -1,8 +1,10 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import datetime
-from collections.abc import Iterator
 from textwrap import dedent
+from typing import TYPE_CHECKING
 
 import html5lib
 from flask import Flask
@@ -12,6 +14,9 @@ from pytest import fixture
 from pytz import timezone, utc
 
 from abilian.web import filters
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 NNSP = "\u202f"  # narrow no-break space
 
@@ -31,12 +36,12 @@ def user_tz() -> str:
 USER_TZ = timezone(user_tz())
 
 
-def test_labelize():
+def test_labelize() -> None:
     labelize = filters.labelize
     assert labelize("test_case") == "Test Case"
 
 
-def test_filesize():
+def test_filesize() -> None:
     filesize = filters.filesize
     assert str(filesize("100")) == f"100{NNSP}B"
     assert str(filesize(100)) == f"100{NNSP}B"
@@ -49,7 +54,7 @@ def test_filesize():
     assert str(filesize(100000000000)) == f"100{NNSP}GB"
 
 
-def test_roughsize():
+def test_roughsize() -> None:
     roughsize = filters.roughsize
     assert roughsize(6) == "6"
     assert roughsize(15) == "15"
@@ -58,7 +63,7 @@ def test_roughsize():
     assert roughsize(57, mod=5) == "55+"
 
 
-def test_abbrev():
+def test_abbrev() -> None:
     abbrev = filters.abbrev
     assert abbrev("test", 20) == "test"
     assert (
@@ -66,7 +71,7 @@ def test_abbrev():
     )
 
 
-def test_linkify():
+def test_linkify() -> None:
     tmpl = env.from_string('{{ "http://test.example.com"|linkify}}')
     rendered = tmpl.render()
     el = html5lib.parseFragment(rendered)
@@ -81,7 +86,7 @@ def test_linkify():
     ]
 
 
-def test_nl2br():
+def test_nl2br() -> None:
     tmpl = env.from_string(
         '{{ "first line\nsecond line\n\n  third, indented" | nl2br }}'
     )
@@ -91,7 +96,7 @@ def test_nl2br():
     )
 
 
-def test_paragraphs():
+def test_paragraphs() -> None:
     markdown_text = dedent(
         """\
         {{ "First paragraph
@@ -121,7 +126,7 @@ def test_paragraphs():
     assert tmpl.render().strip() == expected.strip()
 
 
-@fixture()
+@fixture
 def app() -> Iterator[Flask]:
     app = Flask(__name__)
     babel = Babel(app, default_locale="fr", default_timezone=USER_TZ)
@@ -131,7 +136,7 @@ def app() -> Iterator[Flask]:
         yield app
 
 
-def test_date_age(app: Flask):
+def test_date_age(app: Flask) -> None:
     date_age = filters.date_age
     now = datetime.datetime(2012, 6, 10, 10, 10, 10, tzinfo=utc)
     assert date_age(None) == ""
@@ -154,7 +159,7 @@ def test_date_age(app: Flask):
     #     assert date_age(dt) == "2012-06-10 16:30 (2 hours ago)"
 
 
-def test_age(app: Flask):
+def test_age(app: Flask) -> None:
     age = filters.age
     now = datetime.datetime(2012, 6, 10, 10, 10, 10, tzinfo=utc)
     d1m = datetime.datetime(2012, 6, 10, 10, 10, 0, tzinfo=utc)

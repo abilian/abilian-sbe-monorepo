@@ -1,11 +1,13 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
 
 from datetime import datetime
 from functools import total_ordering
+from typing import TYPE_CHECKING
 
-from flask_babel import LazyString
 from sqlalchemy import sql
 from sqlalchemy.orm import backref, relationship
 from sqlalchemy.schema import (
@@ -24,29 +26,32 @@ from abilian.core.models.subjects import Group, User
 from abilian.core.singleton import UniqueName, UniqueNameType
 from abilian.i18n import _l
 
+if TYPE_CHECKING:
+    from flask_babel import LazyString
+
 __all__ = [
+    "ADMIN",
+    "ANONYMOUS",
+    "AUTHENTICATED",
     "CREATE",
+    "CREATOR",
     "DELETE",
     "MANAGE",
+    "MANAGER",
+    "OWNER",
     "PERMISSIONS_ATTR",
     "READ",
+    "READER",
     "WRITE",
-    "Admin",
-    "Anonymous",
-    "Authenticated",
-    "Creator",
+    "WRITER",
     "FolderishModel",
     "InheritSecurity",
-    "Manager",
-    "Owner",
     "Permission",
     "PermissionAssignment",
-    "Reader",
     "Role",
     "RoleAssignment",
     "RoleType",
     "SecurityAudit",
-    "Writer",
 ]
 
 
@@ -61,7 +66,7 @@ class Permission(UniqueName):
 
     def __init__(
         self, name: str, label: None | str | LazyString = None, assignable: bool = True
-    ):
+    ) -> None:
         super().__init__(name)
         if label is None:
             label = f"permission_{name!s}"
@@ -98,7 +103,7 @@ class Role(UniqueName):
 
     def __init__(
         self, name: str, label: None | str | LazyString = None, assignable: bool = True
-    ):
+    ) -> None:
         super().__init__(name)
         if label is None:
             label = f"role_{name!s}"
@@ -110,7 +115,7 @@ class Role(UniqueName):
     def __str__(self) -> str:
         return str(self.name)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.name}, {self.label})"
 
     def __lt__(self, other: Role) -> bool:
@@ -131,21 +136,21 @@ class RoleType(UniqueNameType):
 
 
 #: marker for role assigned to 'Anonymous'
-Anonymous = Role("anonymous", _l("role_anonymous"), assignable=False)
+ANONYMOUS = Role("anonymous", _l("role_anonymous"), assignable=False)
 
 #: marker for role assigned to 'Authenticated'
-Authenticated = Role("authenticated", _l("role_authenticated"), assignable=False)
+AUTHENTICATED = Role("authenticated", _l("role_authenticated"), assignable=False)
 
 #: marker for `admin` role
-Admin = Role("admin", _l("role_administrator"))
+ADMIN = Role("admin", _l("role_administrator"))
 
 #: marker for `manager` role
-Manager = Role("manager", _l("role_manager"), assignable=False)
+MANAGER = Role("manager", _l("role_manager"), assignable=False)
 
-Creator = Role("creator", assignable=False)
-Owner = Role("owner", assignable=False)
-Reader = Role("reader", assignable=False)
-Writer = Role("writer", assignable=False)
+CREATOR = Role("creator", assignable=False)
+OWNER = Role("owner", assignable=False)
+READER = Role("reader", assignable=False)
+WRITER = Role("writer", assignable=False)
 
 # Permissions
 READ = Permission("read")
@@ -200,7 +205,7 @@ class RoleAssignment(Model):
 
 
 # On postgres the UniqueConstraint will not be effective because at least 1
-# columns will have NULL value:
+# column will have NULL value:
 #
 # From http://www.postgresql.org/docs/9.1/static/ddl-constraints.html
 #
@@ -327,10 +332,10 @@ class PermissionAssignment(db.Model):
             and self.object == other.object
         )
 
-    def __neq__(self, other):
+    def __neq__(self, other) -> bool:
         return not self.__eq__(other)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         class_ = self.__class__
         classname = class_.__name__
         return (
@@ -434,4 +439,4 @@ class InheritSecurity:
 
 
 class FolderishModel(Entity, InheritSecurity):
-    __tablename__ = "folderish_model"
+    __abstract__ = True

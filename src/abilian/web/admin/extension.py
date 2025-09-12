@@ -1,12 +1,12 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
 
-from collections.abc import Callable
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from flask import Blueprint, Flask, g
-from flask.sansio.scaffold import _endpoint_from_view_func
 from flask_login import current_user
 from loguru import logger
 from werkzeug.exceptions import Forbidden
@@ -14,12 +14,14 @@ from werkzeug.utils import import_string
 
 from abilian.core.util import unwrap
 from abilian.i18n import _l
-from abilian.services.security import Admin as AdminRole
-from abilian.services.security import security
+from abilian.services.security import ADMIN, security
 from abilian.web.action import Endpoint, actions
 from abilian.web.nav import BreadcrumbItem, NavGroup, NavItem
 
 from .panel import AdminPanel
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 _BP_PREFIX = "admin"
 
@@ -30,7 +32,7 @@ class Admin:
     Note: this is quite different that a Django-style admin interface.
     """
 
-    def __init__(self, *panels: Any, **kwargs: Any):
+    def __init__(self, *panels: Any, **kwargs: Any) -> None:
         self.app = None
         self.panels: list[AdminPanel] = []
         self._panels_endpoints: dict[str, AdminPanel] = {}
@@ -40,7 +42,7 @@ class Admin:
 
         def condition(context: dict[str, bool]) -> bool:
             return not current_user.is_anonymous and security.has_role(
-                current_user, AdminRole
+                current_user, ADMIN
             )
 
         self.nav_root = NavGroup(
@@ -54,7 +56,7 @@ class Admin:
         if app is not None:
             self.init_app(app)
 
-    def init_app(self, app: Flask):
+    def init_app(self, app: Flask) -> None:
         panels = app.config.get("ADMIN_PANELS", ())
 
         # resolve fully qualified name into an AdminPanel object
@@ -72,12 +74,11 @@ class Admin:
                 continue
 
             self.register_panel(panel_class())
-            logger.debug('Registered panel "{fqn}"', fqn=fqn)
 
         if not self.panels:
 
             @self.blueprint.route("", endpoint="no_panel")
-            def no_panels_view():
+            def no_panels_view() -> str:
                 return "No panels registered"
 
             self.nav_root.endpoint = "admin.no_panel"
@@ -96,11 +97,10 @@ class Admin:
         self.app = app
         app.extensions["admin"] = self
 
-    def register_panel(self, panel: Any):
+    def register_panel(self, panel: Any) -> None:
         if self.app:
-            raise ValueError(
-                "Extension already initialized for app, cannot add more panel"
-            )
+            msg = "Admin extension already initialized for app, cannot add more panel"
+            raise ValueError(msg)
 
         self.panels.append(panel)
         panel.admin = self
@@ -145,13 +145,14 @@ class Admin:
             endpoint: Any | None = None,
             view_func: Callable | None = None,
             **kwargs: Any,
-        ):
+        ) -> None:
             if not rule:
                 # '' is already used for panel get/post
-                raise ValueError(f"Invalid additional url rule: {rule!r}")
+                msg = f"Invalid additional url rule: {rule!r}"
+                raise ValueError(msg)
 
             if endpoint is None:
-                endpoint = _endpoint_from_view_func(view_func)
+                endpoint = view_func.__name__
 
             if not endpoint.startswith(base_endpoint):
                 endpoint = f"{base_endpoint}_{endpoint}"
@@ -163,7 +164,7 @@ class Admin:
 
         return add_url_rule
 
-    def setup_blueprint(self):
+    def setup_blueprint(self) -> None:
         self.blueprint = Blueprint(
             "admin", __name__, template_folder="templates", url_prefix=f"/{_BP_PREFIX}"
         )
@@ -172,17 +173,17 @@ class Admin:
         self.blueprint.url_value_preprocessor(self.panel_preprocess_value)
 
         @self.blueprint.before_request
-        def check_security():
+        def check_security() -> None:
             user = unwrap(current_user)
             if not security.has_role(user, "admin"):
                 raise Forbidden
 
-    def panel_preprocess_value(self, endpoint: str, view_args: dict[Any, Any]):
+    def panel_preprocess_value(self, endpoint: str, view_args: dict[Any, Any]) -> None:
         panel = self._panels_endpoints.get(endpoint)
         if panel is not None:
             panel.url_value_preprocess(endpoint, view_args)
 
-    def build_breadcrumbs(self, endpoint: str, view_args: dict[Any, Any]):
+    def build_breadcrumbs(self, endpoint: str, view_args: dict[Any, Any]) -> None:
         g.breadcrumb.append(self.root_breadcrumb_item)
         g.nav["active"] = self.nav_paths.get(endpoint, self.nav_root.path)
         panel = self._panels_endpoints.get(endpoint)

@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Conversion service.
 
 Hardcoded to manage only conversion to PDF, to text and to image series.
@@ -15,8 +17,8 @@ import shutil
 import subprocess
 from io import BytesIO
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-from flask import Flask
 from loguru import logger
 from PIL import Image
 from PIL.ExifTags import TAGS
@@ -27,6 +29,9 @@ from .handler_lock import init_conversion_lock_dir
 from .handlers import Handler, poppler_bin_util
 from .util import make_temp_file
 
+if TYPE_CHECKING:
+    from flask import Flask
+
 TMP_DIR = "tmp"
 CACHE_DIR = "cache"
 
@@ -36,11 +41,11 @@ class Converter:
     cache_dir: Path
     handlers: list[Handler]
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.handlers = []
         self.cache = Cache()
 
-    def init_app(self, app: Flask):
+    def init_app(self, app: Flask) -> None:
         self.init_work_dirs(
             cache_dir=Path(app.instance_path, CACHE_DIR),
             tmp_dir=Path(app.instance_path, TMP_DIR),
@@ -51,7 +56,7 @@ class Converter:
         for handler in self.handlers:
             handler.init_app(app)
 
-    def init_work_dirs(self, cache_dir: Path, tmp_dir: Path):
+    def init_work_dirs(self, cache_dir: Path, tmp_dir: Path) -> None:
         self.tmp_dir = tmp_dir
         self.cache_dir = cache_dir
         self.cache.cache_dir = self.cache_dir
@@ -61,13 +66,13 @@ class Converter:
         if not self.cache_dir.exists():
             self.cache_dir.mkdir()
 
-    def clear(self):
+    def clear(self) -> None:
         self.cache.clear()
         for d in (self.tmp_dir, self.cache_dir):
             shutil.rmtree(bytes(d))
             d.mkdir()
 
-    def register_handler(self, handler: Handler):
+    def register_handler(self, handler: Handler) -> None:
         self.handlers.append(handler)
 
     # TODO: refactor, pass a "File" or "Document" or "Blob" object
@@ -83,9 +88,8 @@ class Converter:
                     continue
                 self.cache[cache_key] = pdf
                 return pdf
-        raise HandlerNotFoundError(
-            f"No handler found to convert from {mime_type} to PDF"
-        )
+        msg = f"No handler found to convert from {mime_type} to PDF"
+        raise HandlerNotFoundError(msg)
 
     def to_text(self, digest: str, blob: bytes, mime_type: str) -> str:
         """Convert a file to plain text.
@@ -117,9 +121,8 @@ class Converter:
                 self.cache[cache_key] = text
                 return text
 
-        raise HandlerNotFoundError(
-            f"No handler found to convert from {mime_type} to text"
-        )
+        msg = f"No handler found to convert from {mime_type} to text"
+        raise HandlerNotFoundError(msg)
 
     def has_image(self, digest, mime_type, index, size=500):
         """Tell if there is a preview image."""
@@ -173,9 +176,8 @@ class Converter:
                     self.cache[cache_key] = converted
                 return converted_images[index]
 
-        raise HandlerNotFoundError(
-            f"No handler found to convert from {mime_type} to image"
-        )
+        msg = f"No handler found to convert from {mime_type} to image"
+        raise HandlerNotFoundError(msg)
 
     def get_metadata(self, digest, content, mime_type):
         """Get a dictionary representing the metadata embedded in the given
@@ -195,23 +197,22 @@ class Converter:
                 ret[f"EXIF:{decoded!s}"] = value
             return ret
 
-        else:
-            if mime_type != "application/pdf":
-                content = self.to_pdf(digest, content, mime_type)
+        if mime_type != "application/pdf":
+            content = self.to_pdf(digest, content, mime_type)
 
-            with make_temp_file(content) as in_fn:
-                pdfinfo = poppler_bin_util("pdfinfo") or "pdfinfo"
-                try:
-                    output = subprocess.check_output([pdfinfo, in_fn])
-                except OSError:  # pragma: no cover
-                    logger.error("Conversion failed, probably pdfinfo is not installed")
-                    raise
+        with make_temp_file(content) as in_fn:
+            pdfinfo = poppler_bin_util("pdfinfo") or "pdfinfo"
+            try:
+                output = subprocess.check_output([pdfinfo, in_fn])
+            except OSError:  # pragma: no cover
+                logger.error("Conversion failed, probably pdfinfo is not installed")
+                raise
 
-            ret = {}
-            for line in output.split(b"\n"):
-                if b":" in line:
-                    key, value = line.strip().split(b":", 1)
-                    key = str(key)
-                    ret[f"PDF:{key}"] = str(value.strip(), errors="replace")
+        ret = {}
+        for line in output.split(b"\n"):
+            if b":" in line:
+                key, value = line.strip().split(b":", 1)
+                key = str(key)
+                ret[f"PDF:{key}"] = str(value.strip(), errors="replace")
 
-            return ret
+        return ret

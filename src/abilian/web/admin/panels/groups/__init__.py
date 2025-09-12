@@ -1,8 +1,10 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 from flask import render_template
 
@@ -12,6 +14,9 @@ from abilian.web.util import url_for
 
 from . import views
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
 
 class GroupsPanel(AdminPanel):
     """Group administration panel."""
@@ -20,7 +25,7 @@ class GroupsPanel(AdminPanel):
     label = _l("Groups")
     icon = "grain"
 
-    def install_additional_rules(self, add_url_rule: Callable):
+    def install_additional_rules(self, add_url_rule: Callable) -> None:
         add_url_rule("/groups", view_func=views.JsonGroupsList.as_view("json_list"))
         add_url_rule("/new", view_func=views.GroupCreate.as_view("new"))
         add_url_rule("/<int:group_id>/", view_func=views.GroupView.as_view("group"))

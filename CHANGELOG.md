@@ -2,10 +2,132 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.1.1] - UNRELEASED
+## [1.1.15] - 2025-09-12
+
+### Bug Fixes
+- Remove dependency on mmdb-writer and netaddr
+- Fix mypy type checking issues
+
+### Chore
+- Update dependencies and SlapOS configuration files
+- Extensive ruff configuration improvements and formatting
+- Update requirements.txt and sync dependencies
+
+### Refactor
+- Add comprehensive type annotations
+- Cast using strings instead of types
+- Modernize code with dataclasses and improved patterns
+- Move returns out of else clauses for cleaner code
+- Use dataclasses and modernize code patterns
+
+## [1.1.13] - 2024-11-04
+
+### Bug Fixes
+- Fix race conditions in task processing
+- Update SlapOS configuration files
+- Fix CLI commands and missing dependencies
+- Fix typing issues and refactoring errors
+
+### Features
+- Add nixpacks support for deployment
+- Add Nix support for development environment
+
+### Documentation
+- Add Architecture Decision Records (ADRs)
+- Update roadmap and development documentation
+- Add contribution guidelines and build badges
+- Improve README and installation guides
+
+### Chore
+- Migrate from Poetry to UV package manager
+- Remove ClamAV dependency
+- Extensive dependency updates
+- Improve CI/CD configuration
+- Add REUSE compliance for licensing
+- Remove unused modules and clean up imports
+
+### Refactor
+- Simplify application class with less inheritance
+- Refactor services and app setup
+- Extensive code modernization and cleanup
+- Replace isort with ruff for import sorting
+- Add comprehensive type annotations
+
+## [1.1.12] - 2024-05-08
+
+### Documentation
+- Add governance documentation
+- Update licensing information
+
+### Chore
+- Update dependencies
+- Improve REUSE compliance
+
+## [1.1.11] - 2024-05-06
+
+### Features
+- Add Nix support for development environment
+
+### Chore
+- Extensive dependency updates
+- Protect secrets in configuration
+- Code formatting improvements
+
+## [1.1.10] - 2024-04-25
+
+### Documentation
+- Update TODO list
+
+### Chore
+- Add type annotations
+- Multiple dependency updates
+
+## [1.1.9] - 2024-04-04
+
+### Chore
+- Dependency updates
+
+## [1.1.8] - 2024-04-04
+
+### Bug Fixes
+- Fix imports for SQLAlchemy 2.x compatibility
+
+### Chore
+- Update html2text dependency
+- Modernize Flask-SQLAlchemy imports
+- Code cleanup and dependency updates
+- Silence ruff warnings and improve configuration
+
+## [1.1.7] - 2024-03-27
+
+### Chore
+- Remove unused tailwind dependency
+
+## [1.1.6] - 2024-03-27
+
+### Bug Fixes
+- Fix error on forum attachment uploads
+- Fix "FolderishModel not mapped" test issue
+
+### Refactor
+- Remove unused code: BaseCriterion, TextSearchCriterion, TextCriterion, TagCriterion
+
+### Chore
+- Update dependencies and ruff configuration
+
+## [1.1.2, 1.1.3, 1.1.4 and 1.1.5] - 2024-03-26
+
+- Bugfix: fix live-search
+
+## [1.1.2] - 2024-03-25
+
+- Temp fix: deactivate live-search to fix issue on rich text editor
+
+## [1.1.1] - 2024-03-25
 
 - Cleanup "sysinfo" code.
 - Cleanup imports
+- Update PyPI metadata
 
 
 ## [1.1.0] - 2024-03-23

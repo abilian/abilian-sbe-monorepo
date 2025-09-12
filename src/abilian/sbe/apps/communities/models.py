@@ -1,9 +1,11 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
 from blinker import ANY
@@ -20,10 +22,9 @@ from sqlalchemy import (
     and_,
 )
 from sqlalchemy.event import listens_for
-from sqlalchemy.orm import backref, relation, relationship
+from sqlalchemy.orm import backref, relationship
 from sqlalchemy.orm.attributes import OP_APPEND, OP_REMOVE, Event
 from sqlalchemy.sql.schema import Column
-from werkzeug.local import LocalProxy
 
 from abilian.core.entities import Entity
 from abilian.core.extensions import db
@@ -34,15 +35,23 @@ from abilian.i18n import _l
 from abilian.sbe.apps.documents.models import Folder
 from abilian.sbe.apps.documents.repository import content_repository
 from abilian.services.indexing import indexable_role
-from abilian.services.security import READ, WRITE, Admin
-from abilian.services.security import Manager as MANAGER
-from abilian.services.security import Permission
-from abilian.services.security import Reader as READER
-from abilian.services.security import Role, RoleType
-from abilian.services.security import Writer as WRITER
-from abilian.services.security import security
+from abilian.services.security import (
+    ADMIN,
+    MANAGER,
+    READ,
+    READER,
+    WRITE,
+    WRITER,
+    Permission,
+    Role,
+    RoleType,
+    security,
+)
 
 from . import signals
+
+if TYPE_CHECKING:
+    from werkzeug.local import LocalProxy
 
 MEMBER = Role("member", label=_l("role_member"), assignable=False)
 VALID_ROLES = frozenset([READER, WRITER, MANAGER, MEMBER])
@@ -67,7 +76,7 @@ class Membership(db.Model):
 
     __table_args__ = (UniqueConstraint("user_id", "community_id"),)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (
             f"<Membership user={self.user!r}, "
             f"community={self.community!r}, "
@@ -131,7 +140,7 @@ class Community(Entity):
         ForeignKey(Folder.id, use_alter=True, name="fk_community_root_folder"),
         unique=True,
     )
-    folder = relation(
+    folder = relationship(
         Folder,
         single_parent=True,  # required for delete-orphan
         primaryjoin=(folder_id == Folder.id),
@@ -142,7 +151,7 @@ class Community(Entity):
     #: The group this community is linked to, if any. Memberships are then
     #: reflected
     group_id = Column(ForeignKey(Group.id), nullable=True, unique=True)
-    group = relation(Group, foreign_keys=group_id, lazy="select")
+    group = relationship(Group, foreign_keys=group_id, lazy="select")
 
     #: Memberships for this community.
     memberships = relationship(Membership, cascade="all, delete-orphan")
@@ -190,7 +199,7 @@ class Community(Entity):
     # Not used anymore.
     members_can_send_by_email = Column(Boolean, nullable=False, default=False)
 
-    def __init__(self, **kw):
+    def __init__(self, **kw) -> None:
         self.has_documents = True
         self.membership_count = 0
         self.document_count = 0
@@ -237,7 +246,8 @@ class Community(Entity):
         role = Role(role)
 
         if role not in VALID_ROLES:
-            raise ValueError(f"Invalid role: {role}")
+            msg = f"Invalid role: {role}"
+            raise ValueError(msg)
 
         session = sa.orm.object_session(self) or db.session()
         is_new = True
@@ -264,7 +274,8 @@ class Community(Entity):
             and_(M.user_id == user.id, M.community_id == self.id)
         ).first()
         if not membership:
-            raise KeyError(f"User {user} is not a member of community {self}")
+            msg = f"User {user} is not a member of community {self}"
+            raise KeyError(msg)
 
         db.session.delete(membership)
         self.membership_count -= 1
@@ -302,7 +313,7 @@ class Community(Entity):
 
         return membership.role if membership else None
 
-    def has_member(self, user):
+    def has_member(self, user) -> bool:
         return self.get_role(user) is not None
 
     def has_permission(self, user: LocalProxy, permission: Permission) -> bool:
@@ -310,7 +321,7 @@ class Community(Entity):
             assert isinstance(permission, str)
             permission = Permission(permission)
 
-        if user.has_role(Admin):
+        if user.has_role(ADMIN):
             return True
 
         role = self.get_role(user)
@@ -375,7 +386,7 @@ def membership_removed(sender: Community, membership: Membership) -> None:
 
 @listens_for(Community.members, "append")
 @listens_for(Community.members, "remove")
-def _on_member_change(community, user, initiator):
+def _on_member_change(community, user, initiator) -> None:
     group = community.group
     if not group:
         return
@@ -489,7 +500,7 @@ def _on_group_member_change(group: Group, user: User, initiator: Event) -> None:
 
 
 @listens_for(Group.members, "set", active_history=True)
-def _on_group_members_replace(group, value, oldvalue, initiator):
+def _on_group_members_replace(group, value, oldvalue, initiator) -> None:
     if value == oldvalue:
         return
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Entity objects for the Document Management applications.
 
 TODO: move to an independent service / app.
@@ -9,7 +11,6 @@ import itertools
 import mimetypes
 import threading
 import uuid
-from collections.abc import Collection, Iterator
 from importlib import resources as rso
 from typing import TYPE_CHECKING, Any
 
@@ -23,11 +24,9 @@ from loguru import logger
 from sqlalchemy.event import listen, listens_for
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import backref, foreign, relationship, remote
-from sqlalchemy.orm.attributes import Event
 from sqlalchemy.orm.session import Session
 from sqlalchemy.schema import Column, ForeignKey, UniqueConstraint
 from sqlalchemy.types import Integer, Text, UnicodeText
-from sqlalchemy.util.langhelpers import symbol
 from toolz import first
 from whoosh.analysis import CharsetFilter, LowercaseFilter, RegexTokenizer
 from whoosh.support.charset import accent_map
@@ -39,12 +38,17 @@ from abilian.core.models.subjects import Group, User
 from abilian.core.util import md5
 from abilian.services.conversion import converter
 from abilian.services.indexing import indexable_role
-from abilian.services.security import Admin, Anonymous, InheritSecurity, security
+from abilian.services.security import ADMIN, ANONYMOUS, InheritSecurity, security
 
 from . import tasks
 from .lock import Lock
 
 if TYPE_CHECKING:
+    from collections.abc import Collection, Iterator
+
+    from sqlalchemy.orm.attributes import Event
+    from sqlalchemy.util.langhelpers import symbol
+
     from abilian.sbe.apps.communities.models import Community
 
 
@@ -112,7 +116,7 @@ class CmisObject(InheritSecurity, Entity):
     # Convenience default values
     content_length = 0
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         # ensure 'title' prevails over 'name'
         if "title" in kwargs and "name" in kwargs:
             title = kwargs.get("title")
@@ -125,7 +129,7 @@ class CmisObject(InheritSecurity, Entity):
 
         Entity.__init__(self, *args, **kwargs)
 
-    # title is defined has an hybrid property to allow 2 way sync name <->
+    # title is defined has a hybrid property to allow 2 way sync name <->
     # title
     @hybrid_property
     def title(self: str) -> str:
@@ -166,8 +170,7 @@ class CmisObject(InheritSecurity, Entity):
     def path(self) -> str:
         if self.parent:
             return f"{self.parent.path}/{self.title}"
-        else:
-            return ""
+        return ""
 
     @property
     def is_folder(self) -> bool:
@@ -243,12 +246,12 @@ class PathAndSecurityIndexable:
                 continue
             obj_allowed = {o[0] for o in security.get_role_assignements(obj)}
 
-            if Anonymous in obj_allowed:
+            if ANONYMOUS in obj_allowed:
                 continue
 
             parent_allowed = allowed
             # pure intersection: users and groups in both are preserved
-            allowed = allowed & obj_allowed
+            allowed &= obj_allowed
             remaining = parent_allowed - obj_allowed
             # find users who can access 'obj' because of their group memberships
             # 1. extends groups in obj_allowed with their actual member list
@@ -270,7 +273,7 @@ class PathAndSecurityIndexable:
             allowed |= remaining_groups_members - extended_allowed
 
         # admin role is always granted access
-        allowed.add(Admin)
+        allowed.add(ADMIN)
         return " ".join(indexable_role(p) for p in allowed)
 
 
@@ -338,11 +341,12 @@ class Folder(PathAndSecurityIndexable, CmisObject):
         try:
             for name in path_segments[:]:
                 obj = first(x for x in obj.children if x.title == name)
-            return obj
         except IndexError:
             return None
+        else:
+            return obj
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (
             f"<{self.__class__.__module__}.{self.__class__.__name__} "
             f"id={self.id!r} "
@@ -393,10 +397,10 @@ class Folder(PathAndSecurityIndexable, CmisObject):
                 last_name = principal.last_name or ""
                 first_name = principal.first_name or ""
                 return last_name.lower(), first_name.lower()
-            elif isinstance(principal, Group):
+            if isinstance(principal, Group):
                 return principal.name
-            else:
-                raise TypeError(f"Bad class here: {type(principal)}")
+            msg = f"Bad class here: {type(principal)}"
+            raise TypeError(msg)
 
         return sorted(assignments, key=key)
 
@@ -576,7 +580,7 @@ class Document(BaseContent, PathAndSecurityIndexable):
         # task_id = self.content_blob.meta.get("antivirus_task_id")
         task_id = self.id
         if task_id is not None:
-            # if fail, the task will we tried again 20 times
+            # if it fails, the task will we tried again 20 times
             tasks.process_document.send(task_id)
 
     @property
@@ -665,10 +669,8 @@ class Document(BaseContent, PathAndSecurityIndexable):
     def file_name(self) -> str:
         return self.title
 
-    def __repr__(self):
-        return "<Document id={!r} name={!r} path={!r} content_length={:d} at 0x{:x}>".format(
-            self.id, self.title, self.path, self.content_length, id(self)
-        )
+    def __repr__(self) -> str:
+        return f"<Document id={self.id!r} name={self.title!r} path={self.path!r} content_length={self.content_length:d} at 0x{id(self):x}>"
 
     # locking management; used for checkin/checkout - this could be generalized to
     # any entity
@@ -687,7 +689,7 @@ class Document(BaseContent, PathAndSecurityIndexable):
         return lock
 
     @lock.setter
-    def lock(self, user):
+    def lock(self, user) -> None:
         """Allow to do `document.lock = user` to set a lock for user.
 
         If user is None, the lock is released.
@@ -699,7 +701,7 @@ class Document(BaseContent, PathAndSecurityIndexable):
         self.set_lock(user=user)
 
     @lock.deleter
-    def lock(self):
+    def lock(self) -> None:
         """Remove lock, if any.
 
         `del document.lock` can be safely done even if no lock is set.
@@ -709,13 +711,14 @@ class Document(BaseContent, PathAndSecurityIndexable):
             del meta["lock"]
             self.meta.changed()
 
-    def set_lock(self, user=None):
+    def set_lock(self, user=None) -> None:
         if user is None:
             user = current_user
 
         lock = self.lock
         if lock and not lock.is_owner(user=user):
-            raise RuntimeError("This document is already locked by another user")
+            msg = "This document is already locked by another user"
+            raise RuntimeError(msg)
 
         meta = self.meta.setdefault("abilian.sbe.documents", {})
         lock = Lock.new()
@@ -762,7 +765,7 @@ def _trigger_conversion_tasks(session: Session) -> None:
 
     document_queue = _get_documents_queue()
     while document_queue:
-        doc, task_id = document_queue.pop()
+        doc, _task_id = document_queue.pop()
         if doc.id and isinstance(doc.id, int):
             logger.debug(
                 "_trigger_conversion_tasks() doc.id={doc_id}",

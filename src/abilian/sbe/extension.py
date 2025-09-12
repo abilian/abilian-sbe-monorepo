@@ -1,7 +1,8 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import uuid
-from collections.abc import Callable
 from importlib import resources as rso
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -9,9 +10,12 @@ from typing import TYPE_CHECKING
 from loguru import logger
 
 from abilian.core.util import fqcn
+from abilian.extensions import asset_manager
 
 if TYPE_CHECKING:
-    from abilian.sbe.app import Application
+    from collections.abc import Callable
+
+    from abilian.app import Application
 
 
 STATIC_DIR = str(rso.files("abilian.sbe") / "static")
@@ -55,8 +59,8 @@ class AbilianSBE:
             STATIC_DIR, f"{app.static_url_path}/abilian/sbe"
         )
 
-        app.register_asset("js", *JS)
-        app.register_asset("css", LESSCSS_FILE)
+        asset_manager.register_asset("js", *JS)
+        asset_manager.register_asset("css", LESSCSS_FILE)
 
         # Jinja
         logger.info("Register jinja context processors")

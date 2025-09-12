@@ -1,13 +1,19 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Parses XML messages and converts them to objects."""
 
+# f-strings are confusing here
+# ruff:noqa:UP031
 from __future__ import annotations
 
 import base64
 from datetime import datetime
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from lxml import objectify
-from lxml.objectify import ObjectifiedElement
+
+if TYPE_CHECKING:
+    from lxml.objectify import ObjectifiedElement
 
 ATOM_NS = "http://www.w3.org/2005/Atom"
 APP_NS = "http://www.w3.org/2007/app"
@@ -40,11 +46,11 @@ class Entry:
 
     @property
     def name(self) -> str:
-        return cast(str, self.properties["cmis:name"].value)
+        return cast("str", self.properties["cmis:name"].value)
 
     @property
     def type(self) -> str:
-        return cast(str, self.properties["cmis:objectTypeId"].value)
+        return cast("str", self.properties["cmis:objectTypeId"].value)
 
 
 class Property:
@@ -68,6 +74,13 @@ class Property:
     Every property is typed. The property-type defines the data type of the data
     value(s) held by the property. CMIS specifies the following property-types.
     """
+
+    type: str
+    property_definition_id: str
+    local_name: str | None
+    display_name: str | None
+    query_name: str | None
+    value: str | datetime | None
 
     def __init__(self, element: ObjectifiedElement | None = None) -> None:
         if element is not None:
@@ -94,4 +107,5 @@ class Property:
                 # FIXME
                 self.value = datetime(value)
             else:
-                raise Exception(f"Unknown value type: {self.type}")
+                msg = f"Unknown value type: {self.type}"
+                raise Exception(msg)

@@ -1,16 +1,20 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
 from sqlalchemy.orm import object_session
 
 from abilian.core.entities import Entity
-from abilian.core.models.subjects import User
 from abilian.core.signals import activity
 from abilian.services import Service
 
 from .models import ActivityEntry
+
+if TYPE_CHECKING:
+    from abilian.core.models.subjects import User
 
 __all__ = ["ActivityService"]
 
@@ -18,11 +22,11 @@ __all__ = ["ActivityService"]
 class ActivityService(Service):
     name = "activity"
 
-    def start(self, ignore_state: bool = False):
+    def start(self, ignore_state: bool = False) -> None:
         super().start(ignore_state)
         activity.connect(self.log_activity)
 
-    def stop(self, ignore_state: bool = False):
+    def stop(self, ignore_state: bool = False) -> None:
         super().stop(ignore_state)
         activity.disconnect(self.log_activity)
 
@@ -33,7 +37,7 @@ class ActivityService(Service):
         verb: str,
         object: Any,
         target: Entity | None = None,
-    ):
+    ) -> None:
         assert self.running
         if not isinstance(object, Entity):
             # generic forms may send signals inconditionnaly. For now we have activity

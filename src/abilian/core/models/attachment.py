@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
@@ -17,8 +19,8 @@ from .blob import Blob
 ATTRIBUTE = "__attachments__"
 
 
-class SupportsAttachment(abc.ABC):
-    pass
+class SupportsAttachment(abc.ABC):  # noqa: B024
+    """Mixin for entities that can have attachments."""
 
 
 def register(cls):
@@ -33,7 +35,8 @@ def register(cls):
           ....
     """
     if not issubclass(cls, Entity):
-        raise TypeError("Class must be a subclass of abilian.core.entities.Entity")
+        msg = "Class must be a subclass of abilian.core.entities.Entity"
+        raise TypeError(msg)
 
     SupportsAttachment.register(cls)
     return cls
@@ -96,18 +99,16 @@ class Attachment(Entity):
 
     query_class = AttachmentQuery
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         class_ = self.__class__
         mod_ = class_.__module__
         classname = class_.__name__
-        return "<{}.{} instance at 0x{:x} entity id={!r}>".format(
-            mod_, classname, id(self), self.entity_id
-        )
+        return f"<{mod_}.{classname} instance at 0x{id(self):x} entity id={self.entity_id!r}>"
 
 
 @sa.event.listens_for(Attachment, "before_insert", propagate=True)
 @sa.event.listens_for(Attachment, "before_update", propagate=True)
-def set_attachment_name(mapper, connection, target):
+def set_attachment_name(mapper, connection, target) -> None:
     if target.name:
         return
 

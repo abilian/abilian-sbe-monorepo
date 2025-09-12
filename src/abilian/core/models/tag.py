@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import abc
@@ -32,7 +34,8 @@ def register(cls):
             ....
     """
     if not issubclass(cls, Entity):
-        raise TypeError("Class must be a subclass of abilian.core.entities.Entity")
+        msg = "Class must be a subclass of abilian.core.entities.Entity"
+        raise TypeError(msg)
 
     SupportTagging.register(cls)
     return cls
@@ -96,13 +99,13 @@ class Tag(IdMixin, Model):
         sa.CheckConstraint(sa.sql.and_(sa.sql.func.trim(label) == label, label != "")),
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.label
 
     def __lt__(self, other):
         return str(self).lower().__lt__(str(other).lower())
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         cls = self.__class__
         return (
             f"<{cls.__module__}.{cls.__name__} id={self.id!r} ns={self.ns!r} "

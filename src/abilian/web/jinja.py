@@ -1,13 +1,14 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import os
 from functools import cached_property
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import jinja2
 from flask import Flask, current_app
-from flask.templating import Environment
 from flask_babel import get_locale as babel_get_locale
 from jinja2.loaders import ChoiceLoader, FileSystemLoader, PackageLoader
 from sqlalchemy.orm.attributes import NEVER_SET, NO_VALUE
@@ -19,9 +20,12 @@ from abilian.web.filters import init_filters
 from abilian.web.util import url_for
 from abilian.web.views.images import user_photo_url
 
+if TYPE_CHECKING:
+    from flask.templating import Environment
+
 
 class JinjaManagerMixin(Flask):
-    def __init__(self):
+    def __init__(self) -> None:
         self._jinja_loaders = []
 
     #
@@ -66,7 +70,7 @@ class JinjaManagerMixin(Flask):
 
         return options
 
-    def register_jinja_loaders(self, *loaders: PackageLoader):
+    def register_jinja_loaders(self, *loaders: PackageLoader) -> None:
         """Register one or many `jinja2.Loader` instances for templates lookup.
 
         During application initialization plugins can register a loader so that
@@ -81,9 +85,8 @@ class JinjaManagerMixin(Flask):
         :raise: `ValueError` if a template has already been rendered
         """
         if not hasattr(self, "_jinja_loaders"):
-            raise ValueError(
-                "Cannot register new jinja loaders after first template rendered"
-            )
+            msg = "Cannot register new jinja loaders after first template rendered"
+            raise ValueError(msg)
 
         self._jinja_loaders.extend(loaders)
 

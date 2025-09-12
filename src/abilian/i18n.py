@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """I18n.
 
 To mark strings for translation::
@@ -49,11 +51,10 @@ import importlib
 import os
 import re
 import unicodedata
-from collections.abc import Callable, Iterator
 from datetime import datetime, tzinfo
 from gettext import GNUTranslations
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import flask_babel
 import pytz
@@ -62,8 +63,17 @@ from babel.dates import LOCALTZ, get_timezone, get_timezone_gmt
 from babel.localedata import locale_identifiers
 from babel.support import Translations as BaseTranslations
 from flask import Flask, current_app, g, render_template, request
-from flask_babel import Babel as BabelBase
-from flask_babel import LazyString, force_locale, gettext, lazy_gettext, ngettext
+from flask_babel import (
+    Babel as BabelBase,
+    LazyString,
+    force_locale,
+    gettext,
+    lazy_gettext,
+    ngettext,
+)
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Iterator
 
 __all__ = [
     "VALID_LANGUAGES_CODE",
@@ -187,7 +197,7 @@ class Babel(BabelBase):
         app: Flask,
         locale_selector: Callable | None = None,
         timezone_selector: Callable | None = None,
-    ):
+    ) -> None:
         if locale_selector is None:
             locale_selector = localeselector
         if timezone_selector is None:
@@ -214,7 +224,7 @@ class Babel(BabelBase):
         module_name: str,
         translations_dir: str = "translations",
         domain: str = "messages",
-    ):
+    ) -> None:
         """Add translations from external module.
 
         For example::

@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
@@ -11,6 +13,7 @@ from io import StringIO
 from os.path import isabs
 from pathlib import Path
 
+from devtools import debug
 from flask import current_app
 from loguru import logger
 from webassets.filter import ExternalTool, Filter, get_filter, register_filter
@@ -29,7 +32,7 @@ class ImportCSSFilter(Filter):
         r"""@import ("|')(?P<filename>(/?[-a-zA-Z0-9_\.]+)+\.css)("|');"""
     )
 
-    def input(self, _in, out, **kwargs):
+    def input(self, _in, out, **kwargs) -> None:
         filepath = kwargs["source_path"]
         source = kwargs.get("source")
 
@@ -100,13 +103,13 @@ class LessImportFilter(Filter):
     options = {"run_in_debug": "LESS_RUN_IN_DEBUG"}  # use same option as less filter
     max_debug_level = None
 
-    def setup(self):
+    def setup(self) -> None:
         super().setup()
         if self.run_in_debug is False:
             # Disable running in debug mode for this instance.
             self.max_debug_level = False
 
-    def input(self, _in, out, source_path, output_path, **kwargs):
+    def input(self, _in, out, source_path, output_path, **kwargs) -> None:
         if not Path(source_path).is_file():
             # we are not processing files but webassets intermediate hunks
             out.write(_in.read())
@@ -207,34 +210,35 @@ class Less(ExternalTool):
     }
     max_debug_level = None
 
-    def setup(self):
+    def setup(self) -> None:
         super().setup()
         if self.run_in_debug is False:
             # Disable running in debug mode for this instance.
             self.max_debug_level = False
 
-    def input(self, in_, out, **kw):
+    def input(self, in_, out, **kw) -> None:
         if self.as_output:
             importer = get_filter("less_import")
             importer.input(in_, out, **kw)
         else:
             self._apply_less(in_, out, **kw)
 
-    def output(self, in_, out, **kw):
+    def output(self, in_, out, **kw) -> None:
         if not self.as_output:
             out.write(in_.read())
         else:
             self._apply_less(in_, out, **kw)
 
-    def _apply_less(self, in_, out, output_path, output, **kw):
+    def _apply_less(self, in_, out, output_path, output, **kw) -> None:
         # Set working directory to the source file so that includes are found
 
-        if self.less and shutil.which(self.less) is not None:
+        if self.less and shutil.which(self.less):
             lessc = shutil.which(self.less)
-        elif shutil.which("lessc") is not None:
+        elif shutil.which("lessc"):
             lessc = shutil.which("lessc")
         else:
             root = Path(current_app.root_path) / ".." / ".."
+            debug(root)
             lessc = str(root / "node_modules" / ".bin" / "lessc")
 
         assert Path(lessc).is_file(), f"lessc not found at {lessc}"
@@ -299,13 +303,14 @@ class Less(ExternalTool):
             return url
 
         if len(possible_paths) > 1:
-            raise RuntimeError("Should not happen")
+            msg = "Should not happen"
+            raise RuntimeError(msg)
             # possible_paths.sort(lambda p: -len(p))
 
         path = possible_paths[0]
         return self.ctx.url_mapping[path] + src_path[len(path) :]
 
-    def fix_source_map_urls(self, filename):
+    def fix_source_map_urls(self, filename) -> None:
         with open(filename) as f:
             data = json.load(f)
 
@@ -323,17 +328,17 @@ class Less(ExternalTool):
 
 
 class ClosureJS(BaseClosureJS):
-    def setup(self):
+    def setup(self) -> None:
         super().setup()
         self.source_files = []
 
-    def input(self, _in, out, source_path, output_path, **kwargs):
+    def input(self, _in, out, source_path, output_path, **kwargs) -> None:
         if not Path(source_path).is_file():
             # we are not processing files but webassets intermediate hunks
             return
         self.source_files.append(source_path)
 
-    def output(self, _in, out, **kw):
+    def output(self, _in, out, **kw) -> None:
         for source_file in self.source_files:
             self.extra_args.append("--js")
             self.extra_args.append(source_file)
@@ -350,25 +355,27 @@ class ClosureJS(BaseClosureJS):
 
         name = smap_path.name
         out.write(f"//# sourceMappingURL={name!s}")
-        self.fix_source_map_urls(str(smap_path))
+        self.fix_source_map_urls(smap_path)
 
     def fix_url(self, cur_path, src_path):
         possible_paths = [p for p in self.ctx.url_mapping if src_path.startswith(p)]
 
         if not possible_paths:
-            raise RuntimeError("Should not happen")
+            msg = "Should not happen"
+            raise RuntimeError(msg)
             # # FIXME: url is not defined at this point, this can't work.
             # return url
 
         if len(possible_paths) > 1:
-            raise RuntimeError("Should not happen")
+            msg = "Should not happen"
+            raise RuntimeError(msg)
             # possible_paths.sort(lambda p: -len(p))
 
         path = possible_paths[0]
         return self.ctx.url_mapping[path] + src_path[len(path) :]
 
-    def fix_source_map_urls(self, filename):
-        with open(filename) as f:
+    def fix_source_map_urls(self, file_path: Path) -> None:
+        with file_path.open() as f:
             data = json.load(f)
 
         for idx, path in enumerate(data["sources"]):
@@ -378,11 +385,11 @@ class ClosureJS(BaseClosureJS):
 
             data["sources"][idx] = self.fix_url(self.ctx.directory, path)
 
-        with open(filename, "w") as f:
+        with file_path.open("w") as f:
             json.dump(data, f)
 
 
-def register_filters():
+def register_filters() -> None:
     register_filter(Less)
     register_filter(LessImportFilter)
     register_filter(ImportCSSFilter)

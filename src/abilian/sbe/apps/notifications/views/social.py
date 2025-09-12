@@ -1,8 +1,11 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """First cut at a notification system."""
 
 from __future__ import annotations
 
-from flask import current_app as app
+from typing import TYPE_CHECKING, cast
+
 from flask import request
 from flask_login import current_user
 from werkzeug.exceptions import MethodNotAllowed
@@ -12,10 +15,17 @@ from abilian.core.models.subjects import User
 from abilian.i18n import render_template_i18n
 from abilian.sbe.apps.communities.security import require_admin
 from abilian.sbe.apps.notifications import TOKEN_SERIALIZER_NAME
+from abilian.sbe.apps.notifications.tasks.social import (
+    make_message,
+    send_daily_social_digest_to,
+)
+from abilian.services import get_service
 from abilian.services.auth.views import get_token_status
 
-from ..tasks.social import make_message, send_daily_social_digest_to
 from . import notifications
+
+if TYPE_CHECKING:
+    from abilian.services.preferences.service import PreferenceService
 
 __all__ = ()
 
@@ -41,8 +51,7 @@ def debug_social():
 
     if status:
         return msg.html
-    else:
-        return "No message sent."
+    return "No message sent."
 
 
 @route("/unsubscribe_sbe/<token>/", methods=["GET", "POST"])
@@ -57,10 +66,9 @@ def unsubscribe_sbe(token: str) -> str:
             "notifications/confirm-unsubscribe.html", token=token
         )
 
-    elif request.method == "POST":
-        preferences = app.services["preferences"]
+    if request.method == "POST":
+        preferences = cast("PreferenceService", get_service("preferences"))
         preferences.set_preferences(user, **{"sbe:notifications:daily": False})
         db.session.commit()
         return render_template_i18n("notifications/unsubscribed.html", token=token)
-    else:
-        raise MethodNotAllowed
+    raise MethodNotAllowed

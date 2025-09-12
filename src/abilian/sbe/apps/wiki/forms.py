@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Forms for the Wiki module."""
 
 from __future__ import annotations

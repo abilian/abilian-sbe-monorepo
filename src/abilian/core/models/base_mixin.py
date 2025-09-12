@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """BaseMixin class."""
 
 from __future__ import annotations
@@ -15,7 +17,7 @@ from .owned import OwnedMixin
 class BaseMixin(IdMixin, TimestampedMixin, OwnedMixin):
     name: str
 
-    def __init__(self):
+    def __init__(self) -> None:
         OwnedMixin.__init__(self)
 
     def __repr__(self) -> str:
@@ -24,7 +26,7 @@ class BaseMixin(IdMixin, TimestampedMixin, OwnedMixin):
             f"instance at 0x{id(self):x} name={self.name!r} id={self.id}>"
         )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name or ""
 
     @property
@@ -33,7 +35,7 @@ class BaseMixin(IdMixin, TimestampedMixin, OwnedMixin):
 
     def to_dict(self) -> dict[str, Any]:
         if hasattr(self, "__exportable__"):
-            exported = self.__exportable__ + ["id"]
+            exported = [*self.__exportable__, "id"]
         else:
             exported = self.column_names
         result: dict[str, Any] = {}
@@ -56,7 +58,6 @@ class BaseMixin(IdMixin, TimestampedMixin, OwnedMixin):
     def _name(self):
         if hasattr(self, "title"):
             return self.title
-        elif hasattr(self, "name"):
+        if hasattr(self, "name"):
             return self.name
-        else:
-            raise NotImplementedError
+        raise NotImplementedError

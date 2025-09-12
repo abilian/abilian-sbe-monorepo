@@ -1,24 +1,27 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
 import sqlalchemy.event
-import sqlalchemy.ext
-import sqlalchemy.ext.declarative
 import sqlalchemy.orm
-from flask_sqlalchemy import BaseQuery, Model
+from flask_sqlalchemy.query import Query
 from sqlalchemy import Column
 
 from abilian.core.extensions import db
 from abilian.core.util import slugify
 
+if TYPE_CHECKING:
+    from flask_sqlalchemy.model import Model
+
 _BaseMeta = db.Model.__class__
 
 
-class VocabularyQuery(BaseQuery):
+class VocabularyQuery(Query):
     def active(self) -> VocabularyQuery:
         """Returns only valid vocabulary items."""
         return self.filter_by(active=True)
@@ -93,13 +96,13 @@ class BaseVocabulary(db.Model, metaclass=_VocabularyMeta):
         label = None
         group = None
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.label
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         tpl = (
             "<{module}.{cls} id={id} label={label} position={position} "
-            "active={active} default={default} at 0x{addr:x}>"
+            "active={active} default={default}>"
         )
         cls = self.__class__
         return tpl.format(
@@ -110,20 +113,19 @@ class BaseVocabulary(db.Model, metaclass=_VocabularyMeta):
             position=repr(self.position),
             active=repr(self.active),
             default=repr(self.default),
-            addr=id(self),
         )
 
 
 @sa.event.listens_for(BaseVocabulary, "before_insert", propagate=True)
 @sa.event.listens_for(BaseVocabulary, "before_update", propagate=True)
-def strip_label(mapper, connection, target):
+def strip_label(mapper, connection, target) -> None:
     """Strip labels at ORM level so the unique=True means something."""
     if target.label is not None:
         target.label = target.label.strip()
 
 
 @sa.event.listens_for(BaseVocabulary, "before_insert", propagate=True)
-def _before_insert(mapper, connection, target):
+def _before_insert(mapper, connection, target) -> None:
     """Set item to last position if position not defined."""
     if target.position is None:
         func = sa.sql.func

@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
@@ -5,26 +7,31 @@ from __future__ import annotations
 import operator
 from datetime import datetime
 from functools import cached_property, partial
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import babel
 import babel.dates
 import sqlalchemy as sa
 import sqlalchemy.exc
-from babel.core import Locale
 from flask import current_app
 from flask_babel import format_date, format_datetime, get_locale, get_timezone
 from flask_login import current_user
 from flask_wtf.file import FileField as BaseFileField
 from loguru import logger
-from werkzeug.datastructures import ImmutableMultiDict
-from wtforms import Field
-from wtforms import FieldList as BaseFieldList
-from wtforms import FormField as BaseFormField
-from wtforms import SelectField, SelectFieldBase, SelectMultipleField, ValidationError
+from wtforms import (
+    Field,
+    FieldList as BaseFieldList,
+    FormField as BaseFormField,
+    SelectField,
+    SelectFieldBase,
+    SelectMultipleField,
+    ValidationError,
+)
 from wtforms.validators import DataRequired, Optional
-from wtforms_alchemy import ModelFieldList as BaseModelFieldList
-from wtforms_alchemy import ModelFormField as BaseModelFormField
+from wtforms_alchemy import (
+    ModelFieldList as BaseModelFieldList,
+    ModelFormField as BaseModelFormField,
+)
 from wtforms_sqlalchemy.fields import has_identity_key
 
 from abilian import i18n
@@ -33,6 +40,10 @@ from abilian.core.util import utc_dt
 
 from .util import babel2datetime
 from .widgets import DateInput, DateTimeInput, FileInput, Select2, Select2Ajax
+
+if TYPE_CHECKING:
+    from babel.core import Locale
+    from werkzeug.datastructures import ImmutableMultiDict
 
 # FIXME
 # Warning
@@ -58,7 +69,7 @@ __all__ = [
 class FormField(BaseFormField):
     """Discard csrf_token on subform."""
 
-    def process(self, *args, **kwargs):
+    def process(self, *args, **kwargs) -> None:
         super().process(*args, **kwargs)
         # FIXME
         # if isinstance(self.form, SecureForm):
@@ -116,7 +127,7 @@ class FieldList(FilterFieldListMixin, BaseFieldList):
 class ModelFieldList(FilterFieldListMixin, BaseModelFieldList):
     """Filter empty entries before saving and refills before displaying."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         # build visible field list for widget. We must do it during form
@@ -134,7 +145,9 @@ class ModelFieldList(FilterFieldListMixin, BaseModelFieldList):
 
         self._field_names = field_names
         self._field_labels = labels
-        self._field_nameTolabel = dict(zip(self._field_names, self._field_labels))
+        self._field_nameTolabel = dict(
+            zip(self._field_names, self._field_labels, strict=True)
+        )
 
     def __call__(self, **kwargs):
         """Refill with default min_entry, which were possibly removed by
@@ -163,7 +176,7 @@ class FileField(BaseFileField):
     blob = None
     blob_attr = "value"
 
-    def __init__(self, *args: Any, **kwargs: Any):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         try:
             self.multiple = kwargs.pop("multiple")
         except KeyError:
@@ -181,10 +194,11 @@ class FileField(BaseFileField):
                 isinstance(v, DataRequired if allow_delete else Optional)
                 for v in validators
             ):
-                raise ValueError(
+                msg = (
                     "Field validators are conflicting with `allow_delete`,"
                     f"validators={validators!r}, allow_delete={allow_delete!r}"
                 )
+                raise ValueError(msg)
             if not allow_delete:
                 validators.append(DataRequired())
 
@@ -192,7 +206,7 @@ class FileField(BaseFileField):
         super().__init__(*args, **kwargs)
 
     @property
-    def allow_delete(self):
+    def allow_delete(self) -> bool:
         """Property for legacy code.
 
         Test `field.flags.required` instead.
@@ -223,7 +237,7 @@ class FileField(BaseFileField):
         self.object_data = value
         return super().process_data(value)
 
-    def process_formdata(self, valuelist: list[str]):
+    def process_formdata(self, valuelist: list[str]) -> None:
         uploads = current_app.extensions["uploads"]
         if self.delete_files_index:
             self.data = None
@@ -236,7 +250,8 @@ class FileField(BaseFileField):
 
             if fileobj is None:
                 # FIXME: this is a validation task
-                raise ValueError(f"File with handle {handle!r} not found")
+                msg = f"File with handle {handle!r} not found"
+                raise ValueError(msg)
 
             meta = uploads.get_metadata(current_user, handle)
             filename = meta.get("filename", handle)
@@ -249,7 +264,7 @@ class FileField(BaseFileField):
             self.data = stream
             self._has_uploads = True
 
-    def populate_obj(self, obj, name):
+    def populate_obj(self, obj, name) -> None:
         """Store file."""
         from abilian.core.models.blob import Blob
 
@@ -257,21 +272,22 @@ class FileField(BaseFileField):
 
         if not self.has_file() and not delete_value:
             # nothing uploaded, and nothing to delete
-            return None
+            return
 
         state = sa.inspect(obj)
         mapper = state.mapper
         if name not in mapper.relationships:
-            # directly store in database
-            return super().populate_obj(obj, name)
+            # directly store in the database
+            super().populate_obj(obj, name)
 
         rel = getattr(mapper.relationships, name)
         if rel.uselist:
-            raise ValueError("Only single target supported; else use ModelFieldList")
+            msg = "Only single target supported; else use ModelFieldList"
+            raise ValueError(msg)
 
         if delete_value:
             setattr(obj, name, None)
-            return None
+            return
 
         #  FIXME: propose option to always create a new blob
         cls = rel.mapper.class_
@@ -299,7 +315,7 @@ class DateTimeField(Field):
         validators: Any = None,
         use_naive: bool = True,
         **kwargs: Any,
-    ):
+    ) -> None:
         """
         :param use_naive: if `False`, dates are considered entered using user's
         timezone; different users with different timezones will see corrected
@@ -312,22 +328,21 @@ class DateTimeField(Field):
     def _value(self) -> str:
         if self.raw_data:
             return " ".join(self.raw_data)
-        else:
-            locale = get_locale()
-            date_fmt = locale.date_formats["short"].pattern
-            # force numerical months and 4 digit years
-            date_fmt = (
-                date_fmt.replace("MMMM", "MM")
-                .replace("MMM", "MM")
-                .replace("yyyy", "y")
-                .replace("yy", "y")
-                .replace("y", "yyyy")
-            )
-            time_fmt = locale.time_formats["short"]
-            dt_fmt = locale.datetime_formats["short"].format(time_fmt, date_fmt)
-            return format_datetime(self.data, dt_fmt) if self.data else ""
+        locale = get_locale()
+        date_fmt = locale.date_formats["short"].pattern
+        # force numerical months and 4 digit years
+        date_fmt = (
+            date_fmt.replace("MMMM", "MM")
+            .replace("MMM", "MM")
+            .replace("yyyy", "y")
+            .replace("yy", "y")
+            .replace("y", "yyyy")
+        )
+        time_fmt = locale.time_formats["short"]
+        dt_fmt = locale.datetime_formats["short"].format(time_fmt, date_fmt)
+        return format_datetime(self.data, dt_fmt) if self.data else ""
 
-    def process_data(self, value: datetime):
+    def process_data(self, value: datetime) -> None:
         if value is not None:
             if not value.tzinfo:
                 if self.use_naive:
@@ -339,7 +354,7 @@ class DateTimeField(Field):
 
         super().process_data(value)
 
-    def process_formdata(self, valuelist: list[str]):
+    def process_formdata(self, valuelist: list[str]) -> None:
         if valuelist:
             date_str = " ".join(valuelist)
             locale = get_locale()
@@ -366,7 +381,7 @@ class DateTimeField(Field):
                 self.data = None
                 raise ValueError(self.gettext("Not a valid datetime value")) from e
 
-    def populate_obj(self, obj: Any, name: str):
+    def populate_obj(self, obj: Any, name: str) -> None:
         dt = self.data
         if dt and self.use_naive:
             dt = dt.replace(tzinfo=None)
@@ -379,25 +394,26 @@ class DateField(Field):
 
     widget = DateInput()
 
-    def __init__(self, label: str | None = None, validators: Any = None, **kwargs: Any):
+    def __init__(
+        self, label: str | None = None, validators: Any = None, **kwargs: Any
+    ) -> None:
         super().__init__(label, validators, **kwargs)
 
     def _value(self) -> str:
         if self.raw_data:
             return " ".join(self.raw_data)
-        else:
-            date_fmt = get_locale().date_formats["short"].pattern
-            # force numerical months and 4 digit years
-            date_fmt = (
-                date_fmt.replace("MMMM", "MM")
-                .replace("MMM", "MM")
-                .replace("yyyy", "y")
-                .replace("yy", "y")
-                .replace("y", "yyyy")
-            )
-            return format_date(self.data, date_fmt) if self.data else ""
+        date_fmt = get_locale().date_formats["short"].pattern
+        # force numerical months and 4 digit years
+        date_fmt = (
+            date_fmt.replace("MMMM", "MM")
+            .replace("MMM", "MM")
+            .replace("yyyy", "y")
+            .replace("yy", "y")
+            .replace("y", "yyyy")
+        )
+        return format_date(self.data, date_fmt) if self.data else ""
 
-    def process_formdata(self, valuelist: list[str]):
+    def process_formdata(self, valuelist: list[str]) -> None:
         valuelist = [i for i in valuelist if i.strip()]
 
         if valuelist:
@@ -427,7 +443,7 @@ class Select2Field(SelectField):
         return choices() if callable(choices) else choices
 
     @choices.setter
-    def choices(self, choices):
+    def choices(self, choices) -> None:
         self._choices = choices
 
 
@@ -441,7 +457,7 @@ class Select2MultipleField(SelectMultipleField):
         return choices() if callable(choices) else choices
 
     @choices.setter
-    def choices(self, choices):
+    def choices(self, choices) -> None:
         self._choices = choices
 
 
@@ -487,7 +503,7 @@ class QuerySelect2Field(SelectFieldBase):
         multiple=False,
         collection_class=list,
         **kwargs,
-    ):
+    ) -> None:
         if widget is None:
             widget = Select2(multiple=multiple)
 
@@ -514,9 +530,8 @@ class QuerySelect2Field(SelectFieldBase):
 
         if get_pk is None:
             if not has_identity_key:
-                raise Exception(
-                    "The sqlalchemy identity_key function could not be imported."
-                )
+                msg = "The sqlalchemy identity_key function could not be imported."
+                raise Exception(msg)
             self.get_pk = self._get_pk_from_identity
         else:
             self.get_pk = get_pk
@@ -539,7 +554,7 @@ class QuerySelect2Field(SelectFieldBase):
         SQLAlchemy >= 1.2."""
         from sqlalchemy.orm.util import identity_key
 
-        cls, key = identity_key(instance=obj)[0:2]
+        _cls, key = identity_key(instance=obj)[0:2]
         return ":".join(str(x) for x in key)
 
     def _get_data(self):
@@ -560,7 +575,7 @@ class QuerySelect2Field(SelectFieldBase):
                 self._set_data(data)
         return self._data
 
-    def _set_data(self, data):
+    def _set_data(self, data) -> None:
         if self.multiple and not isinstance(data, self.collection_class):
             data = self.collection_class(data) if data else self.collection_class()
         self._data = data
@@ -591,7 +606,7 @@ class QuerySelect2Field(SelectFieldBase):
         for pk, obj in self._get_object_list():
             yield (pk, self.get_label(obj), predicate(obj))
 
-    def process_formdata(self, valuelist):
+    def process_formdata(self, valuelist) -> None:
         if not valuelist:
             self.data = [] if self.multiple else None
         else:
@@ -600,7 +615,7 @@ class QuerySelect2Field(SelectFieldBase):
                 valuelist = valuelist[0]
             self._formdata = valuelist
 
-    def pre_validate(self, form):
+    def pre_validate(self, form) -> None:
         if not self.allow_blank or self.data is not None:
             data = self.data
             if not self.multiple:
@@ -662,7 +677,7 @@ class JsonSelect2Field(SelectFieldBase):
         model_class=None,
         multiple=False,
         **kwargs,
-    ):
+    ) -> None:
         self.multiple = multiple
 
         if widget is None:
@@ -715,13 +730,13 @@ class JsonSelect2Field(SelectFieldBase):
             self._set_data(data)
         return self._data
 
-    def _set_data(self, data):
+    def _set_data(self, data) -> None:
         self._data = data
         self._formdata = None
 
     data = property(_get_data, _set_data)
 
-    def process_formdata(self, valuelist):
+    def process_formdata(self, valuelist) -> None:
         if not valuelist:
             self.data = [] if self.multiple else None
         else:
@@ -764,7 +779,7 @@ class JsonSelect2MultipleField(JsonSelect2Field):
 class LocaleSelectField(SelectField):
     widget = Select2()
 
-    def __init__(self, *args: Any, **kwargs: Any):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         kwargs["coerce"] = LocaleSelectField.coerce
         kwargs["choices"] = list(i18n.supported_app_locales())
         super().__init__(*args, **kwargs)
@@ -773,14 +788,13 @@ class LocaleSelectField(SelectField):
     def coerce(value: Locale | None) -> Locale | None:
         if isinstance(value, babel.Locale):
             return value
-        elif isinstance(value, str):
+        if isinstance(value, str):
             return babel.Locale.parse(value)
-        elif value is None:
+        if value is None:
             return None
 
-        raise ValueError(
-            f"Value cannot be converted to Locale(), or is not None, {value!r}"
-        )
+        msg = f"Value cannot be converted to Locale(), or is not None, {value!r}"
+        raise ValueError(msg)
 
     def iter_choices(self):
         if not self.flags.required:
@@ -793,7 +807,7 @@ class LocaleSelectField(SelectField):
 class TimezoneField(SelectField):
     widget = Select2()
 
-    def __init__(self, *args: Any, **kwargs: Any):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         kwargs["coerce"] = babel.dates.get_timezone
         kwargs["choices"] = list(i18n.timezones_choices())
         super().__init__(*args, **kwargs)

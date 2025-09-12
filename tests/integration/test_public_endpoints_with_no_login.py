@@ -1,17 +1,22 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import warnings
+from typing import TYPE_CHECKING
 
-from flask.testing import FlaskClient
-
-from abilian.app import Application
 from abilian.services import security_service
 from abilian.web import url_for
 
 from .conftest import ENDPOINTS_TO_IGNORE, PUBLIC_ENDPOINTS
 
+if TYPE_CHECKING:
+    from flask.testing import FlaskClient
 
-def test_public_endpoints_with_no_login(client: FlaskClient, app: Application):
+    from abilian.app import Application
+
+
+def test_public_endpoints_with_no_login(client: FlaskClient, app: Application) -> None:
     warnings.simplefilter("ignore")
     security_service.start(ignore_state=True)
 
@@ -29,4 +34,5 @@ def test_public_endpoints_with_no_login(client: FlaskClient, app: Application):
     security_service.stop()
     if errors:
         print(errors)
-        raise AssertionError("Some public web tests failed")
+        msg = "Some public web tests failed"
+        raise AssertionError(msg)

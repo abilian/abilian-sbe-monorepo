@@ -1,16 +1,16 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import contextlib
 import hashlib
 from collections import Counter
-from collections.abc import Callable
-from datetime import datetime
 from functools import wraps
 from io import BytesIO
 from operator import attrgetter
 from pathlib import Path
 from time import gmtime, strftime
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import openpyxl
 import sqlalchemy as sa
@@ -26,11 +26,9 @@ from flask import (
     session,
     url_for,
 )
-from flask.blueprints import BlueprintSetupState
 from flask_login import current_user, login_required
 from openpyxl.cell import WriteOnlyCell
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
-from werkzeug.wrappers.response import Response
 from whoosh.searching import Hit
 
 from abilian.core.extensions import db
@@ -42,7 +40,6 @@ from abilian.sbe.apps.communities.actions import register_actions
 from abilian.sbe.apps.communities.blueprint import CommunityBlueprint
 from abilian.sbe.apps.communities.forms import CommunityForm
 from abilian.sbe.apps.communities.models import Community, Membership
-from abilian.sbe.apps.communities.presenters import CommunityPresenter
 from abilian.sbe.apps.communities.security import (
     is_manager,
     require_admin,
@@ -55,6 +52,15 @@ from abilian.web import csrf, views
 from abilian.web.action import Endpoint
 from abilian.web.nav import BreadcrumbItem
 from abilian.web.views import images as image_views
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    from datetime import datetime
+
+    from flask.blueprints import BlueprintSetupState
+    from werkzeug.wrappers.response import Response
+
+    from abilian.sbe.apps.communities.presenters import CommunityPresenter
 
 __all__ = ["BaseCommunityView", "communities", "default_view_kw", "route", "tab"]
 
@@ -128,7 +134,8 @@ def default_view_kw(
     if community_id is not None:
         kw["community_id"] = community_id
     else:
-        raise ValueError("Cannot find community_id value")
+        msg = "Cannot find community_id value"
+        raise ValueError(msg)
 
     return kw
 
@@ -171,7 +178,7 @@ def list_json2():
     # TODO: make generic ?
     args = request.args
 
-    q = args.get("q").replace("%", " ")
+    q = args.get("q", "").replace("%", " ")
     if not q or len(q) < 2:
         raise BadRequest
 
@@ -218,7 +225,7 @@ class BaseCommunityView:
 class CommunityEdit(BaseCommunityView, views.ObjectEdit):
     template = "community/edit.html"
     title = _l("Edit community")
-    decorators = views.ObjectEdit.decorators + (require_admin, tab("settings"))
+    decorators = (*views.ObjectEdit.decorators, require_admin, tab("settings"))
 
     def breadcrumb(self) -> BreadcrumbItem:
         url = Endpoint("communities.settings", community_id=g.community.slug)
@@ -259,7 +266,7 @@ add_url(
 
 class CommunityCreate(views.ObjectCreate, CommunityEdit):
     title = _l("Create community")
-    decorators = views.ObjectCreate.decorators + (require_admin,)
+    decorators = (*views.ObjectCreate.decorators, require_admin)
     template = views.ObjectCreate.template
     base_template = views.ObjectCreate.base_template
 
@@ -397,7 +404,7 @@ def members_post() -> Response:
         db.session.commit()
         return redirect(url_for(".members", community_id=community.slug))
 
-    elif action == "delete":
+    if action == "delete":
         membership_id = int(request.form["membership"])
         membership = Membership.query.get(membership_id)
         if membership.user_id != user_id:
@@ -411,8 +418,8 @@ def members_post() -> Response:
         db.session.commit()
         return redirect(url_for(".members", community_id=community.slug))
 
-    else:
-        raise BadRequest(f"Unknown action: {action!r}")
+    msg = f"Unknown action: {action!r}"
+    raise BadRequest(msg)
 
 
 MEMBERS_EXPORT_HEADERS = [

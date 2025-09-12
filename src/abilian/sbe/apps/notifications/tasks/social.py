@@ -1,6 +1,9 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 from datetime import datetime, timedelta
+from typing import TYPE_CHECKING
 
 import html2text
 from flask import current_app
@@ -11,26 +14,27 @@ from validate_email import validate_email
 
 from abilian.core.dramatiq.scheduler import crontab
 from abilian.core.dramatiq.singleton import dramatiq
-from abilian.core.entities import Entity
 from abilian.core.models.subjects import User
 from abilian.core.util import md5
 from abilian.i18n import render_template_i18n
-from abilian.sbe.apps.communities.models import Community
 from abilian.sbe.apps.documents.models import Document
 from abilian.sbe.apps.documents.repository import content_repository
 from abilian.sbe.apps.forum.models import Post, Thread
+from abilian.sbe.apps.notifications import TOKEN_SERIALIZER_NAME
 from abilian.sbe.apps.wiki.models import WikiPage
 from abilian.services import get_service
 from abilian.services.activity import ActivityEntry
 from abilian.services.auth.views import get_serializer
 from abilian.web import url_for
 
-from .. import TOKEN_SERIALIZER_NAME
+if TYPE_CHECKING:
+    from abilian.core.entities import Entity
+    from abilian.sbe.apps.communities.models import Community
 
 
 @crontab("SCHEDULE_SEND_DAILY_SOCIAL_DIGEST")
 @dramatiq.actor()
-def send_daily_social_digest_task():
+def send_daily_social_digest_task() -> None:
     logger.debug("Running job: send_daily_social_digest_task")
     with current_app.test_request_context("/tasks/send_daily_social_updates"):
         config = current_app.config
@@ -40,7 +44,7 @@ def send_daily_social_digest_task():
         send_daily_social_digest()
 
 
-def send_daily_social_digest():
+def send_daily_social_digest() -> None:
     for user in User.query.filter(User.can_login == True).all():
         preferences = get_service("preferences")
         prefs = preferences.get_preferences(user)
@@ -55,12 +59,10 @@ def send_daily_social_digest():
         try:
             send_daily_social_digest_to(user)
         except BaseException:
-            current_app.logger.opt(exception=True).error(
-                "Error sending daily social digest"
-            )
+            logger.opt(exception=True).exception("Error sending daily social digest")
 
 
-def send_daily_social_digest_to(user: User):
+def send_daily_social_digest_to(user: User) -> int:
     """Send to a given user a daily digest of activities in its communities.
 
     Return 1 if mail sent, 0 otherwise.
@@ -71,8 +73,7 @@ def send_daily_social_digest_to(user: User):
     if message:
         mail.send(message)
         return 1
-    else:
-        return 0
+    return 0
 
 
 def make_message(user: User) -> Message | None:
@@ -177,7 +178,7 @@ class CommunityDigest:
         self.new_wiki_pages: list[WikiPage] = []
         self.updated_wiki_pages: dict[WikiPage, dict] = {}
 
-    def is_empty(self):
+    def is_empty(self) -> bool:
         return (
             not self.new_members
             and not self.new_documents
@@ -188,7 +189,7 @@ class CommunityDigest:
             and not self.updated_wiki_pages
         )
 
-    def update_from_activity(self, activity, user):
+    def update_from_activity(self, activity, user) -> None:
         actor = activity.actor
         obj = activity.object
 
@@ -204,10 +205,10 @@ class CommunityDigest:
         elif activity.verb == "update":
             self._update_for_update(actor, obj, user)
 
-    def _update_for_join(self, actor):
+    def _update_for_join(self, actor) -> None:
         self.new_members.append(actor)
 
-    def _update_for_post(self, actor, obj, user):
+    def _update_for_post(self, actor, obj, user) -> None:
         if obj is None:
             return
         if obj.id in self.seen_entities:
@@ -237,7 +238,7 @@ class CommunityDigest:
                 # exclude it to avoid duplicates but save the Post's actor
                 self.updated_conversations[obj.thread]["actors"].append(actor)
 
-    def _update_for_update(self, actor, obj, user):
+    def _update_for_update(self, actor, obj, user) -> None:
         if obj is None:
             return
         # special case for Wikipage, we want to know each updater

@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Navigation elements.
 
 Abilian define theses categories:   `section`:     Used for navigation
@@ -10,17 +12,36 @@ from __future__ import annotations
 import typing
 from typing import Any
 
-from flask import g
-from flask_babel.speaklater import LazyString
+from flask import Flask, g, request
 from jinja2 import Template
 from markupsafe import Markup
-
-from abilian.web.action import Endpoint
 
 from .action import ACTIVE, ENABLED, Action, Glyphicon, getset
 
 if typing.TYPE_CHECKING:
-    from abilian.web.action import Status
+    from flask_babel.speaklater import LazyString
+
+    from abilian.web.action import Endpoint, Status
+
+
+def setup_nav_and_breadcrumbs(_app: Flask) -> None:
+    """Listener for `request_started` event.
+
+    If you want to customize first items of breadcrumbs, override
+    :meth:`init_breadcrumbs`
+    """
+    g.nav = {"active": None}  # active section
+    g.breadcrumb = []
+    init_breadcrumbs()
+
+
+def init_breadcrumbs() -> None:
+    """Insert the first element in breadcrumbs.
+
+    This happens during `request_started` event, which is triggered
+    before any url_value_preprocessor and `before_request` handlers.
+    """
+    g.breadcrumb.append(BreadcrumbItem(icon="home", url=f"/{request.script_root}"))
 
 
 class NavItem(Action):
@@ -30,7 +51,7 @@ class NavItem(Action):
 
     def __init__(
         self, category: str, name: str, divider: bool = False, *args: Any, **kwargs: Any
-    ):
+    ) -> None:
         category = f"navigation:{category}"
         super().__init__(category, name, *args, **kwargs)
         self.divider = divider
@@ -74,18 +95,18 @@ class NavGroup(NavItem):
 
     def __init__(
         self, category: str, name: str, items: tuple[NavItem] = (), *args, **kwargs
-    ):
+    ) -> None:
         super().__init__(category, name, *args, **kwargs)
         self.items = list(items)
         self._paths = {self.path}
         for i in self.items:
             self._paths.add(i.path)
 
-    def append(self, item: NavItem):
+    def append(self, item: NavItem) -> None:
         self.items.append(item)
         self._paths.add(item.path)
 
-    def insert(self, pos: int, item: NavItem):
+    def insert(self, pos: int, item: NavItem) -> None:
         self.items.insert(pos, item)
         self._paths.add(item.path)
 
@@ -123,7 +144,7 @@ class BreadcrumbItem:
 
     template_string = (
         '{%- if url %}<a href="{{ url }}">{%- endif %}'
-        "{%- if item.icon %}{{ item.icon }}\u00A0{%- endif %}"
+        "{%- if item.icon %}{{ item.icon }}\u00a0{%- endif %}"
         "{{ item.label }}"
         "{%- if url %}</a>{%- endif %}"
     )
@@ -134,7 +155,7 @@ class BreadcrumbItem:
         url: str | Endpoint = "#",
         icon: str | None = None,
         description: Any | None = None,
-    ):
+    ) -> None:
         # don't test 'label or...': if label is a lazy_gettext, it will be
         # resolved. If this item is created in a url_value_preprocessor, it will
         # setup i18n before auth has loaded user, so i18n will fallback on browser

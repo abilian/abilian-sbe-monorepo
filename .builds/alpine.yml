@@ -1,4 +1,9 @@
-image: alpine/edge
+# Copyright (c) 2024, Abilian SAS
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+# Latest stable release
+image: alpine/latest
 
 packages:
   # Build
@@ -17,7 +22,7 @@ packages:
   - py3-tox
   - py3-nox
   - py3-pip
-  - pipx
+  - uv
   # - poetry
   # Node
   - nodejs-dev
@@ -28,25 +33,15 @@ packages:
 
 tasks:
   - setup: |
-      # Workaround to install poetry on Alpine
-      # (was: sudo poetry self update)
-      pipx install poetry
-      sudo ln -sf ~/.local/bin/poetry /usr/local/bin/
       cd abilian-sbe
-      npm i
+      npm install
 
-  - lint: |
-      cd abilian-sbe
-      tox -e lint
-
-  - test: |
-      cd abilian-sbe
-      tox -e py311
-
-  - nox-lint: |
+  - lint-nox: |
       cd abilian-sbe
       nox -e lint
 
-  - nox-test: |
+  - test-nox: |
       cd abilian-sbe
-      nox -e pytest
+      # Default Python version is python 3.12
+      # TODO: install other versions using rye
+      nox -e pytest-3.12

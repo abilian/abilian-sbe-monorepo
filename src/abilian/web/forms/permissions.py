@@ -1,23 +1,28 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
-from collections.abc import Callable, Collection
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from flask_login import current_user
 from wtforms import Field
 
 from abilian.core.entities import Entity
-from abilian.core.models.subjects import User
 from abilian.services import get_service
 from abilian.services.security import (
+    ANONYMOUS,
     CREATE,
     READ,
     WRITE,
-    Anonymous,
     Permission,
     Role,
     SecurityService,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Collection
+
+    from abilian.core.models.subjects import User
 
 
 class FormPermissions:
@@ -25,13 +30,13 @@ class FormPermissions:
 
     def __init__(
         self,
-        default: Role = Anonymous,
+        default: Role = ANONYMOUS,
         read: None | Role | Collection[Role] = None,
         write: None | Role | Collection[Role] = None,
         fields_read: dict[str, Collection[Role]] | None = None,
         fields_write: dict[str, Collection[Role]] | None = None,
         existing: Any | None = None,
-    ):
+    ) -> None:
         """
         :param default: default roles when not specified for field. Can be:
 
@@ -51,15 +56,17 @@ class FormPermissions:
             default_dict = {"default": (default,)}
         elif isinstance(default, dict):
             if "default" not in default:
-                raise ValueError('`default` parameter must have a "default" key')
+                msg = '`default` parameter must have a "default" key'
+                raise ValueError(msg)
             default_dict = default
         elif callable(default):
             default_dict = {"default": default}
         else:
-            raise TypeError(
+            msg = (
                 "No valid value for `default`. Use a Role, an iterable "
                 "of Roles, a callable, or a dict."
             )
+            raise TypeError(msg)
 
         self.default = default_dict
         self.form: dict[Permission, Any] = {}
@@ -107,7 +114,7 @@ class FormPermissions:
         user: User | None = None,
     ) -> bool:
         if user is None:
-            user = cast(User, current_user)
+            user = cast("User", current_user)
         if obj is not None and not isinstance(obj, Entity):
             # permission/role can be set only on entities
             return True
@@ -147,5 +154,5 @@ class FormPermissions:
             else:
                 roles.extend(r)
 
-        security: SecurityService = get_service("security")
+        security = cast("SecurityService", get_service("security"))
         return security.has_role(user, role=roles, object=obj)

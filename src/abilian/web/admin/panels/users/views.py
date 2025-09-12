@@ -1,9 +1,11 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
 
 import html
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 import sqlalchemy as sa
 import sqlalchemy.orm
@@ -16,15 +18,16 @@ from werkzeug.datastructures import MultiDict
 from abilian.core.models.subjects import User, gen_random_password
 from abilian.i18n import _
 from abilian.services import get_service
-from abilian.services.security import SecurityService
-from abilian.services.security.models import Admin, Role
+from abilian.services.security.models import ADMIN, Role
 from abilian.web.nav import BreadcrumbItem
 from abilian.web.util import url_for
-from abilian.web.views import base
-from abilian.web.views import object as views
+from abilian.web.views import base, object as views
 from abilian.web.views.images import user_photo_url
 
 from .forms import UserAdminForm, UserCreateForm
+
+if TYPE_CHECKING:
+    from abilian.services.security import SecurityService
 
 MUGSHOT_SIZE = 45
 
@@ -33,7 +36,7 @@ class JsonUsersList(base.JSONView):
     """JSON user list for datatable."""
 
     def data(self, *args, **kw) -> dict:
-        security = cast(SecurityService, get_service("security"))
+        security = cast("SecurityService", get_service("security"))
         length = int(kw.get("iDisplayLength", 0))
         start = int(kw.get("iDisplayStart", 0))
         sort_col = int(kw.get("iSortCol_0", 1))
@@ -88,9 +91,7 @@ class JsonUsersList(base.JSONView):
                 r for r in security.get_roles(user, no_group_roles=True) if r.assignable
             ]
             columns = [
-                '<a href="{url}"><img src="{src}" width="{size}" height="{size}"></a>'.format(
-                    url=user_url, src=mugshot, size=MUGSHOT_SIZE
-                ),
+                f'<a href="{user_url}"><img src="{mugshot}" width="{MUGSHOT_SIZE}" height="{MUGSHOT_SIZE}"></a>',
                 f'<a href="{user_url}">{name}</a>',
                 f'<a href="{user_url}"><em>{email}</em></a>',
                 "\u2713" if user.can_login else "",
@@ -150,7 +151,7 @@ class UserEdit(UserBase, views.ObjectEdit):
         kw["roles"] = [r.name for r in roles if r.assignable]
         return kw
 
-    def validate(self):
+    def validate(self) -> bool:
         if not super().validate():
             return False
 
@@ -158,8 +159,8 @@ class UserEdit(UserBase, views.ObjectEdit):
             # self edit: don't let user shoot themself in the foot
             self.form.can_login.data = True
             roles = self.form.roles
-            if Admin.name not in roles.data:
-                roles.data.append(Admin.name)
+            if ADMIN.name not in roles.data:
+                roles.data.append(ADMIN.name)
         return True
 
     def form_valid(self, *args, **kwargs):

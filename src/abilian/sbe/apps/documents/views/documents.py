@@ -1,7 +1,10 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import contextlib
 from datetime import datetime
+from typing import TYPE_CHECKING
 from urllib.parse import quote
 
 import sqlalchemy as sa
@@ -18,7 +21,6 @@ from flask import (
 from flask_login import current_user
 from flask_mail import Message
 from werkzeug.exceptions import BadRequest, NotFound
-from werkzeug.wrappers.response import Response
 
 from abilian.core.extensions import db, mail
 from abilian.core.signals import activity
@@ -49,6 +51,9 @@ from .util import (
     match,
 )
 from .views import community_blueprint
+
+if TYPE_CHECKING:
+    from werkzeug.wrappers.response import Response
 
 route = community_blueprint.route
 
@@ -113,8 +118,7 @@ def document_edit(doc_id, folder_id=None):
 
     if folder:
         return redirect(url_for(folder))
-    else:
-        return redirect(url_for(doc))
+    return redirect(url_for(doc))
 
 
 @route("/doc/<int:doc_id>/viewers", methods=["GET"])
@@ -193,8 +197,8 @@ def document_download(doc_id: int, attach: bool = False) -> Response:
     ):
         # Note: we omit text/html for security reasons.
         quoted_filename = quote(doc.title.encode("utf8"))
-        response.headers["content-disposition"] = 'attachment;filename="{}"'.format(
-            quoted_filename
+        response.headers["content-disposition"] = (
+            f'attachment;filename="{quoted_filename}"'
         )
 
     return response
@@ -206,7 +210,8 @@ def checkin_checkout(doc_id):
     action = request.form.get("action")
 
     if action not in ("checkout", "lock", "unlock"):
-        raise BadRequest(f"Unknown action: {action!r}")
+        msg = f"Unknown action: {action!r}"
+        raise BadRequest(msg)
 
     session = sa.orm.object_session(doc)
 
@@ -221,7 +226,7 @@ def checkin_checkout(doc_id):
 
         if action == "lock":
             return redirect(url_for(doc))
-        elif action == "checkout":
+        if action == "checkout":
             return document_download(doc_id, attach=True)
 
     if action == "unlock":
@@ -233,6 +238,7 @@ def checkin_checkout(doc_id):
         doc.updated_at = d
         session.commit()
         return redirect(url_for(doc))
+    return None
 
 
 def preview_missing_image():
@@ -255,8 +261,7 @@ def document_preview_image(doc_id: int) -> Response:
     size = int(request.args.get("size", 0))
 
     # Just in case
-    if size > MAX_PREVIEW_SIZE:
-        size = MAX_PREVIEW_SIZE
+    size = min(size, MAX_PREVIEW_SIZE)
 
     # compute image if size != standard document size
     get_image = converter.get_image if size == doc.preview_size else converter.to_image
@@ -350,10 +355,9 @@ def document_preview(doc_id):
             url_for(".document_view_pdf", community_id=g.community.slug, doc_id=doc.id)
         )
 
-    else:
-        return redirect(
-            url_for(".document_download", community_id=g.community.slug, doc_id=doc.id)
-        )
+    return redirect(
+        url_for(".document_download", community_id=g.community.slug, doc_id=doc.id)
+    )
 
 
 @route("/doc/<int:doc_id>/view_pdf")

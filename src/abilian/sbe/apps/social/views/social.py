@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """The blueprint for this app."""
 
 from __future__ import annotations
@@ -32,7 +34,7 @@ def home() -> str:
 
 
 @route("/stream/<stream_name>")
-def stream(stream_name):
+def stream(stream_name) -> None:
     pass
 
 

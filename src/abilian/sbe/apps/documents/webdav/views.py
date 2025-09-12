@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import os.path
@@ -11,9 +13,9 @@ from werkzeug.exceptions import Forbidden, NotFound
 from werkzeug.wrappers import Response
 
 from abilian.core.extensions import db
+from abilian.sbe.apps.documents import repository
 from abilian.services import get_service
 
-from .. import repository
 from .constants import (
     DAV_PROPS,
     HTTP_BAD_REQUEST,
@@ -40,13 +42,13 @@ __all__ = ["webdav"]
 
 # TODO: real logging
 class Logger:
-    def debug(self, msg):
+    def debug(self, msg) -> None:
         print(msg)
 
 
 # XXX: temporary debug info.
 @webdav.before_request
-def log_request():
+def log_request() -> None:
     litmus_msg = request.headers.get("X-Litmus")
     if litmus_msg:
         print()
@@ -56,7 +58,7 @@ def log_request():
 
 
 @webdav.before_request
-def only_admin():
+def only_admin() -> None:
     security = get_service("security")
 
     if not security.has_role(current_user, "admin"):
@@ -89,7 +91,7 @@ def get_object(path):
 
 
 @webdav.before_app_request
-def create_root_folder():
+def create_root_folder() -> None:
     # TODO: create root folder on repository startup instead.
     # assert repository.root_folder
     pass
@@ -143,7 +145,7 @@ def mkcol(path):
     if parent_folder is None:
         return "Parent collection doesn't exist.", HTTP_CONFLICT, {}
 
-    new_folder = parent_folder.create_subfolder(name=name)
+    parent_folder.create_subfolder(name=name)
     db.session.commit()
     return "", HTTP_CREATED, {}
 
@@ -158,8 +160,7 @@ def put(path):
     if obj is not None:
         if not obj.is_document:
             return "", HTTP_METHOD_NOT_ALLOWED, {}
-        else:
-            status = HTTP_NO_CONTENT
+        status = HTTP_NO_CONTENT
     else:
         parent_folder = repository.get_folder_by_path(parent_path)
         if parent_folder is None:
@@ -199,10 +200,9 @@ def copy_or_move(path):
     if dest_obj:
         if overwrite == "F":
             return "", HTTP_PRECONDITION_FAILED, {}
-        else:
-            repository.delete_object(dest_obj)
-            db.session.flush()
-            status = HTTP_NO_CONTENT
+        repository.delete_object(dest_obj)
+        db.session.flush()
+        status = HTTP_NO_CONTENT
 
     dest_folder = repository.get_folder_by_path(dest_parent_path)
     if dest_folder is None:
@@ -229,7 +229,7 @@ def propfind(path):
     print(request.data)
 
     try:
-        propfind = Propfind(request.data)
+        Propfind(request.data)
     except XMLSyntaxError:
         return "Malformed XML document.", HTTP_BAD_REQUEST, {}
 
@@ -257,9 +257,8 @@ def lock(path):
     if repository.is_locked(obj):
         if not repository.can_unlock(obj):
             return "", 423, {}
-        else:
-            headers = {"Lock-Token": f"urn:uuid:{token}"}
-            return "TODO", HTTP_OK, headers
+        headers = {"Lock-Token": f"urn:uuid:{token}"}
+        return "TODO", HTTP_OK, headers
 
     token = repository.lock(obj)
 
@@ -319,10 +318,9 @@ def unlock(path):
     if repository.is_locked(obj):
         if not repository.can_unlock(obj):
             return "", 423, {}
-        else:
-            repository.unlock(obj)
-            db.session.commit()
-            return "", HTTP_NO_CONTENT, {}
+        repository.unlock(obj)
+        db.session.commit()
+        return "", HTTP_NO_CONTENT, {}
 
     return "", HTTP_NO_CONTENT, {}
     #     if (backend.isLocked(doc.getRef())) {

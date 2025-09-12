@@ -1,13 +1,13 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Dramatiq tasks related to documents."""
 
 from __future__ import annotations
 
-from collections.abc import Iterator
 from contextlib import contextmanager
 from typing import TYPE_CHECKING
 
 from loguru import logger
-from sqlalchemy.orm import Session
 
 from abilian.core.dramatiq.singleton import dramatiq
 from abilian.core.extensions import db
@@ -15,6 +15,10 @@ from abilian.services import converter, get_service
 from abilian.services.conversion import ConversionError, HandlerNotFoundError
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+    from sqlalchemy.orm import Session
+
     from .models import Document
 
 
@@ -64,7 +68,7 @@ def process_document(document_id: int) -> None:
         document_id=document_id,
     )
 
-    with get_document(document_id) as (session, document):
+    with get_document(document_id) as (_session, document):
         if document is None:
             return
 
@@ -94,7 +98,7 @@ def _run_antivirus(document: Document) -> bool | None:
 @dramatiq.actor
 def antivirus_scan(document_id):
     """Return antivirus.scan() result."""
-    with get_document(document_id) as (session, document):
+    with get_document(document_id) as (_session, document):
         if document is None:
             return None
         return _run_antivirus(document)
@@ -104,7 +108,7 @@ def antivirus_scan(document_id):
 def preview_document(document_id: int) -> None:
     """Compute the document preview images with its default preview size."""
 
-    with get_document(document_id) as (session, document):
+    with get_document(document_id) as (_session, document):
         logger.debug(
             "preview_document() document_id={document_id} document={document}",
             document_id=document_id,
@@ -146,7 +150,7 @@ def convert_document_content(document_id: int) -> None:
         document_id=document_id,
     )
 
-    with get_document(document_id) as (session, doc):
+    with get_document(document_id) as (_session, doc):
         if doc is None:
             # deleted after task queued, but before task run
             return

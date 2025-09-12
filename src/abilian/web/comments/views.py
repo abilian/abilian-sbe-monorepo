@@ -1,12 +1,14 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
 
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 import sqlalchemy as sa
 import sqlalchemy.orm
-from flask.blueprints import BlueprintSetupState
 from flask_login import current_user
 from werkzeug.exceptions import BadRequest
 
@@ -26,6 +28,9 @@ from abilian.web.views.object import (
 
 from .forms import CommentForm
 
+if TYPE_CHECKING:
+    from flask.blueprints import BlueprintSetupState
+
 bp = AccessControlBlueprint("comments", __name__, url_prefix="/comments")
 
 
@@ -35,7 +40,7 @@ def _default_comment_view(obj, obj_type, obj_id, **kwargs):
 
 
 @bp.record_once
-def register_default_view(state: BlueprintSetupState):
+def register_default_view(state: BlueprintSetupState) -> None:
     state.app.default_view.register(Comment, _default_comment_view)
 
 
@@ -56,10 +61,12 @@ class BaseCommentView:
             self.entity = Entity.query.get(entity_id)
 
         if self.entity is None:
-            raise BadRequest("No entity to comment")
+            msg = "No entity to comment"
+            raise BadRequest(msg)
 
         if not is_commentable(self.entity):
-            raise BadRequest("This entity is not commentable")
+            msg = "This entity is not commentable"
+            raise BadRequest(msg)
 
         actions.context["object"] = self.entity
         return args, kwargs
@@ -88,7 +95,7 @@ class CommentEditView(BaseCommentView, ObjectEdit):
     def get_form_buttons(self, *args, **kwargs):
         return [COMMENT_BUTTON, CANCEL_BUTTON]
 
-    def after_populate_obj(self):
+    def after_populate_obj(self) -> None:
         obj_meta = self.obj.meta.setdefault("abilian.core.models.comment", {})
         history = obj_meta.setdefault("history", [])
         history.append(
@@ -110,7 +117,7 @@ class CommentCreateView(BaseCommentView, ObjectCreate):
 
     _message_success = _l("Comment added")
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
     def init_object(self, args, kwargs):

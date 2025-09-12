@@ -1,30 +1,34 @@
-"""Extension for sending informations to upstream server."""
+# Copyright (c) 2012-2024, Abilian SAS
+
+"""Extension for sending information to upstream server."""
 
 from __future__ import annotations
 
 import typing
 from typing import Any
 
-from flask import Flask
 from flask.globals import request_ctx
 from flask.signals import request_finished, request_started
-from flask.wrappers import Response
 
 from abilian.core.signals import user_loaded
 
 if typing.TYPE_CHECKING:
+    from flask import Flask
+    from flask.wrappers import Response
+
     from abilian.core.models.subjects import User
 
 
 class UpstreamInfo:
-    """Extension for sending informations to upstream server."""
+    """Extension for sending information to upstream server."""
 
-    def __init__(self, app: Flask | None = None):
+    def __init__(self, app: Flask | None = None) -> None:
         if app is not None:
             self.init_app(app)
 
-    def init_app(self, app: Flask):
+    def init_app(self, app: Flask) -> None:
         app.extensions["upstream"] = self
+
         request_started.connect(self.request_started, sender=app)
         request_finished.connect(self.request_finished, sender=app)
         user_loaded.connect(self.user_loaded, sender=app)
@@ -37,10 +41,10 @@ class UpstreamInfo:
                 val = frozenset(val)
             config[key] = val
 
-    def request_started(self, app: Flask):
+    def request_started(self, app: Flask) -> None:
         request_ctx.upstream_info = {"Username": "Anonymous"}
 
-    def request_finished(self, app: Flask, response: Response):
+    def request_finished(self, app: Flask, response: Response) -> None:
         info = request_ctx.upstream_info
         config = app.config
         default_enabled = bool(config["ABILIAN_UPSTREAM_INFO_ENABLED"])
@@ -56,7 +60,7 @@ class UpstreamInfo:
             header = f"X-{key}"
             response.headers[header] = val
 
-    def user_loaded(self, app: Flask, user: User, *args: Any, **kwargs: Any):
+    def user_loaded(self, app: Flask, user: User, *args: Any, **kwargs: Any) -> None:
         request_ctx.upstream_info["Username"] = user.email
 
 

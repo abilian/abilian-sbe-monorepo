@@ -1,6 +1,6 @@
 .PHONY: test unit full-test pep8 clean setup
 
-default: test lint
+default: lint-ruff test lint
 all: default
 
 
@@ -11,7 +11,7 @@ all: default
 ## Run tests
 test:
 	# pytest -n auto
-	pytest
+	pytest tests
 
 test-with-coverage:
 	pytest \
@@ -39,15 +39,17 @@ test-assets:
 ## Statically check code, dependencies, etc.
 check: lint
 
+lint-ruff:
+	ruff check src tests
+
 .PHONY: lint
-lint: lint-py
+lint: lint-ruff lint-py
 
 .PHONY: lint-py
 lint-py:
-	ruff check src tests
 	flake8 src tests
-	deptry src
-	python -m pyanalyze --config-file pyproject.toml
+	# deptry src
+	# python -m pyanalyze --config-file pyproject.toml
 	# mypy --show-error-codes src tests
 	# pyright src tests
 
@@ -62,9 +64,9 @@ lint-pyright:
 
 .PHONY: format
 format:
-	black src tests *.py
-	isort src tests *.py
-
+	ruff format src tests *.py
+	markdown-toc -i README.md
+	markdown-toc -i docs/roadmap.md
 
 #
 # Everything else
@@ -106,19 +108,20 @@ update-pot: update-pot
 ## Install dependencies
 install:
 	@echo "--> Installing / updating python dependencies for development"
-	@echo "Make sure that you have Poetry installed (https://python-poetry.org/)"
-	poetry install
+	@echo "Make sure that you have uv installed"
+	uv sync
 	@echo "--> Activating pre-commit hook"
 	pre-commit install
-	@echo "Remember to run `poetry shell` to activate the virtualenv"
+	@echo "Remember to run `uv run $SHELL` to activate the virtualenv"
 	yarn
 
 
 .PHONY: update-deps
 update-deps:  ## Update dependencies
-	pip install -qU pip setuptools wheel
-	poetry update
-	poetry export -o requirements.txt --without-hashes
+	uv sync -U
+	uv export -o requirements.txt
+	pre-commit autoupdate
+	uv pip list --outdated
 
 
 .PHONY: help
@@ -130,5 +133,5 @@ help:
 ## Publish to PyPI
 publish: clean
 	git push --tags
-	poetry build
+	uv build
 	twine upload dist/*

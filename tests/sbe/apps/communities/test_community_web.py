@@ -1,16 +1,22 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 
 from flask import url_for
-from flask.testing import FlaskClient
 
-from abilian.core.sqlalchemy import SQLAlchemy
-from abilian.sbe.app import Application
 from abilian.sbe.apps.communities.models import Community
 from abilian.services import security_service
-from abilian.services.security import Admin
+from abilian.services.security import ADMIN
 from tests.util import client_login
+
+if TYPE_CHECKING:
+    from flask.testing import FlaskClient
+
+    from abilian.app import Application
+    from abilian.core.sqlalchemy import SQLAlchemy
 
 
 def test_index(
@@ -60,7 +66,7 @@ def test_new(
         response = client.get(url_for("communities.new"))
         assert response.status_code == 403
 
-    security_service.grant_role(user, Admin)
+    security_service.grant_role(user, ADMIN)
     db.session.flush()
 
     with client_login(client, user):
@@ -80,7 +86,7 @@ def test_community_settings(
         response = client.get(url)
         assert response.status_code == 403
 
-        security_service.grant_role(user, Admin)
+        security_service.grant_role(user, ADMIN)
         response = client.get(url)
         assert response.status_code == 200
 
@@ -118,7 +124,7 @@ def test_members(
         response = client.post(url, data=data)
         assert response.status_code == 403
 
-        security_service.grant_role(user1, Admin)
+        security_service.grant_role(user1, ADMIN)
 
         data = {"action": "add-user-role", "user": user2.id, "role": "member"}
         response = client.post(url, data=data, follow_redirects=True)

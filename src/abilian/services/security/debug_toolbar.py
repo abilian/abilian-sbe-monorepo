@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
@@ -11,7 +13,7 @@ from abilian.i18n import _
 from abilian.services import get_service
 from abilian.web.action import actions
 
-from .models import Anonymous
+from .models import ANONYMOUS
 
 
 class SecurityInfoDebugPanel(DebugPanel):
@@ -46,7 +48,7 @@ class SecurityInfoDebugPanel(DebugPanel):
     def title(self):
         return self.nav_title()
 
-    def url(self):
+    def url(self) -> str:
         return ""
 
     def content(self):
@@ -62,7 +64,7 @@ class SecurityInfoDebugPanel(DebugPanel):
                 roles[r] = {"anonymous": False, "users": set(), "groups": set()}
 
             info = roles[r]
-            if principal is Anonymous:
+            if principal is ANONYMOUS:
                 info["anonymous"] = True
             elif isinstance(principal, Group):
                 info["groups"].add(principal)

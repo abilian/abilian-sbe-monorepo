@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 from datetime import datetime
@@ -15,7 +17,7 @@ def test_create_event() -> None:
 
 
 @mark.skip
-def test(community1, client):
+def test(community1, client) -> None:
     response = client.get(url_for("calendar.index", community_id=community1.slug))
     assert response.status_code == 200
 

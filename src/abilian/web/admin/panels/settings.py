@@ -1,19 +1,23 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
 
 from datetime import timedelta
+from typing import TYPE_CHECKING
 
 from flask import current_app, flash, redirect, render_template, request, url_for
-from flask_babel import gettext as _
-from flask_babel import lazy_gettext as _l
-from flask_babel.speaklater import LazyString
+from flask_babel import gettext as _, lazy_gettext as _l
 from jinja2 import Template
 
 from abilian.core.extensions import db
 from abilian.services import get_service
 from abilian.web import csrf
 from abilian.web.admin import AdminPanel
+
+if TYPE_CHECKING:
+    from flask_babel.speaklater import LazyString
 
 
 class Key:
@@ -28,7 +32,7 @@ class Key:
         type_: str,
         label: LazyString | None = None,
         description: LazyString | None = None,
-    ):
+    ) -> None:
         self.id = id
         self.type = type_
         self.label = label
@@ -44,7 +48,7 @@ class Key:
 class SessionLifeTimeKey(Key):
     template = "admin/settings_session_lifetime.html"
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(
             "PERMANENT_SESSION_LIFETIME",
             "timedelta",
@@ -74,9 +78,9 @@ class SessionLifeTimeKey(Key):
         if td:
             if field == "days":
                 return td.days
-            elif field == "hours":
+            if field == "hours":
                 return int(td.seconds / 3600)
-            elif field == "minutes":
+            if field == "minutes":
                 return int(td.seconds % 3600 / 60)
         return 0
 

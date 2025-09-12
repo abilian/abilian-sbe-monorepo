@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Validators.
 
 TODO: most of this is currently only stubs and needs to be implemented.
@@ -8,12 +10,15 @@ validation code.
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 from wtforms import Field, Form, validators
 
 from abilian.i18n import _, _n
 from abilian.services import get_service
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 __all__ = (
     "VALIDATORS",
@@ -39,7 +44,7 @@ __all__ = (
 
 class Rule:
     @property
-    def rule(self):
+    def rule(self) -> None:
         return None
 
 
@@ -98,10 +103,10 @@ class Length(Rule):
     provided depending on the existence of min and max.
     """
 
-    def __init__(self, min=-1, max=-1, message=None):
-        assert (
-            min != -1 or max != -1
-        ), "At least one of `min` or `max` must be specified."
+    def __init__(self, min=-1, max=-1, message=None) -> None:
+        assert min != -1 or max != -1, (
+            "At least one of `min` or `max` must be specified."
+        )
         assert max == -1 or min <= max, "`min` cannot be more than `max`."
         self.min = min
         self.max = max
@@ -241,7 +246,7 @@ def siret_validator() -> Callable:
     """Validate a SIRET: check its length (14), its final code, and pass it
     through the Luhn algorithm."""
 
-    def _validate_siret(form: Form, field: Field, siret: str = ""):
+    def _validate_siret(form: Form, field: Field, siret: str = "") -> None:
         """SIRET validator.
 
         A WTForm validator wants a form and a field as parameters. We

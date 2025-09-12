@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Subject classes (i.e. people, groups, etc.).
 
 See ICOM-ics-v1.0 "Subject Branch".
@@ -12,15 +14,15 @@ import random
 import string
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
+from typing import TYPE_CHECKING
 
 import bcrypt
 import sqlalchemy as sa
 from flask_login import UserMixin
-from flask_sqlalchemy import BaseQuery
+from flask_sqlalchemy.query import Query
 from sqlalchemy.event import listens_for
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import backref, deferred, relationship
-from sqlalchemy.orm.mapper import Mapper
 from sqlalchemy.schema import Column, ForeignKey, UniqueConstraint
 from sqlalchemy.types import Boolean, DateTime, Integer, LargeBinary, UnicodeText
 
@@ -28,6 +30,9 @@ from abilian.core import sqlalchemy as sa_types
 from abilian.core.util import fqcn
 
 from .base import SEARCHABLE, SYSTEM, IdMixin, Indexable, TimestampedMixin, db
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm.mapper import Mapper
 
 __all__ = (
     "ClearPasswordStrategy",
@@ -111,7 +116,7 @@ class ClearPasswordStrategy(PasswordStrategy):
     """
 
     @property
-    def name(self):
+    def name(self) -> str:
         return "clear"
 
     def authenticate(self, user, password):
@@ -127,7 +132,7 @@ class BcryptPasswordStrategy(PasswordStrategy):
     """Hash passwords using bcrypt."""
 
     @property
-    def name(self):
+    def name(self) -> str:
         return "bcrypt"
 
     def authenticate(self, user: User, password: str) -> bool:
@@ -148,7 +153,7 @@ class BcryptPasswordStrategy(PasswordStrategy):
         return bcrypt.hashpw(password, bcrypt.gensalt()).decode("utf-8")
 
 
-class UserQuery(BaseQuery):
+class UserQuery(Query):
     def get_by_email(self, email):
         return self.filter_by(email=email).one()
 
@@ -183,7 +188,7 @@ def set_entity_type(cls: type[User | Group]) -> type[User | Group]:
 class User(Principal, UserMixin, db.Model):
     __tablename__ = "user"
     __editable__ = ["first_name", "last_name", "email", "password"]
-    __exportable__ = __editable__ + ["created_at", "updated_at", "id"]
+    __exportable__ = [*__editable__, "created_at", "updated_at", "id"]
 
     __password_strategy__ = BcryptPasswordStrategy()
 
@@ -213,7 +218,7 @@ class User(Principal, UserMixin, db.Model):
         backref="followees",
     )
 
-    def __init__(self, password=None, **kwargs):
+    def __init__(self, password=None, **kwargs) -> None:
         Principal.__init__(self)
         UserMixin.__init__(self)
         db.Model.__init__(self, **kwargs)
@@ -225,41 +230,42 @@ class User(Principal, UserMixin, db.Model):
     def authenticate(self, password: str) -> bool:
         if self.password and self.password != "*":  # noqa: S105
             return self.__password_strategy__.authenticate(self, password)
-        else:
-            return False
+        return False
 
-    def set_password(self, password: str):
+    def set_password(self, password: str) -> None:
         """Encrypts and sets password."""
         self.password = self.__password_strategy__.process(self, password)
 
-    def follow(self, followee):
+    def follow(self, followee) -> None:
         if followee == self:
-            raise Exception("User can't follow self")
+            msg = "User can't follow self"
+            raise Exception(msg)
         self.followees.append(followee)
 
-    def unfollow(self, followee):
+    def unfollow(self, followee) -> None:
         if followee == self:
-            raise Exception("User can't follow self")
+            msg = "User can't follow self"
+            raise Exception(msg)
         i = self.followees.index(followee)
         del self.followees[i]
 
-    def join(self, group):
+    def join(self, group) -> None:
         self.groups.add(group)
 
-    def leave(self, group):
+    def leave(self, group) -> None:
         if group in self.groups:
             self.groups.remove(group)
 
     #
     # Boolean properties
     #
-    def is_following(self, other):
+    def is_following(self, other) -> bool:
         return other in self.followees
 
-    def is_member_of(self, group):
+    def is_member_of(self, group) -> bool:
         return self in group.members
 
-    def is_admin_of(self, group):
+    def is_admin_of(self, group) -> bool:
         return self in group.admins
 
     @property
@@ -286,19 +292,13 @@ class User(Principal, UserMixin, db.Model):
     def __str__(self) -> str:
         return self.name
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         cls = self.__class__
-        return "<{mod}.{cls} id={id!r} email={email!r} at 0x{addr:x}>".format(
-            mod=cls.__module__,
-            cls=cls.__name__,
-            id=self.id,
-            email=self.email,
-            addr=id(self),
-        )
+        return f"<{cls.__module__}.{cls.__name__} id={self.id!r} email={self.email!r} at 0x{id(self):x}>"
 
 
 @listens_for(User, "mapper_configured", propagate=True)
-def _add_user_indexes(mapper: Mapper, cls: type[User]):
+def _add_user_indexes(mapper: Mapper, cls: type[User]) -> None:
     # this is a functional index (indexes on a function result), we cannot define
     # it in __table_args__.
     #
@@ -314,7 +314,7 @@ class Group(Principal, db.Model):
     __indexable__ = False
     __tablename__ = "group"
     __editable__ = ["name", "description"]
-    __exportable__ = __editable__ + ["created_at", "updated_at", "id"]
+    __exportable__ = [*__editable__, "created_at", "updated_at", "id"]
 
     name = Column(UnicodeText, nullable=False, info=SEARCHABLE)
     description = Column(UnicodeText, info=SEARCHABLE)

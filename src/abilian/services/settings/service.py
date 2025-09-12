@@ -1,14 +1,18 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
 
-from collections.abc import Iterator
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from abilian.core.extensions import db
 from abilian.services import Service
 
 from .models import Setting
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 class SettingsNamespace:
@@ -17,7 +21,7 @@ class SettingsNamespace:
     Basically it prefixes keys with namespace name and a colon.
     """
 
-    def __init__(self, name: str, service: SettingsService):
+    def __init__(self, name: str, service: SettingsService) -> None:
         self.name = name
         self.service = service
 
@@ -98,14 +102,13 @@ class SettingsService(Service):
         s = self._get_setting(key)
         return s.value
 
-    def set(self, key: str, value: Any, type_: str | None = None):
+    def set(self, key: str, value: Any, type_: str | None = None) -> None:
         try:
             s = self._get_setting(key)
         except KeyError as e:
             if not type_:
-                raise ValueError(
-                    "tried to set a new key without specifiying its type"
-                ) from e
+                msg = "tried to set a new key without specifiying its type"
+                raise ValueError(msg) from e
             s = Setting(key=key, type=type_)
 
         # Always add to session. This covers the case delete(key);set(key).
@@ -113,7 +116,7 @@ class SettingsService(Service):
         db.session.add(s)
         s.value = value
 
-    def delete(self, key: str, silent: bool = True):
+    def delete(self, key: str, silent: bool = True) -> None:
         try:
             s = self._get_setting(key)
         except KeyError:

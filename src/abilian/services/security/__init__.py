@@ -1,27 +1,29 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 # ruff: noqa: RUF022
 from __future__ import annotations
 
 from .models import (
+    ADMIN,
+    ANONYMOUS,
+    AUTHENTICATED,
     CREATE,
+    CREATOR,
     DELETE,
     MANAGE,
+    MANAGER,
+    OWNER,
     READ,
+    READER,
     WRITE,
-    Admin,
-    Anonymous,
-    Authenticated,
-    Creator,
+    WRITER,
     InheritSecurity,
-    Manager,
-    Owner,
     Permission,
     PermissionAssignment,
-    Reader,
     Role,
     RoleAssignment,
     RoleType,
     SecurityAudit,
-    Writer,
 )
 from .service import SecurityService, security
 
@@ -33,14 +35,14 @@ __all__ = [
     "READ",
     "WRITE",
     # Roles
-    "Admin",
-    "Anonymous",
-    "Authenticated",
-    "Creator",
-    "Manager",
-    "Owner",
-    "Reader",
-    "Writer",
+    "ADMIN",
+    "ANONYMOUS",
+    "AUTHENTICATED",
+    "CREATOR",
+    "MANAGER",
+    "OWNER",
+    "READER",
+    "WRITER",
     #
     "InheritSecurity",
     "Permission",

@@ -1,31 +1,34 @@
 # Cruft
+*,cover
+*.egg
+*.egg-info
+*.mo
+*.orig
+*.prof
+*.pyc
+*.stats
+*.swp
 .DS_Store
 .cache
 .coverage
+.dmypy.json
 .idea
 .mypy_cache
 .tox
 .vagrant
 .venv
-*.orig
-*.pyc
-*.egg
-*.egg-info
-*.swp
-*.prof
-*.stats
-*.mo
-*,cover
-/.eggs/
+.eggs
 coverage.xml
 package-lock.json
 yarn.lock
 
-# Secret
-config
+# Secret / local settings
+.aider*
 .env
-ssl
+.envrc
+config
 sandbox
+ssl
 
 
 # More

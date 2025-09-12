@@ -1,17 +1,21 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Jinja2 extensions."""
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import lxml.html
 from flask import Flask, current_app, g
 from flask.signals import got_request_exception, request_started
 from jinja2 import nodes
 from jinja2.ext import Extension as JinjaExtension
-from jinja2.nodes import CallBlock
-from jinja2.parser import Parser
-from jinja2.runtime import Macro
+
+if TYPE_CHECKING:
+    from jinja2.nodes import CallBlock
+    from jinja2.parser import Parser
+    from jinja2.runtime import Macro
 
 
 class DeferredJS:
@@ -19,11 +23,11 @@ class DeferredJS:
 
     name = "deferred_js"
 
-    def __init__(self, app: Flask | None = None):
+    def __init__(self, app: Flask | None = None) -> None:
         if app is not None:
             self.init_app(app)
 
-    def init_app(self, app: Flask):
+    def init_app(self, app: Flask) -> None:
         if self.name in app.extensions:
             return
 
@@ -31,18 +35,18 @@ class DeferredJS:
         request_started.connect(self.reset_request, app)
         got_request_exception.connect(self.reset_request, app)
 
-    def reset_request(self, sender: Flask, **extra: Any):
+    def reset_request(self, sender: Flask, **extra: Any) -> None:
         self.reset_deferred()
 
     @staticmethod
-    def reset_deferred():
+    def reset_deferred() -> None:
         g.deferred_js = []
 
 
 class DeferredJSExtension(JinjaExtension):
     """Put JS fragment at the end of the document in a script tag.
 
-    The JS fragment can contains <script> tag so that your favorite
+    The JS fragment can contain <script> tag so that your favorite
     editor keeps doing proper indentation, syntax highlighting...
     """
 
@@ -55,7 +59,7 @@ class DeferredJSExtension(JinjaExtension):
 
         # now we parse body of the block
         body = parser.parse_statements(
-            ["name:enddeferJS", "name:enddeferredJS"], drop_needle=True
+            ("name:enddeferJS", "name:enddeferredJS"), drop_needle=True
         )
 
         method = "defer_nodes" if tag == "deferJS" else "collect_deferred"

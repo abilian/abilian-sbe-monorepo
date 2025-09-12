@@ -1,132 +1,76 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Base Flask application class, used by tests or to be extended in real
 applications."""
 
 from __future__ import annotations
 
 import errno
-import importlib
-
-# Temps monkey patches
 import os
 import sys
 import warnings
-from collections.abc import Callable, Collection
 from functools import cached_property, partial
-from itertools import chain, count
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import defusedxml
-import jinja2
 import sqlalchemy as sa
 import sqlalchemy.exc
-from flask import (
-    Blueprint,
-    Flask,
-    abort,
-    appcontext_pushed,
-    g,
-    request,
-    request_started,
-)
-from flask.config import Config, ConfigAttribute
-from flask_migrate import Migrate
-from flask_tailwind import Tailwind
-from flask_talisman import DEFAULT_CSP_POLICY, Talisman
+from flask import Flask
+from flask.config import ConfigAttribute
 from loguru import logger
 
 import abilian.core.util
 import abilian.i18n
 from abilian.config import default_config
 from abilian.core import extensions, signals
-from abilian.services import (
-    Service,
-    activity_service,
-    antivirus,
-    audit_service,
-    auth_service,
-    blob_store,
-    conversion_service,
-    index_service,
-    preferences_service,
-    security_service,
-    session_blob_store,
-    settings_service,
-    vocabularies_service,
-)
-from abilian.services.security import Anonymous
-from abilian.services.security.models import Role
-from abilian.web import csrf
+from abilian.core.plugin_manager import PluginManager
+from abilian.core.service_manager import ServiceManager
+from abilian.lib.scanner import scan_package
+from abilian.services import auth_service
+from abilian.services.security import ANONYMOUS
+from abilian.setup import setup_app
 from abilian.web.access_blueprint import allow_access_for_roles
-from abilian.web.action import actions
-from abilian.web.admin import Admin
-from abilian.web.assets import AssetManagerMixin
 from abilian.web.errors import ErrorManagerMixin
 from abilian.web.jinja import JinjaManagerMixin
-from abilian.web.nav import BreadcrumbItem
 from abilian.web.util import send_file_from_directory
 from abilian.web.views import Registry as ViewRegistry
 
+if TYPE_CHECKING:
+    from collections.abc import Callable, Collection
+
+    from abilian.services.security.models import Role
+
+__all__ = ["Application", "create_app"]
+
 defusedxml.defuse_stdlib()
-
-db = extensions.db
-__all__ = ["Application", "ServiceManager", "create_app"]
-
 # Silence those warnings for now.
 warnings.simplefilter("ignore", category=sa.exc.SAWarning)
 
-
-class ServiceManager:
-    """Mixin that provides lifecycle (register/start/stop) support for
-    services."""
-
-    services: dict[str, Service]
-
-    def __init__(self):
-        self.services = {}
-
-    def start_services(self):
-        for svc in self.services.values():
-            svc.start()
-
-    def stop_services(self):
-        for svc in self.services.values():
-            svc.stop()
+db = extensions.db
 
 
-class PluginManager:
-    """Mixin that provides support for loading plugins."""
+def create_app(config: type | None = None, plugins=None, **kw: Any) -> Application:
+    app = Application(**kw)
 
-    config: Config
+    # 1: Ensure app.config is properly set up
+    app.configure(config)
+    app.check_instance_folder(create=True)
 
-    #: Custom apps may want to always load some plugins: list them here.
-    APP_PLUGINS = [
-        "abilian.web.search",
-        "abilian.web.tags",
-        "abilian.web.comments",
-        "abilian.web.uploads",
-        "abilian.web.attachments",
-    ]
+    # 2: Scan to pre-register callbacks, services, etc.
+    scan_package("abilian.cli")
 
-    def register_plugin(self, name: str):
-        """Load and register a plugin given its package name."""
-        logger.info("Registering plugin: {name}", name=name)
-        module = importlib.import_module(name)
-        module.register_plugin(self)  # type: ignore
+    # 3: Perform registrations on app
+    setup_app(app, plugins=plugins)
 
-    def register_plugins(self):
-        """Load plugins listed in config variable 'PLUGINS'."""
-        registered = set()
-        for plugin_fqdn in chain(self.APP_PLUGINS, self.config["PLUGINS"]):
-            if plugin_fqdn not in registered:
-                self.register_plugin(plugin_fqdn)
-                registered.add(plugin_fqdn)
+    # 4: Perform post-registration actions
+    signals.components_registered.send(app)
+
+    return app
 
 
 class Application(
-    ServiceManager,
-    PluginManager,
-    AssetManagerMixin,
+    # AssetManagerMixin,
     ErrorManagerMixin,
     JinjaManagerMixin,
     Flask,
@@ -148,109 +92,30 @@ class Application(
     #: json serializable dict to land in Javascript under Abilian.api
     js_api: dict[str, Any]
 
-    def __init__(self, name: Any | None = None, *args: Any, **kwargs: Any):
+    def __init__(self, name: Any | None = None, *args: Any, **kwargs: Any) -> None:
         name = name or __name__
 
         Flask.__init__(self, name, *args, **kwargs)
 
-        ServiceManager.__init__(self)
-        PluginManager.__init__(self)
+        self.service_manager = ServiceManager()
+        self.plugin_manager = PluginManager(self)
+
         JinjaManagerMixin.__init__(self)
 
         self.default_view = ViewRegistry()
         self.js_api = {}
 
-    def setup(self, config: type | None):
-        self.configure(config)
+    @cached_property
+    def data_dir(self) -> Path:
+        path = Path(self.instance_path, "data")
+        if not path.exists():
+            path.mkdir(0o775, parents=True)
 
-        # At this point we have loaded all external config files:
-        # SQLALCHEMY_DATABASE_URI is definitively fixed (it cannot be defined in
-        # database AFAICT), and LOGGING_FILE cannot be set in DB settings.
-        self.setup_logging()
+        return path
 
-        appcontext_pushed.connect(self.install_id_generator)
-
-        if not self.testing:
-            self.init_sentry()
-
-        # time to load config bits from database: 'settings'
-        # First init required stuff: db to make queries, and settings service
-        extensions.db.init_app(self)
-        settings_service.init_app(self)
-
-        self.register_jinja_loaders(jinja2.PackageLoader("abilian.web"))
-        self.init_assets()
-        self.install_default_handlers()
-
-        with self.app_context():
-            self.init_extensions()
-            self.register_plugins()
-            self.add_access_controller(
-                "static", allow_access_for_roles(Anonymous), endpoint=True
-            )
-            # debugtoolbar: this is needed to have it when not authenticated
-            # on a private site. We cannot do this in init_debug_toolbar,
-            # since auth service is not yet installed.
-            self.add_access_controller(
-                "debugtoolbar", allow_access_for_roles(Anonymous)
-            )
-            self.add_access_controller(
-                "_debug_toolbar.static",
-                allow_access_for_roles(Anonymous),
-                endpoint=True,
-            )
-
-        # TODO: maybe reenable later
-        # self.maybe_register_setup_wizard()
-
-        self._finalize_assets_setup()
-
-        # At this point all models should have been imported: time to configure
-        # mappers. Normally Sqlalchemy does it when needed but mappers may be
-        # configured inside sa.orm.class_mapper() which hides a
-        # misconfiguration: if a mapper is misconfigured its exception is
-        # swallowed by class_mapper(model) results in this laconic
-        # (and misleading) message: "model is not mapped"
-        sa.orm.configure_mappers()
-
-        signals.components_registered.send(self)
-
-        request_started.connect(self.setup_nav_and_breadcrumbs)
-
-        # Initialize Abilian core services.
-        # Must come after all entity classes have been declared.
-        # Inherited from ServiceManager. Will need some configuration love
-        # later.
-        if not self.testing:
-            with self.app_context():
-                self.start_services()
-
-        setup(self)
-
-    def setup_nav_and_breadcrumbs(self, app: Flask):
-        """Listener for `request_started` event.
-
-        If you want to customize first items of breadcrumbs, override
-        :meth:`init_breadcrumbs`
-        """
-        g.nav = {"active": None}  # active section
-        g.breadcrumb = []
-        self.init_breadcrumbs()
-
-    def init_breadcrumbs(self):
-        """Insert the first element in breadcrumbs.
-
-        This happens during `request_started` event, which is triggered
-        before any url_value_preprocessor and `before_request` handlers.
-        """
-        g.breadcrumb.append(BreadcrumbItem(icon="home", url=f"/{request.script_root}"))
-
-    # TODO: remove
-    def install_id_generator(self, sender: Flask, **kwargs: Any):
-        g.id_generator = count(start=1)
-
-    def configure(self, config: type | None):
+    def configure(self, config: type | None) -> None:
         if config:
+            # This is usually the case for tests
             self.config.from_object(config)
         else:
             self.config.from_prefixed_env()
@@ -273,7 +138,7 @@ class Application(
             logger.error("You must change the default secret config ('SECRET_KEY')")
             sys.exit()
 
-    def check_instance_folder(self, create=False):
+    def check_instance_folder(self, create=False) -> None:
         """Verify instance folder exists, is a directory, and has necessary
         permissions.
 
@@ -288,116 +153,19 @@ class Application(
         if not path.exists():
             if create:
                 logger.info("Create instance folder: {path}", path=str(path))
-                path.mkdir(0o775, parents=True)
+                path.mkdir(0o775, parents=True, exist_ok=True)
             else:
                 err = "Instance folder does not exists"
                 eno = errno.ENOENT
         elif not path.is_dir():
             err = "Instance folder is not a directory"
             eno = errno.ENOTDIR
-        elif not os.access(str(path), os.R_OK | os.W_OK | os.X_OK):
+        elif not os.access(path, os.R_OK | os.W_OK | os.X_OK):
             err = 'Require "rwx" access rights, please verify permissions'
             eno = errno.EPERM
 
         if err:
             raise OSError(eno, err, str(path))
-
-    @cached_property
-    def data_dir(self) -> Path:
-        path = Path(self.instance_path, "data")
-        if not path.exists():
-            path.mkdir(0o775, parents=True)
-
-        return path
-
-    def _init_babel(self):
-        # Babel (for i18n)
-        babel = abilian.i18n.babel
-        # Temporary (?) workaround
-        babel.locale_selector_func = None
-        babel.timezone_selector_func = None
-
-        babel.init_app(self)
-
-        babel.add_translations("wtforms", translations_dir="locale", domain="wtforms")
-        babel.add_translations("abilian")
-
-    def init_extensions(self):
-        """Initialize flask extensions, helpers and services."""
-
-        self._init_babel()
-
-        extensions.redis.init_app(self)
-        extensions.mail.init_app(self)
-        extensions.deferred_js.init_app(self)
-        extensions.upstream_info.extension.init_app(self)
-        actions.init_app(self)
-
-        # auth_service installs a `before_request` handler (actually it's
-        # flask-login). We want to authenticate user ASAP, so that sentry and
-        # logs can report which user encountered any error happening later,
-        # in particular in a before_request handler (like csrf validator)
-        auth_service.init_app(self)
-
-        # webassets
-        self.setup_asset_extension()
-        self.register_base_assets()
-
-        # Flask-Migrate
-        Migrate(self, db)
-
-        # CSRF by default
-        if self.config.get("WTF_CSRF_ENABLED"):
-            # extensions.csrf IS original wtf_csrf
-            # abilian_csrf is
-            # from .csrf import abilian_csrf
-            # from .csrf import wtf_csrf as csrf
-
-            extensions.csrf.init_app(self)  # double initialization
-            self.extensions["csrf"] = extensions.csrf
-            extensions.abilian_csrf.init_app(self)
-
-        self.register_blueprint(csrf.csrf_blueprint)
-
-        # images blueprint
-        from .web.views.images import images_bp
-
-        self.register_blueprint(images_bp)
-
-        # Abilian Core services
-        security_service.init_app(self)
-        blob_store.init_app(self)
-        session_blob_store.init_app(self)
-        audit_service.init_app(self)
-        index_service.init_app(self)
-        activity_service.init_app(self)
-        preferences_service.init_app(self)
-        conversion_service.init_app(self)
-        vocabularies_service.init_app(self)
-        antivirus.init_app(self)
-
-        from .web.preferences.user import UserPreferencesPanel
-
-        preferences_service.register_panel(UserPreferencesPanel(), self)
-
-        from .web.coreviews import users
-
-        self.register_blueprint(users.blueprint)
-
-        # Admin interface
-        Admin().init_app(self)
-
-        # dev helper
-        if self.debug:
-            # during dev, one can go to /http_error/403 to see rendering of 403
-            http_error_pages = Blueprint("http_error_pages", __name__)
-
-            @http_error_pages.route("/<int:code>")
-            def error_page(code):
-                """Helper for development to show 403, 404, 500..."""
-                abort(code)
-
-            self.register_blueprint(http_error_pages, url_prefix="/http_error")
 
     def add_url_rule_with_role(
         self,
@@ -406,7 +174,7 @@ class Application(
         view_func: Callable,
         roles: Collection[Role] = (),
         **options: Any,
-    ):
+    ) -> None:
         """See :meth:`Flask.add_url_rule`.
 
         If `roles` parameter is present, it must be a
@@ -420,7 +188,9 @@ class Application(
                 endpoint, allow_access_for_roles(roles), endpoint=True
             )
 
-    def add_access_controller(self, name: str, func: Callable, endpoint: bool = False):
+    def add_access_controller(
+        self, name: str, func: Callable, endpoint: bool = False
+    ) -> None:
         """Add an access controller.
 
         If `name` is None it is added at application level, else if is
@@ -440,7 +210,7 @@ class Application(
 
     def add_static_url(
         self, url_path: str, directory: str, endpoint: str, roles: Collection[Role] = ()
-    ):
+    ) -> None:
         """Add a new url rule for static files.
 
         :param url_path: subpath from application static url path. No heading
@@ -450,9 +220,10 @@ class Application(
 
         Example::
 
-           app.add_static_url('myplugin',
-                              '/path/to/myplugin/resources',
-                              endpoint='myplugin_static')
+            app.add_static_url(
+                'myplugin',
+                '/path/to/myplugin/resources',
+                endpoint='myplugin_static')
 
         With default setup it will serve content from directory
         `/path/to/myplugin/resources` from url `http://.../static/myplugin`
@@ -465,54 +236,5 @@ class Application(
             roles=roles,
         )
         self.add_access_controller(
-            endpoint, allow_access_for_roles(Anonymous), endpoint=True
+            endpoint, allow_access_for_roles(ANONYMOUS), endpoint=True
         )
-
-
-def setup(app: Flask):
-    config = app.config
-
-    # CSP
-    if not app.debug:
-        csp = config.get("CONTENT_SECURITY_POLICY", DEFAULT_CSP_POLICY)
-        Talisman(app, content_security_policy=csp)
-
-    Tailwind(app)
-
-    # Debug Toolbar
-    init_debug_toolbar(app)
-
-
-def init_debug_toolbar(app: Flask):
-    if not app.debug or app.testing:
-        return
-
-    try:
-        from flask_debugtoolbar import DebugToolbarExtension
-    except ImportError:
-        logger.warning("Running in debug mode but flask_debugtoolbar is not installed.")
-        return
-
-    dbt = DebugToolbarExtension()
-    default_config = dbt._default_config(app)
-    init_dbt = dbt.init_app
-
-    if "DEBUG_TB_PANELS" not in app.config:
-        # add our panels to default ones
-        app.config["DEBUG_TB_PANELS"] = list(default_config["DEBUG_TB_PANELS"])
-    init_dbt(app)
-    for view_name in app.view_functions:
-        if view_name.startswith("debugtoolbar."):
-            extensions.csrf.exempt(app.view_functions[view_name])
-
-
-def create_app(
-    config: type | None = None, app_class: type = Application, **kw: Any
-) -> Application:
-    app = app_class(**kw)
-    app.setup(config=config)
-
-    # This is currently called from app.setup()
-    # setup(app)
-
-    return app

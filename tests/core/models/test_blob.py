@@ -1,17 +1,22 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import uuid
 from io import StringIO
 from pathlib import Path
-
-from flask import Flask
+from typing import TYPE_CHECKING
 
 from abilian.core.models.blob import Blob
-from abilian.core.sqlalchemy import SQLAlchemy
 from abilian.services import blob_store, session_blob_store
 
+if TYPE_CHECKING:
+    from flask import Flask
 
-def test_auto_uuid():
+    from abilian.core.sqlalchemy import SQLAlchemy
+
+
+def test_auto_uuid() -> None:
     blob = Blob()
     assert blob.uuid is not None
     assert isinstance(blob.uuid, uuid.UUID)
@@ -23,7 +28,7 @@ def test_auto_uuid():
     assert blob.uuid, u
 
 
-def test_meta():
+def test_meta() -> None:
     blob = Blob()
     assert blob.meta == {}
 
@@ -31,18 +36,18 @@ def test_meta():
 #
 # Integration tests
 #
-def test_md5(app: Flask, db: SQLAlchemy):
+def test_md5(app: Flask, db: SQLAlchemy) -> None:
     blob = Blob("test md5")
     assert "md5" in blob.meta
     assert blob.meta["md5"] == "0e4e3b2681e8931c067a23c583c878d5"
 
 
-def test_size(app: Flask, db: SQLAlchemy):
+def test_size(app: Flask, db: SQLAlchemy) -> None:
     blob = Blob("test")
     assert blob.size == 4
 
 
-def test_filename(app: Flask, db: SQLAlchemy):
+def test_filename(app: Flask, db: SQLAlchemy) -> None:
     content = StringIO("test")
     content.filename = "test.txt"
     blob = Blob(content)
@@ -50,7 +55,7 @@ def test_filename(app: Flask, db: SQLAlchemy):
     assert blob.meta["filename"] == "test.txt"
 
 
-def test_mimetype(app: Flask, db: SQLAlchemy):
+def test_mimetype(app: Flask, db: SQLAlchemy) -> None:
     content = StringIO("test")
     content.content_type = "text/plain"
     blob = Blob(content)
@@ -58,7 +63,7 @@ def test_mimetype(app: Flask, db: SQLAlchemy):
     assert blob.meta["mimetype"] == "text/plain"
 
 
-def test_nonzero(app: Flask, db: SQLAlchemy):
+def test_nonzero(app: Flask, db: SQLAlchemy) -> None:
     blob = Blob("test md5")
     assert bool(blob)
 
@@ -81,7 +86,7 @@ def test_nonzero(app: Flask, db: SQLAlchemy):
 #     assert Blob.query.by_uuid(u) is None
 
 
-def test_value(app: Flask, db: SQLAlchemy):
+def test_value(app: Flask, db: SQLAlchemy) -> None:
     session = db.session
     content = b"content"
     blob = Blob(content)

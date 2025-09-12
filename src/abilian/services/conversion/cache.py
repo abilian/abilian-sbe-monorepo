@@ -1,6 +1,11 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
-from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 CacheKey = tuple[str, str]
 
@@ -20,8 +25,7 @@ class Cache:
     def get(self, key: CacheKey) -> str | bytes | None:
         if key[0] == "txt":
             return self.get_text(key)
-        else:
-            return self.get_bytes(key)
+        return self.get_bytes(key)
 
     __getitem__ = get
 
@@ -29,17 +33,15 @@ class Cache:
         if key in self:
             path = self._path(key)
             return path.read_bytes()
-        else:
-            return None
+        return None
 
     def get_text(self, key: CacheKey) -> str | None:
         if key in self:
             path = self._path(key)
             return path.read_text("utf8")
-        else:
-            return None
+        return None
 
-    def set(self, key: CacheKey, value: str | bytes):
+    def set(self, key: CacheKey, value: str | bytes) -> None:
         path = self._path(key)
         path.parent.mkdir(parents=True, exist_ok=True)
         if key[0] == "txt":
@@ -51,5 +53,5 @@ class Cache:
 
     __setitem__ = set
 
-    def clear(self):
+    def clear(self) -> None:
         pass

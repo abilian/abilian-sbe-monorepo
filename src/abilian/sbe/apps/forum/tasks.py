@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Dramatiq tasks related to document transformation and preview."""
 
 from __future__ import annotations
@@ -36,7 +38,7 @@ MAIL_REPLY_MARKER = _l("_____Write above this line to post_____")
 
 
 @dramatiq.actor(max_retries=20, max_backoff=86400000)
-def send_post_by_email(post_id: int | str):
+def send_post_by_email(post_id: int | str) -> None:
     """Send a post to community members by email.
 
     max_retries = 20 (Dramatiq default)
@@ -144,9 +146,8 @@ def build_local_part(name, uid):
     if len(local_part) > 64:
         if (len(local_part) - len(digest) - 1) > 64:
             # even without digest, it's too long
-            raise ValueError(
-                "Cannot build reply address: local part exceeds 64 characters"
-            )
+            msg = "Cannot build reply address: local part exceeds 64 characters"
+            raise ValueError(msg)
         local_part = local_part[:64]
 
     return local_part
@@ -177,16 +178,17 @@ def extract_email_destination(address: str) -> tuple[str, ...]:
     :param address: similar to test+IjEvMy8yLzQi.xjE04-4S0IzsdicTHKTAqcqa1fE@testcase.app.tld
     :return: List() of splitted values
     """
-    m = re.search("<(.*)>", address)
+    m = re.search(r"<(.*)>", address)
     if m:
         address = m.group(1)
     local_part = address.rsplit("@", 1)[0]
     name, ident = local_part.rsplit("+", 1)
-    uid, digest = ident.rsplit("-", 1)
+    uid, _digest = ident.rsplit("-", 1)
     signed_local_part = build_local_part(name, uid)
 
     if local_part != signed_local_part:
-        raise ValueError("Invalid signature in reply address")
+        msg = "Invalid signature in reply address"
+        raise ValueError(msg)
 
     values = uid.split("-")
     header = values.pop(0)
@@ -204,7 +206,7 @@ def has_subtag(address: str) -> bool:
     return "+" in name
 
 
-def send_post_to_user(community, post, member):
+def send_post_to_user(community, post, member) -> None:
     """Send a post though SMTP.
 
     Configuring Flask-Mail
@@ -502,7 +504,7 @@ def process_email(message: email.message.Message) -> bool:
 
 @crontab("SCHEDULE_CHECK_MAILDIR")
 @dramatiq.actor(max_retries=20, max_backoff=86400000)
-def check_maildir():
+def check_maildir() -> None:
     """Check the MailDir for emails to be injected in Threads.
 
     This task is registered only if `INCOMING_MAIL_USE_MAILDIR` is True.
@@ -511,7 +513,8 @@ def check_maildir():
     home = expanduser("~")
     maildirpath = Path(home) / "Maildir"
     if not maildirpath.is_dir():
-        raise ValueError(f"{maildirpath} must be a directory")
+        msg = f"{maildirpath} must be a directory"
+        raise ValueError(msg)
 
     incoming_mailbox = mailbox.Maildir(str(maildirpath))
     incoming_mailbox.lock()  # Useless but recommended if old mbox is used by error

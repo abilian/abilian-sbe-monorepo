@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Models for the Forum.
 
 Note: a few features are planned but not implemented yet, and are commented
@@ -28,7 +30,7 @@ from abilian.services.indexing.adapter import SAAdapter
 
 
 class ThreadClosedError(RuntimeError):
-    def __init__(self, thread):
+    def __init__(self, thread) -> None:
         super().__init__(
             f"The thread {thread!r} is closed. No modification allowed on its posts: "
             "creation, edition, deletion"
@@ -77,7 +79,7 @@ class Thread(Entity):
         return frequent_posters
 
     @title.setter
-    def title(self, title):
+    def title(self, title) -> None:
         # set title before setting name, so that we don't enter an infinite loop
         # with _thread_sync_name_title
         self._title = title
@@ -98,7 +100,7 @@ class Thread(Entity):
         return self.meta.get("abilian.sbe.forum", {}).get("closed", False)
 
     @closed.setter
-    def closed(self, value):
+    def closed(self, value) -> None:
         self.meta.setdefault("abilian.sbe.forum", {})["closed"] = bool(value)
         self.meta.changed()
 

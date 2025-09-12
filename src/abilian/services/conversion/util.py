@@ -1,11 +1,16 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
 import contextlib
 import os
-from collections.abc import Iterator
 from contextlib import contextmanager
-from pathlib import Path
 from tempfile import mkstemp
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+    from pathlib import Path
 
 # Hack for Mac OS + homebrew
 os.environ["PATH"] += ":/usr/local/bin"

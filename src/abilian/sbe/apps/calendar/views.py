@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Forum views."""
 
 from __future__ import annotations
@@ -8,11 +10,11 @@ from flask import g, render_template
 from toolz import groupby
 
 from abilian.i18n import _l
+from abilian.sbe.apps.communities.blueprint import CommunityBlueprint
+from abilian.sbe.apps.communities.views import default_view_kw
 from abilian.web import url_for, views
 from abilian.web.action import ButtonAction
 
-from ..communities.blueprint import CommunityBlueprint
-from ..communities.views import default_view_kw
 from .forms import EventForm
 from .models import Event
 
@@ -91,7 +93,7 @@ class EventCreateView(BaseEventView, views.ObjectCreate):
 
     title = _l("New event")
 
-    def after_populate_obj(self):
+    def after_populate_obj(self) -> None:
         if self.obj.community is None:
             self.obj.community = g.community._model
 

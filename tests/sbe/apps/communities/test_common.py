@@ -1,21 +1,28 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 # Note: this test suite is using pytest instead of the unittest-based scaffolding
 # provided by SBE. Hopefully one day all of SBE will follow.
 
 from __future__ import annotations
 
-from collections.abc import Iterator
 from datetime import datetime, timedelta
+from typing import TYPE_CHECKING
 
 import pytest
 
 import abilian.i18n
 from abilian.core.signals import activity
-from abilian.sbe.app import Application, create_app
+from abilian.sbe.app import create_app
 from abilian.sbe.apps.communities.common import activity_time_format
 
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
-@pytest.fixture()
-def app(config: type) -> Iterator[Iterator | Iterator[Application]]:
+    from flask import Flask
+
+
+@pytest.fixture
+def app(config: type) -> Iterator[Iterator | Iterator[Flask]]:
     app = create_app(config)
 
     # We need some incantations here to make babel work in the test
@@ -29,7 +36,7 @@ def app(config: type) -> Iterator[Iterator | Iterator[Application]]:
     activity._clear_state()
 
 
-def test_activity_time_format(app: Application, app_context) -> None:
+def test_activity_time_format(app: Flask, app_context) -> None:
     # We need the app context because of Babel.
 
     then = datetime(2017, 1, 1, 12, 0, 0)

@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """"""
 
 from __future__ import annotations
@@ -13,8 +15,7 @@ from abilian.core.entities import Entity
 # noinspection PyUnresolvedReferences
 from abilian.web.views import default_view
 from abilian.web.views.registry import Registry
-
-from ..util import class_fqn
+from tests.util import class_fqn
 
 
 class RegEntity(Entity):
@@ -37,13 +38,13 @@ class RegEntity5(Entity):
     name = sa.Column(sa.Unicode, default="")
 
 
-@fixture()
+@fixture
 def registry(app: Flask) -> Registry:
     app.default_view = Registry()
     return app.default_view
 
 
-def test_register_class(app: Flask, registry: Registry):
+def test_register_class(app: Flask, registry: Registry) -> None:
     registry.register(RegEntity, lambda ignored: "")
     assert RegEntity.entity_type in registry._map
 
@@ -72,7 +73,7 @@ def test_register_class(app: Flask, registry: Registry):
     obj = RegEntity4(id=2)
 
     @app.route("/regentities_path/<int:object_id>/view", endpoint="regentity4.view")
-    def dummy_default_view(object_id):
+    def dummy_default_view(object_id) -> None:
         pass
 
     assert registry.url_for(obj) == "/regentities_path/2/view"
@@ -86,7 +87,7 @@ def test_register_class(app: Flask, registry: Registry):
 
     @default_view(bp, RegEntity5)
     @bp.route("/<int:object_id>")
-    def view(object_id):
+    def view(object_id) -> None:
         pass
 
     obj = RegEntity5(id=3)

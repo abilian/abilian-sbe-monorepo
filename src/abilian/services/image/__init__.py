@@ -1,3 +1,5 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 """Provides tools (currently: only functions, not a real service) for image
 processing."""
 

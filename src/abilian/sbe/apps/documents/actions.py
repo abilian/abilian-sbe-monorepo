@@ -1,10 +1,10 @@
+# Copyright (c) 2012-2024, Abilian SAS
+
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from flask import g
-from flask import url_for as url_for_orig
-from flask.blueprints import BlueprintSetupState
+from flask import g, url_for as url_for_orig
 from flask_login import current_user
 
 from abilian.i18n import _l
@@ -13,6 +13,9 @@ from abilian.services.security import MANAGE, WRITE, security
 from abilian.web.action import Action, FAIcon, ModalActionMixin, actions
 
 from .repository import content_repository
+
+if TYPE_CHECKING:
+    from flask.blueprints import BlueprintSetupState
 
 
 def url_for(endpoint, **kw):
@@ -113,7 +116,7 @@ class DocumentModalAction(ModalActionMixin, DocumentAction):
 class RootFolderAction(CmisContentAction):
     """Apply only for root folder."""
 
-    def pre_condition(self, ctx):
+    def pre_condition(self, ctx) -> bool:
         return ctx["object"] is content_repository.root_folder
 
 
