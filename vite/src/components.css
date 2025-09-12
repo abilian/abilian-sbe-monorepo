@@ -1,0 +1,187 @@
+/*
+ * components.css
+ *
+ * This file defines reusable component classes using Tailwind's @apply.
+ * It's the foundation of the hybrid migration strategy, replacing the look
+ * of Bootstrap components with a new, maintainable system.
+ */
+
+@layer components {
+  /* ==========================================================================
+     Cards (Replaces Bootstrap's .panel)
+     - A more modern and flexible replacement for panels.
+     - Used heavily by your `m_box` macro.
+   ========================================================================== */
+  .card {
+    @apply bg-white border border-gray-200 rounded-lg shadow-md mb-6;
+  }
+  .card-header {
+    @apply py-3 px-4 bg-gray-50 border-b border-gray-200 rounded-t-lg;
+  }
+  .card-body {
+    @apply p-4;
+  }
+  /* Card color variants */
+  .card-danger {
+    @apply bg-red-50 border-red-200;
+  }
+  .card-danger .card-header {
+    @apply bg-red-100 text-red-800 border-red-200;
+  }
+
+
+  /* ==========================================================================
+     Buttons (Replaces .btn)
+     - Base .btn class with modifiers for different colors and states.
+   ========================================================================== */
+  .btn {
+    @apply inline-block font-semibold text-center align-middle cursor-pointer border rounded-md py-2 px-4 leading-normal transition-colors duration-150;
+  }
+  .btn-primary {
+    @apply bg-blue-600 text-white border-blue-600 hover:bg-blue-700 hover:border-blue-700;
+  }
+  .btn-danger {
+    @apply bg-red-600 text-white border-red-600 hover:bg-red-700 hover:border-red-700;
+  }
+  .btn-default {
+    @apply bg-gray-200 text-gray-800 border-gray-200 hover:bg-gray-300 hover:border-gray-300;
+  }
+  .btn-info {
+    @apply bg-cyan-500 text-white border-cyan-500 hover:bg-cyan-600 hover:border-cyan-600;
+  }
+  .btn-success {
+    @apply bg-green-600 text-white border-green-600 hover:bg-green-700 hover:border-green-700;
+  }
+
+
+  /* ==========================================================================
+     Forms (Replaces .form-control, .form-group, etc.)
+   ========================================================================== */
+  .form-group {
+    @apply mb-4; /* Provides spacing between form elements */
+  }
+  .form-control {
+    @apply block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500;
+  }
+  textarea.form-control {
+    @apply min-h-[80px];
+  }
+  /* For inline forms */
+  .form-inline .form-group {
+    @apply inline-block mr-2;
+  }
+  /* Input Groups (like in your members.html add_member macro) */
+  .input-group {
+    @apply flex items-center;
+  }
+  .input-group .form-control {
+    @apply relative flex-auto w-auto rounded-r-none;
+  }
+  .input-group-addon {
+    @apply px-3 py-2 text-gray-600 bg-gray-100 border border-l-0 border-gray-300 rounded-r-md;
+  }
+  .input-group-btn .btn {
+    @apply rounded-l-none;
+  }
+
+
+  /* ==========================================================================
+     Navigation (Replaces .nav, .nav-tabs, .nav-list)
+   ========================================================================== */
+  .nav-tabs {
+    @apply flex border-b border-gray-200;
+  }
+  .nav-tabs > li {
+    @apply mb-[-1px];
+  }
+  .nav-tabs > li > a {
+    @apply block py-2 px-4 text-gray-600 border border-transparent rounded-t-lg hover:text-gray-700 hover:border-gray-300;
+  }
+  .nav-tabs > li.active > a,
+  .nav-tabs > li.active > a:hover {
+    @apply text-blue-600 bg-white border-gray-200 border-b-transparent;
+  }
+  /* For sidebars and menus */
+  .nav-list > li > a {
+    @apply block py-1 px-3 text-gray-700 hover:bg-gray-100 rounded;
+  }
+
+
+  /* ==========================================================================
+     Tables (Replaces .table, .table-striped, .table-condensed)
+   ========================================================================== */
+  .table {
+    @apply w-full;
+  }
+  .table th,
+  .table td {
+    @apply p-2 border-b border-gray-200 text-left;
+  }
+  .table-striped tbody tr:nth-of-type(odd) {
+    @apply bg-gray-50;
+  }
+  .table-condensed th,
+  .table-condensed td {
+    @apply py-1 px-2;
+  }
+
+
+  /* ==========================================================================
+     Badges & Labels (Replaces .badge)
+   ========================================================================== */
+  .badge {
+    @apply inline-block py-0.5 px-2 text-xs font-semibold text-white bg-gray-500 rounded-full;
+  }
+
+
+  /* ==========================================================================
+     Alerts (Replaces .alert)
+   ========================================================================== */
+  .alert {
+    @apply p-4 mb-4 border rounded-lg;
+  }
+  .alert-warning {
+    @apply text-yellow-800 bg-yellow-50 border-yellow-200;
+  }
+  .alert-danger {
+    @apply text-red-800 bg-red-50 border-red-200;
+  }
+  .alert-info {
+    @apply text-blue-800 bg-blue-50 border-blue-200;
+  }
+}
+
+/* ==========================================================================
+   Utility Class Replacements
+   - These are simple utility classes that are easier to define once than to
+     search/replace everywhere.
+   ========================================================================== */
+@layer utilities {
+  .pull-right {
+    @apply float-right;
+  }
+  .clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+/* ==========================================================================
+   IMPORTANT NOTE ON JAVASCRIPT COMPONENTS
+   ========================================================================== */
+/*
+ * The styles for Modals and Dropdowns are intentionally NOT included here.
+ * Bootstrap's .modal and .dropdown classes depend heavily on its jQuery
+ * plugins to function (toggle visibility, handle clicks, etc.).
+ *
+ * Simply recreating the CSS will result in non-functional components.
+ *
+ * For these, you must choose a JavaScript solution like:
+ *   1. Alpine.js: Lightweight and feels like a natural extension of Tailwind.
+ *   2. Headless UI: From the makers of Tailwind, provides unstyled, accessible
+ *      components that you can style with utility classes.
+ *
+ * The migration of these components will involve replacing the Bootstrap HTML
+ * markup with the markup required by your chosen JS library.
+ */
