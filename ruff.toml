@@ -13,6 +13,7 @@ lint.extend-ignore = [
     "PGH", # pygrep-hooks
     "TD", # flake8-todos
     "DOC", # pydocstyle
+
     # Fix these
     "PTH", # Pathlib
     "TRY", # tryceratops
