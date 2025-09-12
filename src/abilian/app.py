@@ -26,6 +26,7 @@ from abilian.config import default_config
 from abilian.core import extensions, signals
 from abilian.core.plugin_manager import PluginManager
 from abilian.core.service_manager import ServiceManager
+from abilian.extensions import vite
 from abilian.lib.scanner import scan_package
 from abilian.services import auth_service
 from abilian.services.security import ANONYMOUS
@@ -66,6 +67,9 @@ def create_app(config: type | None = None, plugins=None, **kw: Any) -> Applicati
     # 4: Perform post-registration actions
     signals.components_registered.send(app)
 
+    # Misc (fixme: this should be done elsewhere)
+    vite.init_app(app)
+
     return app
 
 
@@ -82,8 +86,8 @@ class Application(
 
     default_config = default_config
 
-    #: If True all views will require by default an authenticated user, unless
-    #: Anonymous role is authorized. Static assets are always public.
+    #: If True, all views will require by default an authenticated user, unless
+    #: the Anonymous role is authorized. Static assets are always public.
     private_site = ConfigAttribute("PRIVATE_SITE")
 
     #: instance of :class:`.web.views.registry.Registry`.

@@ -54,6 +54,10 @@
   {%- endif %}
 
   {%- block top_js %}{%- endblock top_js %}
+
+  {# flask-vite (temp) #}
+  <script type="module" src="http://localhost:5173/@vite/client"></script>
+  <link href="http://localhost:5173/src/style.css" rel="stylesheet">
 </head>
 
 <body {%- if body_class is defined %} class="{{ body_class }}" {% endif -%}>

@@ -11,7 +11,7 @@ from abilian.web.action import Endpoint
 
 
 class DefaultConfig:
-    # Seriously: this need to be changed in production
+    # Seriously: this needs to be changed in production
     SECRET_KEY = "CHANGEME"  # noqa: S105
 
     # Need to be explicitly defined in production configs

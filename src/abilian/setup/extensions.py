@@ -53,8 +53,8 @@ def init_extensions(app: Flask) -> None:
 
     actions.init_app(app)
 
-    # auth_service installs a `before_request` handler (actually it's
-    # flask-login). We want to authenticate user ASAP, so that sentry and
+    # auth_service installs a `before_request` handler (actually, it's
+    # flask-login). We want to authenticate the user ASAP, so that sentry and
     # logs can report which user encountered any error happening later,
     # in particular in a before_request handler (like csrf validator)
     auth_service.init_app(app)
