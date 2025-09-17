@@ -1,15 +1,31 @@
 {
-  "name": "vite",
+  "name": "abilian-sbe-tailwind-vite",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "description": "Tailwind CSS build for Abilian SBE Flask templates",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:tailwind": "cross-env NODE_ENV=production tailwindcss --postcss -i ./src/styles.css -o ./dist/styles.css --minify",
+    "dev:tailwind": "cross-env NODE_ENV=development tailwindcss --postcss -i ./src/styles.css -o ./dist/styles.css -w"
   },
   "devDependencies": {
-    "vite": "^7.1.2"
+    "vite": "^7.1.2",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.9",
+    "@tailwindcss/line-clamp": "^0.4.0",
+    "@tailwindcss/typography": "^0.5.15",
+    "cross-env": "^7.0.3",
+    "daisyui": "^3.0.3",
+    "postcss": "^8.4.47",
+    "postcss-cli": "^11.0.0",
+    "postcss-each": "^1.1.0",
+    "postcss-import": "^16.1.0",
+    "postcss-nested": "^7.0.2",
+    "postcss-simple-vars": "^7.0.1",
+    "rimraf": "^6.0.1"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.13",
