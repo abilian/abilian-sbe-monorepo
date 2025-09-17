@@ -56,7 +56,7 @@ JQUERY = Bundle("jquery/js/jquery-1.11.3.js")
 
 BOOTBOX_JS = Bundle("bootbox/bootbox.js")
 
-# BOOTSTRAP_LESS = Bundle("bootstrap/less/bootstrap.less")
+BOOTSTRAP_LESS = Bundle("bootstrap/less/bootstrap.less")
 BOOTSTRAP_JS = Bundle("bootstrap/js/bootstrap.js")
 
 BOOTSTRAP_DATEPICKER_LESS = "bootstrap-datepicker/less/datepicker.less"
@@ -106,7 +106,7 @@ ABILIAN_JS = Bundle(
 )
 
 LESS = Bundle(
-    # BOOTSTRAP_LESS,
+    BOOTSTRAP_LESS,
     FONTAWESOME_LESS,
     SELECT2_LESS,
     # TYPEAHEAD_LESS,

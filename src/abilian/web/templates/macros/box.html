@@ -4,12 +4,14 @@
                          primary="primary", info="info", success="success",
                          warning="warning", danger="danger", cls="") %}
 
-{%- macro m_box(title, color="info", href=None, icon_class="") %}
+{%- macro m_box(title, color="", href=None, icon_class="") %}
   <!-- begin box "{{ title }}" -->
-  <div class="panel panel-{{ color_map.get(color, 'default') }} {{ cls }}">
+  {# Map Bootstrap colors to our new card variants if needed #}
+  {% set card_class = 'card-danger' if color in ['red', 'danger'] else 'card' %}
+  <div class="{{ card_class }}">
     {%- if title %}
-      <div class="panel-heading">
-        <h5 class="panel-title">
+      <div class="card-header">
+        <h5 class="tw-font-bold tw-text-lg"> {# Use utilities for title styling #}
           {%- if href %}<a href="{{ href }}">{%- endif %}
           {%- if icon_class -%}<span class="{{ icon_class }}"></span>{% endif %}
           {{ title }}
@@ -18,7 +20,7 @@
       </div>
     {%- endif %}
 
-    <div class="panel-body">
+    <div class="card-body">
       {{ caller() }}
     </div>
   </div>
@@ -27,13 +29,14 @@
 
 {%- macro m_box_menu(title=None, color="green", omit_body=False) %}
   <!-- begin menu box "{{ title }}" -->
-  <div class="panel panel-{{ color_map.get(color, 'default') }}">
-    <div class="panel-heading">
-      <h5 class="panel-title">{{ title or _('Menu') }}</h5>
+  {% set card_class = 'card-danger' if color in ['red', 'danger'] else 'card' %}
+  <div class="{{ card_class }}">
+    <div class="card-header">
+      <h5 class="tw-font-bold tw-text-lg">{{ title or _('Menu') }}</h5>
     </div>
 
     {%- if not omit_body %}
-      <div class="panel-body">
+      <div class="card-body">
     {%- endif %}
     {{ caller() }}
     {%- if not omit_body %}
@@ -53,17 +56,18 @@
 
 {%- macro m_box_content(title=None, color="blue") %}
   <!-- begin box "{{ title }}" -->
-  <div class="panel panel-{{ color_map.get(color, 'default') }}">
+  {% set card_class = 'card-danger' if color in ['red', 'danger'] else 'card' %}
+  <div class="{{ card_class }}">
     {%- if title %}
-      <div class="panel-heading">
-        <h5 class="panel-title">{{ title }}</h5>
+      <div class="card-header">
+        <h5 class="tw-font-bold tw-text-lg">{{ title }}</h5>
       </div>
     {%- endif %}
 
-    <div class="panel-body">
+    <div class="card-body">
       {{ caller() }}
     </div>
   </div>
-  <div class="clearfix"></div>
+  <div class="tw-clear-both"></div>
   <!-- end box "{{ title }}" -->
 {%- endmacro %}

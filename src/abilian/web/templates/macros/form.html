@@ -21,15 +21,14 @@
   {%- if is_hidden %}
     {{ field(**kwargs) }}
   {%- else %}
-    <div
-        class="form-group{% if field.errors and not field.form %} has-error{% endif %}{% if field.flags.required %} required{% endif %}">
+    <div class="form-group {% if horizontal %} tw-flex tw-flex-col sm:tw-flex-row sm:tw-items-center {% endif %}{% if field.errors and not field.form %} tw-border-red-300{% endif %}{% if field.flags.required %} required{% endif %}">
       {%- if with_label and not is_hidden %}
-        <label class="control-label {%- if horizontal %} col-sm-{{ label_width }} {%- endif %}"
+        <label class="control-label {% if horizontal %} sm:tw-w-1/4 {% endif %}"
             for="{{ field.id }}">{{ field.label.text }}</label>
       {%- endif %}
 
       {%- if horizontal and standard_field %}
-        <div class="col-sm-{{ field_width }}">
+        <div class="{% if with_label %} sm:tw-w-3/4 {% else %} sm:tw-w-full {% endif %}">
       {%- endif %}
 
       {%- if field.type == 'CSRFTokenField' %}
@@ -91,7 +90,7 @@
     {%- endfor %}
 
     <div class="form-group form-actions">
-      <div class="{%- if horizontal %}col-sm-{{ field_width }} col-sm-push-{{ label_width }}{%- endif %}">
+      <div class="{%- if horizontal %}sm:tw-w-3/4 sm:tw-ml-auto{%- endif %}">
         {%- for button in g.view.buttons %}
           {{ button.render() }}
         {%- endfor %}
@@ -104,9 +103,9 @@
 {# view macros #}
 {% macro m_field_view(field, label_width=4, field_width=8) %}
 
-  <tr class="row">
-    <td class="col-sm-{{ label_width }}">{{ field.label }}</td>
-    <td class="col-sm-{{ field_width }}">{{ field.render_view() | safe }}</td>
+  <tr>
+    <td class="tw-w-1/3">{{ field.label }}</td>
+    <td class="tw-w-2/3">{{ field.render_view() | safe }}</td>
   </tr>
 {% endmacro %}
 
