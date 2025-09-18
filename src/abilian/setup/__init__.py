@@ -14,7 +14,7 @@ from flask_super import register_commands
 from flask_talisman import DEFAULT_CSP_POLICY, Talisman
 
 from abilian.core import extensions, signals
-from abilian.extensions import asset_manager
+from abilian.extensions import vite_asset_manager
 from abilian.services import settings_service
 from abilian.services.security import ANONYMOUS
 from abilian.web.access_blueprint import allow_access_for_roles
@@ -67,7 +67,7 @@ def setup_app(app: Application, plugins=None) -> None:
 
     init_access_controllers(app)
 
-    asset_manager.finalize_assets_setup(app)
+    # Vite assets don't need finalization like Flask-Assets did
 
     # At this point all models should have been imported: time to configure
     # mappers. Normally Sqlalchemy does it when needed but mappers may be

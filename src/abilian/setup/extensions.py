@@ -14,7 +14,7 @@ from loguru import logger
 import abilian.core.util
 import abilian.i18n
 from abilian.core import extensions
-from abilian.extensions import asset_manager
+from abilian.extensions import vite_asset_manager
 from abilian.services import (
     activity_service,
     antivirus,
@@ -59,7 +59,7 @@ def init_extensions(app: Flask) -> None:
     # in particular in a before_request handler (like csrf validator)
     auth_service.init_app(app)
 
-    asset_manager.init_app(app)
+    vite_asset_manager.init_app(app)
 
     init_babel(app)
 

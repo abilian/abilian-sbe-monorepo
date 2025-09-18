@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import 'components.css';
+@import './components.css';
 
 /* Config for DaisyUI */
 :root {

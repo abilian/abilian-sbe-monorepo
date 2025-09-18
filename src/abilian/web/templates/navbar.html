@@ -1,58 +1,96 @@
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
+<nav class="bg-white shadow-md fixed top-0 w-full z-50" role="navigation" x-data="{ open: false }">
+  <div class="container mx-auto px-4">
     {# Brand and toggle get grouped for better mobile display #}
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse"
-          data-target=".navbar-ex1-collapse">
+    <div class="flex justify-between items-center py-3">
+      <a class="navbar-brand flex items-center" href="{{ request.url_root }}">
+        <img src="{{ app.config['LOGO_URL'] | string }}" class="h-8"/>
+      </a>
+
+      <button type="button" @click="open = !open" class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
         <span class="sr-only">Toggle navigation</span>
         <span class="fa fa-bars"></span>
       </button>
-      <a class="navbar-brand" href="{{ request.url_root }}">
-        <img src="{{ app.config['LOGO_URL'] | string }}"/>
-      </a>
     </div>
 
-    <div id="navigation-sections"
-        class="collapse navbar-collapse navbar-ex1-collapse">
-      <ul class="nav navbar-nav">
+    {# Desktop Navigation #}
+    <div class="hidden md:flex md:items-center md:justify-between">
+      <ul class="flex space-x-8">
         {%- for navitem in actions.for_category('navigation:section') %}
           {%- if navitem.divider %}
-            <li class="divider"></li>
+            <li class="border-l border-gray-300 h-6"></li>
           {%- endif %}
-          <li class="{{ navitem.status }}">{{ navitem.render() }}</li>
+          <li class="{{ navitem.status }} flex items-center">{{ navitem.render() }}</li>
         {%- endfor %}
       </ul>
 
-      <ul id="nav-menu-user" class="nav navbar-nav navbar-right">
-        {%- for action in actions.for_category('navigation:user') %}
-          {%- if action.divider %}
-            <li class="divider"></li>
-          {%- endif %}
-          <li class="{{ action.status }}">{{ action.render() }}</li>
-        {%- endfor %}
-      </ul>
-
-      {%- if 'abilian.web.search' in app.APP_PLUGINS %}
-        {%- if not (current_user.is_anonymous and app.private_site) %}
-          <form class="navbar-form navbar-right" role="search" method="GET"
-              action="{{ url_for('search.search_main') }}">
-            <input type="text" name="q" class="search-query form-control"
-                placeholder="{{ _('Search') }}" autocomplete="off" id="search-box"/>
-          </form>
-        {%- endif %}
-      {%- endif %}
-
-      {%- set admin_nav = actions.for_category('navigation:admin') %}
-      {%- if admin_nav %}
-        <ul id="nav-menu-admin" class="nav navbar-nav navbar-right">
-          {%- for action in admin_nav %}
-            <li class="{{ action.status }}">{{ action.render() }}</li>
+      <div class="flex items-center space-x-4">
+        <ul id="nav-menu-user" class="flex space-x-4">
+          {%- for action in actions.for_category('navigation:user') %}
+            {%- if action.divider %}
+              <li class="border-l border-gray-300 h-6"></li>
+            {%- endif %}
+            <li class="{{ action.status }} flex items-center">{{ action.render() }}</li>
           {%- endfor %}
         </ul>
-      {%- endif %}
 
+        {%- if 'abilian.web.search' in app.APP_PLUGINS %}
+          {%- if not (current_user.is_anonymous and app.private_site) %}
+            <form role="search" method="GET" action="{{ url_for('search.search_main') }}" class="ml-4">
+              <input type="text" name="q" class="form-control w-64"
+                  placeholder="{{ _('Search') }}" autocomplete="off" id="search-box"/>
+            </form>
+          {%- endif %}
+        {%- endif %}
+
+        {%- set admin_nav = actions.for_category('navigation:admin') %}
+        {%- if admin_nav %}
+          <ul id="nav-menu-admin" class="flex space-x-4 ml-4">
+            {%- for action in admin_nav %}
+              <li class="{{ action.status }} flex items-center">{{ action.render() }}</li>
+            {%- endfor %}
+          </ul>
+        {%- endif %}
+      </div>
     </div>
-    {# navbar-collapse #}
+
+    {# Mobile Menu #}
+    <div x-show="open" class="md:hidden mt-3 border-t border-gray-200 pt-4">
+      <ul class="space-y-3">
+        {%- for navitem in actions.for_category('navigation:section') %}
+          {%- if not navitem.divider %}
+            <li class="{{ navitem.status }}">{{ navitem.render() }}</li>
+          {%- endif %}
+        {%- endfor %}
+      </ul>
+
+      <div class="mt-4 pt-4 border-t border-gray-200">
+        <ul class="space-y-3">
+          {%- for action in actions.for_category('navigation:user') %}
+            {%- if not action.divider %}
+              <li class="{{ action.status }}">{{ action.render() }}</li>
+            {%- endif %}
+          {%- endfor %}
+        </ul>
+
+        {%- if 'abilian.web.search' in app.APP_PLUGINS %}
+          {%- if not (current_user.is_anonymous and app.private_site) %}
+            <form role="search" method="GET" action="{{ url_for('search.search_main') }}" class="mt-4">
+              <input type="text" name="q" class="form-control w-full"
+                  placeholder="{{ _('Search') }}" autocomplete="off" id="search-box-mobile"/>
+            </form>
+          {%- endif %}
+        {%- endif %}
+
+        {%- set admin_nav = actions.for_category('navigation:admin') %}
+        {%- if admin_nav %}
+          <ul class="space-y-3 mt-4">
+            {%- for action in admin_nav %}
+              <li class="{{ action.status }}">{{ action.render() }}</li>
+            {%- endfor %}
+          </ul>
+        {%- endif %}
+      </div>
+    </div>
   </div>
   {# div.container-fluid #}
 </nav>

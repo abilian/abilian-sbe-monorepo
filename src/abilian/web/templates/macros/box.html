@@ -11,7 +11,7 @@
   <div class="{{ card_class }}">
     {%- if title %}
       <div class="card-header">
-        <h5 class="tw-font-bold tw-text-lg"> {# Use utilities for title styling #}
+        <h5 class="font-bold text-lg"> {# Use utilities for title styling #}
           {%- if href %}<a href="{{ href }}">{%- endif %}
           {%- if icon_class -%}<span class="{{ icon_class }}"></span>{% endif %}
           {{ title }}
@@ -32,7 +32,7 @@
   {% set card_class = 'card-danger' if color in ['red', 'danger'] else 'card' %}
   <div class="{{ card_class }}">
     <div class="card-header">
-      <h5 class="tw-font-bold tw-text-lg">{{ title or _('Menu') }}</h5>
+      <h5 class="font-bold text-lg">{{ title or _('Menu') }}</h5>
     </div>
 
     {%- if not omit_body %}
@@ -60,7 +60,7 @@
   <div class="{{ card_class }}">
     {%- if title %}
       <div class="card-header">
-        <h5 class="tw-font-bold tw-text-lg">{{ title }}</h5>
+        <h5 class="font-bold text-lg">{{ title }}</h5>
       </div>
     {%- endif %}
 
@@ -68,6 +68,6 @@
       {{ caller() }}
     </div>
   </div>
-  <div class="tw-clear-both"></div>
+  <div class="clear-both"></div>
   <!-- end box "{{ title }}" -->
 {%- endmacro %}

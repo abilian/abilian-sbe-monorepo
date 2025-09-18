@@ -138,7 +138,6 @@ dev = [
     { name = "abilian-devtools" },
     { name = "auto-type-annotate" },
     { name = "deptry" },
-    { name = "flask-debugtoolbar" },
     { name = "flask-linktester" },
     { name = "flynt" },
     { name = "honcho" },
@@ -243,7 +242,6 @@ dev = [
     { name = "abilian-devtools", specifier = ">=0.7,<0.8" },
     { name = "auto-type-annotate", specifier = ">=1.1.1" },
     { name = "deptry" },
-    { name = "flask-debugtoolbar" },
     { name = "flask-linktester" },
     { name = "flynt", specifier = ">=1.0.1" },
     { name = "honcho" },
@@ -1308,18 +1306,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/7a/73/e4a9532ca11daeead1a99251f2ec1a5faf98117b83dbfe1b30535004cd98/Flask-Babel-1.0.0.tar.gz", hash = "sha256:d6a70468f9a8919d59fba2a291a003da3a05ff884275dddbd965f3b98b09ab3e", size = 49680, upload-time = "2020-02-06T16:38:11.806Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/76/a4/0115c7c520125853037fc1d6b3da132a526949640e27a699a13e05ec7593/Flask_Babel-1.0.0-py3-none-any.whl", hash = "sha256:247f4ec34cf605d03781f480bccb1a5acb719df1d1a2a743c091ab3db5d5fde2", size = 9496, upload-time = "2020-02-06T16:38:10.501Z" },
-]
-
-[[package]]
-name = "flask-debugtoolbar"
-version = "0.16.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "flask" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/18/0b/19a29b9354b3c00102a475791093358a30afba43e8b676294e7d01964592/flask_debugtoolbar-0.16.0.tar.gz", hash = "sha256:3b925d4dcc09205471e5021019dfeb0eb6dabd6c184de16a3496dfb1f342afe1", size = 335258, upload-time = "2024-09-28T14:55:35.345Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/a2/17/f2a647152315561787d2dfc7dcaf452ec83930a31de9d083a7094da404de/flask_debugtoolbar-0.16.0-py3-none-any.whl", hash = "sha256:2857a58ef20b88cf022a88bb7f0c6f6be1fb91a2e8b2d9fcc9079357a692083e", size = 413047, upload-time = "2024-09-28T14:55:33.928Z" },
 ]
 
 [[package]]

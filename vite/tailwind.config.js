@@ -1,9 +1,9 @@
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-  // Make Tailwind and Bootstrap 4 cohabitate for now.
-  corePlugins: { preflight: false },
-  prefix: "tw-",
+  // Enable preflight now that Bootstrap is removed
+  corePlugins: { preflight: true },
+  prefix: "",
 
   content: [
     /**

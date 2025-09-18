@@ -11,9 +11,14 @@
   <meta name="description" content=""/>
   <meta name="author" content=""/>
 
-  {%- assets "css" %}
-    <link href="{{ ASSET_URL }}" rel="stylesheet"/>
-  {%- endassets %}
+  {%- if vite_dev_server() %}
+    {# Development mode - Vite dev server #}
+    <script type="module" src="http://localhost:5173/@vite/client"></script>
+    <link href="{{ vite_asset('styles.css') }}" rel="stylesheet"/>
+  {%- else %}
+    {# Production mode - built assets #}
+    <link href="{{ url_for('vite_static', filename='styles.css') }}" rel="stylesheet"/>
+  {%- endif %}
   {%- block css %}{%- endblock css %}
 
   <!-- Le fav and touch icons -->
@@ -26,13 +31,80 @@
       type="image/png"
       href="{{ config['FAVICO_URL'] | string }}"/>
 
-  <script>
-    var require = {{ app.extensions['webassets'].requirejs_config | tojson }};
-  </script>
+  {# Essential JavaScript libraries for legacy compatibility #}
+  <script src="{{ url_for('abilian_static', filename='jquery/js/jquery-1.11.3.js') }}"></script>
+  <script src="{{ url_for('abilian_static', filename='bootbox/bootbox.js') }}"></script>
+  <script src="{{ url_for('abilian_static', filename='fileapi/FileAPI.js') }}"></script>
+  <script src="{{ url_for('abilian_static', filename='js/abilian-namespace.js') }}"></script>
 
-  {%- assets "js-top" %}
-    <script src="{{ ASSET_URL }}"></script>
-  {%- endassets %}
+  {# Alpine.js for interactivity #}
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  {# RequireJS shim for legacy code #}
+  <script>
+    // Minimal RequireJS shim for backward compatibility
+    window.require = window.require || function(deps, callback) {
+      if (typeof deps === 'string') {
+        // Single module require
+        return window[deps] || {};
+      }
+      // Multiple dependencies - execute callback immediately with available globals
+      var modules = [];
+      if (Array.isArray(deps)) {
+        deps.forEach(function(dep) {
+          if (dep === 'jquery') modules.push(window.jQuery || window.$);
+          else if (dep === 'Abilian') modules.push(window.Abilian || {});
+          else if (dep === 'domReady!' || dep === 'domReady') modules.push(document);
+          else if (dep === 'bootbox') modules.push(window.bootbox || {});
+          else if (dep === 'FileAPI') modules.push(window.FileAPI || {});
+          else if (dep === 'AbilianNS') modules.push(window.Abilian || {});
+          else if (dep === 'SBEFolderListingSetup') modules.push(window.SBEFolderListingSetup || function(){});
+          else if (dep === 'SBEFolderGalleryListingSetup') modules.push(window.SBEFolderGalleryListingSetup || function(){});
+          else if (dep === 'jquery.dataTables') modules.push(window.jQuery.fn.dataTable || {});
+          else modules.push(window[dep] || {});
+        });
+      }
+      if (callback) {
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function() {
+            callback.apply(null, modules);
+          });
+        } else {
+          setTimeout(function() { callback.apply(null, modules); }, 0);
+        }
+      }
+    };
+
+    window.define = window.define || function(name, deps, factory) {
+      var module;
+      if (typeof name === 'string' && Array.isArray(deps) && typeof factory === 'function') {
+        // Named module with dependencies
+        var modules = [];
+        deps.forEach(function(dep) {
+          if (dep === 'jquery') modules.push(window.jQuery || window.$);
+          else if (dep === 'bootbox') modules.push(window.bootbox || {});
+          else if (dep === 'FileAPI') modules.push(window.FileAPI || {});
+          else if (dep === 'AbilianNS') modules.push(window.Abilian || {});
+          else modules.push(window[dep] || {});
+        });
+        module = factory.apply(null, modules);
+        window[name] = module;
+      } else if (typeof name === 'function') {
+        // Anonymous module
+        module = name();
+      } else if (Array.isArray(name) && typeof deps === 'function') {
+        // Module with dependencies but no name
+        var modules = [];
+        name.forEach(function(dep) {
+          if (dep === 'jquery') modules.push(window.jQuery || window.$);
+          else modules.push(window[dep] || {});
+        });
+        module = deps.apply(null, modules);
+      }
+      return module;
+    };
+    define.amd = true;
+  </script>
 
   {%- set sentry_url = config.get("SENTRY_SDK_URL") %}
   {%- set sentry_dsn = config.get("SENTRY_DSN") %}
@@ -55,9 +127,6 @@
 
   {%- block top_js %}{%- endblock top_js %}
 
-  {# flask-vite (temp) #}
-  <script type="module" src="http://localhost:5173/@vite/client"></script>
-  <link href="http://localhost:5173/src/style.css" rel="stylesheet">
 </head>
 
 <body {%- if body_class is defined %} class="{{ body_class }}" {% endif -%}>
@@ -118,9 +187,14 @@
   {%- endblock footer %}
 {%- endblock body %}
 
-{%- assets "js" %}
-  <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{%- endassets %}
+{# Essential JavaScript for Abilian functionality #}
+<script src="{{ url_for('abilian_static', filename='datatables/js/jquery.dataTables.js') }}"></script>
+<script src="{{ url_for('abilian_static', filename='select2/select2.js') }}"></script>
+<script src="{{ url_for('abilian_static', filename='js/abilian.js') }}"></script>
+<script src="{{ url_for('abilian_static', filename='js/datatables-setup.js') }}"></script>
+<script src="{{ url_for('abilian_static', filename='js/widgets/base.js') }}"></script>
+<script src="{{ url_for('abilian_sbe_static', filename='js/sbe-datatable.js') }}"></script>
+<script src="{{ url_for('abilian_sbe_static', filename='js/folder.js') }}"></script>
 
 {%- block js %}{%- endblock js %} {# this block should be
     used to load additional libraries #}
@@ -130,13 +204,7 @@
   {%- include "abilian_init.js" %}
 </script>
 
-{#- i18n bundles #} {%- set js_i18n_bundle = "js-i18n-" + locale.language %}
-{%- if js_i18n_bundle in app.extensions['webassets'] %}
-  <!-- i18n -->
-  {%- assets js_i18n_bundle %}
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-  {%- endassets %}
-{%- endif %}
+{# i18n bundles - TODO: implement Vite-based i18n if needed #}
 
 {% block locale_js %} {% endblock locale_js %}
 {#- 'abilian_init.js' will load additional libraries by writing new 'script'

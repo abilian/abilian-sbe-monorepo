@@ -40,7 +40,7 @@ class AssetManager:
         self.assets_bundles = {
             "css": {
                 "options": {
-                    "filters": ("less", "cssmin"),
+                    "filters": ("cssmin",),
                     "output": "style-%(version)s.min.css",
                 }
             },
@@ -86,12 +86,7 @@ class AssetManager:
         # Flask's one
         assets.append_path(app.static_folder, app.static_url_path)
 
-        # filters options
-        less_args = ["-ru"]
-        assets.config["less_extra_args"] = less_args
-        assets.config["less_as_output"] = True
-        if assets.debug:
-            assets.config["less_source_map_file"] = "style.map"
+        # filters options - LESS configuration removed for Tailwind CSS
 
         # setup static url for our assets
         from abilian.web import assets as core_bundles
@@ -113,7 +108,7 @@ class AssetManager:
         """
         from abilian.web import assets as bundles
 
-        self.register_asset("css", bundles.LESS)
+        self.register_asset("css", bundles.CSS)
         self.register_asset("js-top", bundles.TOP_JS)
         self.register_asset("js", bundles.JS)
         self.register_i18n_js(app, *bundles.JS_I18N)

@@ -108,7 +108,7 @@ packages = ["src/abilian"]
 [tool.uv]
 dev-dependencies = [
     "abilian-devtools>=0.7,<0.8",
-    "Flask-DebugToolbar",
+    # "flask-debugtoolbar",
     # "sqlparse>=0.4.4,<0.5.0",
     # Dev server
     "honcho",

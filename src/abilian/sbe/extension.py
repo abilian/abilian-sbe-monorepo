@@ -10,7 +10,8 @@ from typing import TYPE_CHECKING
 from loguru import logger
 
 from abilian.core.util import fqcn
-from abilian.extensions import asset_manager
+
+# Asset management now handled by Vite
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -55,12 +56,7 @@ class AbilianSBE:
 
         # sbe static assets
         app.add_static_url("abilian/sbe", STATIC_DIR, endpoint="abilian_sbe_static")
-        app.extensions["webassets"].append_path(
-            STATIC_DIR, f"{app.static_url_path}/abilian/sbe"
-        )
-
-        asset_manager.register_asset("js", *JS)
-        asset_manager.register_asset("css", LESSCSS_FILE)
+        # Note: SBE-specific assets are now handled by Vite or included in components
 
         # Jinja
         logger.info("Register jinja context processors")

@@ -11,48 +11,45 @@
 </script>
 
 {% macro m_docs_table(objects, edit=True) %}
-  <div type="button" class="upload-files-btn">
-    <i class="glyphicon glyphicon-plus"></i><a style="text-decoration:none;color:white;" href="#modal-upload-files"
-                                               data-toggle="modal"> Upload file(s)</a>
-  </div>
+  <a href="#modal-upload-files" data-toggle="modal" class="btn btn-primary">
+    <i class="glyphicon glyphicon-plus"></i> Upload file(s)
+  </a>
 
-  <div type="button" class="add-folder-btn">
-    <i class="glyphicon glyphicon-plus"></i><a style="text-decoration:none;color: gray;" href="#modal-new-folder"
-                                               data-toggle="modal"> New folder</a>
-  </div>
+  <a href="#modal-new-folder" data-toggle="modal" class="btn btn-default ml-2">
+    <i class="glyphicon glyphicon-plus"></i> New folder
+  </a>
 
   <hr>
   {%- if objects %}
     <form action="{{ url_for('.change_view_style', folder_id=folder.id, community_id=folder.community.slug) }}"
           method="POST">
       {{ csrf.field() }}
-      <div style="float:right;margin-left: 12px;position: relative;
-top: -65px;" class="btn-group" role="group" aria-label="...">
-        <button type="submit" class="btn btn-default" name="view_style" value="thumbnail_view"><span
-            class="glyphicon glyphicon-th-list" aria-hidden="true"></span></button>
-        <button type="submit" class="btn btn-default" name="view_style" value="gallery_view"><span
-            class="glyphicon glyphicon-th-large" aria-hidden="true"></span></button>
+      <div class="float-right ml-3 relative -top-16 flex" role="group" aria-label="View options">
+        <button type="submit" class="btn btn-default rounded-r-none" name="view_style" value="thumbnail_view">
+          <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+        </button>
+        <button type="submit" class="btn btn-default rounded-l-none border-l-0" name="view_style" value="gallery_view">
+          <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+        </button>
       </div>
     </form>
 
-    <form name="folder-listing" style="margin-bottom: 0;" method="POST">
+    <form name="folder-listing" class="mb-0" method="POST">
       {{ csrf.field() }}
       {%- if edit %}
-        <div class="btn-toolbar" style="margin-bottom: 0;">
-          <div class="btn-group" style="margin-right: 20px;display:none;">
-            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+        <div class="flex items-center space-x-5 mb-0">
+          <div x-data="{ open: false }" @click.away="open = false" class="relative hidden">
+            <button @click="open = !open" class="btn btn-default">
               <i class="fa fa-check"></i>
               <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="doc-select-all" href="#select-all">{{ _("Select all") }}</a></li>
-              <li><a class="doc-unselect-all" href="#unselect-all">{{ _("Unselect all") }}</a></li>
+            </button>
+            <ul x-show="open" class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+              <li><a class="doc-select-all block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" href="#select-all">{{ _("Select all") }}</a></li>
+              <li><a class="doc-unselect-all block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" href="#unselect-all">{{ _("Unselect all") }}</a></li>
             </ul>
           </div>
-          <div class="btn-group" style="margin-right: 20px;position: relative;
-top: -8px;margin-bottom: -47px;">
-            <input id="filter" type="text" class="form-control" placeholder="{{ _('Filter...') }}"
-                   style="margin-bottom: 0;">
+          <div class="relative -top-2 -mb-12">
+            <input id="filter" type="text" class="form-control" placeholder="{{ _('Filter...') }}" />
           </div>
 
         </div>
@@ -69,33 +66,31 @@ top: -8px;margin-bottom: -47px;">
       {% endif %}
 
       <br><br>
-      <table style="background: white;position:relative;margin-top: -54px;"
-             class="document-table-thumbnail table table-striped table-condensed" id="objects-table">
+      <table class="document-table-thumbnail table table-striped table-condensed bg-white relative -mt-14" id="objects-table">
         <thead>
-        <tr style="color: #919191;
-border-bottom: 2px solid ghostwhite;">
-          <th style="width: 1%;"><input class="doc-check-all" style="position: relative;top: 2px;left: -4px;"
-                                        type="checkbox">
+        <tr class="text-gray-500 border-b-2 border-gray-100">
+          <th class="w-[1%]">
+            <input class="doc-check-all relative top-0.5 -left-1" type="checkbox">
           </th>
-          <th class="hide">type</th>
-          <th class="hide">title for sorting</th>
-          <th style="width: 39%;">{{ _("Title") }}</th>
-          <th class="hide">for size</th>
-          <th style="width: 20%;">{{ _("Size") }}</th>
-          <th class="hide">Last Name</th>
-          <th class="hide">First Name</th>
-          <th style="width: 25%;">{{ _("Owner") }}</th>
-          <th class="hide">date</th>
-          <th style="width: 25%;">{{ _("Age") }}</th>
+          <th class="hidden">type</th>
+          <th class="hidden">title for sorting</th>
+          <th class="w-[39%]">{{ _("Title") }}</th>
+          <th class="hidden">for size</th>
+          <th class="w-[20%]">{{ _("Size") }}</th>
+          <th class="hidden">Last Name</th>
+          <th class="hidden">First Name</th>
+          <th class="w-[25%]">{{ _("Owner") }}</th>
+          <th class="hidden">date</th>
+          <th class="w-[25%]">{{ _("Age") }}</th>
           <th></th>
-          <th class="hide"></th>
+          <th class="hidden"></th>
         </tr>
         </thead>
 
         <tbody>
         {%- for obj in objects %}
           <tr>
-            <td><input id="check_{{ obj.id }}" style="position: relative;top: 2px;" type="checkbox"
+            <td><input id="check_{{ obj.id }}" class="relative top-0.5" type="checkbox"
                        name="object-selected"
                        value="{{ obj.sbe_type }}:{{ obj.id }}"></td>
 

@@ -22,32 +22,13 @@ if typing.TYPE_CHECKING:
 def init_app(app: Application) -> None:
     register_filters()
 
-    assets = app.extensions["webassets"]
-    assets.append_path(RESOURCES_DIR, "/static/abilian")
+    # Keep the static URL for legacy assets like favicons
     app.add_static_url(
         "abilian", RESOURCES_DIR, endpoint="abilian_static", roles=ANONYMOUS
     )
 
-    with app.app_context():
-        requirejs_config()
 
-
-def requirejs_config() -> None:
-    assets = current_app.extensions["webassets"]
-    config = assets.requirejs_config
-
-    # setup ckeditor
-    ckeditor_lib = "ckeditor/ckeditor"
-    config["shim"]["ckeditor"] = {"exports": "CKEDITOR"}
-    config["paths"]["ckeditor"] = url_for("abilian_static", filename=ckeditor_lib)
-
-    d3_lib = "nvd3/d3.min"
-    config["shim"]["d3"] = {"exports": "d3"}
-    config["paths"]["d3"] = url_for("abilian_static", filename=d3_lib)
-
-    nvd3_lib = "nvd3/nv.d3"
-    config["shim"]["nvd3"] = {"exports": "nv", "deps": ["d3"]}
-    config["paths"]["nvd3"] = url_for("abilian_static", filename=nvd3_lib)
+# RequireJS configuration removed - now using Alpine.js and modern ES modules
 
 
 RESOURCES_DIR = str(rso.files("abilian.web") / "resources")
@@ -56,8 +37,14 @@ JQUERY = Bundle("jquery/js/jquery-1.11.3.js")
 
 BOOTBOX_JS = Bundle("bootbox/bootbox.js")
 
-BOOTSTRAP_LESS = Bundle("bootstrap/less/bootstrap.less")
-BOOTSTRAP_JS = Bundle("bootstrap/js/bootstrap.js")
+# BOOTSTRAP_LESS = Bundle("bootstrap/less/bootstrap.less")  # Removed in favor of Tailwind
+# BOOTSTRAP_JS = Bundle("bootstrap/js/bootstrap.js")  # Removed in favor of Alpine.js
+
+# Tailwind CSS (built from vite directory)
+TAILWIND_CSS = Bundle("../../vite/dist/styles.css")
+
+# Alpine.js for interactive components (replaces Bootstrap JS)
+ALPINE_JS = Bundle("https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js")
 
 BOOTSTRAP_DATEPICKER_LESS = "bootstrap-datepicker/less/datepicker.less"
 BOOTSTRAP_DATEPICKER_JS = Bundle("bootstrap-datepicker/js/bootstrap-datepicker.js")
@@ -105,8 +92,8 @@ ABILIAN_JS = Bundle(
     "js/widgets/delete.js",
 )
 
-LESS = Bundle(
-    BOOTSTRAP_LESS,
+CSS = Bundle(
+    TAILWIND_CSS,
     FONTAWESOME_LESS,
     SELECT2_LESS,
     # TYPEAHEAD_LESS,
@@ -120,7 +107,7 @@ LESS = Bundle(
 TOP_JS = Bundle(REQUIRE_JS, JQUERY, ABILIAN_JS_NS)
 
 JS = Bundle(
-    BOOTSTRAP_JS,
+    ALPINE_JS,
     TYPEAHEAD_JS,
     BOOTBOX_JS,
     SELECT2_JS,
