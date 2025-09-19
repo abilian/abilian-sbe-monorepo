@@ -11,13 +11,37 @@
   <meta name="description" content=""/>
   <meta name="author" content=""/>
 
-  {%- if vite_dev_server() %}
-    {# Development mode - Vite dev server #}
+  {%- if config.DEBUG %}
+    {# Development mode - Check if Vite dev server is running #}
     <script type="module" src="http://localhost:5173/@vite/client"></script>
-    <link href="{{ vite_asset('styles.css') }}" rel="stylesheet"/>
+    <link href="http://localhost:5173/src/styles.css" rel="stylesheet"/>
   {%- else %}
-    {# Production mode - built assets #}
-    <link href="{{ url_for('vite_static', filename='styles.css') }}" rel="stylesheet"/>
+    {# Production mode - serve built CSS #}
+    <link href="/static/vite/styles.css" rel="stylesheet"/>
+  {%- endif %}
+
+  {%- if not config.DEBUG %}
+    {# Fallback inline CSS when built assets aren't available #}
+    <style>
+      /* Basic Tailwind-inspired styles - temporary */
+      .card { background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1.5rem; }
+      .card-header { padding: 1rem; border-bottom: 1px solid #e5e7eb; background: #f9fafb; font-weight: 600; }
+      .card-body { padding: 1.5rem; }
+      .btn { display: inline-block; padding: 0.5rem 1rem; border: 1px solid transparent; border-radius: 0.375rem; font-weight: 600; text-align: center; cursor: pointer; }
+      .btn-primary { color: white; background: #3b82f6; }
+      .btn-default { color: #374151; background: white; border-color: #d1d5db; }
+      .form-control { display: block; width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; }
+      .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+      .navbar { background: white; border-bottom: 1px solid #e5e7eb; padding: 1rem 0; }
+      .table { width: 100%; border-collapse: collapse; }
+      .table th, .table td { padding: 0.75rem; border-bottom: 1px solid #e5e7eb; }
+      .table-striped tbody tr:nth-child(odd) { background: #f9fafb; }
+      /* Basic datepicker styles */
+      .datepicker { background: white; border: 1px solid #d1d5db; border-radius: 0.375rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+      .datepicker table { width: 100%; }
+      .datepicker .dow, .datepicker .old, .datepicker .new { color: #9ca3af; }
+      .datepicker .active { background: #3b82f6; color: white; }
+    </style>
   {%- endif %}
   {%- block css %}{%- endblock css %}
 
@@ -31,16 +55,7 @@
       type="image/png"
       href="{{ config['FAVICO_URL'] | string }}"/>
 
-  {# Essential JavaScript libraries for legacy compatibility #}
-  <script src="{{ url_for('abilian_static', filename='jquery/js/jquery-1.11.3.js') }}"></script>
-  <script src="{{ url_for('abilian_static', filename='bootbox/bootbox.js') }}"></script>
-  <script src="{{ url_for('abilian_static', filename='fileapi/FileAPI.js') }}"></script>
-  <script src="{{ url_for('abilian_static', filename='js/abilian-namespace.js') }}"></script>
-
-  {# Alpine.js for interactivity #}
-  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-  {# RequireJS shim for legacy code #}
+  {# RequireJS shim for legacy code - MUST load first #}
   <script>
     // Minimal RequireJS shim for backward compatibility
     window.require = window.require || function(deps, callback) {
@@ -105,6 +120,15 @@
     };
     define.amd = true;
   </script>
+
+  {# Essential JavaScript libraries for legacy compatibility #}
+  <script src="{{ url_for('abilian_static', filename='jquery/js/jquery-1.11.3.js') }}"></script>
+  <script src="{{ url_for('abilian_static', filename='bootbox/bootbox.js') }}"></script>
+  <script src="{{ url_for('abilian_static', filename='fileapi/FileAPI.js') }}"></script>
+  <script src="{{ url_for('abilian_static', filename='js/abilian-namespace.js') }}"></script>
+
+  {# Alpine.js for interactivity #}
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
   {%- set sentry_url = config.get("SENTRY_SDK_URL") %}
   {%- set sentry_dsn = config.get("SENTRY_DSN") %}
@@ -190,11 +214,17 @@
 {# Essential JavaScript for Abilian functionality #}
 <script src="{{ url_for('abilian_static', filename='datatables/js/jquery.dataTables.js') }}"></script>
 <script src="{{ url_for('abilian_static', filename='select2/select2.js') }}"></script>
+<script src="{{ url_for('abilian_static', filename='bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
+<script src="{{ url_for('abilian_static', filename='bootstrap-timepicker/js/bootstrap-timepicker.js') }}"></script>
+<script src="{{ url_for('abilian_static', filename='typeahead/typeahead.js') }}"></script>
+<script src="{{ url_for('abilian_static', filename='typeahead/hogan-2.0.0.js') }}"></script>
+<script src="{{ url_for('abilian_static', filename='bootstrap-switch/bootstrap-switch.js') }}"></script>
 <script src="{{ url_for('abilian_static', filename='js/abilian.js') }}"></script>
 <script src="{{ url_for('abilian_static', filename='js/datatables-setup.js') }}"></script>
 <script src="{{ url_for('abilian_static', filename='js/widgets/base.js') }}"></script>
-<script src="{{ url_for('abilian_sbe_static', filename='js/sbe-datatable.js') }}"></script>
-<script src="{{ url_for('abilian_sbe_static', filename='js/folder.js') }}"></script>
+{# SBE-specific scripts - temporarily disabled to fix base functionality #}
+{# <script src="{{ url_for('abilian_sbe_static', filename='js/sbe-datatable.js') }}"></script> #}
+{# <script src="{{ url_for('abilian_sbe_static', filename='js/folder.js') }}"></script> #}
 
 {%- block js %}{%- endblock js %} {# this block should be
     used to load additional libraries #}

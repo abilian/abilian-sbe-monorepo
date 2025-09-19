@@ -67,8 +67,7 @@ def create_app(config: type | None = None, plugins=None, **kw: Any) -> Applicati
     # 4: Perform post-registration actions
     signals.components_registered.send(app)
 
-    # Misc (fixme: this should be done elsewhere)
-    vite.init_app(app)
+    # Vite integration now handled in setup/extensions.py
 
     return app
 

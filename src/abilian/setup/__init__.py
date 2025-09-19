@@ -14,7 +14,8 @@ from flask_super import register_commands
 from flask_talisman import DEFAULT_CSP_POLICY, Talisman
 
 from abilian.core import extensions, signals
-from abilian.extensions import vite_asset_manager
+
+# Vite integration now handled by Flask-Vite in setup/extensions.py
 from abilian.services import settings_service
 from abilian.services.security import ANONYMOUS
 from abilian.web.access_blueprint import allow_access_for_roles

@@ -14,7 +14,7 @@ from loguru import logger
 import abilian.core.util
 import abilian.i18n
 from abilian.core import extensions
-from abilian.extensions import vite_asset_manager
+from abilian.extensions import vite
 from abilian.services import (
     activity_service,
     antivirus,
@@ -59,7 +59,15 @@ def init_extensions(app: Flask) -> None:
     # in particular in a before_request handler (like csrf validator)
     auth_service.init_app(app)
 
-    vite_asset_manager.init_app(app)
+    vite.init_app(app)
+
+    # Make vite functions available in templates
+    app.jinja_env.globals["vite"] = vite
+
+    # Initialize legacy assets for favicons and other static resources
+    from abilian.web import assets as legacy_assets
+
+    legacy_assets.init_app(app)
 
     init_babel(app)
 
