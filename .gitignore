@@ -24,8 +24,10 @@ yarn.lock
 
 # Secret / local settings
 .aider*
+.claude
 .env
 .envrc
+CLAUDE.md
 config
 private
 sandbox
