@@ -1,3 +1,4 @@
 # worker: flask worker
 # scheduler: flask scheduler
 web: flask run --reload
+vite: flask vite start
