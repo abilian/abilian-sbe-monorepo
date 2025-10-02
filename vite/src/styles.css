@@ -1,9 +1,6 @@
-/* src/styles.css */
+/* Tailwind v4 CSS entry point */
+/* Scan templates in parent project's src directory with tw: prefix */
+@import "tailwindcss" source("../../src") prefix(tw);
 
-/* 1. Import Tailwind's base, components, and utilities layers */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* 2. Import your custom components into the 'components' layer */
-@import './components.css' layer(components);
+/* Import custom components */
+@import './components.css';

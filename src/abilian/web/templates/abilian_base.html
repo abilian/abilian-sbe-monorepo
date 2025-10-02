@@ -20,29 +20,6 @@
     <link href="/static/vite/styles.css" rel="stylesheet"/>
   {%- endif %}
 
-  {%- if not config.DEBUG %}
-    {# Fallback inline CSS when built assets aren't available #}
-    <style>
-      /* Basic Tailwind-inspired styles - temporary */
-      .card { background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1.5rem; }
-      .card-header { padding: 1rem; border-bottom: 1px solid #e5e7eb; background: #f9fafb; font-weight: 600; }
-      .card-body { padding: 1.5rem; }
-      .btn { display: inline-block; padding: 0.5rem 1rem; border: 1px solid transparent; border-radius: 0.375rem; font-weight: 600; text-align: center; cursor: pointer; }
-      .btn-primary { color: white; background: #3b82f6; }
-      .btn-default { color: #374151; background: white; border-color: #d1d5db; }
-      .form-control { display: block; width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; }
-      .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-      .navbar { background: white; border-bottom: 1px solid #e5e7eb; padding: 1rem 0; }
-      .table { width: 100%; border-collapse: collapse; }
-      .table th, .table td { padding: 0.75rem; border-bottom: 1px solid #e5e7eb; }
-      .table-striped tbody tr:nth-child(odd) { background: #f9fafb; }
-      /* Basic datepicker styles */
-      .datepicker { background: white; border: 1px solid #d1d5db; border-radius: 0.375rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-      .datepicker table { width: 100%; }
-      .datepicker .dow, .datepicker .old, .datepicker .new { color: #9ca3af; }
-      .datepicker .active { background: #3b82f6; color: white; }
-    </style>
-  {%- endif %}
   {%- block css %}{%- endblock css %}
 
   <!-- Le fav and touch icons -->
@@ -161,27 +138,27 @@
   <!-- navbar -->
   {% include "navbar.html" %}
 
-  <div id="content" class="container clearfix">
+  <div id="content" class="tw:container tw:mx-auto tw:px-4">
     <!-- breadcrumbs -->
     {% if g.breadcrumb|length > 1 %}
-      <div class="row">
-        <div class="col-xs-12">{% include "breadcrumbs.html" %}</div>
+      <div class="tw:w-full">
+        <div>{% include "breadcrumbs.html" %}</div>
       </div>
     {% endif %}
 
     <!-- flash messages -->
-    <div class="row" id="flash-messages">
-      <div class="col-xs-12">{%- include "flash-messages.html" %}</div>
+    <div class="tw:w-full" id="flash-messages">
+      <div>{%- include "flash-messages.html" %}</div>
     </div>
 
-    <div class="row">
-      <header class="col-xs-12">
+    <div class="tw:w-full">
+      <header>
         {% block header %} {%- endblock header %}
       </header>
     </div>
 
-    <div class="row">
-      <div class="col-xs-12">
+    <div class="tw:w-full">
+      <div>
         <div class="main-block">
           {% block main %}
             <div class="content-block">
@@ -195,11 +172,11 @@
 
   {%- block footer %}
     <footer>
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-12">
+      <div class="tw:container tw:mx-auto tw:px-4">
+        <div class="tw:w-full">
+          <div>
             <hr/>
-            <p class="text-right">
+            <p class="tw:text-right">
               <small
               >Powered by <a href="https://www.abilian.com/">Abilian</a>
               </small>

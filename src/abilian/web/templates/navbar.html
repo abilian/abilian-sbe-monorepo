@@ -1,52 +1,55 @@
-<nav class="bg-white shadow-md fixed top-0 w-full z-50" role="navigation" x-data="{ open: false }">
-  <div class="container mx-auto px-4">
+<nav class="tw:bg-white tw:shadow-md tw:fixed tw:top-0 tw:w-full tw:z-50" role="navigation" x-data="{ open: false }">
+  <div class="tw:container tw:mx-auto tw:px-4">
     {# Brand and toggle get grouped for better mobile display #}
-    <div class="flex justify-between items-center py-3">
-      <a class="navbar-brand flex items-center" href="{{ request.url_root }}">
-        <img src="{{ app.config['LOGO_URL'] | string }}" class="h-8"/>
+    <div class="tw:flex tw:justify-between tw:items-center tw:py-3">
+      <a class="navbar-brand tw:flex tw:items-center" href="{{ request.url_root }}">
+        <img src="{{ app.config['LOGO_URL'] | string }}" class="tw:h-8"/>
       </a>
 
-      <button type="button" @click="open = !open" class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
-        <span class="sr-only">Toggle navigation</span>
+      <button
+        type="button" @click="open = !open"
+        class="tw:md:hidden tw:inline-flex tw:items-center tw:justify-center tw:p-2 tw:rounded-md tw:text-gray-400 hover:tw:text-gray-500 hover:tw:bg-gray-100 focus:tw:outline-none focus:tw:ring-2 focus:tw:ring-inset focus:tw:ring-blue-500">
+        <span class="tw:sr-only">Toggle navigation</span>
         <span class="fa fa-bars"></span>
       </button>
     </div>
 
     {# Desktop Navigation #}
-    <div class="hidden md:flex md:items-center md:justify-between">
-      <ul class="flex space-x-8">
+    <div class="tw:hidden tw:md:flex tw:md:items-center tw:md:justify-between">
+      <ul class="tw:flex tw:space-x-8">
         {%- for navitem in actions.for_category('navigation:section') %}
           {%- if navitem.divider %}
-            <li class="border-l border-gray-300 h-6"></li>
+            <li class="tw:border-l tw:border-gray-300 tw:h-6"></li>
           {%- endif %}
-          <li class="{{ navitem.status }} flex items-center">{{ navitem.render() }}</li>
+          <li class="{{ navitem.status }} tw:flex tw:items-center">{{ navitem.render() }}</li>
         {%- endfor %}
       </ul>
 
-      <div class="flex items-center space-x-4">
-        <ul id="nav-menu-user" class="flex space-x-4">
+      <div class="tw:flex tw:items-center tw:space-x-4">
+        <ul id="nav-menu-user" class="tw:flex tw:space-x-4">
           {%- for action in actions.for_category('navigation:user') %}
             {%- if action.divider %}
-              <li class="border-l border-gray-300 h-6"></li>
+              <li class="tw:border-l tw:border-gray-300 tw:h-6"></li>
             {%- endif %}
-            <li class="{{ action.status }} flex items-center">{{ action.render() }}</li>
+            <li class="{{ action.status }} tw:flex tw:items-center">{{ action.render() }}</li>
           {%- endfor %}
         </ul>
 
         {%- if 'abilian.web.search' in app.APP_PLUGINS %}
           {%- if not (current_user.is_anonymous and app.private_site) %}
-            <form role="search" method="GET" action="{{ url_for('search.search_main') }}" class="ml-4">
-              <input type="text" name="q" class="form-control w-64"
-                  placeholder="{{ _('Search') }}" autocomplete="off" id="search-box"/>
+            <form role="search" method="GET" action="{{ url_for('search.search_main') }}" class="tw:ml-4">
+              <input
+                type="text" name="q" class="form-control tw:w-64"
+                placeholder="{{ _('Search') }}" autocomplete="off" id="search-box"/>
             </form>
           {%- endif %}
         {%- endif %}
 
         {%- set admin_nav = actions.for_category('navigation:admin') %}
         {%- if admin_nav %}
-          <ul id="nav-menu-admin" class="flex space-x-4 ml-4">
+          <ul id="nav-menu-admin" class="tw:flex tw:space-x-4 tw:ml-4">
             {%- for action in admin_nav %}
-              <li class="{{ action.status }} flex items-center">{{ action.render() }}</li>
+              <li class="{{ action.status }} tw:flex tw:items-center">{{ action.render() }}</li>
             {%- endfor %}
           </ul>
         {%- endif %}
@@ -54,8 +57,8 @@
     </div>
 
     {# Mobile Menu #}
-    <div x-show="open" class="md:hidden mt-3 border-t border-gray-200 pt-4">
-      <ul class="space-y-3">
+    <div x-show="open" class="tw:md:hidden tw:mt-3 tw:border-t tw:border-gray-200 tw:pt-4">
+      <ul class="tw:space-y-3">
         {%- for navitem in actions.for_category('navigation:section') %}
           {%- if not navitem.divider %}
             <li class="{{ navitem.status }}">{{ navitem.render() }}</li>
@@ -63,8 +66,8 @@
         {%- endfor %}
       </ul>
 
-      <div class="mt-4 pt-4 border-t border-gray-200">
-        <ul class="space-y-3">
+      <div class="tw:mt-4 tw:pt-4 tw:border-t tw:border-gray-200">
+        <ul class="tw:space-y-3">
           {%- for action in actions.for_category('navigation:user') %}
             {%- if not action.divider %}
               <li class="{{ action.status }}">{{ action.render() }}</li>
@@ -74,16 +77,16 @@
 
         {%- if 'abilian.web.search' in app.APP_PLUGINS %}
           {%- if not (current_user.is_anonymous and app.private_site) %}
-            <form role="search" method="GET" action="{{ url_for('search.search_main') }}" class="mt-4">
-              <input type="text" name="q" class="form-control w-full"
-                  placeholder="{{ _('Search') }}" autocomplete="off" id="search-box-mobile"/>
+            <form role="search" method="GET" action="{{ url_for('search.search_main') }}" class="tw:mt-4">
+              <input type="text" name="q" class="form-control tw:w-full"
+                     placeholder="{{ _('Search') }}" autocomplete="off" id="search-box-mobile"/>
             </form>
           {%- endif %}
         {%- endif %}
 
         {%- set admin_nav = actions.for_category('navigation:admin') %}
         {%- if admin_nav %}
-          <ul class="space-y-3 mt-4">
+          <ul class="tw:space-y-3 tw:mt-4">
             {%- for action in admin_nav %}
               <li class="{{ action.status }}">{{ action.render() }}</li>
             {%- endfor %}

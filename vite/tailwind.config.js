@@ -1,10 +1,9 @@
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-  // DISABLE preflight until Bootstrap is fully removed (safe migration)
-  corePlugins: { preflight: false },
-  // RE-ENABLE prefix for coexistence with Bootstrap
-  prefix: "tw-",
+  // NOTE: In Tailwind v4, prefix is configured in CSS via @import "tailwindcss" prefix(tw)
+  // This generates classes with colon syntax: tw:flex, tw:bg-white, etc.
+  // The old hyphen-based prefix (tw-) is no longer supported in v4
 
   content: [
     /**
@@ -37,14 +36,14 @@ module.exports = {
         critical: colors.red,
       },
       minHeight: {
-        "24": "6rem",
-      }
+        24: "6rem",
+      },
     },
     fontFamily: {
       primary:
-          'var(--family-primary, "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji")',
+        'var(--family-primary, "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji")',
       secondary:
-          'var(--family-secondary, "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji")',
+        'var(--family-secondary, "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji")',
       sans: [
         "Inter",
         "system-ui",
@@ -80,9 +79,7 @@ module.exports = {
      * comment the line below to disable '@tailwindcss/forms'.
      */
     // require("@tailwindcss/forms"),
-    require("@tailwindcss/typography"),
-    require("@tailwindcss/line-clamp"),
-    require("@tailwindcss/aspect-ratio"),
+    // Note: v4 has built-in support for line-clamp and aspect-ratio
+    // Typography plugin is not compatible with v4 yet
   ],
-
 };

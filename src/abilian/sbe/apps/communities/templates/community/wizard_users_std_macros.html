@@ -42,16 +42,16 @@
   <td class="hide">{{ user.last_name }}</td>
   <td class="hide">{{ user.first_name }}</td>
   <td style="padding-top: 11px;padding-left: 10px;">
-    <div class="media">
-      <div class="media-left">
-        {% call m_user_link(user, css="media-object") %}
+    <div class="tw:flex tw:items-start tw:gap-x-4">
+      <div>
+        {% call m_user_link(user) %}
           {{ m_user_photo(user, size="32") }}
         {%- endcall %}
       </div>
 
-      <div class="media-body" style="position: relative;top: -4.5px;">
+      <div class="tw:flex-1" style="position: relative;top: -4.5px;">
         {%- if not user.can_login %}
-          <i class="glyphicon glyphicon-lock" title="{{ _('account disabled') }}"></i><s>
+          <i class="fa fa-lock" title="{{ _('account disabled') }}"></i><s>
         {%- endif %}
         {{ m_user_link(user) }}
         <br/>

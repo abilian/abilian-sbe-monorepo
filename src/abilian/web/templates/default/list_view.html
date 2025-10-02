@@ -3,16 +3,16 @@
 {% block content %}
   <div class="row">
     <div class="col-xs-12">
-      <div class="btn-toolbar">
+      <div class="tw:flex tw:items-center tw:gap-x-4">
         {%- for action_items in module.get_grouped_actions().values() %}
-          <div class="btn-group">
+          <div class="tw:flex tw:items-center tw:gap-x-2">
             {%- for item in action_items %}
               {{ item.render() }}
             {%- endfor %}
           </div>
         {%- endfor %}
 
-        <div class="btn-group">
+        <div>
           {%- set EXCEL_ACTIONS = module.excel_export_actions %}
           {%- set EXCEL_SUPPORT_IMPORT = module.EXCEL_IMPORT_EXPORT and g.is_manager %}
 
@@ -78,7 +78,7 @@
         </div>
 
         {%- if module.export_xml %}
-          <div class="btn-group">
+          <div>
             <a class="btn btn-default" href="{{ url_for('.export_xml') }}"><i>
               <small>&lt;/&gt;</small>
             </i>&nbsp;{{ _("Export XML") }}</a>

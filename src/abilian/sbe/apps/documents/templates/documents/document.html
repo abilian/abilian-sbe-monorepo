@@ -68,43 +68,43 @@
       <i class="fa fa-arrow-left"></i> {{ _("Back to document list") }}
     </a>
 
-    <div id="horizontal-doc-menu" class="document-horizontal-menu" style="display: inline; right:0px; top:0px;">
-      <div class="btn-group">
+    <div id="horizontal-doc-menu" class="document-horizontal-menu tw:inline-flex tw:items-center tw:gap-x-2" style="right:0px; top:0px;">
+      <div>
         {%- if doc.antivirus_ok %}
-          <a class="btn btn-success btn-md pull-right"
+          <a class="btn btn-success btn-md tw:float-right"
              href="{{ url_for('.document_download', community_id=doc.community.slug, doc_id=doc.id, attach=True) }}">
-            <i class="glyphicon glyphicon-download"></i>
+            <i class="fa fa-download"></i>
             {{ _('Download') }}
             <small>({{ doc.content_length|filesize }})</small>
           </a>
         {%- endif %}
       </div>
-      <div class="btn-group">
+      <div>
         <a onclick="edit_document()"
            class="btn action action-documents-folder-listing action-documents-folder-listing-download btn-default"
-           href="#modal-edit" title="Download" data-toggle="modal"><i class="glyphicon glyphicon-pencil"></i></a>
+           href="#modal-edit" title="Download" data-toggle="modal"><i class="fa fa-pencil"></i></a>
       </div>
-      <div class="btn-group">
+      <div>
         <a onclick="email_document()"
            class="btn action action-documents-folder-listing action-documents-folder-listing-move-files btn-default"
            href="#modal-send-by-email" data-toggle="modal" title="Move to another folder"><i
-            class="glyphicon glyphicon-envelope"></i></a>
+            class="fa fa-envelope"></i></a>
       </div>
-      <div class="btn-group">
+      <div>
         <a href="#modal-delete"
            class="btn action action-documents-folder-listing action-documents-folder-listing-delete btn-danger"
-           data-toggle="modal" name="action" title="Delete"><i class="glyphicon glyphicon-trash"></i></a>
+           data-toggle="modal" name="action" title="Delete"><i class="fa fa-trash"></i></a>
       </div>
-      <div class="btn-group">
+      <div>
         <div class="dropdown">
           <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="true">
-            <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
+            <span class="fa fa-ellipsis-h" aria-hidden="true"></span>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
             <li>
               <a class="" href="#modal-move-files" data-toggle="modal" role="button" title="Move to another folder">
-                <i class="glyphicon glyphicon-move"></i>
+                <i class="fa fa-arrows"></i>
                 {{ _("Move") }}
               </a>
             </li>

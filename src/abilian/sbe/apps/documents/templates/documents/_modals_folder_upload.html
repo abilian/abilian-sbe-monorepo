@@ -13,7 +13,7 @@
         <div class="modal-body">
           <div class="multiupload">
             <div class="btn btn-default btn-small btn-file js-fileapi-wrapper">
-              <span class="glyphicon glyphicon-plus"></span>
+              <span class="fa fa-plus"></span>
               <span>{{ _('Add files to selection') }}</span>
               <input name="file" type="file">
             </div>
@@ -21,14 +21,21 @@
             <ul class="list-group js-files b-upload__files">
 
               <li class="list-group-item js-file-tpl">
-                <div class="media b-thumb" data-id="<%=uid%>"
+                <div class="b-thumb tw:flex tw:items-start tw:gap-x-4" data-id="<%=uid%>"
                      title="<%-name%> (<%-sizeText%>)">
-                  <div class="pull-left b-thumb__preview">
-                    <div class="media-object b-thumb__preview__pic"
+                  <div class="b-thumb__preview">
+                    <div class="b-thumb__preview__pic"
                          style="width: 40px; height: 40px"></div>
                   </div>
 
-                  <div class="pull-right">
+                  <div class="tw:flex-1">
+                    <div class="b-thumb__name">
+                      <h4 class="list-group-item-heading"><%-name%></h4>
+                      <span>(<%-sizeText%>)</span>
+                    </div>
+                  </div>
+
+                  <div class="tw:flex tw:items-center tw:gap-x-2">
                     <div style="display: inline-block; width: 10em;">
                       <div class="progress" data-fileapi="active.show">
                         <div class="progress-bar" role="progressbar" data-fileapi="file.progress"
@@ -42,14 +49,7 @@
 
                     <div class="btn btn-danger b-thumb__del"
                          data-fileapi="file.remove">
-                      <span class="glyphicon glyphicon-minus"></span>
-                    </div>
-                  </div>
-
-                  <div class="media-body">
-                    <div class="b-thumb__name">
-                      <h4 class="list-group-item-heading"><%-name%></h4>
-                      <span>(<%-sizeText%>)</span>
+                      <span class="fa fa-minus"></span>
                     </div>
                   </div>
                 </div>

@@ -23,19 +23,19 @@
           method="POST">
       {{ csrf.field() }}
       <div style="float:right;margin-left: 12px;position: relative;
-top: -65px;" class="btn-group" role="group" aria-label="...">
+top: -65px;" class="tw:flex tw:items-center tw:gap-x-2" role="group" aria-label="...">
         <button type="submit" class="btn btn-default" name="view_style" value="thumbnail_view"><span
-            class="glyphicon glyphicon-th-list" aria-hidden="true"></span></button>
+            class="fa fa-th-list" aria-hidden="true"></span></button>
         <button type="submit" class="btn btn-default" name="view_style" value="gallery_view"><span
-            class="glyphicon glyphicon-th-large" aria-hidden="true"></span></button>
+            class="fa fa-th-large" aria-hidden="true"></span></button>
       </div>
     </form>
 
     <form name="folder-listing" style="margin-bottom: 0;" method="POST">
       {{ csrf.field() }}
       {%- if edit %}
-        <div class="btn-toolbar" style="margin-bottom: 0;">
-          <div class="btn-group" style="margin-right: 20px;display:none;">
+        <div class="tw:flex tw:items-center tw:gap-x-4" style="margin-bottom: 0;">
+          <div style="margin-right: 20px;display:none;">
             <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
               <i class="fa fa-check"></i>
               <span class="caret"></span>
@@ -45,7 +45,7 @@ top: -65px;" class="btn-group" role="group" aria-label="...">
               <li><a class="doc-unselect-all" href="#unselect-all">{{ _("Unselect all") }}</a></li>
             </ul>
           </div>
-          <div class="btn-group">
+          <div>
             <input id="filter" type="text" class="form-control" placeholder="{{ _('Filter...') }}"
                    style="margin-bottom: 0;">
           </div>
@@ -54,9 +54,9 @@ top: -65px;" class="btn-group" role="group" aria-label="...">
       {% endif %}
 
       {% if edit %}
-        <span id="horizontal-doc-menu" class="document-horizontal-menu">
+        <span id="horizontal-doc-menu" class="document-horizontal-menu tw:flex tw:items-center tw:gap-x-2">
         {%- for action in actions.for_category('documents:folder-listing') %}
-          <div class="btn-group">
+          <div>
               {{ action.render() }}
             </div>
         {%- endfor %}

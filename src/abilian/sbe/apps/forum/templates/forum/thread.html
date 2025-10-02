@@ -19,14 +19,14 @@
 
     <article class="thread">
       {%- set post = thread.posts[0] %}
-      <div class="media post thread-content" style="margin-bottom: -38px;">
-        <div class="media-left">
+      <div class="post thread-content tw:flex tw:items-start tw:gap-x-4" style="margin-bottom: -38px;">
+        <div>
           {% call m_user_link(thread.creator) %}
             {{ m_user_photo(thread.creator, size=40) }}
           {% endcall %}
         </div>
 
-        <div class="media-body" style="line-height:13px;color:#797C7E;">
+        <div class="tw:flex-1" style="line-height:13px;color:#797C7E;">
           <h2 class="thread-current-title">
             {{ thread.title }}
           </h2>
@@ -95,7 +95,7 @@
           {% set frequent_posters = thread.get_frequent_posters(6) %}
           {% if is_manager or frequent_posters %}
             <button onclick="show_panel_info()" class="viewers-panel-button">
-              <span id="panel-direction" class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+              <span id="panel-direction" class="fa fa-chevron-down" aria-hidden="true"></span>
             </button>
           {% endif %}
         </div>
@@ -125,13 +125,13 @@
           function show_panel_info() {
             if (!opened) {
               $(".viewers-panel-posters").fadeOut();
-              $("#panel-direction").attr("class", "glyphicon glyphicon-chevron-up");
+              $("#panel-direction").attr("class", "fa fa-chevron-up");
               $(".viewers-panel-content").fadeIn();
               $(".thread-content").css("margin-bottom", "15px");
               opened = true;
             } else {
               $(".viewers-panel-posters").fadeIn();
-              $("#panel-direction").attr("class", "glyphicon glyphicon-chevron-down");
+              $("#panel-direction").attr("class", "fa fa-chevron-down");
               $(".viewers-panel-content").fadeOut();
               $(".thread-content").css("margin-bottom", "-38px");
               opened = false;
@@ -155,14 +155,14 @@
       {%- if not is_closed %}
         <br>
         <hr/>
-        <div class="media">
-          <div class="media-left">
+        <div class="tw:flex tw:items-start tw:gap-x-4">
+          <div>
             {% call m_user_link(current_user) %}
               {{ m_user_photo(current_user, size=40) }}
             {% endcall %}
           </div>
 
-          <div class="media-body">
+          <div class="tw:flex-1">
             <h3 style="margin-top: 0;">{{ _("Post a comment") }}</h3>
 
             <form action="." method="POST" enctype="multipart/form-data">
@@ -232,14 +232,14 @@
 {%- endmacro %}
 
 {%- macro m_post(post) %}
-  <div class="post media">
-    <div class="media-left">
+  <div class="post tw:flex tw:items-start tw:gap-x-4">
+    <div>
       {% call m_user_link(post.creator) %}
         {{ m_user_photo(post.creator, size=40) }}
       {% endcall %}
     </div>
 
-    <div class="media-body" style="line-height:13px;">
+    <div class="tw:flex-1" style="line-height:13px;">
       <a id="post_{{ post.id }}"></a>
 
       <div>

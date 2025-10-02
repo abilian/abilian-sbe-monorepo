@@ -1,19 +1,17 @@
-import { defineConfig } from 'vite'
-import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  plugins: [
-    tailwindcss(),
-  ],
+  plugins: [tailwindcss()],
   build: {
     rollupOptions: {
-      input: './index.html',
+      input: "./index.html",
       output: {
-        assetFileNames: 'styles.css',
-      }
+        assetFileNames: "styles.css",
+      },
     },
-    outDir: 'dist',
-    assetsDir: '',
+    outDir: "dist",
+    assetsDir: "",
     manifest: false,
-  }
-})
+  },
+});

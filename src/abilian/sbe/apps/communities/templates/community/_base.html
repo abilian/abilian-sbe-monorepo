@@ -6,7 +6,7 @@
 {% block header %}
   <h1 class="community-header">
     <img src="{{ community_image_url(g.community, s=40) }}"/>
-    <span class="text-gray-900">{{ g.community.name }}</span>
+    <span class="tw:text-gray-900">{{ g.community.name }}</span>
     {% if threads %} -
       <span class="forum-nb-conversation">{{ threads|length }} Conversation(s)</span>
     {% endif %}
@@ -22,13 +22,13 @@
 
 {% block main %}
 
-  <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-x-8">
-    <div class="lg:col-span-9">
+  <div class="tw:grid tw:grid-cols-1 tw:lggrid-cols-12 tw:lggap-x-8">
+    <div class="tw:lgcol-span-9">
       {%- block content %}
       {%- endblock %}
     </div>
 
-    <div class="lg:col-span-3" id="sidebar">
+    <div class="tw:lgcol-span-3" id="sidebar">
       {%- block sidebar %}
       {%- endblock %}
     </div>
