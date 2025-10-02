@@ -40,3 +40,10 @@
   /* with navbar 50px height and 15px vertical-padding, a 20px avatar
      makes "a" take 53px height and "pushes" navbar bottom line */
 }
+
+/* Alpine.js mobile menu - ensure hidden initially until Alpine processes x-show */
+nav[x-data] > div > div[x-show] {
+  display: none;
+}
+
+/* Alpine.js will override with inline style when open=true */

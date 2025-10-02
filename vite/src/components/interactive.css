@@ -1,0 +1,96 @@
+/*
+ * Interactive component styles
+ * Alpine.js-based dropdown, modal, collapse, and tab behaviors
+ */
+
+/* Dropdown positioning */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none !important;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  min-width: 10rem;
+}
+
+/* Show dropdown when Alpine.js sets it open */
+.dropdown.open > .dropdown-menu {
+  display: block !important;
+}
+
+/* Modal backdrop and container - HIDDEN BY DEFAULT */
+.modal {
+  display: none !important;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  overflow: auto;
+  outline: 0;
+}
+
+/* Show modal when Alpine makes it visible */
+.modal[style*="display: block"],
+.modal[style*="display: flex"] {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+/* Collapse animations */
+.collapse {
+  display: none;
+}
+
+.collapse.in {
+  display: block;
+}
+
+.collapsing {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.35s ease;
+}
+
+/* Tab panes */
+.tab-content > .tab-pane {
+  display: none;
+}
+
+.tab-content > .tab-pane.active {
+  display: block;
+}
+
+.tab-content > .tab-pane.active.in {
+  animation: fadeIn 0.15s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Alert fade out */
+.alert {
+  transition: opacity 0.15s linear;
+}
+
+/* Alpine.js transition utilities */
+[x-cloak] {
+  display: none !important;
+}

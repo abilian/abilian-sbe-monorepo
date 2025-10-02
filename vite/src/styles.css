@@ -14,5 +14,6 @@
 @import './components/search.css' layer(components);
 @import './components/layout.css' layer(components);
 @import './components/user.css' layer(components);
+@import './components/interactive.css' layer(components);
 @import './components/utilities.css' layer(components);
 @import './components/print.css' layer(components);
