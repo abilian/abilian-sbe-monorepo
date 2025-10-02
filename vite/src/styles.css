@@ -2,5 +2,5 @@
 /* Scan templates in parent project's src directory with tw: prefix */
 @import "tailwindcss" source("../../src") prefix(tw);
 
-/* Import custom components */
-@import './components.css';
+/* This ensures your custom components are part of the 'components' layer */
+@import './components.css' layer(components);

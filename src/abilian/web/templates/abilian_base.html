@@ -8,21 +8,14 @@
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <meta name="description" content=""/>
-  <meta name="author" content=""/>
 
-  {%- if config.DEBUG %}
-    {# Development mode - Check if Vite dev server is running #}
-    <script type="module" src="http://localhost:5173/@vite/client"></script>
-    <link href="http://localhost:5173/src/styles.css" rel="stylesheet"/>
-  {%- else %}
-    {# Production mode - serve built CSS #}
-    <link href="/static/vite/styles.css" rel="stylesheet"/>
-  {%- endif %}
+  <!-- Vite integration for CSS and JS -->
+  {{ vite_asset('src/styles.css') }}
+  {{ vite_asset('src/main.js') }}
 
   {%- block css %}{%- endblock css %}
 
-  <!-- Le fav and touch icons -->
+  <!-- Favicons -->
   <link
       rel="shortcut icon"
       type="image/png"
@@ -32,7 +25,7 @@
       type="image/png"
       href="{{ config['FAVICO_URL'] | string }}"/>
 
-  {# RequireJS shim for legacy code - MUST load first #}
+  {# RequireJS shim for legacy code compatibility #}
   <script>
     // Minimal RequireJS shim for backward compatibility
     window.require = window.require || function(deps, callback) {
@@ -98,14 +91,10 @@
     define.amd = true;
   </script>
 
-  {# Essential JavaScript libraries for legacy compatibility #}
-  <script src="{{ url_for('abilian_static', filename='jquery/js/jquery-1.11.3.js') }}"></script>
+  {# Legacy static JS for compatibility #}
   <script src="{{ url_for('abilian_static', filename='bootbox/bootbox.js') }}"></script>
   <script src="{{ url_for('abilian_static', filename='fileapi/FileAPI.js') }}"></script>
   <script src="{{ url_for('abilian_static', filename='js/abilian-namespace.js') }}"></script>
-
-  {# Alpine.js for interactivity #}
-  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
   {%- set sentry_url = config.get("SENTRY_SDK_URL") %}
   {%- set sentry_dsn = config.get("SENTRY_DSN") %}
@@ -188,9 +177,7 @@
   {%- endblock footer %}
 {%- endblock body %}
 
-{# Essential JavaScript for Abilian functionality #}
-<script src="{{ url_for('abilian_static', filename='datatables/js/jquery.dataTables.js') }}"></script>
-<script src="{{ url_for('abilian_static', filename='select2/select2.js') }}"></script>
+{# Legacy Abilian scripts loaded from static #}
 <script src="{{ url_for('abilian_static', filename='bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
 <script src="{{ url_for('abilian_static', filename='bootstrap-timepicker/js/bootstrap-timepicker.js') }}"></script>
 <script src="{{ url_for('abilian_static', filename='typeahead/typeahead.js') }}"></script>

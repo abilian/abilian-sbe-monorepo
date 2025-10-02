@@ -26,7 +26,6 @@ from abilian.config import default_config
 from abilian.core import extensions, signals
 from abilian.core.plugin_manager import PluginManager
 from abilian.core.service_manager import ServiceManager
-from abilian.extensions import vite
 from abilian.lib.scanner import scan_package
 from abilian.services import auth_service
 from abilian.services.security import ANONYMOUS

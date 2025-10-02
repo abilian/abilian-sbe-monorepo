@@ -64,6 +64,34 @@ def init_extensions(app: Flask) -> None:
     # Make vite functions available in templates
     app.jinja_env.globals["vite"] = vite
 
+    # Quick and dirty vite_asset helper for templates
+    def vite_asset(path: str) -> str:
+        """Generate HTML tag for Vite asset (CSS or JS)."""
+        is_dev = app.config.get("DEBUG", False)
+
+        if is_dev:
+            # Development mode - use Vite dev server
+            if path.endswith(".css"):
+                return f'<link rel="stylesheet" href="http://localhost:5173/{path}" />'
+            if path.endswith(".js"):
+                return f'<script type="module" src="http://localhost:5173/{path}"></script>'
+        else:
+            # Production mode - use built assets
+            asset_name = (
+                path.split("/")[-1].replace(".css", ".css").replace(".js", ".js")
+            )
+            if path.endswith(".css"):
+                return f'<link rel="stylesheet" href="/static/vite/{asset_name}" />'
+            if path.endswith(".js"):
+                return (
+                    f'<script type="module" src="/static/vite/{asset_name}"></script>'
+                )
+        return ""
+
+    from markupsafe import Markup
+
+    app.jinja_env.globals["vite_asset"] = lambda path: Markup(vite_asset(path))
+
     # Initialize legacy assets for favicons and other static resources
     from abilian.web import assets as legacy_assets
 
