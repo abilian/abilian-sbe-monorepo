@@ -1,0 +1,42 @@
+/*
+ * Navbar styles
+ * Navigation bar and typeahead search integration
+ */
+
+/* Navbar search */
+.navbar .search-query {
+  border-radius: 0.375rem;
+}
+
+/* Typeahead hint is input box set behind search input to show completion for 1st element */
+.navbar-search .tt-hint {
+  font-size: 13px;
+  padding: 4px 14px;
+}
+
+.twitter-typeahead {
+  /* ensure search box width varies */
+  width: 100%;
+}
+
+/* Navigation sections - dropdown states */
+#navigation-sections li.active > .navbar-nav > .dropdown > a.dropdown-toggle,
+#navigation-sections li.active > .navbar-nav > .dropdown > a.dropdown-toggle:hover,
+#navigation-sections li.active > .navbar-nav > .dropdown > a.dropdown-toggle:focus {
+  color: rgb(17 24 39);
+  background-color: rgb(229 231 235);
+}
+
+#navigation-sections li.disabled > .navbar-nav > .dropdown > a.dropdown-toggle,
+#navigation-sections li.disabled > .navbar-nav > .dropdown > a.dropdown-toggle:hover,
+#navigation-sections li.disabled > .navbar-nav > .dropdown > a.dropdown-toggle:focus {
+  color: rgb(156 163 175);
+  background-color: transparent;
+}
+
+/* User navigation avatar */
+.action-navigation-user-authenticated > li > a {
+  height: 50px; /* navbar height */
+  /* with navbar 50px height and 15px vertical-padding, a 20px avatar
+     makes "a" take 53px height and "pushes" navbar bottom line */
+}

@@ -1,8 +1,6 @@
 /*
- * components.css
- *
- * Component styles for Bootstrap to Tailwind migration
- * Using standard CSS for Tailwind v4 compatibility
+ * Bootstrap compatibility layer
+ * Core Bootstrap-like components (cards, buttons, forms, tables, etc.)
  */
 
 /* Cards (Replaces Bootstrap's .panel) */
@@ -279,23 +277,6 @@
   color: white;
 }
 
-/* Community specific styles */
-.community-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-.community-header img {
-  margin-right: 0.75rem;
-}
-
-.community-tabs {
-  margin-bottom: 2rem;
-}
-
 /* Dropdown menus */
 .dropdown-menu {
   position: absolute;
@@ -441,4 +422,66 @@
   justify-content: flex-end;
   padding: 1rem;
   border-top: 1px solid rgb(229 231 235);
+}
+
+/* Well component */
+.well {
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 20px;
+  background-color: rgb(245 245 245);
+  border: 1px solid rgb(227 227 227);
+  border-radius: 4px;
+}
+
+.well-sm {
+  padding: 9px;
+  border-radius: 3px;
+}
+
+/* Close button */
+.close {
+  float: right;
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: 0.2;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+/* Caret styles */
+.caret-down {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 4px solid;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+}
+
+.caret-up {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 0;
+  border-bottom: 4px solid;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  content: "";
 }

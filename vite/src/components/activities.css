@@ -1,0 +1,95 @@
+/*
+ * Activity Stream styles
+ * Social activity feeds and stream components
+ */
+
+/* Activity list */
+.activities {
+  margin: 0;
+  padding: 0;
+}
+
+.activities li {
+  list-style: none;
+  padding: 5px 0;
+  margin: 5px auto;
+  font-size: 12px;
+  clear: both;
+}
+
+.activities li .entry {
+  text-align: left;
+  border-left: 2px solid #ff7f66;
+  min-height: 45px;
+  margin-left: 55px;
+  background-color: rgb(243 244 246); /* @gray-lighter */
+  display: block;
+  padding: 5px;
+  position: relative;
+}
+
+.activities li .entry .datetime {
+  float: right;
+  color: rgb(107 114 128); /* @gray */
+}
+
+.activities li .entry .message {
+  display: inline;
+}
+
+.activities li .entry .body {
+  display: block;
+  font-style: italic;
+  color: rgb(55 65 81); /* @text-color */
+}
+
+.activities li .entry .body a {
+  text-decoration: none;
+  color: rgb(55 65 81);
+}
+
+.activities li img.avatar {
+  float: left;
+  margin-right: 10px;
+  width: 45px;
+  height: 45px;
+}
+
+/* Stream styles */
+.stream-body {
+  font-size: 90%;
+}
+
+.stream-body h3 {
+  margin: 0;
+}
+
+.stream-subtext {
+  color: #666;
+  font-style: italic;
+}
+
+.stream-body .stream-subtext {
+  margin-bottom: 5px;
+}
+
+.stream .stream-content {
+  margin: 10px 5px;
+}
+
+.stream-avatar {
+  position: relative;
+  display: inline-block;
+}
+
+.stream-avatar > a > img {
+  display: block;
+  width: 45px;
+  height: 45px;
+  border-radius: 5px;
+  background-clip: border-box;
+}
+
+.stream-image-block {
+  padding: 3px 0;
+}

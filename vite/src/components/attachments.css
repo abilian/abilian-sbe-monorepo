@@ -1,0 +1,15 @@
+/*
+ * Attachments styles
+ * File attachment lists
+ */
+
+ul.attachments {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+ul.attachments li {
+  position: relative;
+  padding: 0.5em;
+}

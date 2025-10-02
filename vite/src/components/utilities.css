@@ -1,0 +1,50 @@
+/*
+ * Utility classes
+ * Common utility classes for alignment, text, and layout
+ */
+
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.pull-left {
+  float: left !important;
+}
+
+.pull-right {
+  float: right !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-muted {
+  color: rgb(107 114 128) !important;
+}
+
+/* Mark highlighting */
+mark {
+  background-color: #fff8bb; /* Bootstrap uses state-warning-bg, but it's too light to be seen */
+}
+
+a mark {
+  /* In normalize.less there is a rule for changing 'mark' color, but we don't want that in links */
+  color: inherit;
+}
+
+/* Flask debug toolbar alignment */
+#flDebug #flDebugToolbarHandle {
+  /* Align handle at bottom of navigation bar */
+  top: 80px !important; /* line-height-computed + navbar-padding-vertical * 2 */
+}

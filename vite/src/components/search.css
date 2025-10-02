@@ -1,0 +1,21 @@
+/*
+ * Search UI styles
+ * Search input and results display
+ */
+
+.ab-search-input {
+  margin-bottom: 2em;
+}
+
+.ab-search-result {
+  padding-bottom: 1em;
+}
+
+.ab-search-result .title {
+  font-size: 1.25em;
+  font-weight: bold;
+}
+
+.ab-search-result .tags {
+  margin-top: 0.5em;
+}

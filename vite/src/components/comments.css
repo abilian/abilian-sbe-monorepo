@@ -1,0 +1,41 @@
+/*
+ * Comments styles
+ * Comment lists and comment UI
+ */
+
+ol.comments {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+ol.comments li {
+  position: relative;
+  padding: 0.5em 0.5em 0.5em 55px;
+  margin-bottom: 0.5em;
+  background-color: rgb(243 244 246); /* @gray-lighter */
+  border-radius: 0.25rem; /* @border-radius-base */
+}
+
+ol.comments li .header {
+  margin-bottom: 0.25em;
+  min-height: 50px;
+}
+
+ol.comments li .header .avatar {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+ol.comments li .header .author {
+  font-weight: bold;
+}
+
+ol.comments li .header .date {
+  float: right;
+}
+
+ol.comments li .comment-body {
+  word-wrap: break-word;
+}

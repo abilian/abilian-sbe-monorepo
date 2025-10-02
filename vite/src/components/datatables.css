@@ -1,0 +1,66 @@
+/*
+ * DataTables integration styles
+ * DataTables UI and advanced search filters
+ */
+
+/* DataTables form controls */
+.dataTables_filter > label > input,
+.dataTables_length > label > select {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: rgb(55 65 81);
+  background-color: white;
+  border: 1px solid rgb(209 213 219);
+  border-radius: 0.375rem;
+}
+
+@media (min-width: 48rem) {
+  .dataTables_filter > label > input,
+  .dataTables_length > label > select {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+  }
+}
+
+.dataTables_length {
+  float: right;
+}
+
+.dataTables_length > label {
+  font-weight: normal;
+}
+
+/* Striped DataTables styling */
+.table-striped.dataTable tr.odd > td,
+.table-striped.dataTable tr.odd > th {
+  background-color: rgb(249 250 251);
+}
+
+.table-striped.dataTable tr.odd > td.sorting_1,
+.table-striped.dataTable tr.odd > td.sorting_2,
+.table-striped.dataTable tr.odd > td.sorting_3 {
+  background-color: rgb(249 250 251);
+}
+
+.table-striped.dataTable tr.even > td {
+  background-color: white;
+}
+
+.table-striped.dataTable tr.even > td.sorting_1,
+.table-striped.dataTable tr.even > td.sorting_2,
+.table-striped.dataTable tr.even > td.sorting_3 {
+  background-color: white;
+}
+
+/* Advanced search filters */
+.advanced-search-filters .criterion .control-label > .close {
+  float: left;
+}
+
+.advanced-search-filters .criterion .control-label > label {
+  display: inline;
+}

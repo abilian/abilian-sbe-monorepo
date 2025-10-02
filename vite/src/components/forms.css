@@ -1,0 +1,136 @@
+/*
+ * Form styles
+ * Enhanced form controls, file inputs, inline forms, and tabular forms
+ */
+
+/* Label styling */
+label::first-letter {
+  text-transform: uppercase;
+}
+
+/* Nested form groups */
+.form-group .form-group {
+  margin-bottom: 5px;
+}
+
+.form-group .form-group > label {
+  margin-bottom: 5px;
+}
+
+.form-group .form-group .help-block {
+  margin-bottom: 0;
+}
+
+/* Required field indicator */
+form [role="tablist"] .required::after,
+.form-group.required > label::after,
+label.required::after {
+  content: "\2605"; /* BLACK STAR ★ */
+  vertical-align: super;
+  font-size: 85%;
+  margin-left: 0.25ex;
+  color: #b00;
+}
+
+/* Textarea resize controls */
+.not-resizeable {
+  resize: none;
+}
+
+.resizeable-vertical {
+  resize: vertical;
+}
+
+/* Editor control */
+.form-control.editor {
+  height: auto;
+}
+
+/* Tabular forms */
+table.tabular-form td,
+table.tabular-form th {
+  padding: 0.1em 0.15em;
+}
+
+/* Inline button */
+.btn-inline {
+  display: inline;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  background: inherit;
+}
+
+/* File input button */
+.btn-file {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-file input[type="file"] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 999px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  cursor: inherit;
+  display: block;
+}
+
+/* File input component */
+.file-input .selected-files {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.file-input .file-item {
+  margin-bottom: 0;
+}
+
+.file-input .file-item canvas,
+.file-input .file-item img {
+  vertical-align: middle;
+}
+
+.file-input .file-item-existing button {
+  float: right;
+  font-size: 200%;
+}
+
+/* Inline form file inputs */
+.form-inline .file-input,
+.form-inline .selected-files {
+  display: inline-block;
+  vertical-align: middle;
+  width: auto;
+}
+
+.form-inline .selected-files {
+  margin: auto 0;
+}
+
+.form-inline .selected-files .file-item {
+  width: auto;
+}
+
+/* Select2 integration */
+.form-inline .select2-container.form-control {
+  display: inline-block;
+}
+
+/* Dynamic row widget */
+.dynamic-row-widget.model-field-list tbody > tr > td {
+  border-top-width: 4px;
+}
+
+/* Help text */
+.help-block {
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  color: rgb(107 114 128);
+}

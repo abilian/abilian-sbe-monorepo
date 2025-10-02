@@ -2,5 +2,17 @@
 /* Scan templates in parent project's src directory with tw: prefix */
 @import "tailwindcss" source("../../src") prefix(tw);
 
-/* This ensures your custom components are part of the 'components' layer */
-@import './components.css' layer(components);
+/* Component modules - all part of the 'components' layer */
+@import './components/bootstrap-compat.css' layer(components);
+@import './components/forms.css' layer(components);
+@import './components/activities.css' layer(components);
+@import './components/comments.css' layer(components);
+@import './components/attachments.css' layer(components);
+@import './components/datatables.css' layer(components);
+@import './components/navbar.css' layer(components);
+@import './components/admin.css' layer(components);
+@import './components/search.css' layer(components);
+@import './components/layout.css' layer(components);
+@import './components/user.css' layer(components);
+@import './components/utilities.css' layer(components);
+@import './components/print.css' layer(components);
