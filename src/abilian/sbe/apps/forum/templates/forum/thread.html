@@ -19,14 +19,14 @@
 
     <article class="thread">
       {%- set post = thread.posts[0] %}
-      <div class="post thread-content tw:flex tw:items-start tw:gap-x-4" style="margin-bottom: -38px;">
+      <div class="post thread-content flex items-start gap-x-4" style="margin-bottom: -38px;">
         <div>
           {% call m_user_link(thread.creator) %}
             {{ m_user_photo(thread.creator, size=40) }}
           {% endcall %}
         </div>
 
-        <div class="tw:flex-1" style="line-height:13px;color:#797C7E;">
+        <div class="flex-1" style="line-height:13px;color:#797C7E;">
           <h2 class="thread-current-title">
             {{ thread.title }}
           </h2>
@@ -155,14 +155,14 @@
       {%- if not is_closed %}
         <br>
         <hr/>
-        <div class="tw:flex tw:items-start tw:gap-x-4">
+        <div class="flex items-start gap-x-4">
           <div>
             {% call m_user_link(current_user) %}
               {{ m_user_photo(current_user, size=40) }}
             {% endcall %}
           </div>
 
-          <div class="tw:flex-1">
+          <div class="flex-1">
             <h3 style="margin-top: 0;">{{ _("Post a comment") }}</h3>
 
             <form action="." method="POST" enctype="multipart/form-data">
@@ -232,14 +232,14 @@
 {%- endmacro %}
 
 {%- macro m_post(post) %}
-  <div class="post tw:flex tw:items-start tw:gap-x-4">
+  <div class="post flex items-start gap-x-4">
     <div>
       {% call m_user_link(post.creator) %}
         {{ m_user_photo(post.creator, size=40) }}
       {% endcall %}
     </div>
 
-    <div class="tw:flex-1" style="line-height:13px;">
+    <div class="flex-1" style="line-height:13px;">
       <a id="post_{{ post.id }}"></a>
 
       <div>

@@ -46,14 +46,14 @@
   <td class="hide">{{ user.last_name }}</td>
   <td class="hide">{{ user.first_name }}</td>
   <td>
-    <div class="tw:flex tw:items-start tw:gap-x-4">
+    <div class="flex items-start gap-x-4">
       <div>
         {% call m_user_link(user) %}
           {{ m_user_photo(user, size="32") }}
         {%- endcall %}
       </div>
 
-      <div class="tw:flex-1">
+      <div class="flex-1">
         {%- if not user.can_login %}
           <i class="fa fa-lock" title="{{ _('account disabled') }}"></i><s>
         {%- endif %}

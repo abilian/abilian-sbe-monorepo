@@ -91,6 +91,10 @@
     define.amd = true;
   </script>
 
+  {# jQuery must load FIRST for legacy scripts - but Vite also loads it as a module #}
+  {# This creates a race condition, so we load jQuery synchronously here #}
+  <script src="{{ url_for('abilian_static', filename='jquery/js/jquery-1.11.3.js') }}"></script>
+
   {# Legacy static JS for compatibility #}
   <script src="{{ url_for('abilian_static', filename='bootbox/bootbox.js') }}"></script>
   <script src="{{ url_for('abilian_static', filename='fileapi/FileAPI.js') }}"></script>
@@ -127,26 +131,26 @@
   <!-- navbar -->
   {% include "navbar.html" %}
 
-  <div id="content" class="tw:container tw:mx-auto tw:px-4">
+  <div id="content" class="container mx-auto px-4">
     <!-- breadcrumbs -->
     {% if g.breadcrumb|length > 1 %}
-      <div class="tw:w-full">
+      <div class="w-full">
         <div>{% include "breadcrumbs.html" %}</div>
       </div>
     {% endif %}
 
     <!-- flash messages -->
-    <div class="tw:w-full" id="flash-messages">
+    <div class="w-full" id="flash-messages">
       <div>{%- include "flash-messages.html" %}</div>
     </div>
 
-    <div class="tw:w-full">
+    <div class="w-full">
       <header>
         {% block header %} {%- endblock header %}
       </header>
     </div>
 
-    <div class="tw:w-full">
+    <div class="w-full">
       <div>
         <div class="main-block">
           {% block main %}
@@ -161,11 +165,11 @@
 
   {%- block footer %}
     <footer>
-      <div class="tw:container tw:mx-auto tw:px-4">
-        <div class="tw:w-full">
+      <div class="container mx-auto px-4">
+        <div class="w-full">
           <div>
             <hr/>
-            <p class="tw:text-right">
+            <p class="text-right">
               <small
               >Powered by <a href="https://www.abilian.com/">Abilian</a>
               </small>

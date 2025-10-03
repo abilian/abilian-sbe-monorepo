@@ -3,9 +3,9 @@
 {% block content %}
   <div class="row">
     <div class="col-xs-12">
-      <div class="tw:flex tw:items-center tw:gap-x-4">
+      <div class="flex items-center gap-x-4">
         {%- for action_items in module.get_grouped_actions().values() %}
-          <div class="tw:flex tw:items-center tw:gap-x-2">
+          <div class="flex items-center gap-x-2">
             {%- for item in action_items %}
               {{ item.render() }}
             {%- endfor %}

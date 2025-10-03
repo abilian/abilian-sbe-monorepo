@@ -1,6 +1,6 @@
 /* Tailwind v4 CSS entry point */
-/* Scan templates in parent project's src directory with tw: prefix */
-@import "tailwindcss" source("../../src") prefix(tw);
+/* Scan templates in parent project's src directory */
+@import "tailwindcss" source("../../src");
 
 /* Component modules - all part of the 'components' layer */
 @import './components/bootstrap-compat.css' layer(components);

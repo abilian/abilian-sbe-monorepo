@@ -20,13 +20,13 @@
   {%- set manager = attachments.manager(entity) %}
   {%- set can_edit = manager.can_edit(entity) %}
   {%- set can_delete = manager.can_delete(entity) %}
-  <div class="tw:flex tw:items-start tw:gap-x-4">
+  <div class="flex items-start gap-x-4">
     <div>
       <i class="fa fa-file fa-big"></i>
     </div>
-    <div class="tw:flex-1">
+    <div class="flex-1">
       {%- if can_edit or can_delete %}
-        <div class="tw:float-right tw:flex tw:gap-x-2">
+        <div class="float-right flex gap-x-2">
           {%- if can_edit %}
             <a class="btn btn-default"
                 title="{{ _("Edit") }}"

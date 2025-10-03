@@ -68,10 +68,10 @@
       <i class="fa fa-arrow-left"></i> {{ _("Back to document list") }}
     </a>
 
-    <div id="horizontal-doc-menu" class="document-horizontal-menu tw:inline-flex tw:items-center tw:gap-x-2" style="right:0px; top:0px;">
+    <div id="horizontal-doc-menu" class="document-horizontal-menu inline-flex items-center gap-x-2" style="right:0px; top:0px;">
       <div>
         {%- if doc.antivirus_ok %}
-          <a class="btn btn-success btn-md tw:float-right"
+          <a class="btn btn-success btn-md float-right"
              href="{{ url_for('.document_download', community_id=doc.community.slug, doc_id=doc.id, attach=True) }}">
             <i class="fa fa-download"></i>
             {{ _('Download') }}

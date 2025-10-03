@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block main %}
-<div class="tw:flex tw:justify-center">
+<div class="flex justify-center">
 
-  <div class="tw:w-full tw:md:w-1/3 login-form">
+  <div class="w-full md:w-1/3 login-form">
     <h2>{{ _("Login to %(site_name)s", site_name=config.SITE_NAME) }}</h2>
 
     <form action="{{ url_for('.login_post') }}" method="POST" name="login" role="form">
@@ -15,7 +15,7 @@
         <input type="password" name="password" placeholder="{{ _('Password') }}" class="form-control" />
       </div>
 
-      <div class="form-group tw:flex tw:justify-between tw:items-center">
+      <div class="form-group flex justify-between items-center">
           <input type="hidden" name="next" value="{{ next_url or '' }}" />
           <button class="btn btn-primary" type="submit">{{ _("Sign in") }}</button>
           <a href="{{ url_for('.forgotten_pw_form') }}">{{ _("Forgot password?") }}</a>

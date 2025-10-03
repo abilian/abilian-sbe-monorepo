@@ -1,11 +1,30 @@
 /*
  * Navbar styles
- * Navigation bar and typeahead search integration
+ * Minimal styles for navbar action links - let Tailwind handle layout
  */
 
-/* Navbar search */
-.navbar .search-query {
+/* Style action links within navbar - dark theme (only styling, no layout) */
+nav[role="navigation"] a {
+  padding: 0.5rem 0.75rem;
   border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgb(209 213 219); /* text-gray-300 */
+  text-decoration: none;
+  transition: all 0.15s ease-in-out;
+}
+
+nav[role="navigation"] a:hover {
+  background-color: rgba(255, 255, 255, 0.05); /* hover:bg-white/5 */
+  color: rgb(255 255 255); /* hover:text-white */
+}
+
+/* Active navigation items - dark theme */
+nav[role="navigation"] li.active > a,
+nav[role="navigation"] .active > a {
+  background-color: rgb(17 24 39); /* bg-gray-900 */
+  color: rgb(255 255 255); /* text-white */
+  font-weight: 600;
 }
 
 /* Typeahead hint is input box set behind search input to show completion for 1st element */
@@ -19,31 +38,4 @@
   width: 100%;
 }
 
-/* Navigation sections - dropdown states */
-#navigation-sections li.active > .navbar-nav > .dropdown > a.dropdown-toggle,
-#navigation-sections li.active > .navbar-nav > .dropdown > a.dropdown-toggle:hover,
-#navigation-sections li.active > .navbar-nav > .dropdown > a.dropdown-toggle:focus {
-  color: rgb(17 24 39);
-  background-color: rgb(229 231 235);
-}
-
-#navigation-sections li.disabled > .navbar-nav > .dropdown > a.dropdown-toggle,
-#navigation-sections li.disabled > .navbar-nav > .dropdown > a.dropdown-toggle:hover,
-#navigation-sections li.disabled > .navbar-nav > .dropdown > a.dropdown-toggle:focus {
-  color: rgb(156 163 175);
-  background-color: transparent;
-}
-
-/* User navigation avatar */
-.action-navigation-user-authenticated > li > a {
-  height: 50px; /* navbar height */
-  /* with navbar 50px height and 15px vertical-padding, a 20px avatar
-     makes "a" take 53px height and "pushes" navbar bottom line */
-}
-
-/* Alpine.js mobile menu - ensure hidden initially until Alpine processes x-show */
-nav[x-data] > div > div[x-show] {
-  display: none;
-}
-
-/* Alpine.js will override with inline style when open=true */
+/* Alpine.js will handle mobile menu visibility with x-show */

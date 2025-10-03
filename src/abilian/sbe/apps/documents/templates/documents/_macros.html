@@ -56,7 +56,7 @@
       {% endif %}
       &nbsp;
       {% if edit %}
-        <span id="horizontal-doc-menu" class="document-horizontal-menu tw:flex tw:items-center tw:gap-x-2">
+        <span id="horizontal-doc-menu" class="document-horizontal-menu flex items-center gap-x-2">
         {%- for action in actions.for_category('documents:folder-listing') %}
           <div>
               {{ action.render() }}
