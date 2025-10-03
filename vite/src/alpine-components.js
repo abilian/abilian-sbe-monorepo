@@ -8,8 +8,6 @@
 (function () {
   "use strict";
 
-  console.log("Loading Alpine components...");
-
   // Initialize when DOM is ready
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
@@ -18,8 +16,6 @@
   }
 
   function init() {
-    console.log("Initializing interactive components...");
-
     // Hide all modals and dropdowns initially
     hideAllModals();
     hideAllDropdowns();
@@ -30,8 +26,6 @@
     initCollapse();
     initTabs();
     initAlerts();
-
-    console.log("Interactive components initialized");
   }
 
   /**
