@@ -47,23 +47,17 @@ lint: lint-ruff lint-py
 
 .PHONY: lint-py
 lint-py:
-	flake8 src tests
+	@echo "Doing nothing for now"
 	# deptry src
-	# python -m pyanalyze --config-file pyproject.toml
+	# pyrefly check src
+	# ty check src
 	# mypy --show-error-codes src tests
 	# pyright src tests
 
-.PHONY: lint-mypy
-lint-mypy:
-	mypy --show-error-codes src tests
-
-.PHONY: lint-pyright
-lint-pyright:
-	pyright src tests
-
-
 .PHONY: format
 format:
+	ruff format src tests *.py
+	ruff check --fix src tests
 	ruff format src tests *.py
 	markdown-toc -i README.md
 	markdown-toc -i docs/roadmap.md
