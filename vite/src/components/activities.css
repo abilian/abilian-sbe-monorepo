@@ -1,95 +1,71 @@
 /*
  * Activity Stream styles
  * Social activity feeds and stream components
+ * Uses Tailwind's @apply for design system integration
  */
 
 /* Activity list */
 .activities {
-  margin: 0;
-  padding: 0;
+  @apply m-0 p-0;
 }
 
 .activities li {
-  list-style: none;
-  padding: 5px 0;
-  margin: 5px auto;
-  font-size: 12px;
-  clear: both;
+  @apply list-none py-1.5 my-1.5 mx-auto text-xs clear-both;
 }
 
 .activities li .entry {
-  text-align: left;
-  border-left: 2px solid #ff7f66;
-  min-height: 45px;
-  margin-left: 55px;
-  background-color: rgb(243 244 246); /* @gray-lighter */
-  display: block;
-  padding: 5px;
-  position: relative;
+  @apply text-left border-l-2 border-orange-400 min-h-[45px] ml-14 bg-gray-100 block p-1.5 relative;
 }
 
 .activities li .entry .datetime {
-  float: right;
-  color: rgb(107 114 128); /* @gray */
+  @apply float-right text-gray-500;
 }
 
 .activities li .entry .message {
-  display: inline;
+  @apply inline;
 }
 
 .activities li .entry .body {
-  display: block;
-  font-style: italic;
-  color: rgb(55 65 81); /* @text-color */
+  @apply block italic text-gray-700;
 }
 
 .activities li .entry .body a {
-  text-decoration: none;
-  color: rgb(55 65 81);
+  @apply no-underline text-gray-700;
 }
 
 .activities li img.avatar {
-  float: left;
-  margin-right: 10px;
-  width: 45px;
-  height: 45px;
+  @apply float-left mr-2.5 w-[45px] h-[45px];
 }
 
 /* Stream styles */
 .stream-body {
-  font-size: 90%;
+  @apply text-[90%];
 }
 
 .stream-body h3 {
-  margin: 0;
+  @apply m-0;
 }
 
 .stream-subtext {
-  color: #666;
-  font-style: italic;
+  @apply text-gray-600 italic;
 }
 
 .stream-body .stream-subtext {
-  margin-bottom: 5px;
+  @apply mb-1.5;
 }
 
 .stream .stream-content {
-  margin: 10px 5px;
+  @apply my-2.5 mx-1.5;
 }
 
 .stream-avatar {
-  position: relative;
-  display: inline-block;
+  @apply relative inline-block;
 }
 
 .stream-avatar > a > img {
-  display: block;
-  width: 45px;
-  height: 45px;
-  border-radius: 5px;
-  background-clip: border-box;
+  @apply block w-[45px] h-[45px] rounded bg-clip-border;
 }
 
 .stream-image-block {
-  padding: 3px 0;
+  @apply py-1;
 }

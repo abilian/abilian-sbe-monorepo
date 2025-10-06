@@ -1,46 +1,37 @@
 /*
  * Admin interface styles
  * Dashboard statistics and admin-specific components
+ * Uses Tailwind's @apply for design system integration
  */
 
 #dashboard .stats {
-  text-align: center;
-  padding: 25px 0 10px;
-  margin: 0 0 10px;
+  @apply text-center pt-6 pb-2.5 mb-2.5;
 }
 
 #dashboard .stats li {
-  display: inline-block;
-  text-align: center;
-  width: 22%;
+  @apply inline-block text-center w-[22%];
 }
 
 #dashboard .stats li strong {
-  display: block;
-  font-size: 60px;
-  margin-bottom: 20px;
-  color: #555;
+  @apply block text-6xl mb-5 text-gray-600;
 }
 
 #dashboard .stats li strong.new_members {
-  color: #ff7f66;
+  @apply text-orange-400;
 }
 
 #dashboard .stats li strong.logins {
-  color: #2185c5;
+  @apply text-blue-500;
 }
 
 #dashboard .stats li strong.new_documents {
-  color: #2efd58;
+  @apply text-green-400;
 }
 
 #dashboard .stats li strong.new_messages {
-  color: #ffe054;
+  @apply text-yellow-300;
 }
 
 #dashboard .stats li span {
-  display: block;
-  font-size: 14px;
-  color: #888;
-  line-height: 2em;
+  @apply block text-sm text-gray-500 leading-8;
 }

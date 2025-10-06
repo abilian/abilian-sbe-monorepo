@@ -1,41 +1,33 @@
 /*
  * Comments styles
  * Comment lists and comment UI
+ * Uses Tailwind's @apply for design system integration
  */
 
 ol.comments {
-  list-style: none;
-  padding-left: 0;
-  margin-bottom: 0;
+  @apply list-none pl-0 mb-0;
 }
 
 ol.comments li {
-  position: relative;
-  padding: 0.5em 0.5em 0.5em 55px;
-  margin-bottom: 0.5em;
-  background-color: rgb(243 244 246); /* @gray-lighter */
-  border-radius: 0.25rem; /* @border-radius-base */
+  @apply relative py-2 pr-2 pl-14 mb-2 bg-gray-100 rounded;
 }
 
 ol.comments li .header {
-  margin-bottom: 0.25em;
-  min-height: 50px;
+  @apply mb-1 min-h-[50px];
 }
 
 ol.comments li .header .avatar {
-  position: absolute;
-  top: 5px;
-  left: 5px;
+  @apply absolute top-1.5 left-1.5;
 }
 
 ol.comments li .header .author {
-  font-weight: bold;
+  @apply font-bold;
 }
 
 ol.comments li .header .date {
-  float: right;
+  @apply float-right;
 }
 
 ol.comments li .comment-body {
-  word-wrap: break-word;
+  @apply break-words;
 }

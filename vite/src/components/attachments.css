@@ -1,15 +1,13 @@
 /*
  * Attachments styles
  * File attachment lists
+ * Uses Tailwind's @apply for design system integration
  */
 
 ul.attachments {
-  list-style: none;
-  padding-left: 0;
-  margin-bottom: 0;
+  @apply list-none pl-0 mb-0;
 }
 
 ul.attachments li {
-  position: relative;
-  padding: 0.5em;
+  @apply relative p-2;
 }

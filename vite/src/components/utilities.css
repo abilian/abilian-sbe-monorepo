@@ -1,35 +1,27 @@
 /*
  * Utility classes
  * Bootstrap-compatible utility classes that don't conflict with Tailwind
+ * Uses Tailwind's @apply for design system integration
  */
 
 /* Tailwind has its own .clearfix, but this ensures compatibility */
 .clearfix::after {
   content: "";
-  display: table;
-  clear: both;
+  @apply table clear-both;
 }
 
 /* Bootstrap legacy float utilities - Tailwind uses .float-left and .float-right */
 .pull-left {
-  float: left !important;
+  @apply float-left;
 }
 
 .pull-right {
-  float: right !important;
+  @apply float-right;
 }
-
-/*
- * REMOVED: .text-left, .text-center, .text-right
- * These clash with Tailwind utilities. Use Tailwind classes instead:
- * - text-left
- * - text-center
- * - text-right
- */
 
 /* Bootstrap text-muted utility - Tailwind uses .text-gray-500 or similar */
 .text-muted {
-  color: rgb(107 114 128) !important;
+  @apply text-gray-500;
 }
 
 /* Mark highlighting */

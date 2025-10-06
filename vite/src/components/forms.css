@@ -1,6 +1,7 @@
 /*
  * Form styles
  * Enhanced form controls, file inputs, inline forms, and tabular forms
+ * Uses Tailwind's @apply for design system integration
  */
 
 /* Label styling */
@@ -10,15 +11,15 @@ label::first-letter {
 
 /* Nested form groups */
 .form-group .form-group {
-  margin-bottom: 5px;
+  @apply mb-1.5;
 }
 
 .form-group .form-group > label {
-  margin-bottom: 5px;
+  @apply mb-1.5;
 }
 
 .form-group .form-group .help-block {
-  margin-bottom: 0;
+  @apply mb-0;
 }
 
 /* Required field indicator */
@@ -26,111 +27,88 @@ form [role="tablist"] .required::after,
 .form-group.required > label::after,
 label.required::after {
   content: "\2605"; /* BLACK STAR ★ */
-  vertical-align: super;
-  font-size: 85%;
-  margin-left: 0.25ex;
-  color: #b00;
+  @apply align-super text-[85%] ml-1 text-red-700;
 }
 
 /* Textarea resize controls */
 .not-resizeable {
-  resize: none;
+  @apply resize-none;
 }
 
 .resizeable-vertical {
-  resize: vertical;
+  @apply resize-y;
 }
 
 /* Editor control */
 .form-control.editor {
-  height: auto;
+  @apply h-auto;
 }
 
 /* Tabular forms */
 table.tabular-form td,
 table.tabular-form th {
-  padding: 0.1em 0.15em;
+  @apply py-0.5 px-1;
 }
 
 /* Inline button */
 .btn-inline {
-  display: inline;
-  margin: 0;
-  border: 0;
-  padding: 0;
-  background: inherit;
+  @apply inline m-0 border-0 p-0 bg-inherit;
 }
 
 /* File input button */
 .btn-file {
-  position: relative;
-  overflow: hidden;
+  @apply relative overflow-hidden;
 }
 
 .btn-file input[type="file"] {
-  position: absolute;
-  top: 0;
-  right: 0;
-  min-width: 100%;
-  min-height: 100%;
-  font-size: 999px;
-  text-align: right;
-  filter: alpha(opacity=0);
-  opacity: 0;
+  @apply absolute top-0 right-0 min-w-full min-h-full text-[999px] text-right opacity-0 block;
   cursor: inherit;
-  display: block;
+  filter: alpha(opacity=0);
 }
 
 /* File input component */
 .file-input .selected-files {
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
+  @apply mt-2 mb-2;
 }
 
 .file-input .file-item {
-  margin-bottom: 0;
+  @apply mb-0;
 }
 
 .file-input .file-item canvas,
 .file-input .file-item img {
-  vertical-align: middle;
+  @apply align-middle;
 }
 
 .file-input .file-item-existing button {
-  float: right;
-  font-size: 200%;
+  @apply float-right text-[200%];
 }
 
 /* Inline form file inputs */
 .form-inline .file-input,
 .form-inline .selected-files {
-  display: inline-block;
-  vertical-align: middle;
-  width: auto;
+  @apply inline-block align-middle w-auto;
 }
 
 .form-inline .selected-files {
-  margin: auto 0;
+  @apply my-auto;
 }
 
 .form-inline .selected-files .file-item {
-  width: auto;
+  @apply w-auto;
 }
 
 /* Select2 integration */
 .form-inline .select2-container.form-control {
-  display: inline-block;
+  @apply inline-block;
 }
 
 /* Dynamic row widget */
 .dynamic-row-widget.model-field-list tbody > tr > td {
-  border-top-width: 4px;
+  @apply border-t-4;
 }
 
 /* Help text */
 .help-block {
-  display: block;
-  margin-top: 5px;
-  margin-bottom: 10px;
-  color: rgb(107 114 128);
+  @apply block mt-1.5 mb-2.5 text-gray-500;
 }

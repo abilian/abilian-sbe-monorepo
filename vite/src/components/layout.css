@@ -1,36 +1,31 @@
 /*
  * Layout styles
  * Global layout structure and spacing
+ * Uses Tailwind's @apply for design system integration
  */
 
 body {
-  padding-bottom: 40px;
-  background-color: #fcfcfc;
+  @apply pb-10 bg-[#fcfcfc];
 }
 
 #content {
-  margin-top: 15px; /* grid-gutter-width / 2 */
-  padding: 15px; /* grid-gutter-width / 2 */
+  @apply mt-4 p-4;
 }
 
 /* Model view */
 .model-view h1 {
-  margin-top: 10px;
+  @apply mt-2.5;
 }
 
 /* Community specific styles */
 .community-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
-  font-weight: 700;
+  @apply flex items-center mb-6 text-2xl font-bold;
 }
 
 .community-header img {
-  margin-right: 0.75rem;
+  @apply mr-3;
 }
 
 .community-tabs {
-  margin-bottom: 2rem;
+  @apply mb-8;
 }

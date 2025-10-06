@@ -1,41 +1,32 @@
 /*
  * Navbar styles
  * Minimal styles for navbar action links - let Tailwind handle layout
+ * Uses Tailwind's @apply for design system integration
  */
 
 /* Style action links within navbar - dark theme (only styling, no layout) */
 nav[role="navigation"] a {
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: rgb(209 213 219); /* text-gray-300 */
-  text-decoration: none;
-  transition: all 0.15s ease-in-out;
+  @apply px-3 py-2 rounded-md text-sm font-medium text-gray-300 no-underline transition-all duration-150;
 }
 
 nav[role="navigation"] a:hover {
-  background-color: rgba(255, 255, 255, 0.05); /* hover:bg-white/5 */
-  color: rgb(255 255 255); /* hover:text-white */
+  @apply bg-white/5 text-white;
 }
 
 /* Active navigation items - dark theme */
 nav[role="navigation"] li.active > a,
 nav[role="navigation"] .active > a {
-  background-color: rgb(17 24 39); /* bg-gray-900 */
-  color: rgb(255 255 255); /* text-white */
-  font-weight: 600;
+  @apply bg-gray-900 text-white font-semibold;
 }
 
 /* Typeahead hint is input box set behind search input to show completion for 1st element */
 .navbar-search .tt-hint {
-  font-size: 13px;
-  padding: 4px 14px;
+  @apply text-[13px] px-3.5 py-1;
 }
 
 .twitter-typeahead {
   /* ensure search box width varies */
-  width: 100%;
+  @apply w-full;
 }
 
 /* Alpine.js will handle mobile menu visibility with x-show */

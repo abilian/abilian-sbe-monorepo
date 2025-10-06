@@ -1,21 +1,21 @@
 /*
  * Search UI styles
  * Search input and results display
+ * Uses Tailwind's @apply for design system integration
  */
 
 .ab-search-input {
-  margin-bottom: 2em;
+  @apply mb-8;
 }
 
 .ab-search-result {
-  padding-bottom: 1em;
+  @apply pb-4;
 }
 
 .ab-search-result .title {
-  font-size: 1.25em;
-  font-weight: bold;
+  @apply text-xl font-bold;
 }
 
 .ab-search-result .tags {
-  margin-top: 0.5em;
+  @apply mt-2;
 }

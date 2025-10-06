@@ -1,8 +1,9 @@
 /*
  * User styles
  * Avatar and user profile components
+ * Uses Tailwind's @apply for design system integration
  */
 
 .avatar {
-  border-radius: 50% !important;
+  @apply rounded-full;
 }

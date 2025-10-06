@@ -1,75 +1,58 @@
 /*
  * Interactive component styles
  * Alpine.js-based dropdown, modal, collapse, and tab behaviors
+ * Uses Tailwind's @apply for design system integration
  */
 
 /* Dropdown positioning */
 .dropdown {
-  position: relative;
+  @apply relative;
 }
 
 .dropdown-menu {
-  display: none !important;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  min-width: 10rem;
+  @apply hidden absolute top-full left-0 z-[1000] min-w-[10rem];
 }
 
 /* Show dropdown when Alpine.js sets it open */
 .dropdown.open > .dropdown-menu {
-  display: block !important;
+  @apply block;
 }
 
 /* Modal backdrop and container - HIDDEN BY DEFAULT */
 .modal {
-  display: none !important;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1050;
-  overflow: auto;
-  outline: 0;
+  @apply hidden fixed top-0 right-0 bottom-0 left-0 z-[1050] overflow-auto outline-none;
 }
 
 /* Show modal when Alpine makes it visible */
 .modal[style*="display: block"],
 .modal[style*="display: flex"] {
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
+  @apply flex items-center justify-center;
 }
 
 body.modal-open {
-  overflow: hidden;
+  @apply overflow-hidden;
 }
 
 /* Collapse animations */
 .collapse {
-  display: none;
+  @apply hidden;
 }
 
 .collapse.in {
-  display: block;
+  @apply block;
 }
 
 .collapsing {
-  position: relative;
-  height: 0;
-  overflow: hidden;
-  transition: height 0.35s ease;
+  @apply relative h-0 overflow-hidden transition-[height] duration-[350ms] ease-linear;
 }
 
 /* Tab panes */
 .tab-content > .tab-pane {
-  display: none;
+  @apply hidden;
 }
 
 .tab-content > .tab-pane.active {
-  display: block;
+  @apply block;
 }
 
 .tab-content > .tab-pane.active.in {
@@ -92,5 +75,5 @@ body.modal-open {
 
 /* Alpine.js transition utilities */
 [x-cloak] {
-  display: none !important;
+  @apply hidden;
 }

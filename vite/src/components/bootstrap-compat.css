@@ -1,487 +1,422 @@
 /*
  * Bootstrap compatibility layer
  * Core Bootstrap-like components (cards, buttons, forms, tables, etc.)
+ * Uses Tailwind's @apply to maintain connection to the design system
  */
 
 /* Cards (Replaces Bootstrap's .panel) */
 .card {
-  background-color: white;
-  border: 1px solid rgb(229 231 235);
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  margin-bottom: 1.5rem;
+  @apply bg-white border border-gray-200 rounded-lg shadow-sm mb-6;
 }
 
 .card-header {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgb(229 231 235);
-  background-color: rgb(249 250 251);
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
-  font-weight: 600;
+  @apply px-4 py-3 border-b border-gray-200 bg-gray-50 rounded-t-lg font-semibold;
 }
 
 .card-body {
-  padding: 1.5rem;
+  @apply p-6;
 }
 
 .card-footer {
-  padding: 0.75rem 1rem;
-  border-top: 1px solid rgb(229 231 235);
-  background-color: rgb(249 250 251);
-  border-bottom-left-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
+  @apply px-4 py-3 border-t border-gray-200 bg-gray-50 rounded-b-lg;
 }
 
 /* Buttons */
 .btn {
-  display: inline-block;
-  font-weight: 600;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  border: 1px solid transparent;
-  border-radius: 0.375rem;
-  padding: 0.5rem 1rem;
-  line-height: 1.5;
-  transition-property: color, background-color, border-color;
-  transition-duration: 150ms;
+  @apply inline-block font-semibold text-center align-middle cursor-pointer border border-transparent rounded-md px-4 py-2 leading-normal transition-colors duration-150;
 }
 
 .btn-primary {
-  color: white;
-  background-color: rgb(37 99 235);
-  border-color: rgb(37 99 235);
+  @apply text-white bg-blue-600 border-blue-600;
 }
 
 .btn-primary:hover {
-  background-color: rgb(29 78 216);
-  border-color: rgb(29 78 216);
+  @apply bg-blue-700 border-blue-700;
 }
 
 .btn-default {
-  color: rgb(55 65 81);
-  background-color: white;
-  border-color: rgb(209 213 219);
+  @apply text-gray-700 bg-white border-gray-300;
 }
 
 .btn-default:hover {
-  background-color: rgb(249 250 251);
+  @apply bg-gray-50;
 }
 
 .btn-success {
-  color: white;
-  background-color: rgb(22 163 74);
-  border-color: rgb(22 163 74);
+  @apply text-white bg-green-600 border-green-600;
 }
 
 .btn-success:hover {
-  background-color: rgb(21 128 61);
+  @apply bg-green-700;
 }
 
 .btn-danger {
-  color: white;
-  background-color: rgb(220 38 38);
-  border-color: rgb(220 38 38);
+  @apply text-white bg-red-600 border-red-600;
 }
 
 .btn-danger:hover {
-  background-color: rgb(185 28 28);
+  @apply bg-red-700;
 }
 
 .btn-warning {
-  color: white;
-  background-color: rgb(234 179 8);
-  border-color: rgb(234 179 8);
+  @apply text-white bg-yellow-500 border-yellow-500;
 }
 
 .btn-warning:hover {
-  background-color: rgb(202 138 4);
+  @apply bg-yellow-600;
 }
 
 .btn-info {
-  color: white;
-  background-color: rgb(59 130 246);
-  border-color: rgb(59 130 246);
+  @apply text-white bg-blue-500 border-blue-500;
 }
 
 .btn-info:hover {
-  background-color: rgb(37 99 235);
+  @apply bg-blue-600;
 }
 
 /* Forms */
 .form-control {
-  display: block;
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: rgb(55 65 81);
-  background-color: white;
-  border: 1px solid rgb(209 213 219);
-  border-radius: 0.375rem;
-  transition-property: border-color, box-shadow;
-  transition-duration: 150ms;
+  @apply block w-full px-3 py-2 text-base leading-normal text-gray-700 bg-white border border-gray-300 rounded-md transition-all duration-150;
 }
 
 .form-control:focus {
-  border-color: rgb(59 130 246);
-  outline: 0;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  @apply border-blue-500 outline-none ring-4 ring-blue-100;
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  @apply mb-4;
 }
 
 .form-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: rgb(55 65 81);
+  @apply block mb-2 font-medium text-gray-700;
 }
 
 /* Tables */
 .table {
-  width: 100%;
-  margin-bottom: 1rem;
-  color: rgb(55 65 81);
-  border-collapse: collapse;
+  @apply w-full mb-4 text-gray-700 border-collapse;
 }
 
 .table th,
 .table td {
-  padding: 0.75rem;
-  vertical-align: top;
-  border-bottom: 1px solid rgb(229 231 235);
+  @apply px-3 py-3 align-top border-b border-gray-200;
 }
 
 .table thead th {
-  vertical-align: bottom;
-  border-bottom: 2px solid rgb(229 231 235);
-  font-weight: 600;
+  @apply align-bottom border-b-2 border-gray-200 font-semibold;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgb(249 250 251);
+  @apply bg-gray-50;
 }
 
 .table-hover tbody tr:hover {
-  background-color: rgb(243 244 246);
+  @apply bg-gray-100;
 }
 
 /* Navigation Tabs */
 .nav-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  padding-left: 0;
-  margin-bottom: 0;
-  list-style: none;
-  border-bottom: 1px solid rgb(229 231 235);
+  @apply flex flex-wrap pl-0 mb-0 list-none border-b border-gray-200;
 }
 
 .nav-tabs li {
-  margin-bottom: -1px;
+  @apply -mb-px;
 }
 
 .nav-tabs li a {
-  display: block;
-  padding: 0.5rem 1rem;
-  margin-right: 0.125rem;
-  line-height: 1.5;
-  color: rgb(107 114 128);
-  text-decoration: none;
-  background-color: transparent;
-  border: 1px solid transparent;
-  border-top-left-radius: 0.375rem;
-  border-top-right-radius: 0.375rem;
-  transition-property: color, background-color;
-  transition-duration: 150ms;
+  @apply block px-4 py-2 mr-0.5 leading-normal text-gray-500 no-underline bg-transparent border border-transparent rounded-t-md transition-colors duration-150;
 }
 
 .nav-tabs li a:hover {
-  color: rgb(55 65 81);
-  background-color: rgb(249 250 251);
+  @apply text-gray-700 bg-gray-50;
 }
 
 .nav-tabs li.active a {
-  color: rgb(55 65 81);
-  background-color: white;
-  border-color: rgb(229 231 235) rgb(229 231 235) white;
+  @apply text-gray-700 bg-white border-gray-200 border-b-white;
 }
 
 /* Alerts */
 .alert {
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border: 1px solid transparent;
-  border-radius: 0.375rem;
+  @apply p-4 mb-4 border border-transparent rounded-md;
 }
 
 .alert-success {
-  background-color: rgb(240 253 244);
-  border-color: rgb(187 247 208);
-  color: rgb(22 101 52);
+  @apply bg-green-50 border-green-300 text-green-800;
 }
 
 .alert-info {
-  background-color: rgb(239 246 255);
-  border-color: rgb(191 219 254);
-  color: rgb(30 64 175);
+  @apply bg-blue-50 border-blue-300 text-blue-800;
 }
 
 .alert-warning {
-  background-color: rgb(254 252 232);
-  border-color: rgb(254 240 138);
-  color: rgb(133 77 14);
+  @apply bg-yellow-50 border-yellow-300 text-yellow-800;
 }
 
 .alert-danger {
-  background-color: rgb(254 242 242);
-  border-color: rgb(254 202 202);
-  color: rgb(153 27 27);
+  @apply bg-red-50 border-red-300 text-red-800;
 }
 
 /* Badges */
 .badge {
-  display: inline-block;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1;
-  border-radius: 0.25rem;
+  @apply inline-block px-2 py-1 text-xs font-semibold leading-none rounded;
 }
 
 .badge-primary {
-  background-color: rgb(37 99 235);
-  color: white;
+  @apply bg-blue-600 text-white;
 }
 
 .badge-success {
-  background-color: rgb(22 163 74);
-  color: white;
+  @apply bg-green-600 text-white;
 }
 
 .badge-danger {
-  background-color: rgb(220 38 38);
-  color: white;
+  @apply bg-red-600 text-white;
 }
 
 .badge-warning {
-  background-color: rgb(234 179 8);
-  color: white;
+  @apply bg-yellow-500 text-white;
 }
 
 .badge-info {
-  background-color: rgb(59 130 246);
-  color: white;
+  @apply bg-blue-500 text-white;
 }
 
 /* Dropdown menus */
 .dropdown-menu {
-  position: absolute;
-  z-index: 10;
-  margin-top: 0.5rem;
-  padding: 0.5rem 0;
-  background-color: white;
-  border: 1px solid rgb(229 231 235);
-  border-radius: 0.375rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  @apply absolute z-10 mt-2 py-2 bg-white border border-gray-200 rounded-md shadow-lg;
 }
 
 .dropdown-menu li a {
-  display: block;
-  padding: 0.5rem 1rem;
-  color: rgb(55 65 81);
-  text-decoration: none;
+  @apply block px-4 py-2 text-gray-700 no-underline;
 }
 
 .dropdown-menu li a:hover {
-  background-color: rgb(243 244 246);
+  @apply bg-gray-100;
 }
 
 /* Pagination */
 .pagination {
-  display: flex;
-  list-style: none;
-  border-radius: 0.375rem;
+  @apply flex list-none rounded-md;
 }
 
 .pagination li a {
-  position: relative;
-  display: block;
-  padding: 0.5rem 0.75rem;
-  line-height: 1.25;
-  color: rgb(37 99 235);
-  background-color: white;
-  border: 1px solid rgb(209 213 219);
-  text-decoration: none;
+  @apply relative block px-3 py-2 leading-tight text-blue-600 bg-white border border-gray-300 no-underline;
 }
 
 .pagination li a:hover {
-  background-color: rgb(243 244 246);
+  @apply bg-gray-100;
 }
 
 .pagination li.active a {
-  z-index: 10;
-  background-color: rgb(37 99 235);
-  color: white;
-  border-color: rgb(37 99 235);
+  @apply z-10 bg-blue-600 text-white border-blue-600;
 }
 
 .pagination li.disabled a {
-  color: rgb(156 163 175);
-  cursor: not-allowed;
+  @apply text-gray-400 cursor-not-allowed;
 }
 
 /* Breadcrumb */
 .breadcrumb {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0.5rem 1rem;
-  margin-bottom: 1rem;
-  list-style: none;
-  background-color: rgb(243 244 246);
-  border-radius: 0.375rem;
+  @apply flex flex-wrap px-4 py-2 mb-4 list-none bg-gray-100 rounded-md;
 }
 
 .breadcrumb li {
-  display: flex;
-  align-items: center;
+  @apply flex items-center;
 }
 
 .breadcrumb li + li:before {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  color: rgb(107 114 128);
-  content: "/";
+  @apply px-2 text-gray-500 content-['/'];
 }
 
 .breadcrumb li a {
-  color: rgb(37 99 235);
-  text-decoration: none;
+  @apply text-blue-600 no-underline;
 }
 
 .breadcrumb li a:hover {
-  color: rgb(29 78 216);
+  @apply text-blue-700;
 }
 
 .breadcrumb li.active {
-  color: rgb(107 114 128);
+  @apply text-gray-500;
 }
 
 /* Modal/Panel overlays */
 .modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 40;
-  background-color: rgba(0, 0, 0, 0.5);
+  @apply fixed inset-0 z-40 bg-black/50;
 }
 
 .modal {
-  position: fixed;
-  z-index: 50;
-  inset: 0;
-  overflow-y: auto;
+  @apply fixed z-50 inset-0 overflow-y-auto;
 }
 
 .modal-dialog {
-  position: relative;
-  width: auto;
-  margin: 1.5rem auto;
-  max-width: 48rem;
+  @apply relative w-auto mx-auto my-6 max-w-3xl;
 }
 
 .modal-content {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  background-color: white;
-  border: 1px solid rgb(229 231 235);
-  border-radius: 0.5rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  @apply relative flex flex-col w-full bg-white border border-gray-200 rounded-lg shadow-2xl;
 }
 
 .modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-  border-bottom: 1px solid rgb(229 231 235);
+  @apply flex items-center justify-between p-4 border-b border-gray-200;
 }
 
 .modal-body {
-  position: relative;
-  padding: 1rem;
+  @apply relative p-4;
 }
 
 .modal-footer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 1rem;
-  border-top: 1px solid rgb(229 231 235);
+  @apply flex items-center justify-end p-4 border-t border-gray-200;
 }
 
 /* Well component */
 .well {
-  min-height: 20px;
-  padding: 19px;
-  margin-bottom: 20px;
-  background-color: rgb(245 245 245);
-  border: 1px solid rgb(227 227 227);
-  border-radius: 4px;
+  @apply min-h-[20px] p-5 mb-5 bg-gray-50 border border-gray-300 rounded;
 }
 
 .well-sm {
-  padding: 9px;
-  border-radius: 3px;
+  @apply p-2.5 rounded-sm;
 }
 
 /* Close button */
 .close {
-  float: right;
-  font-size: 21px;
-  font-weight: bold;
-  line-height: 1;
-  color: #000;
+  @apply float-right text-[21px] font-bold leading-none text-black bg-transparent border-0 cursor-pointer opacity-20;
   text-shadow: 0 1px 0 #fff;
-  opacity: 0.2;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
 }
 
 .close:hover,
 .close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-  opacity: 0.5;
+  @apply text-black no-underline cursor-pointer opacity-50;
 }
 
 /* Caret styles */
 .caret-down {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  margin-left: 2px;
-  vertical-align: middle;
-  border-top: 4px solid;
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent;
+  @apply inline-block w-0 h-0 ml-0.5 align-middle border-t-4 border-r-4 border-r-transparent border-l-4 border-l-transparent;
 }
 
 .caret-up {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  margin-left: 2px;
-  vertical-align: middle;
-  border-top: 0;
-  border-bottom: 4px solid;
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent;
-  content: "";
+  @apply inline-block w-0 h-0 ml-0.5 align-middle border-t-0 border-b-4 border-r-4 border-r-transparent border-l-4 border-l-transparent;
+}
+
+/* Bootstrap Grid System */
+/* Container */
+.container {
+  @apply w-full mx-auto px-4;
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+.container-fluid {
+  @apply w-full px-4;
+}
+
+/* Row */
+.row {
+  @apply flex flex-wrap -mx-4;
+}
+
+/* Column base */
+[class*="col-"] {
+  @apply relative w-full px-4;
+}
+
+/* Extra small columns (mobile) - col-xs-* */
+.col-xs-1 { @apply w-[8.333333%]; }
+.col-xs-2 { @apply w-[16.666667%]; }
+.col-xs-3 { @apply w-[25%]; }
+.col-xs-4 { @apply w-[33.333333%]; }
+.col-xs-5 { @apply w-[41.666667%]; }
+.col-xs-6 { @apply w-[50%]; }
+.col-xs-7 { @apply w-[58.333333%]; }
+.col-xs-8 { @apply w-[66.666667%]; }
+.col-xs-9 { @apply w-[75%]; }
+.col-xs-10 { @apply w-[83.333333%]; }
+.col-xs-11 { @apply w-[91.666667%]; }
+.col-xs-12 { @apply w-full; }
+
+/* Small columns (tablets) - col-sm-* */
+@media (min-width: 576px) {
+  .col-sm-1 { @apply w-[8.333333%]; }
+  .col-sm-2 { @apply w-[16.666667%]; }
+  .col-sm-3 { @apply w-[25%]; }
+  .col-sm-4 { @apply w-[33.333333%]; }
+  .col-sm-5 { @apply w-[41.666667%]; }
+  .col-sm-6 { @apply w-[50%]; }
+  .col-sm-7 { @apply w-[58.333333%]; }
+  .col-sm-8 { @apply w-[66.666667%]; }
+  .col-sm-9 { @apply w-[75%]; }
+  .col-sm-10 { @apply w-[83.333333%]; }
+  .col-sm-11 { @apply w-[91.666667%]; }
+  .col-sm-12 { @apply w-full; }
+
+  .col-sm-offset-1 { @apply ml-[8.333333%]; }
+  .col-sm-offset-2 { @apply ml-[16.666667%]; }
+  .col-sm-offset-3 { @apply ml-[25%]; }
+  .col-sm-offset-4 { @apply ml-[33.333333%]; }
+
+  .col-sm-push-1 { @apply left-[8.333333%]; }
+  .col-sm-push-2 { @apply left-[16.666667%]; }
+  .col-sm-push-3 { @apply left-[25%]; }
+}
+
+/* Medium columns (desktops) - col-md-* */
+@media (min-width: 768px) {
+  .col-md-1 { @apply w-[8.333333%]; }
+  .col-md-2 { @apply w-[16.666667%]; }
+  .col-md-3 { @apply w-[25%]; }
+  .col-md-4 { @apply w-[33.333333%]; }
+  .col-md-5 { @apply w-[41.666667%]; }
+  .col-md-6 { @apply w-[50%]; }
+  .col-md-7 { @apply w-[58.333333%]; }
+  .col-md-8 { @apply w-[66.666667%]; }
+  .col-md-9 { @apply w-[75%]; }
+  .col-md-10 { @apply w-[83.333333%]; }
+  .col-md-11 { @apply w-[91.666667%]; }
+  .col-md-12 { @apply w-full; }
+  .col-md-13 { @apply w-full; } /* Non-standard, treating as full width */
+
+  .col-md-offset-1 { @apply ml-[8.333333%]; }
+  .col-md-offset-2 { @apply ml-[16.666667%]; }
+  .col-md-offset-3 { @apply ml-[25%]; }
+
+  .col-md-push-3 { @apply left-[25%]; }
+}
+
+/* Large columns (large desktops) - col-lg-* */
+@media (min-width: 992px) {
+  .col-lg-1 { @apply w-[8.333333%]; }
+  .col-lg-2 { @apply w-[16.666667%]; }
+  .col-lg-3 { @apply w-[25%]; }
+  .col-lg-4 { @apply w-[33.333333%]; }
+  .col-lg-5 { @apply w-[41.666667%]; }
+  .col-lg-6 { @apply w-[50%]; }
+  .col-lg-7 { @apply w-[58.333333%]; }
+  .col-lg-8 { @apply w-[66.666667%]; }
+  .col-lg-9 { @apply w-[75%]; }
+  .col-lg-10 { @apply w-[83.333333%]; }
+  .col-lg-11 { @apply w-[91.666667%]; }
+  .col-lg-12 { @apply w-full; }
+
+  .col-lg-push-3 { @apply left-[25%]; }
 }
