@@ -17,3 +17,11 @@
 @import './components/interactive.css' layer(components);
 @import './components/utilities.css' layer(components);
 @import './components/print.css' layer(components);
+
+/* Module-specific components converted from LESS */
+@import './components/documents.css' layer(components);
+@import './components/forum.css' layer(components);
+@import './components/wiki.css' layer(components);
+@import './components/communities.css' layer(components);
+@import './components/social.css' layer(components);
+@import './components/wizard.css' layer(components);

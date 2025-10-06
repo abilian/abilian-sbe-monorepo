@@ -46,11 +46,8 @@
   @apply m-0;
 }
 
-.stream-subtext {
-  @apply text-gray-600 italic;
-}
-
 .stream-body .stream-subtext {
+  @apply text-gray-600 italic;
   @apply mb-1.5;
 }
 

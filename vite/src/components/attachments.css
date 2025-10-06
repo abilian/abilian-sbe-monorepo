@@ -4,10 +4,15 @@
  * Uses Tailwind's @apply for design system integration
  */
 
-ul.attachments {
-  @apply list-none pl-0 mb-0;
-}
+/*ul.attachments {*/
+/*  @apply list-none pl-0 mb-0;*/
+/*}*/
 
-ul.attachments li {
-  @apply relative p-2;
-}
+/*ul.attachments li {*/
+/*  @apply relative p-2;*/
+/*}*/
+
+/*.attachments .attachment-item {*/
+/*  !*@apply relative -top-2 -left-[7px];*!*/
+/*  line-height: 30px;*/
+/*}*/
