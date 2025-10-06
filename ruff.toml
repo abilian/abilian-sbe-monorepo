@@ -14,6 +14,9 @@ lint.extend-ignore = [
     "PGH", # pygrep-hooks
     "TD", # flake8-todos
     "DOC", # pydocstyle
+    # Must be there
+    "ISC001", # Conflicts with the formatter
+
     # Fix these
     "PTH", # Pathlib
     "TRY", # tryceratops
@@ -24,7 +27,7 @@ lint.extend-ignore = [
     "E713", # Test for membership should be `not in`
     "PLR2044", # Line with empty comment
     "RET504", # Unnecessary variable assignment before `return` statement
-    "S101", # Use of `assert` detected
+    "S101", # Use of `assert` detected (assert are use throughout)
     "SIM102", # Use a single `if` statement instead of nested `if` statements
     "SIM108", # Use ternary operator
 
@@ -76,7 +79,8 @@ lint.extend-ignore = [
     "S605", # Subprocess related...
     "S607", # Starting a process with a partial executable path
     "S701", # By default, jinja2 sets `autoescape` to `False`.
-    "S704", # Unsafe use of `markupsafe.Markup` detected
+    "S320", # Using `lxml` to parse untrusted data is known to be vulnerable to XML attacks
+    # "S704", # Unsafe use of `markupsafe.Markup` detected
     # Don't "fix" these
     "PT013", # Found incorrect import of pytest, use simple `import pytest` instead
     "SLF001", # Private member accessed
@@ -84,8 +88,12 @@ lint.extend-ignore = [
 ]
 
 [lint.per-file-ignores]
-"tests/**/*.py" = ["INP001"] # implicit namespace packages
-"**/__init__.py" = ["F401"] # 'module' imported but unused
+"tests/**/*.py" = [
+    "INP001", # implicit namespace packages
+]
+"**/__init__.py" = [
+    "F401", # 'module' imported but unused
+]
 
 [lint.mccabe]
 max-complexity = 10
