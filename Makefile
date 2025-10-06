@@ -47,8 +47,7 @@ lint: lint-ruff lint-py
 
 .PHONY: lint-py
 lint-py:
-	@echo "Doing nothing for now"
-	# deptry src
+	deptry src
 	# pyrefly check src
 	# ty check src
 	# mypy --show-error-codes src tests

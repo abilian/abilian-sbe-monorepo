@@ -84,7 +84,6 @@ dependencies = [
     "sentry-sdk[flask]",
     # Geoip DB
     "maxminddb",
-    "certifi",
     # "mmdb_writer",
     # "netaddr",
     #
@@ -92,7 +91,6 @@ dependencies = [
     "hyperlink>=21.0.0",
     "python-dotenv>=1.0.1",
     "flask-vite>=0.6.1",
-    "rich>=14.1.0",
 ]
 
 [project.urls]
@@ -178,7 +176,11 @@ DEP002 = [
 ]
 
 # X imported but missing from the dependency definitions
-DEP001 = ['pkg_resources']
+DEP001 = [
+    'pkg_resources',
+    'clamd',
+    'flask_debugtoolbar',
+]
 
 # X imported but declared as a dev dependency
 DEP004 = ['flask_debugtoolbar', 'html5lib']
