@@ -29,15 +29,15 @@
         <div class="float-right flex gap-x-2">
           {%- if can_edit %}
             <a class="btn btn-default"
-                title="{{ _("Edit") }}"
-                href="{{ url_for('attachments.edit', entity_id=entity.id, object_id=attachment.id) }}"><i
-                class="fa fa-edit"></i></a>
+               title="{{ _("Edit") }}"
+               href="{{ url_for('attachments.edit', entity_id=entity.id, object_id=attachment.id) }}"><i
+              class="fa fa-edit"></i></a>
           {%- endif %}
           {%- if can_delete %}
             <a class="btn btn-danger js-widget"
-                href="{{ url_for('attachments.delete', entity_id=entity.id, object_id=attachment.id) }}"
-                data-init-with="deleteConfirm"
-                data-init-params="{{ {
+               href="{{ url_for('attachments.delete', entity_id=entity.id, object_id=attachment.id) }}"
+               data-init-with="deleteConfirm"
+               data-init-params="{{ {
                               'title': _('Delete attachment ?'),
                               'message': _('Do you really want to delete this attachment?'),
                               'label': _("Delete"),
@@ -52,7 +52,7 @@
         <a href="{{ url_for('attachments.download',
                             entity_id=attachment.entity.id,
                             object_id=attachment.id) }}"
-            title="{{ _('Download') }}">{{ attachment.name }}</a>
+           title="{{ _('Download') }}">{{ attachment.name }}</a>
         <small>{{ attachment.blob.size | filesize }} - {{ attachment.updated_at | age }}</small>
       </h4>
       <p>{{ attachment.description }}</p>

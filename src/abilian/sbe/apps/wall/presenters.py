@@ -39,6 +39,7 @@ MESSAGES = {
 
 OBJ_TEMPLATE = Template('<a href="{{ object_url|safe }}">{{ object_name }}</a>')
 
+# language=html
 POST_BODY_TEMPLATE = """
   <span class="body">"<a href="{{ object_url |safe }}">{{ body }}</a>"
   {%- if post.attachments %}
@@ -47,8 +48,7 @@ POST_BODY_TEMPLATE = """
       {%- for attachment in post.attachments %}
       <li>
         <span class="attachment-item">
-          <img src="{{ attachment.icon }}""
-              alt=""/>
+          <img src="{{ attachment.icon }}" alt=""/>
           <a href="{{ url_for(attachment) }}">{{ attachment.name }}</a>
           ({{ attachment.content_length|filesize }})
         </span>
@@ -60,12 +60,14 @@ POST_BODY_TEMPLATE = """
   </span>
 """
 
+# language=html
 DOCUMENT_BODY_TEMPLATE = """
 <div class="body">
   <div>
     <img src="{{ obj.icon }}" style="vertical-align: middle;" alt=""/>
+
     {% for p in parents[:-1] %}
-    <a href="{{ p.path }}">{{ p.label }}</a> <span class="divider">/</span>
+      <a href="{{ p.path }}">{{ p.label }}</a> <span class="divider">/</span>
     {% endfor %}
 
     <a href="{{ url_for(obj) }}">{{ obj.name }}</a>
