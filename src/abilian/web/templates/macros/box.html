@@ -1,26 +1,22 @@
-{# Generic renderer for boxes / portlets #}
-
-{%- set color_map = dict(blue="info", green="success", orange="warning", red="danger",
-                         primary="primary", info="info", success="success",
-                         warning="warning", danger="danger", cls="") %}
+{# Generic renderer for boxes / portlets - Tailwind version #}
 
 {%- macro m_box(title, color="", href=None, icon_class="") %}
   <!-- begin box "{{ title }}" -->
-  {# Map Bootstrap colors to our new card variants if needed #}
-  {% set card_class = 'card-danger' if color in ['red', 'danger'] else 'card' %}
-  <div class="{{ card_class }}">
+  {% set border_color = 'border-red-500' if color in ['red', 'danger'] else 'border-gray-200' %}
+  {% set header_bg = 'bg-red-50' if color in ['red', 'danger'] else 'bg-gray-50' %}
+  <div class="bg-white border {{ border_color }} rounded-lg shadow-sm mb-6">
     {%- if title %}
-      <div class="card-header">
-        <h5 class="font-bold text-lg"> {# Use utilities for title styling #}
-          {%- if href %}<a href="{{ href }}">{%- endif %}
-          {%- if icon_class -%}<span class="{{ icon_class }}"></span>{% endif %}
+      <div class="px-4 py-3 border-b border-gray-200 {{ header_bg }} rounded-t-lg">
+        <h5 class="font-semibold text-lg text-gray-900">
+          {%- if href %}<a href="{{ href }}" class="hover:text-blue-600">{%- endif %}
+          {%- if icon_class -%}<span class="{{ icon_class }} mr-2"></span>{% endif %}
           {{ title }}
           {%- if href %}</a>{%- endif %}
         </h5>
       </div>
     {%- endif %}
 
-    <div class="card-body">
+    <div class="p-4">
       {{ caller() }}
     </div>
   </div>
@@ -29,14 +25,15 @@
 
 {%- macro m_box_menu(title=None, color="green", omit_body=False) %}
   <!-- begin menu box "{{ title }}" -->
-  {% set card_class = 'card-danger' if color in ['red', 'danger'] else 'card' %}
-  <div class="{{ card_class }}">
-    <div class="card-header">
-      <h5 class="font-bold text-lg">{{ title or _('Menu') }}</h5>
+  {% set border_color = 'border-red-500' if color in ['red', 'danger'] else 'border-gray-200' %}
+  {% set header_bg = 'bg-red-50' if color in ['red', 'danger'] else 'bg-gray-50' %}
+  <div class="bg-white border {{ border_color }} rounded-lg shadow-sm mb-6">
+    <div class="px-4 py-3 border-b border-gray-200 {{ header_bg }} rounded-t-lg">
+      <h5 class="font-semibold text-lg text-gray-900">{{ title or _('Menu') }}</h5>
     </div>
 
     {%- if not omit_body %}
-      <div class="card-body">
+      <div class="p-4">
     {%- endif %}
     {{ caller() }}
     {%- if not omit_body %}
@@ -56,15 +53,16 @@
 
 {%- macro m_box_content(title=None, color="blue") %}
   <!-- begin box "{{ title }}" -->
-  {% set card_class = 'card-danger' if color in ['red', 'danger'] else 'card' %}
-  <div class="{{ card_class }}">
+  {% set border_color = 'border-red-500' if color in ['red', 'danger'] else 'border-gray-200' %}
+  {% set header_bg = 'bg-red-50' if color in ['red', 'danger'] else 'bg-gray-50' %}
+  <div class="bg-white border {{ border_color }} rounded-lg shadow-sm mb-6">
     {%- if title %}
-      <div class="card-header">
-        <h5 class="font-bold text-lg">{{ title }}</h5>
+      <div class="px-4 py-3 border-b border-gray-200 {{ header_bg }} rounded-t-lg">
+        <h5 class="font-semibold text-lg text-gray-900">{{ title }}</h5>
       </div>
     {%- endif %}
 
-    <div class="card-body">
+    <div class="p-4">
       {{ caller() }}
     </div>
   </div>

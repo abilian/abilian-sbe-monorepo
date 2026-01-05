@@ -8,169 +8,176 @@
 {%- from "community/macros.html" import viewers_snapshot -%}
 
 {% macro user_markup(user) %}
-  <a href="{{ url_for('social.user', user_id=user.id) }}"><img
-      style="border-radius: 22px;" alt=""
-      src="{{ user_photo_url(user, size=16) }}"/>
+  <a href="{{ url_for('social.user', user_id=user.id) }}" class="inline-flex items-center text-blue-600 hover:text-blue-800">
+    <img class="w-4 h-4 rounded-full mr-1" alt="" src="{{ user_photo_url(user, size=16) }}"/>
     {{ user }}
   </a>
 {% endmacro %}
 
 {% macro m_breadcrumbs_path(breadcrumbs) %}
   {% for obj in breadcrumbs[0:-1] %}
-    <a href="{{ obj.path }}">{{ obj.label }}</a>
-    <span class="divider">/</span>
+    <a href="{{ obj.path }}" class="text-blue-600 hover:text-blue-800">{{ obj.label }}</a>
+    <span class="text-gray-400 mx-1">/</span>
   {% endfor %}
 
-  <span style="font-size: 14pt; color: gray;">{% if doc.lock %}
-    <i style="color:black;" class="fa fa-lock"></i>{% endif %}
-    {{ doc.title }}</span>
+  <span class="text-lg text-gray-500">
+    {% if doc.lock %}<i class="fa fa-lock text-gray-900 mr-1"></i>{% endif %}
+    {{ doc.title }}
+  </span>
 {% endmacro %}
 
 {% block content %}
-  {#  <script>#}
-  {#    window.history.pushState("object or string", "Title", "{{ breadcrumbs[0]['path'] }}");#}
-  {#  </script>#}
-
   {%- if doc.antivirus_required %}
-    <div style="margin: 5px 0;">
-      <i class="fa fa-file-o fa-lg"></i>
+    <div class="my-2">
+      <i class="fa fa-file-o fa-lg text-gray-500"></i>
       {{ m_breadcrumbs2(breadcrumbs) }}
     </div>
 
-    <hr/>
+    <hr class="border-gray-200 my-4"/>
 
-    <p class="small alert alert-warning">
-      <span class="fa-stack">
+    <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-md text-sm text-yellow-800">
+      <span class="fa-stack mr-2">
         <i class="fa fa-search fa-stack-2x"></i>
-        <i class="fa fa-bug fa-stack-1x text-danger"></i>
+        <i class="fa fa-bug fa-stack-1x text-red-600"></i>
       </span>
       {% trans %}Waiting for virus check...{% endtrans %}
-    </p>
+    </div>
 
   {%- elif not doc.antivirus_ok %}
-    <p class="alert alert-danger">
-      <i class="fa fa-exclamation-triangle"></i>
+    <div class="p-4 bg-red-50 border border-red-200 rounded-md text-red-800">
+      <i class="fa fa-exclamation-triangle mr-2"></i>
       {%- trans %}Virus found. Access disabled.{%- endtrans %}
-    </p>
+    </div>
   {%- endif %}
 
-  <form name="folder-listing" style="margin-bottom: 0;" method="POST">
-    <input id="check_{{ doc.id }}" style="display:none;" type="checkbox" name="object-selected"
+  <form name="folder-listing" class="mb-0" method="POST">
+    <input id="check_{{ doc.id }}" class="hidden" type="checkbox" name="object-selected"
            value="{{ doc.sbe_type }}:{{ doc.id }}" checked>
   </form>
 
   <div>
-    <h2>
+    <h2 class="text-xl font-semibold text-gray-900">
       {{ m_breadcrumbs_path(breadcrumbs) }}
     </h2>
     <br>
-    <a class="conversation-back-btn" href="{{ url_for('.index', community_id=g.community.slug) }}">
-      <i class="fa fa-arrow-left"></i> {{ _("Back to document list") }}
+    <a class="inline-flex items-center text-gray-600 hover:text-blue-600" href="{{ url_for('.index', community_id=g.community.slug) }}">
+      <i class="fa fa-arrow-left mr-2"></i> {{ _("Back to document list") }}
     </a>
 
-    <div id="horizontal-doc-menu" class="document-horizontal-menu inline-flex items-center gap-x-2" style="right:0px; top:0px;">
+    <div id="horizontal-doc-menu" class="document-horizontal-menu inline-flex items-center gap-x-2 float-right">
       <div>
         {%- if doc.antivirus_ok %}
-          <a class="btn btn-success btn-md float-right"
+          <a class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700"
              href="{{ url_for('.document_download', community_id=doc.community.slug, doc_id=doc.id, attach=True) }}">
-            <i class="fa fa-download"></i>
+            <i class="fa fa-download mr-2"></i>
             {{ _('Download') }}
-            <small>({{ doc.content_length|filesize }})</small>
+            <small class="ml-1 text-green-200">({{ doc.content_length|filesize }})</small>
           </a>
         {%- endif %}
       </div>
       <div>
         <a onclick="edit_document()"
-           class="btn action action-documents-folder-listing action-documents-folder-listing-download btn-default"
-           href="#modal-edit" title="Download" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+           class="inline-flex items-center justify-center w-10 h-10 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+           href="#modal-edit" title="{{ _('Edit') }}" data-toggle="modal">
+          <i class="fa fa-pencil"></i>
+        </a>
       </div>
       <div>
         <a onclick="email_document()"
-           class="btn action action-documents-folder-listing action-documents-folder-listing-move-files btn-default"
-           href="#modal-send-by-email" data-toggle="modal" title="Move to another folder"><i
-            class="fa fa-envelope"></i></a>
+           class="inline-flex items-center justify-center w-10 h-10 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+           href="#modal-send-by-email" data-toggle="modal" title="{{ _('Send by email') }}">
+          <i class="fa fa-envelope"></i>
+        </a>
       </div>
       <div>
         <a href="#modal-delete"
-           class="btn action action-documents-folder-listing action-documents-folder-listing-delete btn-danger"
-           data-toggle="modal" name="action" title="Delete"><i class="fa fa-trash"></i></a>
+           class="inline-flex items-center justify-center w-10 h-10 text-white bg-red-600 rounded-md hover:bg-red-700"
+           data-toggle="modal" name="action" title="{{ _('Delete') }}">
+          <i class="fa fa-trash"></i>
+        </a>
       </div>
-      <div>
-        <div class="dropdown">
-          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
-                  aria-haspopup="true" aria-expanded="true">
-            <span class="fa fa-ellipsis-h" aria-hidden="true"></span>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li>
-              <a class="" href="#modal-move-files" data-toggle="modal" role="button" title="Move to another folder">
-                <i class="fa fa-arrows"></i>
-                {{ _("Move") }}
-              </a>
-            </li>
-            <li>
-              <a onclick="replace_document()" class="" href="#modal-upload-new-version" data-toggle="modal"
-                 role="button"
-                 title="Move to another folder">
-                <i class="fa fa-refresh" aria-hidden="true"></i>
-                {{ _("Replace") }}
-              </a>
-            </li>
-            <li>
-              <form id="document_checkout"
-                    action="{{ url_for('.checkin_checkout', doc_id=doc.id, community_id=doc.community.slug) }}"
-                    method="POST" target="_new">
-                {{ csrf.field() }}
-                {% if doc.lock == None %}
-                  <input type="hidden" name="action" value="checkout"/>
-                  <a style="color: #262626;position: relative;left: 8px;text-decoration: none;" type="submit"
-                     class="btn btn-link"
-                     onclick="$('#document_checkout').submit(); setTimeout(function () { window.location = '{{ url_for(doc) }}'  }, 500);">
-                    <i class="glyphicon glyphicon-download"></i>
-                    {{ _("Checkout") }}
-                  </a>
-                {% else %}
-                  <input type="hidden" name="action" value="unlock"/>
-                  <a style="color: #262626;position: relative;left: 8px;text-decoration: none;" type="submit"
-                     class="btn btn-link" onclick="$('#document_checkout').submit();">
-                    <i class="fa fa-unlock"></i>
-                    {{ _("Unlock") }}
-                  </a>
-                {% endif %}
-              </form>
-            </li>
-            <li>
-              <a href="{{ url_for(doc) }}" data-toggle="modal" role="button" title="Move to another folder">
-                <i class="glyphicon glyphicon-refresh"></i>
-                {{ _("Refresh preview") }}
-              </a>
-            </li>
-          </ul>
-        </div>
+      <div x-data="{ open: false }" class="relative">
+        <button @click="open = !open"
+                class="inline-flex items-center justify-center w-10 h-10 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                type="button">
+          <span class="fa fa-ellipsis-h" aria-hidden="true"></span>
+        </button>
+        <ul x-show="open"
+            @click.away="open = false"
+            x-transition
+            class="absolute right-0 z-10 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 py-1">
+          <li>
+            <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+               href="#modal-move-files" data-toggle="modal" role="button" title="{{ _('Move to another folder') }}">
+              <i class="fa fa-arrows mr-2"></i>
+              {{ _("Move") }}
+            </a>
+          </li>
+          <li>
+            <a onclick="replace_document()"
+               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+               href="#modal-upload-new-version" data-toggle="modal" role="button" title="{{ _('Replace document') }}">
+              <i class="fa fa-refresh mr-2"></i>
+              {{ _("Replace") }}
+            </a>
+          </li>
+          <li>
+            <form id="document_checkout"
+                  action="{{ url_for('.checkin_checkout', doc_id=doc.id, community_id=doc.community.slug) }}"
+                  method="POST" target="_new">
+              {{ csrf.field() }}
+              {% if doc.lock == None %}
+                <input type="hidden" name="action" value="checkout"/>
+                <button type="submit"
+                        class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onclick="setTimeout(function () { window.location = '{{ url_for(doc) }}'  }, 500);">
+                  <i class="fa fa-download mr-2"></i>
+                  {{ _("Checkout") }}
+                </button>
+              {% else %}
+                <input type="hidden" name="action" value="unlock"/>
+                <button type="submit"
+                        class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <i class="fa fa-unlock mr-2"></i>
+                  {{ _("Unlock") }}
+                </button>
+              {% endif %}
+            </form>
+          </li>
+          <li>
+            <a href="{{ url_for(doc) }}"
+               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+               title="{{ _('Refresh preview') }}">
+              <i class="fa fa-refresh mr-2"></i>
+              {{ _("Refresh preview") }}
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
-    <span onclick="view_info()" class="glyphicon glyphicon-chevron-right" id="view_info"
-          aria-hidden="true"
-          style="float: right; font-size: 18pt; position: relative; top: -72px; left: 283px; cursor: pointer; z-index:10;"></span>
+    <button onclick="view_info()"
+            class="float-right text-2xl text-gray-400 hover:text-gray-600 cursor-pointer relative -top-16 z-10"
+            id="view_info"
+            aria-label="{{ _('Toggle sidebar') }}">
+      <i class="fa fa-chevron-right"></i>
+    </button>
 
     <br><br>
-    <div>
-    </div>
+    <div></div>
   </div>
 
   {%- if doc.description %}
-    <p>{{ doc.description }}</p>
-    <p>&nbsp;</p>
+    <p class="text-gray-700 mb-4">{{ doc.description }}</p>
   {%- endif %}
 
   <br>
 
-  <div style="border:1px solid silver; width:100%; padding-top: 10px; padding-bottom: 10px;">
+  <div class="border border-gray-300 rounded-lg w-full py-3">
     <div class="preview-container" data-page-num="{{ doc.page_num }}">
       <img src="{{ url_for('.document_preview_image',
                         community_id=g.community.slug, doc_id=doc.id,
                         size=doc.preview_size) }}"
-           alt="" class="preview" data-page="0"/>
+           alt="" class="preview mx-auto" data-page="0"/>
 
       {%- if has_preview %}
         <a class="preview-nav-button preview-prev" title="{{ _('Previous') }}">
@@ -193,14 +200,17 @@
         {%- enddeferJS %}
 
       {%- else %}
-        {{ _("Document preview not yet available") }}
+        <p class="text-center text-gray-500 py-8">{{ _("Document preview not yet available") }}</p>
       {%- endif %}
     </div>
   </div>
 
   {%- if doc.extra_metadata %}
-    <h3 class="main collapsed" data-toggle="collapse"
-        href="#doc_extra_metadata">Extra Metadata</h3>
+    <h3 class="mt-6 mb-2 text-lg font-semibold text-gray-900 cursor-pointer" data-toggle="collapse"
+        href="#doc_extra_metadata">
+      <i class="fa fa-chevron-down mr-2 text-gray-400"></i>
+      Extra Metadata
+    </h3>
 
     <div id="doc_extra_metadata" class="collapse">
       {%- set sorted = doc.extra_metadata|dictsort %}
@@ -213,37 +223,44 @@
 
 {% block sidebar %}
   <br><br>
-  <div style="border: 1px solid #eee;padding: 14px;">
-    <small>
-      <p><b>{{ doc.title|truncate(32, False, '...', 0) }}</b></p>
-      <b>{{ _("Owner") }}</b> : {{ user_markup(doc.creator) }} <br>
-      {{ _('<b>Uploaded:</b> %(date)s (%(age)s)',
-               date=(doc.created_at | datetimeformat('short')),
-               age=doc.created_at | age(add_direction=False)) }}
+  <div class="border border-gray-200 rounded-t-lg p-4 bg-white">
+    <div class="text-sm space-y-2">
+      <p class="font-semibold text-gray-900">{{ doc.title|truncate(32, False, '...', 0) }}</p>
+      <p>
+        <span class="font-semibold text-gray-700">{{ _("Owner") }}</span>:
+        {{ user_markup(doc.creator) }}
+      </p>
+      <p>
+        <span class="font-semibold text-gray-700">{{ _("Uploaded") }}:</span>
+        {{ doc.created_at | datetimeformat('short') }}
+        <span class="text-gray-500">({{ doc.created_at | age(add_direction=False) }})</span>
+      </p>
       {%- if doc.updated_at != doc.created_at %}
-        <br/>
-        {{ _('<b>Modified:</b> %(date_age)s', date_age=doc.updated_at|age(add_direction=False, date_threshold='day')) }}
+        <p>
+          <span class="font-semibold text-gray-700">{{ _("Modified") }}:</span>
+          {{ doc.updated_at|age(add_direction=False, date_threshold='day') }}
+        </p>
         {%- set lock = doc.lock %}
         {%- if lock %}
-          <div class="lock">
-            <i class="fa fa-lock"></i>
+          <div class="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-yellow-800 text-xs">
+            <i class="fa fa-lock mr-1"></i>
             {{ _('Locked for edition by %(user)s at %(date)s (%(age)s)',
                   user=lock.user, date=lock.date | datetimeformat('short'), age=lock.date | age) }}
           </div>
         {%- endif %}
       {%- endif %}
-    </small>
+    </div>
   </div>
 
   {% if g.is_manager %}
-    <div style="border-left: 1px solid #eee;border-right: 1px solid #eee;border-bottom: 1px solid #eee;padding: 14px;">
-      <p style="color:gray;"><b>{{ _('Readers') }}</b></p>
+    <div class="border-l border-r border-b border-gray-200 p-4 bg-white">
+      <p class="text-gray-500 font-semibold text-sm mb-2">{{ _('Readers') }}</p>
       {{ show_all_viewers(viewers,_("viewed by")) }}
     </div>
   {% endif %}
 
-  <div style="border-left: 1px solid #eee;border-right: 1px solid #eee;border-bottom: 1px solid #eee;padding: 14px;">
-    <p style="color:gray;"><b>{{ _('Last Changes') }}</b></p>
+  <div class="border-l border-r border-b border-gray-200 rounded-b-lg p-4 bg-white">
+    <p class="text-gray-500 font-semibold text-sm mb-2">{{ _('Last Changes') }}</p>
     {{ m_audit_log(audit_entries) }}
   </div>
 
@@ -261,31 +278,35 @@
 
     function view_info() {
       if (show === 0) {
-        $("#view_info").css("left", "0");
-        $("#sidebar").hide();
-        $("div[class='col-md-9']").attr("class", "col-md-12");
+        document.getElementById("view_info").querySelector("i").classList.replace("fa-chevron-right", "fa-chevron-left");
+        document.getElementById("sidebar").style.display = "none";
+        var mainCol = document.querySelector("div[class*='col-md-9']");
+        if (mainCol) mainCol.className = mainCol.className.replace('col-md-9', 'col-md-12');
         show = 1;
       } else {
-        $("#view_info").css("left", "283px");
-        $("#sidebar").show();
-        $("div[class='col-md-12']").attr("class", "col-md-9");
+        document.getElementById("view_info").querySelector("i").classList.replace("fa-chevron-left", "fa-chevron-right");
+        document.getElementById("sidebar").style.display = "";
+        var fullCol = document.querySelector("div[class*='col-md-12']");
+        if (fullCol) fullCol.className = fullCol.className.replace('col-md-12', 'col-md-9');
         show = 0;
       }
     }
 
     function email_document() {
       var doc_url = "{{ url_for('.document_send', doc_id=doc.id, community_id=doc.community.slug) }}";
-      $("#modal-email-form").attr("action", doc_url);
+      document.getElementById("modal-email-form").setAttribute("action", doc_url);
     }
 
     function edit_document() {
       var doc_url = "{{ url_for('.document_edit', doc_id=doc.id, community_id=doc.community.slug) }}";
-      $("#modal-edit-form").attr("action", doc_url);
+      document.getElementById("modal-edit-form").setAttribute("action", doc_url);
     }
 
     function replace_document() {
       var doc_url = "{{ url_for('.document_upload', doc_id=doc.id, community_id=doc.community.slug) }}";
-      $(".modal-replacedoc-form").attr("action", doc_url);
+      document.querySelectorAll(".modal-replacedoc-form").forEach(function(el) {
+        el.setAttribute("action", doc_url);
+      });
     }
   </script>
 {% endblock %}

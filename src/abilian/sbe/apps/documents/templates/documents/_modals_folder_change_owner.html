@@ -1,33 +1,36 @@
-<div class="modal fade" id="modal-change-owner" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
+<div class="modal fixed inset-0 z-50 hidden" id="modal-change-owner" role="dialog">
+  <div class="fixed inset-0 bg-black/50" data-dismiss="modal"></div>
 
-      <form method="POST" action="{{ folder_post_url }}"
-            enctype="multipart/form-data">
+  <div class="modal-dialog relative mx-auto my-8 max-w-lg">
+    <div class="modal-content bg-white rounded-lg shadow-xl">
+      <form method="POST" action="{{ folder_post_url }}" enctype="multipart/form-data">
         {{ csrf.field() }}
 
-        <div class="modal-header">
-          <button class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">{{ _("Change owner of selected files") }}</h4>
+        <div class="modal-header flex items-center justify-between p-4 border-b border-gray-200">
+          <h3 class="modal-title text-lg font-semibold text-gray-900">{{ _("Change owner of selected files") }}</h3>
+          <button type="button" class="text-gray-400 hover:text-gray-500" data-dismiss="modal">&times;</button>
         </div>
 
-        <div class="modal-body">
-          <div class="form-group">
-            <label class="control-label"
-                   for="new_owner">{{ _("New owner") }}</label>
+        <div class="modal-body p-4 space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1" for="new_owner">{{ _("New owner") }}</label>
             <input type="text" name="new_owner" value=""
-                   class="form-control"/>
-            <span class="help-block hide"></span>
+                   class="block w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"/>
+            <span class="help-block hidden text-sm text-gray-500 mt-1"></span>
           </div>
 
-          <div class="hide selected-items"></div>
+          <div class="hidden selected-items"></div>
         </div>
 
-        <div class="modal-footer">
-          <button data-dismiss="modal"
-                  class="btn btn-default">{{ _("Cancel") }}</button>
-          <button class="btn btn-primary" type="submit" name="action"
-                  value="change-owner">{{ _("Change owner") }}</button>
+        <div class="modal-footer flex justify-end gap-2 p-4 border-t border-gray-200">
+          <button data-dismiss="modal" type="button"
+                  class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+            {{ _("Cancel") }}
+          </button>
+          <button class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                  type="submit" name="action" value="change-owner">
+            {{ _("Change owner") }}
+          </button>
         </div>
       </form>
     </div>
@@ -68,7 +71,7 @@
                     window.Select2.util.markMatch(state.name, query.term, markup, escapeMarkup);
                     text = '<b>' + markup.join("") + '</b>';
                     if (state.role) {
-                      text += ' <small class="label label-default pull-right">'
+                      text += ' <small class="inline-block px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-700 rounded float-right">'
                           + escapeMarkup(state.role)
                           + '</small> ';
                     }

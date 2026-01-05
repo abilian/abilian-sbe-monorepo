@@ -1,9 +1,9 @@
 {% macro m_breadcrumbs2(breadcrumbs) %}
   {% for obj in breadcrumbs[0:-1] %}
-    <a href="{{ obj.path }}">{{ obj.label }}</a>
-    <span class="divider">/</span>
+    <a href="{{ obj.path }}" class="text-blue-600 hover:text-blue-800">{{ obj.label }}</a>
+    <span class="mx-2 text-gray-400">/</span>
   {% endfor %}
-  {{ breadcrumbs[-1].label }}
+  <span class="text-gray-700">{{ breadcrumbs[-1].label }}</span>
 {% endmacro %}
 
 <script>
@@ -11,25 +11,32 @@
 </script>
 
 {% macro m_docs_table(objects, edit=True) %}
-  <a href="#modal-upload-files" data-toggle="modal" class="btn btn-primary">
-    <i class="glyphicon glyphicon-plus"></i> Upload file(s)
-  </a>
+  <div class="flex flex-wrap gap-2 mb-4">
+    <a href="#modal-upload-files" data-toggle="modal"
+       class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+      <i class="fa fa-plus mr-2"></i> Upload file(s)
+    </a>
 
-  <a href="#modal-new-folder" data-toggle="modal" class="btn btn-default ml-2">
-    <i class="glyphicon glyphicon-plus"></i> New folder
-  </a>
+    <a href="#modal-new-folder" data-toggle="modal"
+       class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+      <i class="fa fa-plus mr-2"></i> New folder
+    </a>
+  </div>
 
-  <hr>
+  <hr class="my-4 border-gray-200">
+
   {%- if objects %}
     <form action="{{ url_for('.change_view_style', folder_id=folder.id, community_id=folder.community.slug) }}"
           method="POST">
       {{ csrf.field() }}
       <div class="float-right ml-3 relative -top-16 flex" role="group" aria-label="View options">
-        <button type="submit" class="btn btn-default rounded-r-none" name="view_style" value="thumbnail_view">
-          <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+        <button type="submit" name="view_style" value="thumbnail_view"
+                class="inline-flex items-center px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50">
+          <i class="fa fa-th-list" aria-hidden="true"></i>
         </button>
-        <button type="submit" class="btn btn-default rounded-l-none border-l-0" name="view_style" value="gallery_view">
-          <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+        <button type="submit" name="view_style" value="gallery_view"
+                class="inline-flex items-center px-3 py-2 text-sm text-gray-700 bg-white border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-50">
+          <i class="fa fa-th-large" aria-hidden="true"></i>
         </button>
       </div>
     </form>
@@ -39,19 +46,23 @@
       {%- if edit %}
         <div class="flex items-center space-x-5 mb-0">
           <div x-data="{ open: false }" @click.away="open = false" class="relative hidden">
-            <button @click="open = !open" class="btn btn-default">
-              <i class="fa fa-check"></i>
-              <span class="caret"></span>
+            <button @click="open = !open" type="button"
+                    class="inline-flex items-center px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+              <i class="fa fa-check mr-1"></i>
+              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
             </button>
-            <ul x-show="open" class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+            <ul x-show="open" x-cloak class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
               <li><a class="doc-select-all block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" href="#select-all">{{ _("Select all") }}</a></li>
               <li><a class="doc-unselect-all block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" href="#unselect-all">{{ _("Unselect all") }}</a></li>
             </ul>
           </div>
           <div class="relative -top-2 -mb-12">
-            <input id="filter" type="text" class="form-control" placeholder="{{ _('Filter...') }}" />
+            <input id="filter" type="text"
+                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                   placeholder="{{ _('Filter...') }}" />
           </div>
-
         </div>
       {% endif %}
       &nbsp;
@@ -59,211 +70,230 @@
         <span id="horizontal-doc-menu" class="document-horizontal-menu flex items-center gap-x-2">
         {%- for action in actions.for_category('documents:folder-listing') %}
           <div>
-              {{ action.render() }}
-            </div>
+            {{ action.render() }}
+          </div>
         {%- endfor %}
         </span>
       {% endif %}
 
       <br><br>
-      <table class="document-table-thumbnail table table-striped table-condensed bg-white relative -mt-14" id="objects-table">
-        <thead>
-        <tr class="text-gray-500 border-b-2 border-gray-100">
-          <th class="w-[1%]">
-            <input class="doc-check-all relative top-0.5 -left-1" type="checkbox">
-          </th>
-          <th class="hidden">type</th>
-          <th class="hidden">title for sorting</th>
-          <th class="w-[39%]">{{ _("Title") }}</th>
-          <th class="hidden">for size</th>
-          <th class="w-[20%]">{{ _("Size") }}</th>
-          <th class="hidden">Last Name</th>
-          <th class="hidden">First Name</th>
-          <th class="w-[25%]">{{ _("Owner") }}</th>
-          <th class="hidden">date</th>
-          <th class="w-[25%]">{{ _("Age") }}</th>
-          <th></th>
-          <th class="hidden"></th>
-        </tr>
-        </thead>
+      <div class="overflow-x-auto">
+        <table class="document-table-thumbnail w-full text-sm bg-white relative -mt-14" id="objects-table">
+          <thead>
+          <tr class="text-gray-500 border-b-2 border-gray-100">
+            <th class="w-[1%] px-2 py-3">
+              <input class="doc-check-all relative top-0.5 -left-1 w-4 h-4 text-blue-600 border-gray-300 rounded" type="checkbox">
+            </th>
+            <th class="hidden">type</th>
+            <th class="hidden">title for sorting</th>
+            <th class="w-[39%] px-2 py-3 text-left font-medium">{{ _("Title") }}</th>
+            <th class="hidden">for size</th>
+            <th class="w-[20%] px-2 py-3 text-left font-medium">{{ _("Size") }}</th>
+            <th class="hidden">Last Name</th>
+            <th class="hidden">First Name</th>
+            <th class="w-[25%] px-2 py-3 text-left font-medium">{{ _("Owner") }}</th>
+            <th class="hidden">date</th>
+            <th class="w-[25%] px-2 py-3 text-left font-medium">{{ _("Age") }}</th>
+            <th class="px-2 py-3"></th>
+            <th class="hidden"></th>
+          </tr>
+          </thead>
 
-        <tbody>
-        {%- for obj in objects %}
-          <tr>
-            <td><input id="check_{{ obj.id }}" class="relative top-0.5" type="checkbox"
+          <tbody class="divide-y divide-gray-100">
+          {%- for obj in objects %}
+            <tr class="hover:bg-gray-50">
+              <td class="px-2 py-2">
+                <input id="check_{{ obj.id }}" class="relative top-0.5 w-4 h-4 text-blue-600 border-gray-300 rounded" type="checkbox"
                        name="object-selected"
-                       value="{{ obj.sbe_type }}:{{ obj.id }}"></td>
+                       value="{{ obj.sbe_type }}:{{ obj.id }}">
+              </td>
 
-            <td class="hide">{{ obj.object_type }}</td>
+              <td class="hidden">{{ obj.object_type }}</td>
 
-            <td class="hide">{{ obj.title }}</td>
+              <td class="hidden">{{ obj.title }}</td>
 
-            <td>
-              {% if obj.object_type == 'abilian.sbe.apps.documents.models.Folder' %}
-                <span style="position: relative;left: 7px;">
-                  <a style="color: #797C7E;" href="{{ url_for(obj) }}"><i class="fa fa-folder-o document-folder-icon"
-                                                                          aria-hidden="true"></i></a></span>
-                <div class="numberCircle"><span>{{ obj.filtered_children|length }}</span></div>
-              {% else %}
-                {% set icon_src = url_for(".document_preview_image",
-                      community_id=g.community.slug, doc_id=obj.id,
-                      size=obj.preview_size) %}
-                <a style="color: #797C7E;" href="{{ url_for(obj) }}"><img
-                    class="document-preview"
-                    style="background-image: url('{{ icon_src }}');"
-                    src="" alt="" data-page="0"/></a>
-              {% endif %}
-              {%- if obj.object_type == 'folder' %}<i>
-                {{ obj.filtered_children|length }}</i>
-              {%- endif %}
-              <a style="position: relative;top: 3px;left: 58px;"
-                 href="{{ url_for(obj) }}">{{ obj.title|truncate(32, False, '...', 0) }}</a>
-            </td>
+              <td class="px-2 py-2">
+                {% if obj.object_type == 'abilian.sbe.apps.documents.models.Folder' %}
+                  <span class="relative left-2">
+                    <a class="text-gray-500 hover:text-blue-600" href="{{ url_for(obj) }}">
+                      <i class="fa fa-folder-o text-xl document-folder-icon" aria-hidden="true"></i>
+                    </a>
+                  </span>
+                  <div class="numberCircle"><span>{{ obj.filtered_children|length }}</span></div>
+                {% else %}
+                  {% set icon_src = url_for(".document_preview_image",
+                        community_id=g.community.slug, doc_id=obj.id,
+                        size=obj.preview_size) %}
+                  <a class="text-gray-500 hover:text-blue-600" href="{{ url_for(obj) }}">
+                    <img class="document-preview" style="background-image: url('{{ icon_src }}');" src="" alt="" data-page="0"/>
+                  </a>
+                {% endif %}
+                {%- if obj.object_type == 'folder' %}
+                  <i class="text-gray-400">{{ obj.filtered_children|length }}</i>
+                {%- endif %}
+                <a class="relative top-1 left-14 text-gray-900 hover:text-blue-600" href="{{ url_for(obj) }}">
+                  {{ obj.title|truncate(32, False, '...', 0) }}
+                </a>
+              </td>
 
-            <td class="hide">
-              {%- if obj.is_document %}
-                {{ obj.content_length }}
-              {% else %}
-                0
-              {%- endif %}
-            </td>
+              <td class="hidden">
+                {%- if obj.is_document %}
+                  {{ obj.content_length }}
+                {% else %}
+                  0
+                {%- endif %}
+              </td>
 
-            <td>
-              {%- if obj.is_document %}
-                {{ obj.content_length|filesize }}
-              {%- endif %}
-            </td>
+              <td class="px-2 py-2 text-gray-600">
+                {%- if obj.is_document %}
+                  {{ obj.content_length|filesize }}
+                {%- endif %}
+              </td>
 
-            {% set owner = obj.owner %}
-            <td class="hide">{{ owner.last_name }}</td>
-            <td class="hide">{{ owner.first_name }}</td>
-            <td>
-              <a href="{{ url_for('social.user', user_id=owner.id) }}"
-                 title="{{ owner.name }}"><img
-                  alt="{{ owner.name }}"
-                  src="{{ user_photo_url(owner, size=40) }}"
-                  style="vertical-align: middle;border-radius: 22px;"></a>
-            </td>
+              {% set owner = obj.owner %}
+              <td class="hidden">{{ owner.last_name }}</td>
+              <td class="hidden">{{ owner.first_name }}</td>
+              <td class="px-2 py-2">
+                <a href="{{ url_for('social.user', user_id=owner.id) }}" title="{{ owner.name }}">
+                  <img alt="{{ owner.name }}" src="{{ user_photo_url(owner, size=40) }}"
+                       class="w-8 h-8 rounded-full align-middle">
+                </a>
+              </td>
 
-            <td class="hide">{{ obj.created_at.isoformat() }} </td>
+              <td class="hidden">{{ obj.created_at.isoformat() }}</td>
 
-            <td>{{ obj.created_at|age(add_direction=False) }}</td>
+              <td class="px-2 py-2 text-gray-600">{{ obj.created_at|age(add_direction=False) }}</td>
 
-            <td>
-              <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
-                        data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="true">
-                  <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
-                </button>
-                <ul class="dropdown-menu document-thumbnail-menu" aria-labelledby="dropdownMenu1">
-                  {%- if obj.object_type == 'abilian.sbe.apps.documents.models.Folder' %}
+              <td class="px-2 py-2">
+                <div class="dropdown relative" x-data="{ open: false }">
+                  <button @click="open = !open" type="button"
+                          class="inline-flex items-center px-2 py-1 text-gray-500 bg-white border border-gray-300 rounded hover:bg-gray-50"
+                          id="dropdownMenu1" aria-haspopup="true" aria-expanded="true">
+                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                  </button>
+                  <ul x-show="open" @click.away="open = false" x-cloak
+                      class="dropdown-menu document-thumbnail-menu absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-20"
+                      aria-labelledby="dropdownMenu1">
+                    {%- if obj.object_type == 'abilian.sbe.apps.documents.models.Folder' %}
+                      <li>
+                        <a href="{{ url_for('.permissions', community_id=obj.community.slug, folder_id=obj.id) }}"
+                           class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          <i class="fa fa-lock mr-2 w-4"></i> {{ _('Permissions') }}
+                        </a>
+                      </li>
+                      <li>
+                        <a href="{{ url_for('.descendants_view', community_id=obj.community.slug, folder_id=obj.id) }}"
+                           class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          <i class="fa fa-code-fork fa-rotate-90 mr-2 w-4"></i> {{ _('View descendants') }}
+                        </a>
+                      </li>
+                    {% endif %}
                     <li>
-                      <a href="{{ url_for('.permissions', community_id=obj.community.slug, folder_id=obj.id) }}"><i
-                          class="glyphicon glyphicon-lock"></i> {{ _('Permissions') }}</a>
-                    </li>
-                    <li>
-                      <a href="{{ url_for('.descendants_view', community_id=obj.community.slug, folder_id=obj.id) }}"><i
-                          class="fa fa-code-fork fa-rotate-90"></i>
-                        {{ _('View descendants') }}</a>
-                    </li>
-                  {% endif %}
-                  <li>
-                    <a onclick="email_send_document(this)" id="{{ obj.id }}" href="#modal-send-by-email"
-                       data-toggle="modal"><i class="fa fa-envelope-o" aria-hidden="true"></i>
-                      {{ _('Send by mail') }}</a>
-                  </li>
-                  {% if not obj.content_type|length %}
-                    <li>
-                      <button type="button" class="document-folder-download" onclick="download_folder(this)"
-                              style="margin-top: -25px;margin-bottom: -28px;" name="action"
-                              value="{{ url_for('.folder_post', community_id=obj.community.slug, folder_id=obj.id) }}"
-                              title="Download"><i class="fa fa-download" aria-hidden="true"></i> {{ _('Download') }}
-                      </button>
-                    </li>
-                    <li><a onclick="edit_folder(this)" id="{{ obj.id }}"
-                           data-toggle="modal"><i class="fa fa-pencil" aria-hidden="true"></i>
-                      {{ _('Edit') }}</a>
-                    </li>
-                  {% else %}
-                    <li>
-                      <a
-                          href="{{ url_for('.document_download', community_id=obj.community.slug, doc_id=obj.id, attach=True) }}"><i
-                          class="fa fa-download" aria-hidden="true"></i> {{ _('Download') }}</a>
-                    </li>
-                    <li>
-                      <a onclick="edit_document(this)" id="{{ obj.id }}"
-                         data-toggle="modal"><i class="fa fa-pencil" aria-hidden="true"></i> {{ _('Edit') }}
+                      <a onclick="email_send_document(this)" id="{{ obj.id }}" href="#modal-send-by-email" data-toggle="modal"
+                         class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <i class="fa fa-envelope-o mr-2 w-4" aria-hidden="true"></i> {{ _('Send by mail') }}
                       </a>
                     </li>
-                  {% endif %}
-                  <li>
-                    <a onclick="move_document(this)" id="{{ obj.id }}" href="#modal-move-files" data-toggle="modal"><i
-                        class="fa fa-arrows" aria-hidden="true"></i>
-                      {{ _('Move') }}</a>
-                  </li>
-                  {%- if obj.object_type == 'abilian.sbe.apps.documents.models.Folder' %}
+                    {% if not obj.content_type|length %}
+                      <li>
+                        <button type="button" class="document-folder-download flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left"
+                                onclick="download_folder(this)" name="action"
+                                value="{{ url_for('.folder_post', community_id=obj.community.slug, folder_id=obj.id) }}"
+                                title="Download">
+                          <i class="fa fa-download mr-2 w-4" aria-hidden="true"></i> {{ _('Download') }}
+                        </button>
+                      </li>
+                      <li>
+                        <a onclick="edit_folder(this)" id="{{ obj.id }}" data-toggle="modal"
+                           class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                          <i class="fa fa-pencil mr-2 w-4" aria-hidden="true"></i> {{ _('Edit') }}
+                        </a>
+                      </li>
+                    {% else %}
+                      <li>
+                        <a href="{{ url_for('.document_download', community_id=obj.community.slug, doc_id=obj.id, attach=True) }}"
+                           class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          <i class="fa fa-download mr-2 w-4" aria-hidden="true"></i> {{ _('Download') }}
+                        </a>
+                      </li>
+                      <li>
+                        <a onclick="edit_document(this)" id="{{ obj.id }}" data-toggle="modal"
+                           class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                          <i class="fa fa-pencil mr-2 w-4" aria-hidden="true"></i> {{ _('Edit') }}
+                        </a>
+                      </li>
+                    {% endif %}
                     <li>
-                      <a name="{{ obj.title }}"
-                         id="{{ url_for('.folder_post', community_id=obj.community.slug, folder_id=obj.id) }}"
-                         onclick="delete_folder(this)" href="#modal-delete-folder" data-toggle="modal"><i
-                          class="fa fa-trash-o" aria-hidden="true"></i>
-                        {{ _('Delete') }}</a></li>
-                  {% else %}
-                    <li>
-                      <a onclick="replace_document(this)" id="{{ obj.id }}" href="#modal-upload-new-version"
-                         data-toggle="modal"><i class="fa fa-refresh" aria-hidden="true"></i>
-                        {{ _('Replace') }}</a>
+                      <a onclick="move_document(this)" id="{{ obj.id }}" href="#modal-move-files" data-toggle="modal"
+                         class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <i class="fa fa-arrows mr-2 w-4" aria-hidden="true"></i> {{ _('Move') }}
+                      </a>
                     </li>
-                    <li>
-                      <a onclick="delete_document(this)" id="{{ obj.id }}" href="#modal-delete"
-                         data-toggle="modal"><i
-                          class="fa fa-trash-o" aria-hidden="true"></i>
-                        {{ _('Delete') }}</a>
-                    </li>
-                  {% endif %}
-                </ul>
-              </div>
-            </td>
-            <td class="hide">
-              <input type="hidden" id="edit_url{{ obj.id }}"
-                     value="{{ url_for('.document_edit', doc_id=obj.id, folder_id=folder.id, community_id=obj.community.slug) }}"/>
-              <input type="hidden" id="editfolder_url{{ obj.id }}"
-                     value="{{ url_for('.folder_post', folder_id=obj.id, community_id=obj.community.slug) }}"/>
-              <input type="hidden" id="replace_url{{ obj.id }}"
-                     value="{{ url_for('.document_upload', doc_id=obj.id, community_id=obj.community.slug) }}"/>
-              <input type="hidden" id="email_url{{ obj.id }}"
-                     value="{{ url_for('.document_send', doc_id=obj.id, community_id=obj.community.slug) }}"/>
-              <input type="hidden" id="delete_url{{ obj.id }}"
-                     value="{{ url_for('.document_delete', doc_id=obj.id, community_id=obj.community.slug) }}"/>
-              <input type="hidden" id="title{{ obj.id }}" value="{{ obj.title }}"/>
-              <input type="hidden" id="description{{ obj.id }}"
-                     value="{% if obj.description %}{{ obj.description }}{% else %}{% endif %}"/>
-              <input type="hidden" id="community{{ obj.id }}" value="{{ obj.community.slug }}"/>
-            </td>
-          </tr>
-        {%- endfor %}
-        </tbody>
+                    {%- if obj.object_type == 'abilian.sbe.apps.documents.models.Folder' %}
+                      <li class="border-t border-gray-100">
+                        <a name="{{ obj.title }}"
+                           id="{{ url_for('.folder_post', community_id=obj.community.slug, folder_id=obj.id) }}"
+                           onclick="delete_folder(this)" href="#modal-delete-folder" data-toggle="modal"
+                           class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                          <i class="fa fa-trash-o mr-2 w-4" aria-hidden="true"></i> {{ _('Delete') }}
+                        </a>
+                      </li>
+                    {% else %}
+                      <li>
+                        <a onclick="replace_document(this)" id="{{ obj.id }}" href="#modal-upload-new-version" data-toggle="modal"
+                           class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          <i class="fa fa-refresh mr-2 w-4" aria-hidden="true"></i> {{ _('Replace') }}
+                        </a>
+                      </li>
+                      <li class="border-t border-gray-100">
+                        <a onclick="delete_document(this)" id="{{ obj.id }}" href="#modal-delete" data-toggle="modal"
+                           class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                          <i class="fa fa-trash-o mr-2 w-4" aria-hidden="true"></i> {{ _('Delete') }}
+                        </a>
+                      </li>
+                    {% endif %}
+                  </ul>
+                </div>
+              </td>
+              <td class="hidden">
+                <input type="hidden" id="edit_url{{ obj.id }}"
+                       value="{{ url_for('.document_edit', doc_id=obj.id, folder_id=folder.id, community_id=obj.community.slug) }}"/>
+                <input type="hidden" id="editfolder_url{{ obj.id }}"
+                       value="{{ url_for('.folder_post', folder_id=obj.id, community_id=obj.community.slug) }}"/>
+                <input type="hidden" id="replace_url{{ obj.id }}"
+                       value="{{ url_for('.document_upload', doc_id=obj.id, community_id=obj.community.slug) }}"/>
+                <input type="hidden" id="email_url{{ obj.id }}"
+                       value="{{ url_for('.document_send', doc_id=obj.id, community_id=obj.community.slug) }}"/>
+                <input type="hidden" id="delete_url{{ obj.id }}"
+                       value="{{ url_for('.document_delete', doc_id=obj.id, community_id=obj.community.slug) }}"/>
+                <input type="hidden" id="title{{ obj.id }}" value="{{ obj.title }}"/>
+                <input type="hidden" id="description{{ obj.id }}"
+                       value="{% if obj.description %}{{ obj.description }}{% else %}{% endif %}"/>
+                <input type="hidden" id="community{{ obj.id }}" value="{{ obj.community.slug }}"/>
+              </td>
+            </tr>
+          {%- endfor %}
+          </tbody>
 
-        <tfoot>
-        <tr style="color: #919191;
-border-top: 2px solid ghostwhite;">
-          <th></th>
-          <th class="hide">type</th>
-          <th class="hide">title for sorting</th>
-          <th>{{ _("Title") }}</th>
-          <th class="hide">for size</th>
-          <th>{{ _("Size") }}</th>
-          <th class="hide">Last Name</th>
-          <th class="hide">First Name</th>
-          <th>{{ _("Owner") }}</th>
-          <th class="hide">date</th>
-          <th>{{ _("Age") }}</th>
-          <th></th>
-          <th class="hide"></th>
-        </tr>
-        </tfoot>
-      </table>
+          <tfoot>
+          <tr class="text-gray-500 border-t-2 border-gray-100">
+            <th class="px-2 py-3"></th>
+            <th class="hidden">type</th>
+            <th class="hidden">title for sorting</th>
+            <th class="px-2 py-3 text-left font-medium">{{ _("Title") }}</th>
+            <th class="hidden">for size</th>
+            <th class="px-2 py-3 text-left font-medium">{{ _("Size") }}</th>
+            <th class="hidden">Last Name</th>
+            <th class="hidden">First Name</th>
+            <th class="px-2 py-3 text-left font-medium">{{ _("Owner") }}</th>
+            <th class="hidden">date</th>
+            <th class="px-2 py-3 text-left font-medium">{{ _("Age") }}</th>
+            <th class="px-2 py-3"></th>
+            <th class="hidden"></th>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
 
       <script>
         {%- set data = {
@@ -275,9 +305,9 @@ border-top: 2px solid ghostwhite;">
 
     <form id="folder_content_download" action="" method="post">
       {{ csrf.field() }}
-      <button class="document-folder-download" id="document-folder-download"
-              style="margin-top: 1px;margin-bottom:0px;display:none;" name="action" value="download" title="Download"><i
-          class="fa fa-download" aria-hidden="true"></i> {{ _('Download') }}</button>
+      <button class="document-folder-download hidden" id="document-folder-download" name="action" value="download" title="Download">
+        <i class="fa fa-download" aria-hidden="true"></i> {{ _('Download') }}
+      </button>
     </form>
 
     <script>
@@ -359,8 +389,8 @@ border-top: 2px solid ghostwhite;">
     {%- enddeferJS %}
 
   {%- else %}
-    <p>
-      <em>{{ _("This folder is currently empty. Why don't you upload some content?") }}</em>
+    <p class="text-gray-500 italic py-8">
+      {{ _("This folder is currently empty. Why don't you upload some content?") }}
     </p>
   {%- endif %}
 
@@ -378,7 +408,7 @@ border-top: 2px solid ghostwhite;">
     });
   </script>
 
-  <div style="clear: both;"></div>
+  <div class="clear-both"></div>
 
   {% if objects %}
     {% set obj = objects[0] %}

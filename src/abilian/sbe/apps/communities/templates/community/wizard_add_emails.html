@@ -11,79 +11,91 @@
     <br>
     <br>
     <br>
-    <p class="clearfix" style="border-bottom: 1px dashed #eeeeee;position: relative;top: 9px;margin-bottom: 16px;"></p>
-    <div class="container">
-      <div class="row">
-        <form id="wizard-1" novalidate="novalidate">
-          <div class="tab-content col-sm-10">
-            <br>
-            <div style="position: relative;left: -12px;">
-              <h3 class="titre col-sm-offset-4"> {{ _("Add new members") }}</h3>
-              <h4 class="sous_titre col-sm-offset-4"> {{ _("Insert or import new members into your community") }}</h4>
-            </div>
-            <br>
-            <div class="bloc col-sm-8 col-sm-offset-3">
-              <label class="col-sm-offset-1">
-                <i class="fa fa-bookmark" style="color:yellowgreen;" aria-hidden="true"></i>
+    <div class="border-b border-dashed border-gray-200 relative mb-4"></div>
+
+    <div class="max-w-4xl mx-auto">
+      <form id="wizard-1" novalidate="novalidate">
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-xl font-semibold text-gray-900 text-center">{{ _("Add new members") }}</h3>
+            <h4 class="text-sm text-gray-500 text-center mt-1">{{ _("Insert or import new members into your community") }}</h4>
+          </div>
+          <br>
+
+          <div class="max-w-xl mx-auto space-y-4">
+            <div>
+              <label class="flex items-center text-sm font-medium text-gray-700 mb-2">
+                <i class="fa fa-bookmark text-green-400 mr-2"></i>
                 {{ _("Insert your emails collection") }}
-              </label> <span class="email-count" style="color: silver;font-size: 11pt;"></span>
-              <div class="input-group col-sm-offset-1 col-lg-10 input">
-                <span class="input-group-addon">
-                  <i class="glyphicon glyphicon-user"></i>
+              </label>
+              <span class="email-count text-gray-400 text-sm"></span>
+
+              <div class="flex">
+                <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 rounded-l-md bg-gray-50 text-gray-500">
+                  <i class="fa fa-user"></i>
                 </span>
-                <input placeholder="{{ _('Emails Collection') }}" class="form-control"
+                <input placeholder="{{ _('Emails Collection') }}"
+                       class="flex-1 block w-full px-3 py-2 border border-gray-300 rounded-r-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                        id="collection" type="text" value="" data-role="tagsinput">
               </div>
-              <br>
-              <br>
-              <label class="col-sm-offset-1 importer">{{ _("Import members from CSV file") }}</label>
-              <br>
+            </div>
+
+            <div class="pt-4">
+              <label class="block text-sm font-medium text-gray-700 mb-2">{{ _("Import members from CSV file") }}</label>
               <a href="{{ url_for('abilian_sbe_static', filename='csv/csv_example.csv') }}"
-                 download="csv_example.csv" class="col-sm-offset-1">
-                <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                 download="csv_example.csv"
+                 class="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm mb-3">
+                <i class="fa fa-download mr-2"></i>
                 {{ _("Download CSV file model") }}
               </a>
-              <div class="row">
-                <div class="col-sm-offset-1 col-lg-10">
-                  <div class="input-group">
-                    <input type="text" class="form-control input" placeholder="{{ _('Choose a File') }}"
-                           id="csv-file-name" disabled>
-                    <span class="input-group-btn">
-                      <button class="btn btn-default input" type="button"
-                              onclick="fileadd()">{{ _("Browse") }}</button>
-                    </span>
-                  </div>
-                  <br>
-                  <hr>
-                  <a class="users-wizard-next btn default input" style="float:right;color: gray;background: ghostwhite;position: relative;
-top: -2px;" disabled><i class="fa fa-check-circle"></i> {{ _('Next step') }}</a></div>
+
+              <div class="flex">
+                <input type="text"
+                       class="flex-1 px-3 py-2 border border-r-0 border-gray-300 rounded-l-md bg-gray-50"
+                       placeholder="{{ _('Choose a File') }}"
+                       id="csv-file-name" disabled>
+                <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50"
+                        type="button" onclick="fileadd()">
+                  {{ _("Browse") }}
+                </button>
               </div>
             </div>
-            <script>
-              function fileadd() {
-                $(".file-add").trigger("click");
-              }
-            </script>
+
+            <hr class="border-gray-200 my-4">
+
+            <div class="flex justify-end">
+              <a class="users-wizard-next inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 rounded-md cursor-not-allowed"
+                 disabled>
+                <i class="fa fa-check-circle mr-2"></i> {{ _('Next step') }}
+              </a>
+            </div>
           </div>
-        </form>
-      </div>
+
+          <script>
+            function fileadd() {
+              $(".file-add").trigger("click");
+            }
+          </script>
+        </div>
+      </form>
     </div>
+
     <input id="wizard-form-choice" type="hidden" value="emails-tag">
-    <div class="col-lg-6 col-md-offset-3">
+
+    <div class="max-w-xl mx-auto">
       <form id="csv_form" method="post" action="{{ url_for('.wizard_check_data',community_id=g.community.slug) }}"
             enctype="multipart/form-data">
         {{ csrf.field() }}
-        <input style="display:none;" type="file" id="csv_file" class="file-add form-control col-sm-2" name="csv_file">
+        <input class="hidden" type="file" id="csv_file" class="file-add" name="csv_file">
       </form>
 
-      <form method="POST" class="form-inline"
+      <form method="POST" class="inline"
             action=" {{ url_for('.wizard_check_data',community_id=g.community.slug) }}">
         {{ csrf.field() }}
         <input id="wizard-emails" type="hidden" name="wizard-emails" value="">
-        <br>
-        <br>
       </form>
     </div>
+
     {%- deferJS %}
       <script>
         function validEmail(v) {
@@ -111,10 +123,8 @@ top: -2px;" disabled><i class="fa fa-check-circle"></i> {{ _('Next step') }}</a>
             $('.email-count').html(nb_items +
                 " <i style='position: relative;top: -0.6px;' class='fa fa-envelope' aria-hidden='true'></i>"
             );
-            $('.users-wizard-next').css({
-              "background": "yellowgreen",
-              "color": "white"
-            });
+            $('.users-wizard-next').removeClass('text-gray-400 bg-gray-100 cursor-not-allowed')
+              .addClass('text-white bg-green-500 hover:bg-green-600 cursor-pointer');
             $('.users-wizard-next').attr("disabled", false);
             $('#wizard-form-choice').val("emails-tag");
             $("#csv_file").val("");
@@ -135,10 +145,8 @@ top: -2px;" disabled><i class="fa fa-check-circle"></i> {{ _('Next step') }}</a>
           } else {
             $(".bootstrap-tagsinput input:first").attr("placeholder", "{{_('Emails Collection')}}");
             $('.email-count').html("");
-            $('.users-wizard-next').css({
-              "background": "ghostwhite",
-              "color": "gray"
-            });
+            $('.users-wizard-next').removeClass('text-white bg-green-500 hover:bg-green-600 cursor-pointer')
+              .addClass('text-gray-400 bg-gray-100 cursor-not-allowed');
             $('.users-wizard-next').attr("disabled", true);
           }
         });
@@ -164,10 +172,9 @@ top: -2px;" disabled><i class="fa fa-check-circle"></i> {{ _('Next step') }}</a>
         $("#csv_file").change(function () {
           var file_local = $("#csv_file").val().split("\\");
           $("#csv-file-name").val(file_local[file_local.length - 1]);
-          $('.users-wizard-next').css({
-            "background": "yellowgreen",
-            "color": "white"
-          }).attr("disabled", false);
+          $('.users-wizard-next').removeClass('text-gray-400 bg-gray-100 cursor-not-allowed')
+            .addClass('text-white bg-green-500 hover:bg-green-600 cursor-pointer')
+            .attr("disabled", false);
           $("#collection").tagsinput('removeAll');
           $(".content_tags").attr("placeholder", "{{_('Emails Collection')}}");
           $(".email-count").html("");
@@ -175,6 +182,5 @@ top: -2px;" disabled><i class="fa fa-check-circle"></i> {{ _('Next step') }}</a>
         });
       </script>
     {%- enddeferJS %}
-    <div class="clearfix"></div>
   {% endcall %}
 {% endblock %}

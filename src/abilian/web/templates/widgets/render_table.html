@@ -1,56 +1,61 @@
 {%- if table %}
   <form>
     {%- if view.show_controls %}
-      <div>
-        <a class="btn dropdown-toggle" data-toggle="dropdown">
+      <div class="relative inline-block mb-4" x-data="{ open: false }">
+        <button type="button" @click="open = !open"
+                class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
           Select
-          <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a href="">All</a></li>
-          <li><a href="">All</a></li>
-          <!-- dropdown menu links -->
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+        <ul x-show="open" @click.away="open = false" x-cloak
+            class="absolute z-10 mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
+          <li><a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All</a></li>
+          <li><a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">None</a></li>
         </ul>
       </div>
     {%- endif %}
 
-    <table class="table table-striped table-bordered table-condensed"
-        id="{{ view.name }}">
-      <thead>
-      <tr>
-        {%- if view.show_controls %}
-          <th style="width: 1%;"></th>
-        {%- endif %}
-        {%- for col in view.columns %}
-          <th style="width: {{ col.width }}%;">{{ col.label }}</th>
-        {%- endfor %}
-      </tr>
-      </thead>
-
-      <tbody>
-      {%- for line in table %}
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left border border-gray-200 rounded-lg"
+          id="{{ view.name }}">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
         <tr>
           {%- if view.show_controls %}
-            <td><input type="checkbox"></td>
+            <th class="w-[1%] px-3 py-3"></th>
           {%- endif %}
-          {%- for cell in line %}
-            <td>{{ cell }}</td>
+          {%- for col in view.columns %}
+            <th class="px-3 py-3" style="width: {{ col.width }}%;">{{ col.label }}</th>
           {%- endfor %}
         </tr>
-      {%- endfor %}
-      </tbody>
+        </thead>
 
-      <tfoot>
-      <tr>
-        {%- if view.show_controls %}
-          <th></th>
-        {%- endif %}
-        {%- for col in view.columns %}
-          <th>{{ col.label }}</th>
+        <tbody class="divide-y divide-gray-200">
+        {%- for line in table %}
+          <tr class="bg-white hover:bg-gray-50 odd:bg-gray-50/50">
+            {%- if view.show_controls %}
+              <td class="px-3 py-2"><input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"></td>
+            {%- endif %}
+            {%- for cell in line %}
+              <td class="px-3 py-2">{{ cell }}</td>
+            {%- endfor %}
+          </tr>
         {%- endfor %}
-      </tr>
-      </tfoot>
-    </table>
+        </tbody>
+
+        <tfoot class="bg-gray-50">
+        <tr>
+          {%- if view.show_controls %}
+            <th class="px-3 py-3"></th>
+          {%- endif %}
+          {%- for col in view.columns %}
+            <th class="px-3 py-3 text-xs font-medium text-gray-700">{{ col.label }}</th>
+          {%- endfor %}
+        </tr>
+        </tfoot>
+      </table>
+    </div>
   </form>
 
   {%- deferJS %}
@@ -67,6 +72,6 @@
   {%- enddeferJS %}
 
 {%- else %}
-  <p class="text-muted">No data.</p>
+  <p class="text-gray-500 italic">No data.</p>
 {%- endif %}
-<div style="clear: both;"></div>
+<div class="clear-both"></div>
