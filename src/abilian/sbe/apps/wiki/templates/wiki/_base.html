@@ -4,20 +4,20 @@
 
 {% block sidebar %}
   {% call m_box_menu() %}
-    <ul class="nav nav-list">
+    <ul class="space-y-1">
       {%- set content_actions = actions.for_category('wiki:page') %}
       {%- set global_actions = actions.for_category('wiki:global') %}
 
       {%- for action in content_actions %}
-        <li>{{ action.render() }}</li>
+        <li class="px-3 py-2 hover:bg-gray-50 rounded">{{ action.render() }}</li>
       {%- endfor %}
 
       {% if content_actions and global_actions %}
-        <li class="divider"></li>
+        <li class="border-t border-gray-200 my-2"></li>
       {% endif %}
 
       {%- for action in global_actions %}
-        <li>{{ action.render() }}</li>
+        <li class="px-3 py-2 hover:bg-gray-50 rounded">{{ action.render() }}</li>
       {%- endfor %}
     </ul>
   {% endcall %}
@@ -25,57 +25,72 @@
 
 {% block modals %}
   {%- if page %}
-    {#  FIXME: copy-pasted from Documents. #}
-    <div class="modal fade" id="modal-delete" role="dialog"
+    {# Delete page modal #}
+    <div class="modal fixed inset-0 z-50 hidden" id="modal-delete" role="dialog"
          data-keyboard="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
+      <div class="fixed inset-0 bg-black/50" data-dismiss="modal"></div>
 
-          <form
-              action="{{ url_for(".page_delete", community_id=g.community.slug) }}"
-              method="POST" style="margin-bottom: 0;">
+      <div class="modal-dialog relative mx-auto my-8 max-w-md">
+        <div class="modal-content bg-white rounded-lg shadow-xl">
+          <form action="{{ url_for(".page_delete", community_id=g.community.slug) }}"
+                method="POST" class="mb-0">
             {{ csrf.field() }}
             <input type="hidden" name="title" value="{{ page.title }}">
 
-            <div class="modal-header">
-              <button class="close" data-dismiss="modal">&times;</button>
-              <h3>{{ _("Delete Wiki Page") }}</h3>
+            <div class="modal-header flex items-center justify-between p-4 border-b border-gray-200">
+              <h3 class="text-lg font-semibold text-gray-900">{{ _("Delete Wiki Page") }}</h3>
+              <button type="button" class="text-gray-400 hover:text-gray-600 text-2xl leading-none" data-dismiss="modal">&times;</button>
             </div>
-            <div class="modal-body">
-              {{ _('Are you sure you want to delete the page "{title}" ?').format(title=page.title) }}
+
+            <div class="modal-body p-4">
+              <p class="text-gray-700">{{ _('Are you sure you want to delete the page "{title}" ?').format(title=page.title) }}</p>
             </div>
-            <div class="modal-footer">
-              <button data-dismiss="modal" class="btn">{{ _("Cancel") }}</button>
+
+            <div class="modal-footer flex justify-end gap-2 p-4 border-t border-gray-200">
+              <button type="button" data-dismiss="modal"
+                      class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                {{ _("Cancel") }}
+              </button>
               <button type="submit"
-                      class="btn btn-danger">{{ _("Really Delete") }}</button>
+                      class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700">
+                {{ _("Really Delete") }}
+              </button>
             </div>
           </form>
         </div>
       </div>
     </div>
 
-    {#  FIXME: copy-pasted from crm/view_with_attachments.html #}
-    <div class="modal fade" id="upload-files" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content">
+    {# Upload files modal #}
+    <div class="modal fixed inset-0 z-50 hidden" id="upload-files" role="dialog">
+      <div class="fixed inset-0 bg-black/50" data-dismiss="modal"></div>
 
+      <div class="modal-dialog relative mx-auto my-8 max-w-md">
+        <div class="modal-content bg-white rounded-lg shadow-xl">
           <form method="POST"
                 action="{{ url_for(".attachment_upload", community_id=g.community.slug, title=page.title) }}"
-                enctype="multipart/form-data" style="margin-bottom: 0;">
+                enctype="multipart/form-data" class="mb-0">
             {{ csrf.field() }}
-            <div class="modal-header">
-              <button class="close" data-dismiss="modal">&times;</button>
-              <h3>{{ _("Upload new files") }}</h3>
+
+            <div class="modal-header flex items-center justify-between p-4 border-b border-gray-200">
+              <h3 class="text-lg font-semibold text-gray-900">{{ _("Upload new files") }}</h3>
+              <button type="button" class="text-gray-400 hover:text-gray-600 text-2xl leading-none" data-dismiss="modal">&times;</button>
             </div>
 
-            <div class="modal-body">
-              <input type="file" name="attachments" multiple="multiple"/>
+            <div class="modal-body p-4">
+              <input type="file" name="attachments" multiple="multiple"
+                     class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
             </div>
 
-            <div class="modal-footer">
-              <button data-dismiss="modal" class="btn">{{ _("Cancel") }}</button>
-              <button class="btn btn-primary" type="submit" name="action"
-                      value="upload">{{ _("Upload") }}</button>
+            <div class="modal-footer flex justify-end gap-2 p-4 border-t border-gray-200">
+              <button type="button" data-dismiss="modal"
+                      class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                {{ _("Cancel") }}
+              </button>
+              <button type="submit" name="action" value="upload"
+                      class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                {{ _("Upload") }}
+              </button>
             </div>
           </form>
         </div>

@@ -7,28 +7,29 @@
 
   {% call m_box(title=_("Users")) %}
 
-    {{ buttons.create_a(url_for('.users_new'), _('New user...')) }}
+    <div class="mb-4">
+      {{ buttons.create_a(url_for('.users_new'), _('New user...')) }}
+    </div>
 
     {% set table_id = next(g.id_generator) %}
-    <table class="table table-condensed table-striped" id="{{ table_id }}">
-      <thead>
-      <tr>
-        <th></th>
-        <th>{{ _("Name") }}</th>
-        <th>{{ _('Email') }}</th>
-        <th width="10%">{{ _('Login enabled') }}</th>
-        <th>{{ _("Groups") }}</th>
-        <th>{{ _("Roles") }}</th>
-        <th>{{ _('Last connection') }}</th>
-      </tr>
-      </thead>
+    <div class="overflow-hidden border border-gray-200 rounded-lg">
+      <table class="min-w-full divide-y divide-gray-200" id="{{ table_id }}">
+        <thead class="bg-gray-50">
+        <tr>
+          <th class="px-4 py-3 w-12"></th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ _("Name") }}</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ _('Email') }}</th>
+          <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-24">{{ _('Login enabled') }}</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ _("Groups") }}</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ _("Roles") }}</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ _('Last connection') }}</th>
+        </tr>
+        </thead>
 
-      <tbody>
-      </tbody>
-    </table>
-
-    <div style="clear: both;"></div>
-
+        <tbody class="bg-white divide-y divide-gray-200">
+        </tbody>
+      </table>
+    </div>
 
     {%- deferJS %}
       <script type="text/javascript">

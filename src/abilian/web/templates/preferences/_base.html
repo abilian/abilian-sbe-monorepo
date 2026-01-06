@@ -3,23 +3,29 @@
 {% from "macros/box.html" import m_box %}
 
 {% block main %}
-  <div class="col-xs-3">
-    <div class="panel panel-default">
-      <div class="panel-heading">{{ _("Preferences") }}</div>
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <div class="lg:col-span-3">
+      <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+        <div class="px-4 py-3 bg-gray-50 border-b border-gray-200 font-medium text-gray-900">
+          {{ _("Preferences") }}
+        </div>
 
-      <div class="list-group">
-        {%- for entry in menu %}
-          <a class="list-group-item {%- if entry.active %} active{%- endif %}"
-              href="{{ entry.url }}">
-            {{ entry.label }}
-          </a>
-        {%- endfor %}
+        <nav class="flex flex-col">
+          {%- for entry in menu %}
+            <a class="px-4 py-2 text-sm border-l-2 transition-colors
+                      {%- if entry.active %} border-blue-500 bg-blue-50 text-blue-700 font-medium
+                      {%- else %} border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900{%- endif %}"
+                href="{{ entry.url }}">
+              {{ entry.label }}
+            </a>
+          {%- endfor %}
+        </nav>
       </div>
     </div>
-  </div>
 
-  <div class="col-xs-9">
-    {% block content %}
-    {% endblock %}
+    <div class="lg:col-span-9">
+      {% block content %}
+      {% endblock %}
+    </div>
   </div>
 {% endblock %}

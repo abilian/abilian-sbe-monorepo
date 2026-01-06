@@ -7,23 +7,25 @@
 
   {% call m_box(title=_("Groups")) %}
 
-    {{ buttons.create_a(url_for('.groups_new'), _('New Group...')) }}
+    <div class="mb-4">
+      {{ buttons.create_a(url_for('.groups_new'), _('New Group...')) }}
+    </div>
 
     {% set table_id = next(g.id_generator) %}
-    <table class="table table-condensed table-striped" id="{{ table_id }}">
-      <thead>
-      <tr>
-        <th>{{ _("Name") }}</th>
-        <th><i class="fa fa-user"></i></th>
-        <th>{{ _("Roles") }}</th>
-        <th width="10%">{{ _('Public') }}</th>
-      </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-
-    <div class="clearfix"></div>
+    <div class="overflow-hidden border border-gray-200 rounded-lg">
+      <table class="min-w-full divide-y divide-gray-200" id="{{ table_id }}">
+        <thead class="bg-gray-50">
+        <tr>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ _("Name") }}</th>
+          <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="fa fa-user"></i></th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ _("Roles") }}</th>
+          <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-24">{{ _('Public') }}</th>
+        </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+        </tbody>
+      </table>
+    </div>
 
     {%- deferJS %}
       <script type="text/javascript">

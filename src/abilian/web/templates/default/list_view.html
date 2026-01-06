@@ -1,99 +1,126 @@
 {% extends base_template %}
 
 {% block content %}
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="flex items-center gap-x-4">
-        {%- for action_items in module.get_grouped_actions().values() %}
-          <div class="flex items-center gap-x-2">
-            {%- for item in action_items %}
-              {{ item.render() }}
-            {%- endfor %}
-          </div>
-        {%- endfor %}
-
-        <div>
-          {%- set EXCEL_ACTIONS = module.excel_export_actions %}
-          {%- set EXCEL_SUPPORT_IMPORT = module.EXCEL_IMPORT_EXPORT and g.is_manager %}
-
-          {%- if EXCEL_ACTIONS or EXCEL_SUPPORT_IMPORT or module.export_to_xls %}
-            {%- set BUTTON_CLASS = '' %}
-            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#-">Excel<span class="caret"></span></a>
-            <ul class="dropdown-menu">
-            <li>
-          {%- else %}
-            {%- set BUTTON_CLASS = ' btn btn-default' %}
-          {%- endif %}
-          {%- if module.export_to_xls %}
-            <a class="datatable-export{{ BUTTON_CLASS }}" data-toggle="dropdown" href="{{ url_for('.export_to_xls') }}"><i
-                class="fa fa-align-justify"></i>{{ _("Export to Excel") }}</a>
-          {%- endif %}
-          {%- if EXCEL_ACTIONS or EXCEL_SUPPORT_IMPORT %}
-            </li>
-            {%- for action_url, label in EXCEL_ACTIONS %}
-              <li>
-                <a class="datatable-export" data-toggle="dropdown" href="{{ action_url }}"><i
-                    class="fa fa-align-justify"></i>{{ label }}</a>
-              </li>
-            {%- endfor %}
-
-            {%- if EXCEL_SUPPORT_IMPORT %}
-              <li class="divider"></li>
-              <li><a href="#modal-excel-upload" data-toggle="modal"><i
-                  class="fa fa-upload"></i>{{ _("Import from Excel") }}</a></li>
-              <li class="divider"></li>
-              <li><a href="{{ url_for('.export_to_xls', import_template=1) }}"
-                  title="{{ _("Download a file suitable for importing new objects") }}"><i
-                  class="fa fa-download"></i>{{ _("Download import template") }}</a></li>
-            {%- endif %}
-            </ul>
-          {%- endif %}
-
-          {%- if EXCEL_SUPPORT_IMPORT %}
-            <div class="modal fade" id="modal-excel-upload" role="dialog" aria-hidden="true">
-              <form method="POST" action="{{ url_for(".import_xls_file") }}" enctype="multipart/form-data"
-                  style="margin-bottom: 0;">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button class="close" data-dismiss="modal">&times;</button>
-                      <h3>{{ _("Upload Excel file") }}</h3>
-                    </div>
-
-                    <div class="modal-body">
-                      {{ csrf.field() }}
-                      <input type="file" name="file"/>
-                    </div>
-
-                    <div class="modal-footer">
-                      <button data-dismiss="modal" class="btn">{{ _("Cancel") }}</button>
-                      <button class="btn btn-primary" type="submit" name="action"
-                          value="upload">{{ _("Upload") }}</button>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          {%- endif %}
+  <div class="mb-6">
+    <div class="flex flex-wrap items-center gap-4">
+      {%- for action_items in module.get_grouped_actions().values() %}
+        <div class="flex items-center gap-2">
+          {%- for item in action_items %}
+            {{ item.render() }}
+          {%- endfor %}
         </div>
+      {%- endfor %}
 
-        {%- if module.export_xml %}
-          <div>
-            <a class="btn btn-default" href="{{ url_for('.export_xml') }}"><i>
-              <small>&lt;/&gt;</small>
-            </i>&nbsp;{{ _("Export XML") }}</a>
+      <div x-data="{ open: false }" class="relative">
+        {%- set EXCEL_ACTIONS = module.excel_export_actions %}
+        {%- set EXCEL_SUPPORT_IMPORT = module.EXCEL_IMPORT_EXPORT and g.is_manager %}
+
+        {%- if EXCEL_ACTIONS or EXCEL_SUPPORT_IMPORT or module.export_to_xls %}
+          <button @click="open = !open" type="button"
+                  class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+            Excel
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          <div x-show="open" @click.away="open = false"
+               x-transition:enter="transition ease-out duration-100"
+               x-transition:enter-start="opacity-0 scale-95"
+               x-transition:enter-end="opacity-100 scale-100"
+               x-transition:leave="transition ease-in duration-75"
+               x-transition:leave-start="opacity-100 scale-100"
+               x-transition:leave-end="opacity-0 scale-95"
+               class="absolute left-0 z-10 mt-2 w-56 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+            <div class="py-1">
+              {%- if module.export_to_xls %}
+                <a class="datatable-export flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                   href="{{ url_for('.export_to_xls') }}">
+                  <i class="fa fa-align-justify"></i>{{ _("Export to Excel") }}
+                </a>
+              {%- endif %}
+              {%- for action_url, label in EXCEL_ACTIONS %}
+                <a class="datatable-export flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                   href="{{ action_url }}">
+                  <i class="fa fa-align-justify"></i>{{ label }}
+                </a>
+              {%- endfor %}
+
+              {%- if EXCEL_SUPPORT_IMPORT %}
+                <div class="border-t border-gray-100 my-1"></div>
+                <a href="#modal-excel-upload" data-toggle="modal"
+                   class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <i class="fa fa-upload"></i>{{ _("Import from Excel") }}
+                </a>
+                <div class="border-t border-gray-100 my-1"></div>
+                <a href="{{ url_for('.export_to_xls', import_template=1) }}"
+                   title="{{ _("Download a file suitable for importing new objects") }}"
+                   class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <i class="fa fa-download"></i>{{ _("Download import template") }}
+                </a>
+              {%- endif %}
+            </div>
           </div>
-        {% endif %}
+        {%- elif module.export_to_xls %}
+          <a class="datatable-export inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+             href="{{ url_for('.export_to_xls') }}">
+            <i class="fa fa-align-justify"></i>{{ _("Export to Excel") }}
+          </a>
+        {%- endif %}
 
+        {%- if EXCEL_SUPPORT_IMPORT %}
+          <div class="modal fixed inset-0 z-50 hidden" id="modal-excel-upload" role="dialog" aria-hidden="true">
+            <div class="fixed inset-0 bg-black/50" data-dismiss="modal"></div>
+            <form method="POST" action="{{ url_for(".import_xls_file") }}" enctype="multipart/form-data"
+                class="relative mx-auto my-8 max-w-md">
+              <div class="bg-white rounded-lg shadow-xl">
+                <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                  <h3 class="text-lg font-semibold text-gray-900">{{ _("Upload Excel file") }}</h3>
+                  <button type="button" class="text-gray-400 hover:text-gray-500" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="px-6 py-4">
+                  {{ csrf.field() }}
+                  <input type="file" name="file" class="block w-full text-sm text-gray-500
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-md file:border-0
+                    file:text-sm file:font-medium
+                    file:bg-blue-50 file:text-blue-700
+                    hover:file:bg-blue-100"/>
+                </div>
+
+                <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-200">
+                  <button type="button" data-dismiss="modal"
+                          class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                    {{ _("Cancel") }}
+                  </button>
+                  <button type="submit" name="action" value="upload"
+                          class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                    {{ _("Upload") }}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        {%- endif %}
       </div>
-    </div>
-  </div> <!-- row -->
-  <hr/>
 
-  <div class="row">
-    <div class="col-xs-12">
-      {{ rendered_table }}
+      {%- if module.export_xml %}
+        <div>
+          <a class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+             href="{{ url_for('.export_xml') }}">
+            <span class="text-xs">&lt;/&gt;</span>
+            {{ _("Export XML") }}
+          </a>
+        </div>
+      {% endif %}
+
     </div>
+  </div>
+
+  <hr class="border-gray-200 mb-6"/>
+
+  <div>
+    {{ rendered_table }}
   </div>
 
 {% endblock %}

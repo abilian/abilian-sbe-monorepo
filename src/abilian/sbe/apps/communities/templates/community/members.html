@@ -4,47 +4,46 @@
 {% import "community/members_macros.html" as macros with context %}
 
 {% block memberscontent %}
-  <div class="col-md-12">
+  <div class="w-full">
     {% call m_box_content(_("Members")) %}
       {%- if is_manager %}
-        <div style="
-    position: relative;top: -9px;">
-          <div class="flex items-center gap-x-2" role="group" aria-label="..." style="float:right;position: relative;
-top: 39px;">
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+          <div class="flex-1">
+            {{ add_member() }}
+          </div>
+          <div class="flex items-center gap-2">
             <a href="{{ url_for('.wizard_data_insertion', community_id=g.community.slug) }}"
-                class="btn btn-default"
-               style="background: ghostwhite;color: gray;"><i class="fa fa-rocket" aria-hidden="true"></i>
-              {{ _("Add members") }}</a>
-            <a class="btn btn-info"
-               href="{{ url_for('.members_excel_export', community_id=g.community.slug) }}">
-              <i class="fa fa-download"></i> {{ _('Download list') }}
+               class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100">
+              <i class="fa fa-rocket mr-2"></i>{{ _("Add members") }}
+            </a>
+            <a href="{{ url_for('.members_excel_export', community_id=g.community.slug) }}"
+               class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600">
+              <i class="fa fa-download mr-2"></i>{{ _('Download list') }}
             </a>
           </div>
-
-          {{ add_member() }}
         </div>
       {%- endif %}
 
-      <p class="clearfix"
-         style="border-bottom: 1px dashed #eeeeee;position: relative;top: 17px;margin-bottom: 32px;"></p>
+      <div class="border-b border-dashed border-gray-200 mb-6"></div>
 
       {% set table_id = uuid() %}
-      <table class="table table-condensed table-striped members-table" id="{{ table_id }}">
-        <thead>
-        {{ macros.thead() }}
-        </thead>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 members-table" id="{{ table_id }}">
+          <thead class="bg-gray-50">
+            {{ macros.thead() }}
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            {% for user, m_id, role, last_activity_date in memberships %}
+              <tr class="hover:bg-gray-50">
+                {{ macros.member_row(user, m_id, role, last_activity_date) }}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
 
-        <tbody>
-        {% for user, m_id, role, last_activity_date in memberships %}
-          <tr>
-            {{ macros.member_row(user, m_id, role, last_activity_date) }}
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
       <script type="application/json">
-       {{ macros.table_config() }}
-
+        {{ macros.table_config() }}
       </script>
 
       {%- deferJS %}
@@ -68,7 +67,6 @@ top: 39px;">
           );
         </script>
       {%- enddeferJS %}
-      <div class="clearfix"></div>
     {% endcall %}
   </div>
 {% endblock %}
@@ -77,9 +75,9 @@ top: 39px;">
   {%- set actions = actions.for_category('members:menu') %}
   {%- if actions %}
     {% call m_box_menu() %}
-      <ul class="nav nav-list">
+      <ul class="space-y-1">
         {%- for action in actions %}
-          <li>{{ action.render() }}</li>
+          <li class="px-3 py-2 hover:bg-gray-50 rounded">{{ action.render() }}</li>
         {%- endfor %}
       </ul>
     {% endcall %}
@@ -88,27 +86,29 @@ top: 39px;">
 
 
 {% macro add_member() %}
-  <h2 class="members-title">{{ _("Add a member") }}</h2>
+  <h2 class="text-lg font-semibold text-gray-900 mb-4">{{ _("Add a member") }}</h2>
 
   <div id="add-user-role" role="dialog">
-    <form method="POST" class="form-inline" enctype="multipart/form-data" role="form">
+    <form method="POST" class="flex flex-wrap items-end gap-4" enctype="multipart/form-data" role="form">
       {{ csrf.field() }}
 
-      <div class="form-group">
-        <label for="user-select">{{ _('User') }}</label>
-        <input class="form-control" type="text" id="user-select" name="user"/>
+      <div>
+        <label for="user-select" class="block text-sm font-medium text-gray-700 mb-1">{{ _('User') }}</label>
+        <input class="block w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+               type="text" id="user-select" name="user"/>
       </div>
 
-      <div class="form-group">
-        <label for="role-select">{{ _('Role') }}</label>
-        <select id="role-select" name="role" class="form-control" style="width: auto;">
+      <div>
+        <label for="role-select" class="block text-sm font-medium text-gray-700 mb-1">{{ _('Role') }}</label>
+        <select id="role-select" name="role"
+                class="block w-auto px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
           <option value="member" default="default">{{ _("Member") }}</option>
           <option value="manager">{{ _("Manager") }}</option>
         </select>
       </div>
 
-      <button class="btn btn-primary" type="submit" name="action"
-              value="add-user-role">{{ _("Add") }}</button>
+      <button class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+              type="submit" name="action" value="add-user-role">{{ _("Add") }}</button>
     </form>
   </div>
 
@@ -141,7 +141,7 @@ top: 39px;">
                       window.Select2.util.markMatch(state.name, query.term, markup, escapeMarkup);
                       text = '<b>' + markup.join("") + '</b>';
                       if (state.role) {
-                        text += ' <small class="label label-default pull-right">' + escapeMarkup(state.role) + '</small> ';
+                        text += ' <small class="inline-block px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded float-right">' + escapeMarkup(state.role) + '</small> ';
                       }
 
                       if (state.email) {

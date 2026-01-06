@@ -3,38 +3,45 @@
 {% from "macros/box.html" import m_box %}
 
 {% macro audit_pager() %}
-  <ul class="pager">
-    <li class="previous {%- if not top_date %} disabled{% endif %}">
-      <a href="{{ url_for(request.endpoint, after=top_date|default, **url_params) }}">&larr; {{ _("Newer") }}</a>
-    </li>
+  <nav class="flex justify-between items-center py-4">
+    <a href="{{ url_for(request.endpoint, after=top_date|default, **url_params) }}"
+       class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md
+              {% if top_date %}text-gray-700 bg-white border border-gray-300 hover:bg-gray-50{% else %}text-gray-400 bg-gray-100 cursor-not-allowed{% endif %}">
+      &larr; {{ _("Newer") }}
+    </a>
 
-    <li class="next {%- if not lowest_date %} disabled{% endif %}">
-      <a href="{{ url_for(request.endpoint, before=lowest_date|default, **url_params) }}">{{ _("Older") }} &rarr;</a>
-    </li>
-  </ul>
+    <a href="{{ url_for(request.endpoint, before=lowest_date|default, **url_params) }}"
+       class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md
+              {% if lowest_date %}text-gray-700 bg-white border border-gray-300 hover:bg-gray-50{% else %}text-gray-400 bg-gray-100 cursor-not-allowed{% endif %}">
+      {{ _("Older") }} &rarr;
+    </a>
+  </nav>
 {% endmacro %}
 
 {% block content %}
   {%- call m_box(title="Global audit") %}
     <form id="audit-filters" action="{{ url_for(request.endpoint) }}" method="GET"
-          class="form-inline" role="form">
+          class="flex flex-wrap items-end gap-4 mb-6" role="form">
 
-      <div>
+      <div class="flex flex-wrap items-end gap-4">
         {%- if 'after' in request.args %}
           <input type="hidden" name="after" value="{{ request.args['after'] }}"/>
         {%- elif 'before' in request.args %}
           <input type="hidden" name="before" value="{{ request.args['before'] }}"/>
         {%- endif %}
 
-        <div class="form-group date">
-        <span id="date-chooser" class="input-group date" data-date-end-date="+1d">
-          <input class="form-control" type="text" value="{% if current_date %}{{ current_date }}{%- endif %}"/>
-            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-        </span>
+        <div>
+          <div id="date-chooser" class="relative flex" data-date-end-date="+1d">
+            <input class="block px-3 py-2 text-sm border border-gray-300 rounded-l-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                   type="text" value="{% if current_date %}{{ current_date }}{%- endif %}"/>
+            <span class="inline-flex items-center px-3 border border-l-0 border-gray-300 bg-gray-50 rounded-r-md text-gray-500">
+              <i class="fa fa-calendar"></i>
+            </span>
+          </div>
         </div>
 
-        <div class="form-group">
-          <select class="form-control" name="types">
+        <div>
+          <select class="block px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" name="types">
             <option value="">{{ _('All contents') }}</option>
             {%- for name, type in all_classes %}
               <option value="{{ type }}" {%- if type in filter_types %}selected{%- endif %}>{{ name }}</option>
@@ -42,24 +49,29 @@
           </select>
         </div>
 
-        <div class="form-group">
-          <input class="form-control" type="text" id="user-select" name="user"
+        <div>
+          <input class="block w-48 px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                 type="text" id="user-select" name="user"
                  value="{%- if filter_user %}{{ filter_user.id }}{%- endif %}"/>
         </div>
       </div>
 
-      <div>{{ audit_pager() }}</div>
+      <div class="w-full">{{ audit_pager() }}</div>
     </form>
 
-    <div style="margin-bottom: 25px;">
+    <div class="mb-6">
       {%- for day, entries in entries %}
-        <ul class="unstyled"><h2>{{ day.strftime('%d-%m-%Y') }}</h2>
-          {%- for entry in entries %}
-            <li>
-              {{ entry.date.strftime('%H:%M:%S') }} {{ entry.render() }}
-            </li>
-          {%- endfor %}
-        </ul>
+        <div class="mb-6">
+          <h2 class="text-lg font-semibold text-gray-900 mb-3">{{ day.strftime('%d-%m-%Y') }}</h2>
+          <ul class="space-y-2">
+            {%- for entry in entries %}
+              <li class="flex gap-3 p-2 rounded hover:bg-gray-50">
+                <span class="text-sm text-gray-500 font-mono">{{ entry.date.strftime('%H:%M:%S') }}</span>
+                <span class="text-sm text-gray-700">{{ entry.render() }}</span>
+              </li>
+            {%- endfor %}
+          </ul>
+        </div>
       {%- endfor %}
     </div>
 

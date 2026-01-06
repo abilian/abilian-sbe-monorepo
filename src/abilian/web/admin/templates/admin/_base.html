@@ -3,17 +3,21 @@
 {% from "macros/box.html" import m_box, m_box_menu with context %}
 
 {% block main %}
-  <div class="row">
-    <div class="col-md-9">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <div class="lg:col-span-9">
       {% block content %}
       {% endblock %}
     </div>
 
-    <div class="col-md-3">
+    <div class="lg:col-span-3">
       {%- call m_box_menu() %}
-        <ul class="nav nav-pills nav-stacked">
+        <ul class="flex flex-col space-y-1">
           {%- for action in actions.for_category('navigation:admin:panel') %}
-            <li class="{{ action.status }}">{{ action.render() }}</li>
+            <li class="{% if action.status == 'active' %}bg-blue-50 border-l-2 border-blue-500{% endif %}">
+              <span class="block px-4 py-2 text-sm {% if action.status == 'active' %}text-blue-700 font-medium{% else %}text-gray-700 hover:bg-gray-50{% endif %}">
+                {{ action.render() }}
+              </span>
+            </li>
           {%- endfor %}
         </ul>
       {%- endcall %}

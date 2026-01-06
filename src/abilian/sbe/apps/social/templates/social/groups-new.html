@@ -3,24 +3,28 @@
 {% from "social/macros.html" import render_field %}
 
 {% block content %}
-  <h2>{{ _("Create a new group") }}</h2>
+  <h2 class="text-xl font-semibold text-gray-900 mb-6">{{ _("Create a new group") }}</h2>
 
-  <form action="{{ request.path }}" method="POST" class="form-horizontal" id="edit-form">
+  <form action="{{ request.path }}" method="POST" id="edit-form" class="space-y-6">
     {{ form.csrf }}
 
-    <fieldset>
+    <fieldset class="space-y-4">
       {%- for field in form %}
         {{ render_field(field) }}
       {%- endfor %}
     </fieldset>
 
-    <div class="form-actions">
+    <div class="flex gap-2 pt-4 border-t border-gray-200">
       {%- if for_new %}
-        <button type="submit" class="btn btn-primary" name="_action" value="add">Add new</button>
-        <button type="submit" class="btn cancel" name="_action" value="cancel">Cancel</button>
+        <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                name="_action" value="add">Add new</button>
+        <button type="submit" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                name="_action" value="cancel">Cancel</button>
       {%- else %}
-        <button type="submit" class="btn btn-primary" name="_action" value="save">Save changes</button>
-        <button type="submit" class="btn cancel" name="_action" value="cancel">Cancel</button>
+        <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                name="_action" value="save">Save changes</button>
+        <button type="submit" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                name="_action" value="cancel">Cancel</button>
       {%- endif %}
     </div>
 
@@ -35,19 +39,18 @@
         $("label").each(function (i, e) {
           var for_ = $(e).attr("for");
           if (rules[for_] && rules[for_].required) {
-            $(e).addClass("required");
+            $(e).addClass("font-semibold");
           }
         });
 
-        // Activate valitation plugin
+        // Activate validation plugin
         $("#edit-form").validate({
-          /* debug: true, */
           rules: rules,
           highlight: function (label) {
-            $(label).closest('.form-group').addClass('error');
+            $(label).closest('.mb-4').addClass('border-l-4 border-red-500 pl-4');
           },
           unhighlight: function (label) {
-            $(label).closest('.form-group').removeClass('error');
+            $(label).closest('.mb-4').removeClass('border-l-4 border-red-500 pl-4');
           },
         });
       });

@@ -5,14 +5,14 @@
 {% from "macros/user.html" import m_user_link, m_user_photo %}
 
 {% macro std_thead() %}
-  <tr style="color:silver;">
-    <th class="hide" style="">Last Name</th>
-    <th class="hide">First Name</th>
-    <th>{{ _('Name') }}</th>
-    <th class="hide">{# last activity seconds since epoch #}</th>
-    <th width="10%" class="text-center">{{ _('Role') }}</th>
+  <tr class="text-gray-500 text-xs uppercase tracking-wider">
+    <th class="hidden">Last Name</th>
+    <th class="hidden">First Name</th>
+    <th class="px-4 py-3 text-left font-semibold">{{ _('Name') }}</th>
+    <th class="hidden">{# last activity seconds since epoch #}</th>
+    <th class="px-4 py-3 text-center font-semibold w-24">{{ _('Role') }}</th>
     {% if is_manager %}
-      <th>{{ _('Action') }}</th>
+      <th class="px-4 py-3 text-center font-semibold w-20">{{ _('Action') }}</th>
     {% endif %}
     <th></th>
   </tr>
@@ -39,23 +39,24 @@
 
 
 {% macro std_member_row(user, m_id, role, last_activity_date) %}
-  <td class="hide">{{ user.last_name }}</td>
-  <td class="hide">{{ user.first_name }}</td>
-  <td style="padding-top: 11px;padding-left: 10px;">
+  <td class="hidden">{{ user.last_name }}</td>
+  <td class="hidden">{{ user.first_name }}</td>
+  <td class="px-4 py-3">
     <div class="flex items-start gap-x-4">
-      <div>
+      <div class="flex-shrink-0">
         {% call m_user_link(user) %}
           {{ m_user_photo(user, size="32") }}
         {%- endcall %}
       </div>
 
-      <div class="flex-1" style="position: relative;top: -4.5px;">
+      <div class="flex-1 min-w-0">
         {%- if not user.can_login %}
-          <i class="fa fa-lock" title="{{ _('account disabled') }}"></i><s>
+          <i class="fa fa-lock text-gray-400" title="{{ _('account disabled') }}"></i>
+          <s class="text-gray-400">
         {%- endif %}
         {{ m_user_link(user) }}
         <br/>
-        (<i>{{ user.email }}</i>)
+        <span class="text-sm text-gray-500 italic">{{ user.email }}</span>
         {%- if not user.can_login %}</s>{%- endif %}
       </div>
     </div>
@@ -63,16 +64,16 @@
 
   <!-- bug jinja : do not use [not is_manager] -->
   {%- if is_manager == False %}
-    <td style="padding-top: 11px;padding-left: 10px;">{{ _(role) }}</td>
+    <td class="px-4 py-3 text-center text-sm text-gray-700">{{ _(role) }}</td>
   {%- else %}
-    <td style="padding-top: 11px;padding-left: 10px;">
+    <td class="px-4 py-3">
       <form action="{{ url_for(".members_post", community_id=g.community.slug) }}"
-            method="POST" style="display: inline;">
+            method="POST" class="inline-block">
         {{ csrf.field() }}
         <input type="hidden" name="user" value="{{ user.id }}"/>
         <input type="hidden" name="action" value="set-user-role"/>
-        <select onchange="role_change(this)" id="{{ user.email }}" name="role" class="form-control role-change"
-                style="width: auto;border-radius: 0px;">
+        <select onchange="role_change(this)" id="{{ user.email }}" name="role"
+                class="block w-auto px-2 py-1 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 role-change">
           <option value="member" default="default" {% if csv_roles %}{%- if csv_roles[user.email] == 'member' %}
                   selected="selected"{%- endif %}{% endif %}>{{ _("Member") }}</option>
           <option value="manager" {% if csv_roles %}{%- if csv_roles[user.email] == 'manager' %}selected="selected"
@@ -80,10 +81,13 @@
         </select>
       </form>
     </td>
-    <td style="padding-top: 11px;padding-left: 10px;padding-right: 10px;">
+    <td class="px-4 py-3">
       <input type="hidden" name="membership" value="{{ m_id }}">
       <input type="hidden" name="user" value="{{ user.id }}">
-      <a id="{{ user.email }}" onclick="delete_current(this)" class="btn btn-danger"><i class="fa fa-times"></i></a>
+      <a id="{{ user.email }}" onclick="delete_current(this)"
+         class="inline-flex items-center justify-center p-2 text-white bg-red-600 rounded-md hover:bg-red-700 cursor-pointer">
+        <i class="fa fa-times"></i>
+      </a>
     </td>
   {% endif %}
 
@@ -105,9 +109,13 @@
 
         $("#wizard-emails").val(JSON.stringify(tmp_emails));
 
-        $("#account-nb").html($(".table-condensed tr").length - 1);
-        if ($(".table-condensed tr").length === 1) {
-          $(".table-condensed").append("<tr><td id='wizard-msg' colspan='3' style='display:none;padding: 10px;color: gray;'> <i class='fa fa-check-circle' aria-hidden='true'></i> There is no existing accounts</td></tr>");
+        // Use Tailwind-compatible selector
+        var tableRows = document.querySelectorAll('table tbody tr');
+        document.getElementById("account-nb").innerHTML = tableRows.length - 1;
+        if (tableRows.length === 1) {
+          var msgRow = document.createElement('tr');
+          msgRow.innerHTML = "<td id='wizard-msg' colspan='3' class='hidden px-4 py-3 text-gray-500'><i class='fa fa-check-circle mr-2'></i> There is no existing accounts</td>";
+          tableRows[0].parentNode.appendChild(msgRow);
           $("#wizard-msg").fadeIn();
         }
       });
