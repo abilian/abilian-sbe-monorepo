@@ -1,5 +1,3 @@
-exclude = []
-
 lint.select = ["ALL"]
 
 lint.extend-ignore = [
@@ -79,8 +77,7 @@ lint.extend-ignore = [
     "S605", # Subprocess related...
     "S607", # Starting a process with a partial executable path
     "S701", # By default, jinja2 sets `autoescape` to `False`.
-    "S320", # Using `lxml` to parse untrusted data is known to be vulnerable to XML attacks
-    # "S704", # Unsafe use of `markupsafe.Markup` detected
+    "S704", # Unsafe use of `markupsafe.Markup` detected
     # Don't "fix" these
     "PT013", # Found incorrect import of pytest, use simple `import pytest` instead
     "SLF001", # Private member accessed
