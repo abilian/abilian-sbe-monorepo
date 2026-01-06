@@ -27,6 +27,16 @@
 {% endmacro %}
 
 {% block content %}
+  <div x-data="{
+    showEdit: false,
+    showEmail: false,
+    showDelete: false,
+    showMove: false,
+    showUpload: false,
+    showMetadata: false,
+    sidebarVisible: true
+  }">
+
   {%- if doc.antivirus_required %}
     <div class="my-2">
       <i class="fa fa-file-o fa-lg text-gray-500"></i>
@@ -76,25 +86,25 @@
         {%- endif %}
       </div>
       <div>
-        <a onclick="edit_document()"
+        <button @click="showEdit = true; $nextTick(() => { document.getElementById('modal-edit-form').action = '{{ url_for('.document_edit', doc_id=doc.id, community_id=doc.community.slug) }}' })"
            class="inline-flex items-center justify-center w-10 h-10 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-           href="#modal-edit" title="{{ _('Edit') }}" data-toggle="modal">
+           type="button" title="{{ _('Edit') }}">
           <i class="fa fa-pencil"></i>
-        </a>
+        </button>
       </div>
       <div>
-        <a onclick="email_document()"
+        <button @click="showEmail = true; $nextTick(() => { document.getElementById('modal-email-form').action = '{{ url_for('.document_send', doc_id=doc.id, community_id=doc.community.slug) }}' })"
            class="inline-flex items-center justify-center w-10 h-10 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-           href="#modal-send-by-email" data-toggle="modal" title="{{ _('Send by email') }}">
+           type="button" title="{{ _('Send by email') }}">
           <i class="fa fa-envelope"></i>
-        </a>
+        </button>
       </div>
       <div>
-        <a href="#modal-delete"
+        <button @click="showDelete = true"
            class="inline-flex items-center justify-center w-10 h-10 text-white bg-red-600 rounded-md hover:bg-red-700"
-           data-toggle="modal" name="action" title="{{ _('Delete') }}">
+           type="button" title="{{ _('Delete') }}">
           <i class="fa fa-trash"></i>
-        </a>
+        </button>
       </div>
       <div x-data="{ open: false }" class="relative">
         <button @click="open = !open"
@@ -107,19 +117,20 @@
             x-transition
             class="absolute right-0 z-10 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 py-1">
           <li>
-            <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-               href="#modal-move-files" data-toggle="modal" role="button" title="{{ _('Move to another folder') }}">
+            <button @click="open = false; $parent.showMove = true"
+               class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+               type="button" title="{{ _('Move to another folder') }}">
               <i class="fa fa-arrows mr-2"></i>
               {{ _("Move") }}
-            </a>
+            </button>
           </li>
           <li>
-            <a onclick="replace_document()"
-               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-               href="#modal-upload-new-version" data-toggle="modal" role="button" title="{{ _('Replace document') }}">
+            <button @click="open = false; $parent.showUpload = true; $nextTick(() => { document.querySelectorAll('.modal-replacedoc-form').forEach(el => el.action = '{{ url_for('.document_upload', doc_id=doc.id, community_id=doc.community.slug) }}') })"
+               class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+               type="button" title="{{ _('Replace document') }}">
               <i class="fa fa-refresh mr-2"></i>
               {{ _("Replace") }}
-            </a>
+            </button>
           </li>
           <li>
             <form id="document_checkout"
@@ -155,11 +166,12 @@
         </ul>
       </div>
     </div>
-    <button onclick="view_info()"
+    <button @click="sidebarVisible = !sidebarVisible"
             class="float-right text-2xl text-gray-400 hover:text-gray-600 cursor-pointer relative -top-16 z-10"
             id="view_info"
+            type="button"
             aria-label="{{ _('Toggle sidebar') }}">
-      <i class="fa fa-chevron-right"></i>
+      <i class="fa" :class="sidebarVisible ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
     </button>
 
     <br><br>
@@ -206,18 +218,26 @@
   </div>
 
   {%- if doc.extra_metadata %}
-    <h3 class="mt-6 mb-2 text-lg font-semibold text-gray-900 cursor-pointer" data-toggle="collapse"
-        href="#doc_extra_metadata">
-      <i class="fa fa-chevron-down mr-2 text-gray-400"></i>
+    <h3 @click="showMetadata = !showMetadata"
+        class="mt-6 mb-2 text-lg font-semibold text-gray-900 cursor-pointer flex items-center">
+      <svg class="w-4 h-4 mr-2 text-gray-400 transition-transform" :class="{ 'rotate-90': showMetadata }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+      </svg>
       Extra Metadata
     </h3>
 
-    <div id="doc_extra_metadata" class="collapse">
+    <div x-show="showMetadata" x-collapse x-cloak>
       {%- set sorted = doc.extra_metadata|dictsort %}
       {{ m_table(sorted) }}
     </div>
   {%- endif %}
 
+  {# Modal templates - included with Alpine.js bindings #}
+  {% include "documents/_modals_document_alpine.html" %}
+  {% include "documents/_modals_folder_move_alpine.html" %}
+  {% include "documents/_modals_document_upload_new_version_alpine.html" %}
+
+  </div>
 {% endblock %}
 
 
@@ -272,47 +292,8 @@
           });
     </script>
   {%- enddeferJS %}
-
-  <script>
-    var show = 0;
-
-    function view_info() {
-      if (show === 0) {
-        document.getElementById("view_info").querySelector("i").classList.replace("fa-chevron-right", "fa-chevron-left");
-        document.getElementById("sidebar").style.display = "none";
-        var mainCol = document.querySelector("div[class*='col-md-9']");
-        if (mainCol) mainCol.className = mainCol.className.replace('col-md-9', 'col-md-12');
-        show = 1;
-      } else {
-        document.getElementById("view_info").querySelector("i").classList.replace("fa-chevron-left", "fa-chevron-right");
-        document.getElementById("sidebar").style.display = "";
-        var fullCol = document.querySelector("div[class*='col-md-12']");
-        if (fullCol) fullCol.className = fullCol.className.replace('col-md-12', 'col-md-9');
-        show = 0;
-      }
-    }
-
-    function email_document() {
-      var doc_url = "{{ url_for('.document_send', doc_id=doc.id, community_id=doc.community.slug) }}";
-      document.getElementById("modal-email-form").setAttribute("action", doc_url);
-    }
-
-    function edit_document() {
-      var doc_url = "{{ url_for('.document_edit', doc_id=doc.id, community_id=doc.community.slug) }}";
-      document.getElementById("modal-edit-form").setAttribute("action", doc_url);
-    }
-
-    function replace_document() {
-      var doc_url = "{{ url_for('.document_upload', doc_id=doc.id, community_id=doc.community.slug) }}";
-      document.querySelectorAll(".modal-replacedoc-form").forEach(function(el) {
-        el.setAttribute("action", doc_url);
-      });
-    }
-  </script>
 {% endblock %}
 
 {% block modals %}
-  {% include "documents/_modals_document.html" %}
-  {% include "documents/_modals_folder_move.html" %}
-  {% include "documents/_modals_document_upload_new_version.html" %}
+  {# Legacy modals kept for backward compatibility - Alpine versions are inline #}
 {% endblock %}

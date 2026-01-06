@@ -678,13 +678,13 @@ class TextInput(wtforms.widgets.TextInput):
         return Markup(
             render_template_string(
                 """
-                <div class="input-group input-group-type-{{ widget.typename }}">
+                <div class="flex rounded-md shadow-sm input-group-type-{{ widget.typename }}">
                 {%- if widget.pre_icon %}
-                  <div class="input-group-addon">{{ widget.pre_icon }}</div>
+                  <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">{{ widget.pre_icon }}</span>
                 {%- endif %}
-                  <input {{ params | safe}}>
+                  <input {{ params | safe}} class="flex-1 block w-full px-3 py-2 border border-gray-300 {% if widget.pre_icon %}rounded-r-md{% elif widget.post_icon %}rounded-l-md{% else %}rounded-md{% endif %} focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 {%- if widget.post_icon %}
-                  <div class="input-group-addon">{{ widget.post_icon }}</div>
+                  <span class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">{{ widget.post_icon }}</span>
                 {%- endif %}
                 </div>
                 """,
@@ -998,7 +998,7 @@ class DateInput(Input):
             date_fmt = date_fmt.replace("M", "m")  # force numerical months
 
         attributes = {
-            "class": "input-group date",
+            "class": "flex rounded-md shadow-sm date",
             "data-provide": "datepicker",
             "data-date": value,
             "data-date-format": date_fmt,
@@ -1008,10 +1008,10 @@ class DateInput(Input):
         s = f"<div {html_params(**attributes)}>\n"
 
         s += (
-            f'  <input size="13" type="text" '
+            f'  <input size="13" type="text" class="flex-1 block w-full px-3 py-2 border border-gray-300 rounded-l-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm" '
             f"{html_params(name=field_name, id=field_id, value=value, **kwargs)} />\n"
         )
-        s += '  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>\n'
+        s += '  <span class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500"><i class="fa fa-calendar"></i></span>\n'
         s += "</div>\n"
         return Markup(s)
 
@@ -1137,7 +1137,7 @@ class DateTimeInput:
 
         return (
             Markup(
-                '<div class="form-inline">\n'
+                '<div class="flex flex-wrap items-center gap-2">\n'
                 f'<input class="datetimepicker" type="hidden" id="{field_id}" '
                 f'name="{field_name}" value="{date_value} | {time_value}" />\n'
                 ""
@@ -1410,7 +1410,7 @@ class ListWidget(wtforms.widgets.ListWidget):
             data = []
 
         tpl = """{%- for obj in data %}
-              <span class="badge">{{ obj }}</span>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">{{ obj }}</span>
               {%- endfor %}"""
         return Markup(render_template_string(tpl, data=data))
 

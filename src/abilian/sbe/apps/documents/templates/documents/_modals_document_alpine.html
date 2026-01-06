@@ -1,0 +1,217 @@
+{% if obj %}
+  {% set doc = obj %}
+{% endif %}
+
+{# Edit Modal #}
+<div x-show="showEdit"
+     x-cloak
+     class="fixed inset-0 z-50 overflow-y-auto"
+     role="dialog"
+     aria-modal="true">
+  <div class="flex min-h-screen items-center justify-center p-4">
+    <div x-show="showEdit"
+         x-transition:enter="ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         @click="showEdit = false"
+         class="fixed inset-0 bg-black/50"></div>
+
+    <div x-show="showEdit"
+         x-transition:enter="ease-out duration-300"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="ease-in duration-200"
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-95"
+         class="relative w-full max-w-lg bg-white rounded-lg shadow-xl">
+      <form id="modal-edit-form" method="POST"
+            action="{{ url_for('.document_edit', doc_id=doc.id, folder_id=folder.id, community_id=doc.community.slug) }}"
+            enctype="multipart/form-data">
+        {{ csrf.field() }}
+
+        <div class="flex items-center justify-between p-4 border-b border-gray-200">
+          <h3 class="text-lg font-semibold text-gray-900">{{ _("Edit document properties") }}</h3>
+          <button type="button" @click="showEdit = false" class="text-gray-400 hover:text-gray-500 text-2xl">&times;</button>
+        </div>
+
+        <div class="p-4 space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1" for="inputName">{{ _("Name") }}</label>
+            <input type="text"
+                   class="form-document-title block w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                   id="inputName" name="title"
+                   data-check-url="{{ url_for('.check_valid_name', community_id=g.community.slug) }}"
+                   value="{{ doc.title }}">
+            <span class="help-block text-sm text-gray-500 mt-1"></span>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1" for="inputDescription">{{ _("Description") }}</label>
+            <textarea class="form-document-description block w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y"
+                      rows="5" cols="80" id="inputDescription"
+                      name="description">{{ doc.description }}</textarea>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 p-4 border-t border-gray-200">
+          <button @click="showEdit = false" type="button"
+                  class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+            {{ _("Cancel") }}
+          </button>
+          <button class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                  type="submit" name="action" value="edit">
+            {{ _("Save changes") }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{# Send by Email Modal #}
+<div x-show="showEmail"
+     x-cloak
+     class="fixed inset-0 z-50 overflow-y-auto"
+     role="dialog"
+     aria-modal="true">
+  <div class="flex min-h-screen items-center justify-center p-4">
+    <div x-show="showEmail"
+         x-transition:enter="ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         @click="showEmail = false"
+         class="fixed inset-0 bg-black/50"></div>
+
+    <div x-show="showEmail"
+         x-transition:enter="ease-out duration-300"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="ease-in duration-200"
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-95"
+         class="relative w-full max-w-lg bg-white rounded-lg shadow-xl">
+      <form id="modal-email-form" action="" method="POST">
+        {{ csrf.field() }}
+
+        <div class="flex items-center justify-between p-4 border-b border-gray-200">
+          <h3 class="text-lg font-semibold text-gray-900">{{ _("Send by email") }}</h3>
+          <button type="button" @click="showEmail = false" class="text-gray-400 hover:text-gray-500 text-2xl">&times;</button>
+        </div>
+
+        <div class="p-4 space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{ _("Recipient") }}</label>
+            <div class="flex">
+              <span class="inline-flex items-center px-3 border border-r-0 border-gray-300 rounded-l-md bg-gray-50 text-gray-500 text-sm">
+                @
+              </span>
+              <input class="flex-1 block w-full px-3 py-2 border border-gray-300 rounded-r-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                     id="prependedInput" type="text" name="recipient"
+                     value="{{ request.args.get('recipient', '') }}"/>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{ _("Message") }}</label>
+            <textarea name="message"
+                      class="block w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y"
+                      rows="6"
+                      placeholder="{{ _('Message...') }}">{{ request.args.get('message', '') }}</textarea>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 p-4 border-t border-gray-200">
+          <button @click="showEmail = false" type="button"
+                  class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+            {{ _("Cancel") }}
+          </button>
+          <button class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                  type="submit">
+            {{ _("Send") }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{# Delete Modal #}
+<div x-show="showDelete"
+     x-cloak
+     class="fixed inset-0 z-50 overflow-y-auto"
+     role="dialog"
+     aria-modal="true">
+  <div class="flex min-h-screen items-center justify-center p-4">
+    <div x-show="showDelete"
+         x-transition:enter="ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         @click="showDelete = false"
+         class="fixed inset-0 bg-black/50"></div>
+
+    <div x-show="showDelete"
+         x-transition:enter="ease-out duration-300"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="ease-in duration-200"
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-95"
+         class="relative w-full max-w-lg bg-white rounded-lg shadow-xl">
+      <form id="modal-delete-document"
+            action="{{ url_for('.document_delete', doc_id=doc.id, community_id=doc.community.slug) }}"
+            method="POST">
+        {{ csrf.field() }}
+
+        <div class="flex items-center justify-between p-4 border-b border-gray-200">
+          <h3 class="text-lg font-semibold text-gray-900">{{ _("Delete File") }}</h3>
+          <button type="button" @click="showDelete = false" class="text-gray-400 hover:text-gray-500 text-2xl">&times;</button>
+        </div>
+
+        <div class="p-4 text-gray-700">
+          {{ _('Are you sure you want to delete the file : ') }}
+          <span id="delete-doc-title" class="font-semibold">{{ doc.title }}</span>
+        </div>
+
+        <div class="flex justify-end gap-2 p-4 border-t border-gray-200">
+          <button @click="showDelete = false" type="button"
+                  class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+            {{ _("Cancel") }}
+          </button>
+          <button type="submit"
+                  class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700">
+            {{ _("Really Delete") }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{%- deferJS %}
+  <script>
+    require(
+        ['Abilian', 'SBEFolderEditSetup'],
+        function (Abilian, setupFolderEdit) {
+          Abilian.fn.onAppInit(function () {
+            var editForm = document.getElementById('modal-edit-form');
+            if (editForm) {
+              setupFolderEdit(
+                  $(editForm).closest('[x-show]'),
+                  '{{ doc.id }}',
+                  'document-edit');
+
+              $(editForm).find('input[type="text"]').preventEnterKey();
+            }
+          });
+        });
+  </script>
+{%- enddeferJS %}
