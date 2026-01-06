@@ -74,23 +74,26 @@ class NavItem(Action):
 
 
 class NavGroup(NavItem):
-    """A navigation group renders a list of items."""
+    """A navigation group renders a list of items using Alpine.js."""
 
     template_string = """
-    <ul class="nav navbar-nav {{ action.css_class }}">
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown">
-          {%- if action.icon %}{{ action.icon }}{% endif %}
-          {{ action.title }} <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu">
-          {%- for item in action_items %}
-          {%- if item.divider %}<li class="divider"></li>{%- endif %}
-          <li class="{{ item.status|safe }}">{{ item.render() }}</li>
-          {%- endfor %}
-        </ul>
-      </li>
-    </ul>
+    <div x-data="{ open: false }" class="relative {{ action.css_class }}">
+      <button type="button" @click="open = !open"
+              class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">
+        {%- if action.icon %}{{ action.icon }} {% endif %}
+        {{ action.title }}
+        <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </button>
+      <ul x-show="open" @click.away="open = false" x-transition
+          class="absolute left-0 z-10 mt-2 w-48 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 py-1">
+        {%- for item in action_items %}
+        {%- if item.divider %}<li class="border-t border-gray-100 my-1"></li>{%- endif %}
+        <li class="{% if item.status == 'active' %}bg-gray-100{% endif %}">{{ item.render() }}</li>
+        {%- endfor %}
+      </ul>
+    </div>
     """
 
     def __init__(

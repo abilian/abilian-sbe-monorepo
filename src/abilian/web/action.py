@@ -101,9 +101,9 @@ class NamedIconBase(Icon):
 
 
 class Glyphicon(NamedIconBase):
-    """Renders markup for bootstrap's glyphicons."""
+    """Renders markup for bootstrap's glyphicons (deprecated, use FAIcon instead)."""
 
-    template = Template('<i class="glyphicon glyphicon-{{ name }}"></i>')
+    template = Template('<i class="fa fa-{{ name }}"></i>')
 
 
 class FAIcon(NamedIconBase):
@@ -297,7 +297,16 @@ class Action:
         self.name = name
 
         if button is not None:
-            self.CSS_CLASS += f" btn btn-{button}"
+            btn_colors = {
+                "default": "text-gray-700 bg-white border border-gray-300 hover:bg-gray-50",
+                "primary": "text-white bg-blue-600 hover:bg-blue-700",
+                "success": "text-white bg-green-600 hover:bg-green-700",
+                "danger": "text-white bg-red-600 hover:bg-red-700",
+                "warning": "text-white bg-yellow-600 hover:bg-yellow-700",
+                "info": "text-white bg-cyan-600 hover:bg-cyan-700",
+            }
+            btn_class = btn_colors.get(button, btn_colors["default"])
+            self.CSS_CLASS += f" inline-flex items-center px-4 py-2 text-sm font-medium rounded-md {btn_class}"
         if css is not None:
             self.CSS_CLASS = f"{self.CSS_CLASS} {css}"
         self._build_css_class()
@@ -462,8 +471,9 @@ class Action:
 
 
 class ModalActionMixin:
+    """Mixin for actions that open modals. Uses Alpine.js for modal control."""
     template_string = (
-        '<a class="{{ action.css_class }}" href="{{ url }}" data-toggle="modal">'
+        '<a class="{{ action.css_class }}" href="{{ url }}" @click.prevent="$dispatch(\'open-modal\', { id: \'{{ url }}\' })">'
         "{%- if action.icon %}{{ action.icon}} {% endif %}"
         "{{ action.title }}"
         "</a>"
@@ -471,9 +481,26 @@ class ModalActionMixin:
 
 
 class ButtonAction(Action):
+    # Tailwind button classes mapped by btn_class
+    BTN_CLASSES = {
+        "default": "text-gray-700 bg-white border border-gray-300 hover:bg-gray-50",
+        "primary": "text-white bg-blue-600 hover:bg-blue-700",
+        "success": "text-white bg-green-600 hover:bg-green-700",
+        "danger": "text-white bg-red-600 hover:bg-red-700",
+        "warning": "text-white bg-yellow-600 hover:bg-yellow-700",
+        "info": "text-white bg-cyan-600 hover:bg-cyan-700",
+    }
+
     template_string = (
         '<button type="submit" '
-        'class="btn btn-{{ action.btn_class }} {{ action.css_class}}" '
+        'class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md '
+        '{% if action.btn_class == "primary" %}text-white bg-blue-600 hover:bg-blue-700'
+        '{% elif action.btn_class == "success" %}text-white bg-green-600 hover:bg-green-700'
+        '{% elif action.btn_class == "danger" %}text-white bg-red-600 hover:bg-red-700'
+        '{% elif action.btn_class == "warning" %}text-white bg-yellow-600 hover:bg-yellow-700'
+        '{% elif action.btn_class == "info" %}text-white bg-cyan-600 hover:bg-cyan-700'
+        '{% else %}text-gray-700 bg-white border border-gray-300 hover:bg-gray-50{% endif %}'
+        ' {{ action.css_class}}" '
         'name="{{ action.submit_name }}" '
         'value="{{ action.name }}">'
         "{%- if action.icon %}{{ action.icon }} {% endif %}"
@@ -500,7 +527,7 @@ class ActionGroup(Action):
     """A group of single actions."""
 
     template_string = (
-        '<div class="btn-group" role="group" aria-label="{{ action.name}}">'
+        '<div class="inline-flex rounded-md shadow-sm" role="group" aria-label="{{ action.name}}">'
         "{%- for entry in action_items %}"
         "{{ entry.render() }}"
         "{%- endfor %}"
@@ -518,20 +545,25 @@ class ActionGroup(Action):
 
 
 class ActionDropDown(ActionGroup):
-    """Renders as a button dropdown."""
+    """Renders as a button dropdown using Alpine.js."""
 
     template_string = """
-    <div class="btn-group">
-        <button type="button" class="{{ action.css_class }} dropdown-toggle"
-                data-toggle="dropdown" aria-expanded="false">
+    <div x-data="{ open: false }" class="relative inline-block text-left">
+        <button type="button" @click="open = !open"
+                class="{{ action.css_class }} inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                aria-expanded="false" aria-haspopup="true">
         {%- if action.icon %}{{ action.icon }} {% endif %}
         {{ action.title }}
-        <span class="caret"></span>
+        <svg class="ml-2 -mr-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+        </svg>
         </button>
-        <ul class="dropdown-menu" role="menu">
+        <ul x-show="open" @click.away="open = false" x-transition
+            class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 py-1"
+            role="menu">
         {%- for entry in action_items %}
-            {%- if entry.divider %}<li class="divider"></li>{%- endif %}
-            <li>{{ entry.render() }}</a>
+            {%- if entry.divider %}<li class="border-t border-gray-100 my-1"></li>{%- endif %}
+            <li class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{{ entry.render() }}
             </li>
         {%- endfor %}
         </ul>
