@@ -2,27 +2,28 @@ from __future__ import annotations
 
 import nox
 
-PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13"]
+PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 DB_URIS = [
     "sqlite:///test.db",
     # TODO: Postgres & MariaDB
 ]
 nox.options.reuse_existing_virtualenvs = True
+nox.options.default_venv_backend = "uv|virtualenv"
 
 
 @nox.session
 def lint(session: nox.Session) -> None:
-    session.run("uv", "sync")
+    uv_sync(session)
     session.run("uv", "pip", "check")
-    session.run("uv", "run", "make", "lint")
+    session.run("uv", "run", "--active", "make", "lint")
     session.run("uv", "pip", "install", "safety", "pip-audit")
-    session.run("uv", "run", "adt", "audit")
+    session.run("uv", "run", "--active", "adt", "audit")
 
 
 @nox.session(python=PYTHON_VERSIONS)
 def pytest(session: nox.Session) -> None:
-    session.run("uv", "sync")
-    session.run("uv", "run", "pytest", "--tb=short")
+    uv_sync(session)
+    session.run("uv", "run", "--active", "pytest", "--tb=short")
 
 
 @nox.session
@@ -31,5 +32,9 @@ def db_test(session: nox.Session, db_uri: str) -> None:
     env = {
         "FLASK_SQLALCHEMY_DATABASE_URI": db_uri,
     }
-    session.run("uv", "sync")
-    session.run("uv", "run", "pytest", "--tb=short", env=env)
+    uv_sync(session)
+    session.run("uv", "run", "--active", "pytest", "--tb=short", env=env)
+
+
+def uv_sync(session: nox.Session):
+    session.run("uv", "sync", "--active", external=True)
