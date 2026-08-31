@@ -103,8 +103,8 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/abilian"]
 
-[tool.uv]
-dev-dependencies = [
+[dependency-groups]
+dev = [
     "abilian-devtools>=0.7,<0.8",
     "mypy>=1.5.1,<2.0.0",
     "Flask-DebugToolbar",
