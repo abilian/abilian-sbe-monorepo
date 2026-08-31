@@ -6,7 +6,6 @@ lint.extend-ignore = [
     "A", # Shadowing builtins
     "ANN", # flake8-annotations
     "ARG", # flake8-unused-arguments
-    "COM", # flake8-commas
     "D", # pydocstyle
     "FBT", # flake8-boolean-trap
     "FIX", # flake8-fixme
@@ -14,11 +13,13 @@ lint.extend-ignore = [
     "PGH", # pygrep-hooks
     "TD", # flake8-todos
     "DOC", # pydocstyle
+
     # Fix these
     "PTH", # Pathlib
     "TRY", # tryceratops
 
     # False positive, don't remove (unless you know exactly what you're doing)
+    "COM812", # Missing trailing comma
     "E711", # comparison to None should be 'if cond is not None:'
     "E712", # ...
     "E713", # Test for membership should be `not in`
