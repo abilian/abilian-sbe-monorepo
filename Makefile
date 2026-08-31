@@ -122,7 +122,7 @@ help:
 	adt help-make
 
 
-.PHONY: help
+.PHONY: publish
 ## Publish to PyPI
 publish: clean
 	git push --tags
