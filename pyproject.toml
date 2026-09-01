@@ -84,7 +84,8 @@ dependencies = [
     "sentry-sdk[flask]",
     # Geoip DB
     "maxminddb",
-    "certifi",
+    # Only used by the (disabled) update_ip_country.py script
+    # "certifi",
     # "mmdb_writer",
     # "netaddr",
     #
@@ -105,8 +106,8 @@ packages = ["src/abilian"]
 
 [dependency-groups]
 dev = [
-    "abilian-devtools>=0.7,<0.8",
-    "mypy>=1.5.1,<2.0.0",
+    "abilian-devtools",
+    "mypy",
     "Flask-DebugToolbar",
     # "sqlparse>=0.4.4,<0.5.0",
     # Dev server
@@ -177,7 +178,12 @@ DEP002 = [
 ]
 
 # X imported but missing from the dependency definitions
-DEP001 = ['pkg_resources']
+DEP001 = [
+    'pkg_resources',
+    # Optional: antivirus scanning no-ops when clamd is absent, and the package
+    # is useless without a clamav daemon listening on the host's unix socket.
+    'clamd',
+]
 
 # X imported but declared as a dev dependency
 DEP004 = ['flask_debugtoolbar', 'html5lib']
