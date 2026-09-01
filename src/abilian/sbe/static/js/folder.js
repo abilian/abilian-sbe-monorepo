@@ -1,72 +1,26 @@
-define("SBEFolderListingSetup", [
-  "Abilian",
-  "jquery",
-  "jquery.dataTables",
-  "bootbox",
-], (Abilian, $, jqDT, bootbox) => {
+/* Folder listing behaviour, shared by the table view and the gallery view.
+ *
+ * These were two files, folder.js and folder_gallery.js, of which about 140 of
+ * 168 lines were identical. The gallery has no DataTable, so it took everything
+ * except the table configuration and the filter box.
+ *
+ * Still jQuery: this is bound to DataTables and bootbox, which stay for now.
+ */
+define("SBEFolderCommonSetup", ["Abilian", "jquery", "bootbox"], (
+  Abilian,
+  $,
+  bootbox
+) => {
   "use strict";
-  function setupFolderListing() {
+
+  /* Behaviour both views share: selection, delete confirmation, and the
+     move-to-folder modal. */
+  function setupCommonFolderActions() {
     $.fn.dataTableExt.afnFiltering.push((oSettings, aData, iDataIndex) => {
       const filter_value = $("#filter").val();
       const row_text = aData[2].trim();
       return row_text.match(new RegExp(filter_value, "i"));
     });
-
-    const dtParams = {
-      aoColumns: [
-        { asSorting: [], sWidth: "1%" },
-        { bVisible: false, sType: "cmistype" },
-        { bVisible: false, sType: "string" },
-        {
-          sWidth: "31%",
-          sType: "string",
-          asSorting: ["asc", "desc"],
-          aDataSort: [2],
-        },
-        {
-          bVisible: false,
-          sType: "numeric",
-        },
-        {
-          aDataSort: [1, 4],
-          asSorting: ["asc", "desc"],
-          sWidth: "8%",
-        },
-        { bVisible: false },
-        { bVisible: false },
-        {
-          aDataSort: [5, 6, 1],
-          asSorting: ["asc", "desc"],
-          sWidth: "18%",
-        },
-        { bVisible: false, sType: "date" },
-        {
-          asSorting: ["asc", "desc"],
-          sWidth: "12%",
-        },
-        {
-          aDataSort: [],
-          sWidth: "1%",
-        },
-        {
-          aDataSort: [],
-          sWidth: "1%",
-        },
-      ],
-      // {# see http://datatables.net/ref #}
-      sPaginationType: "bootstrap",
-      bFilter: true,
-      bLengthChange: false,
-      bStateSave: true,
-      iDisplayLength: 50,
-      sDom: "lrtip",
-    };
-    const objectsTable = $("#objects-table").dataTable(dtParams);
-
-    /* on page reload datatable keep previously filtered rows. Force
-         refilter with current filter value */
-    const filter = $("#filter");
-    objectsTable.fnFilter(filter.val());
 
     /* check / uncheck all */
     function setSelected(checked) {
@@ -81,22 +35,6 @@ define("SBEFolderListingSetup", [
     $("a[href='#unselect-all']").click((e) => {
       setSelected(false);
       e.preventDefault();
-    });
-
-    /* enter key */
-    filter.bind("keypress", function (e) {
-      if (e.keyCode === 13) {
-        /* let return key for refilter */
-        objectsTable.fnFilter(this.value);
-        e.preventDefault();
-      }
-    });
-
-    filter.bind("keyup", function (e) {
-      if (e.keyCode === 13) {
-        e.preventDefault();
-      }
-      objectsTable.fnFilter(this.value);
     });
 
     /* actions */
@@ -225,7 +163,105 @@ define("SBEFolderListingSetup", [
         l.protocol + "//" + l.host + l.pathname + "/json" + l.search
       );
     });
-  } // END setupFolderListing
+  }
+
+  return setupCommonFolderActions;
+});
+
+define("SBEFolderListingSetup", [
+  "Abilian",
+  "jquery",
+  "jquery.dataTables",
+  "SBEFolderCommonSetup",
+], (Abilian, $, jqDT, setupCommonFolderActions) => {
+  "use strict";
+
+  /* The table view: everything the gallery does, plus the DataTable and the
+     filter box that drives it. */
+  function setupFolderListing() {
+    setupCommonFolderActions();
+
+    const dtParams = {
+      aoColumns: [
+        { asSorting: [], sWidth: "1%" },
+        { bVisible: false, sType: "cmistype" },
+        { bVisible: false, sType: "string" },
+        {
+          sWidth: "31%",
+          sType: "string",
+          asSorting: ["asc", "desc"],
+          aDataSort: [2],
+        },
+        {
+          bVisible: false,
+          sType: "numeric",
+        },
+        {
+          aDataSort: [1, 4],
+          asSorting: ["asc", "desc"],
+          sWidth: "8%",
+        },
+        { bVisible: false },
+        { bVisible: false },
+        {
+          aDataSort: [5, 6, 1],
+          asSorting: ["asc", "desc"],
+          sWidth: "18%",
+        },
+        { bVisible: false, sType: "date" },
+        {
+          asSorting: ["asc", "desc"],
+          sWidth: "12%",
+        },
+        {
+          aDataSort: [],
+          sWidth: "1%",
+        },
+        {
+          aDataSort: [],
+          sWidth: "1%",
+        },
+      ],
+      // {# see http://datatables.net/ref #}
+      sPaginationType: "bootstrap",
+      bFilter: true,
+      bLengthChange: false,
+      bStateSave: true,
+      iDisplayLength: 50,
+      sDom: "lrtip",
+    };
+    const objectsTable = $("#objects-table").dataTable(dtParams);
+
+    /* on page reload datatable keep previously filtered rows. Force
+         refilter with current filter value */
+    const filter = $("#filter");
+    objectsTable.fnFilter(filter.val());
+
+    /* enter key */
+    filter.bind("keypress", function (e) {
+      if (e.keyCode === 13) {
+        /* let return key for refilter */
+        objectsTable.fnFilter(this.value);
+        e.preventDefault();
+      }
+    });
+
+    filter.bind("keyup", function (e) {
+      if (e.keyCode === 13) {
+        e.preventDefault();
+      }
+      objectsTable.fnFilter(this.value);
+    });
+
+  }
 
   return setupFolderListing;
+});
+
+define("SBEFolderGalleryListingSetup", ["SBEFolderCommonSetup"], (
+  setupCommonFolderActions
+) => {
+  "use strict";
+  /* The gallery view has no table, so the shared behaviour is all of it. */
+  return setupCommonFolderActions;
 });

@@ -165,3 +165,26 @@ def test_duplicate_folder_name_is_rejected(logged_in: Page, base_url: str) -> No
     )
     # The modal must still be open: the submit was blocked.
     assert modal.is_visible()
+
+
+def test_gallery_view_shares_the_folder_behaviour(
+    logged_in: Page, base_url: str, js_errors: JSErrors
+) -> None:
+    """The gallery view runs the same module as the table view.
+
+    folder.js and folder_gallery.js were near-duplicates; the gallery is now the
+    shared half of one module, so it needs its own exercise.
+    """
+    logged_in.goto(
+        f"{base_url}/communities/{COMMUNITY}/docs/", wait_until="networkidle"
+    )
+
+    logged_in.locator('button[name="view_style"][value="gallery_view"]').first.click()
+    logged_in.wait_for_load_state("networkidle")
+
+    js_errors.assert_clean("the gallery view")
+    assert logged_in.evaluate("typeof window.SBEFolderGalleryListingSetup") == (
+        "function"
+    ), "the gallery module never defined itself"
+    # Shared with the table view, and the reason the two files existed.
+    assert logged_in.evaluate("typeof window.SBEFolderCommonSetup") == "function"
