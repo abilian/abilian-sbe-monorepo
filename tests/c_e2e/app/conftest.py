@@ -45,7 +45,6 @@ ENDPOINTS_TO_IGNORE = {
     "social.groups",
     "social.groups_json",
     "social.groups_new",
-    "social.home",
     "social.users",
     "social.users_dt_json",
     "social.users_json",

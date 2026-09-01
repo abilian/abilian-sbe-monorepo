@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from flask import Blueprint, redirect, render_template, url_for
+from flask_login import login_required
 
 from abilian.core.extensions import db
 from abilian.core.util import get_params
@@ -24,6 +25,7 @@ route = social.route
 
 
 @route("/")
+@login_required
 def home() -> str:
     ctx = {}
     entries = get_recent_entries(num=50)
