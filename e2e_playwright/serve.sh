@@ -26,9 +26,9 @@ export FLASK_SQLALCHEMY_DATABASE_URI="sqlite:///$E2E_DIR/e2e.db"
 export FLASK_REDIS_URI="redis://localhost:$E2E_REDIS_PORT/0"
 export FLASK_DRAMATIQ_BROKER_URL="redis://localhost:$E2E_REDIS_PORT/0"
 export FLASK_SERVER_NAME="127.0.0.1:$E2E_PORT"
-# Talisman redirects to https; without this url_for() keeps building http
-# URLs and the browser ends up in a redirect loop.
-export FLASK_PREFERRED_URL_SCHEME=https
+# Talisman would otherwise force HTTPS, and werkzeug's adhoc TLS drops
+# concurrent asset requests (fonts, avatars) often enough to be flaky.
+export FLASK_TALISMAN_FORCE_HTTPS=false
 export FLASK_MAIL_DEBUG=1
 
 # Wait for the Procfile's redis process: the app connects to it at import time.
@@ -44,6 +44,4 @@ rm -f "$E2E_DIR/e2e.db"
 uv run flask initdb
 uv run flask createuser --role admin --name Admin "$E2E_EMAIL" "$E2E_PASSWORD"
 
-# Talisman (enabled whenever debug is off) forces HTTPS, so serve TLS with a
-# throwaway cert; the suite ignores the certificate error.
-exec uv run flask run --port "$E2E_PORT" --host 127.0.0.1 --cert=adhoc
+exec uv run flask run --port "$E2E_PORT" --host 127.0.0.1

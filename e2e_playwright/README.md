@@ -31,24 +31,26 @@ run.
 Overridable: `E2E_DIR`, `E2E_PORT`, `E2E_REDIS_PORT`, `E2E_EMAIL`,
 `E2E_PASSWORD`, `BROWSER`, `BASE_URL`.
 
-## Why it runs over HTTPS with debug off
+## Why it runs with debug off
 
 Debug mode would point `vite_asset` at a Vite dev server that isn't running, so
 the suite would test the wrong asset path — the production one is what ships and
-what broke. With debug off, Talisman turns on, and it forces HTTPS; `serve.sh`
-therefore serves TLS with a throwaway certificate, which the browser context
-ignores.
+what broke. Debug off also turns on Talisman, so the suite exercises the real
+CSP and security headers.
 
-## Known failure: CSP blocks every inline script
+`FLASK_TALISMAN_FORCE_HTTPS=false` keeps it on plain HTTP. Under TLS the
+werkzeug dev server drops enough concurrent asset requests (fonts, avatars) to
+make the suite flaky; the CSP and the other headers still apply.
 
-Talisman applies its default `default-src 'self'` policy, and neither the app
-nor any deploy config overrides it. The base template ships inline `<script>`
-blocks — the AMD shim, `abilian_init.js`, the deferred JS — so the browser
-blocks all of them and **no legacy JavaScript runs in production at all**.
+## What it caught
 
-This predates the Tailwind branch: `devel` has the same inline scripts under the
-same policy.
+On its first run, against the production configuration:
 
-The tests that need JavaScript to execute are marked `xfail(strict=True)`, so
-they stay visible and will fail loudly as unexpected passes once the policy is
-fixed — at which point drop the marker.
+- **CSP blocked every inline script.** Talisman's default `default-src 'self'`
+  policy, which nothing overrode, blocked the AMD shim, `abilian_init.js` and
+  the deferred JS, so no legacy JavaScript ran at all. Pre-existing on `devel`.
+- **The AMD shim ignored `define(name, factory)`**, the CommonJS-wrapper form
+  `hogan-2.0.0.js` uses. Hogan stayed an empty object, `widgets/file.js` threw
+  on `Hogan.compile`, and `widgets/image.js` lost its base class with it.
+- **`/admin/dashboard` returned 500**: pandas removed the `"M"` offset alias in
+  2.2, and the dashboard still used it.

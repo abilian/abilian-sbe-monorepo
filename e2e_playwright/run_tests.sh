@@ -5,7 +5,7 @@
 set -e
 
 : "${E2E_PORT:=8899}"
-BASE_URL="${BASE_URL:-https://127.0.0.1:$E2E_PORT}"
+BASE_URL="${BASE_URL:-http://127.0.0.1:$E2E_PORT}"
 BROWSER="${BROWSER:-chromium}"
 
 ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
@@ -14,7 +14,7 @@ cd "$ROOT"
 echo "Waiting for $BASE_URL ..."
 i=0
 while [ "$i" -lt 90 ]; do
-    if curl -fsSk "$BASE_URL/" >/dev/null 2>&1; then
+    if curl -fsS "$BASE_URL/" >/dev/null 2>&1; then
         echo "Server is up."
         break
     fi

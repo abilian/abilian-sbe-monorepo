@@ -57,7 +57,11 @@ def setup_app(app: Application, plugins=None) -> None:
     if not app.debug:
         # CSP
         csp = app.config.get("CONTENT_SECURITY_POLICY", DEFAULT_CSP_POLICY)
-        Talisman(app, content_security_policy=csp)
+        Talisman(
+            app,
+            content_security_policy=csp,
+            force_https=app.config.get("TALISMAN_FORCE_HTTPS", True),
+        )
 
     setup_blueprints(app)
 

@@ -104,6 +104,16 @@
       };
 
       window.define = window.define || function (name, deps, factory) {
+        // CommonJS-wrapper form: define(name, factory(require, exports, module)).
+        // hogan-2.0.0.js uses it and populates its own global, so only overwrite
+        // window[name] when the factory actually produces a value.
+        if (typeof name === "string" && typeof deps === "function" && factory === undefined) {
+          var mod = { exports: {} };
+          var returned = deps(resolveSync, mod.exports, mod);
+          if (returned !== undefined) window[name] = returned;
+          else if (Object.keys(mod.exports).length > 0) window[name] = mod.exports;
+          return window[name];
+        }
         if (typeof name === "string" && Array.isArray(deps) && typeof factory === "function") {
           window[name] = factory.apply(null, deps.map(resolveSync));
           return window[name];

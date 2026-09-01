@@ -17,18 +17,7 @@ if TYPE_CHECKING:
     from conftest import JSErrors
     from playwright.sync_api import Page
 
-#: Talisman applies its default CSP (`default-src 'self'`) whenever debug is off,
-#: and nothing in the app or any deploy config overrides it. The base template
-#: ships inline <script> blocks -- the AMD shim, abilian_init.js and the deferred
-#: JS -- so the browser blocks every one of them and no legacy JS runs at all.
-#: Pre-existing: `devel` has the same inline scripts and the same policy.
-CSP_BLOCKS_INLINE_SCRIPTS = pytest.mark.xfail(
-    reason="CSP blocks the inline scripts, so no legacy JS executes",
-    strict=True,
-)
 
-
-@CSP_BLOCKS_INLINE_SCRIPTS
 def test_home_page_has_no_js_errors(
     page: Page, base_url: str, js_errors: JSErrors
 ) -> None:
@@ -36,10 +25,17 @@ def test_home_page_has_no_js_errors(
     js_errors.assert_clean("the home page")
 
 
-@CSP_BLOCKS_INLINE_SCRIPTS
 @pytest.mark.parametrize(
     "path",
-    ["/social/", "/communities/", "/admin/", "/preferences/"],
+    [
+        "/social/",
+        "/communities/",
+        "/preferences/",
+        # The dashboard exercises the shim's lazy loader (d3 + nvd3, 1.4MB).
+        "/admin/dashboard",
+        # A DataTables listing with a select2 filter.
+        "/admin/users",
+    ],
 )
 def test_main_pages_have_no_js_errors(
     logged_in: Page, base_url: str, js_errors: JSErrors, path: str
@@ -49,7 +45,6 @@ def test_main_pages_have_no_js_errors(
     js_errors.assert_clean(path)
 
 
-@CSP_BLOCKS_INLINE_SCRIPTS
 def test_the_javascript_layer_is_loaded(logged_in: Page, base_url: str) -> None:
     """jQuery and its plugins must actually be on the page, not merely linked."""
     logged_in.goto(f"{base_url}/social/", wait_until="networkidle")

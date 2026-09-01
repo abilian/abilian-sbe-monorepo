@@ -58,6 +58,18 @@ def js_errors(page: Page) -> JSErrors:
     """Attach error listeners before any navigation happens."""
     errors = JSErrors()
     page.on("pageerror", lambda exc: errors.record(f"uncaught: {exc}"))
+    # Console says only "Failed to load resource"; the URL is what makes it
+    # actionable, so record the request itself.
+    page.on(
+        "requestfailed",
+        lambda req: errors.record(f"request failed: {req.url} ({req.failure})"),
+    )
+    page.on(
+        "response",
+        lambda res: errors.record(f"HTTP {res.status}: {res.url}")
+        if res.status >= 500
+        else None,
+    )
     page.on(
         "console",
         lambda msg: errors.record(f"console.error: {msg.text}")

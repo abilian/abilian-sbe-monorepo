@@ -29,6 +29,36 @@ class DefaultConfig:
     # Sentry
     SENTRY_SDK_URL = "https://browser.sentry-cdn.com/4.5.3/bundle.min.js"
 
+    # Talisman's HTTPS redirect. Deployments that terminate TLS at a proxy, and
+    # local runs with debug off, need it off; Talisman still honours
+    # X-Forwarded-Proto when it is on.
+    TALISMAN_FORCE_HTTPS = True
+
+    # Content Security Policy, applied by Talisman whenever debug is off.
+    #
+    # Talisman's default is `default-src 'self'`, which the application has never
+    # satisfied: the base template carries inline <script> blocks (the AMD shim,
+    # abilian_init.js, the deferred JS) and the templates carry ~27 inline event
+    # handlers. Under that default the browser blocks all of them and no legacy
+    # JavaScript runs at all, so the strict-looking policy bought nothing.
+    #
+    # Nonces are not a way out while inline handlers remain: a nonce does not
+    # cover them, and its presence makes browsers ignore 'unsafe-inline'
+    # entirely. Dropping 'unsafe-inline' therefore has to wait until the inline
+    # scripts and handlers are gone -- the same work that retires the AMD shim.
+    CONTENT_SECURITY_POLICY = {
+        "default-src": "'self'",
+        # 'unsafe-eval' is for Hogan, whose template compiler builds functions
+        # from strings (widgets/file.js compiles its templates at load time).
+        # It goes when FileAPI and Hogan do.
+        "script-src": (
+            "'self' 'unsafe-inline' 'unsafe-eval' https://browser.sentry-cdn.com"
+        ),
+        "style-src": "'self' 'unsafe-inline'",
+        "img-src": "'self' data:",
+        "object-src": "'none'",
+    }
+
     # SQLAlchemy
     SQLALCHEMY_POOL_RECYCLE = 1800  # 30min. default value in flask_sa is None
     SQLALCHEMY_TRACK_MODIFICATIONS = False
