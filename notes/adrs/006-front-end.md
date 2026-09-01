@@ -1,6 +1,6 @@
 # Modernizing Front-End Architecture with Flask-Vite, Tailwind CSS, and Lightweight Interaction Frameworks
 
-Status: Draft
+Status: Accepted
 
 ## Introduction
 
@@ -14,7 +14,7 @@ This ADR covers the introduction of **Flask-Vite** for front-end asset managemen
 
 ## Status
 
-Proposed
+Accepted (September 2026).
 
 ## Context and Goals
 
@@ -155,10 +155,29 @@ In previous refactoring efforts, we've seen that removing legacy dependencies pi
 - Many modern web applications have moved to **Vite** as a replacement for older bundling tools like Webpack or Gulp, particularly in environments where fast iteration is required.
 - **Tailwind CSS** has been widely adopted for building scalable, maintainable UIs without the complexity of traditional CSS frameworks.
 
+## Resolved Questions
+
+**Alpine.js or HTMX?** Alpine.js. HTMX was never introduced. Alpine drives the
+converted templates (`x-data`, `x-show`, `@alpinejs/collapse`); the Bootstrap
+data-API that remains -- `data-toggle="modal"` -- is served by our own vanilla
+`initModals()` in `vite/src/alpine-components.js`, not by Bootstrap.
+
+**How do we manage the transition?** Deployment moves to Hop3, which removed the
+constraint that operators hand-run the asset build. Two things make the upgrade
+undemanding: the built CSS/JS ship inside the wheel, so `pip install` yields a
+styled app with no Node and no build step; and `flask assets build`, which three
+deployment recipes still invoke by name, survives as a no-op that points at
+`make front` (see `src/abilian/cli/assets.py`).
+
 ## Unresolved Questions
 
-- Should we use **Alpine.js** or **HTMX** for interactive features requiring more client-side logic?
-- How will we manage the transition for existing users and developers accustomed to the legacy stack?
+- **DataTables**: upgrade to v2, which still requires jQuery, or replace it? It
+  backs every listing in the product and, with select2, FileAPI, typeahead and
+  bootbox, is what keeps jQuery loaded. This decision gates whether jQuery can
+  leave at all.
+- The inline `<script>` blocks and ~27 inline event handlers force
+  `'unsafe-inline'` and `'unsafe-eval'` in the CSP (see `config.py`). Tightening
+  it means externalising them -- the same work that retires the AMD shim.
 
 ## Future Work
 

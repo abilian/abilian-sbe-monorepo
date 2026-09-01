@@ -111,32 +111,30 @@ This should be created by Flask at first start, however in the `abilian-sbe-mono
 mkdir -p ./src/instance
 ```
 
-## Node.js packages
+## Front-end assets
 
-From `abilian-sbe-monorepo` directory:
-
-```bash
-npm install --verbose
-```
-
-Check that `lessc` is now available (or edit the related `Flask` config variable for the actual path):
+The CSS and JavaScript are built by Vite. From the `abilian-sbe-monorepo`
+directory:
 
 ```bash
-./node_modules/.bin/lessc --version
+make front
 ```
-Expected result: `lessc 4.2.0 (Less Compiler) [JavaScript]`
+
+That runs `npm install` and `npm run build` in `vite/`, and copies the result
+into `src/abilian/sbe/static/vite/`.
+
+You can skip this entirely when installing from a wheel: `pip install
+abilian-sbe` ships the built assets, so a released install needs no Node at all.
+Node is only required when building from a source checkout.
 
 ## Nginx proxy
 
 If using Nginx, check you have configured `nginx` with relevant SSL keys. See example file `sbe.example.com` in this directory.
 
-Note: The example `nginx` configuration contains a permanent redirect for some static web resources. This can be adapted to the actual site configuration for static files. The other parts of the setup are otherwise pretty standard.
-
-```
-location ~ ^/static/min/abilian/web/resources/(.*) {
-    		return 301 /static/abilian/$1 ;
-        }
-```
+Note: older example `nginx` configurations contain a permanent redirect for
+`/static/min/...`, the output directory of the webassets pipeline. That pipeline
+has been removed, nothing is served under that path any more, and the rule can
+be dropped. The rest of the setup is otherwise pretty standard.
 
 ## Create a local '.env' file
 
@@ -147,7 +145,6 @@ See 'dot_env' file in this directory. Of course `FLASK_*` variables can be decla
 This commands are required only once:
 
 ```bash
-flask assets build
 flask initdb
 flask createuser --role admin --name admin admin@example.com some_password
 ```
