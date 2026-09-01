@@ -1,0 +1,49 @@
+/* Modal dialogs.
+ *
+ * These class names came from Bootstrap, but they are ours now: the markup in
+ * documents/_modals_*.html is Tailwind throughout, and `initModals()` in
+ * alpine-components.js drives the behaviour, selecting `.modal` and toggling
+ * `style.display`. So `.modal` is a JS hook as much as a style, and the rest is
+ * an ordinary component. Defined here rather than in bootstrap-compat.css,
+ * which exists only to keep un-migrated markup rendering and is meant to go.
+ */
+
+.modal {
+  @apply fixed z-50 inset-0 overflow-y-auto;
+}
+
+.modal-backdrop {
+  @apply fixed inset-0 z-40 bg-black/50;
+}
+
+.modal-dialog {
+  @apply relative w-auto mx-auto my-6 max-w-3xl;
+}
+
+.modal-content {
+  @apply relative flex flex-col w-full bg-white border border-gray-200 rounded-lg shadow-2xl;
+}
+
+.modal-header {
+  @apply flex items-center justify-between p-4 border-b border-gray-200;
+}
+
+.modal-body {
+  @apply relative p-4;
+}
+
+.modal-footer {
+  @apply flex items-center justify-end p-4 border-t border-gray-200;
+}
+
+.modal-title {
+  @apply m-0 text-lg font-semibold;
+}
+
+.modal-lg {
+  @apply max-w-5xl;
+}
+
+.modal-sm {
+  @apply max-w-sm;
+}
