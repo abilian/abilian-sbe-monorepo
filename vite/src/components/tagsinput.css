@@ -1,0 +1,47 @@
+/* bootstrap-tagsinput.
+ *
+ * Ported from sbe/static/less/modules/bootstrap-tagsinput.less, which stopped
+ * being compiled when the LESS pipeline was removed. The widget backs the "invite
+ * members by email" step of the community wizard, and the plugin builds its own
+ * markup, so this is the only place these rules can live.
+ *
+ * `.label-info` is here rather than in ui.css because it exists solely for this
+ * widget: bootstrap-tagsinput defaults to `tagClass: "label label-info"`, and
+ * `.label` alone sets white text with no background -- invisible tags.
+ */
+
+.bootstrap-tagsinput {
+  @apply inline-block w-full max-w-full cursor-text align-middle;
+  @apply rounded-r bg-white px-1.5 pt-1 pb-1.5 text-gray-600;
+  @apply border border-gray-300 leading-6;
+  box-shadow: inset 0 1px 1px rgb(0 0 0 / 7.5%);
+}
+
+.bootstrap-tagsinput input {
+  @apply m-0 w-auto max-w-full border-none bg-transparent px-1.5 shadow-none outline-none;
+}
+
+.bootstrap-tagsinput input:focus {
+  @apply border-none shadow-none;
+}
+
+.bootstrap-tagsinput input::placeholder {
+  @apply text-gray-500 opacity-100;
+}
+
+.bootstrap-tagsinput .tag {
+  @apply mr-0.5 text-white;
+}
+
+.bootstrap-tagsinput .tag [data-role="remove"] {
+  @apply ml-2 cursor-pointer;
+}
+
+.bootstrap-tagsinput .tag [data-role="remove"]::after {
+  @apply px-0.5;
+  content: "x";
+}
+
+.label-info {
+  @apply bg-sky-600;
+}

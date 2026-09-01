@@ -2,6 +2,6 @@
 
 from __future__ import annotations
 
-from . import base, dev, indexing
+from . import assets, base, dev, indexing
 
-__all__ = ["base", "dev", "indexing"]
+__all__ = ["assets", "base", "dev", "indexing"]

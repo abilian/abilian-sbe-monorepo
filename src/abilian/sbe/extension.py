@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import uuid
 from importlib import resources as rso
-from pathlib import Path
 from typing import TYPE_CHECKING
 
 from loguru import logger
@@ -20,7 +19,6 @@ if TYPE_CHECKING:
 
 
 STATIC_DIR = str(rso.files("abilian.sbe") / "static")
-LESSCSS_FILE = str(Path(STATIC_DIR, "less", "abilian-sbe.less"))
 JS = (
     "js/sbe-datatable.js",
     "js/folder.js",

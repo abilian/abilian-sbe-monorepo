@@ -181,11 +181,8 @@ DEP001 = [
     # Optional: antivirus scanning no-ops when clamd is absent, and the package
     # is useless without a clamav daemon listening on the host's unix socket.
     'clamd',
-]
-
-# X imported but it is a transitive dependency
-DEP003 = [
-    # Optional: the toolbar panels are orphaned and setup/debug.py guards its import.
+    # Optional too: the toolbar panels are orphaned and setup/debug.py guards
+    # its import, so it is not declared as a dependency at all.
     'flask_debugtoolbar',
 ]
 

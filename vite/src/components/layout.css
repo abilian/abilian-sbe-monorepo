@@ -29,3 +29,9 @@ body {
 .community-tabs {
   @apply mb-8;
 }
+
+/* Generic model view (widgets/render_single.html). The last surviving rule of
+   web/resources/less/models.less. */
+.model-view h1 {
+  @apply mt-2.5;
+}

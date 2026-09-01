@@ -5,6 +5,7 @@
 /* Component modules - all part of the 'components' layer */
 @import './components/ui.css' layer(components);
 @import './components/forms.css' layer(components);
+@import './components/tagsinput.css' layer(components);
 @import './components/modals.css' layer(components);
 @import './components/activities.css' layer(components);
 @import './components/comments.css' layer(components);
