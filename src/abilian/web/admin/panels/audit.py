@@ -374,19 +374,20 @@ class SecurityEntryPresenter(BaseEntryPresenter):
                 name=entity_name,
             )
 
-            if e.op == e.SET_INHERIT:
-                msg = _("{manager} has activated inheritance on {entity}")
-            elif e.op == e.UNSET_INHERIT:
-                msg = _("{manager} has deactivated inheritance on {entity}")
-            elif e.op == e.GRANT:
-                msg = _('{manager} has given role "{role}" to {principal} on {entity}')
-            elif e.op == e.REVOKE:
-                msg = _(
-                    '{manager} has revoked role "{role}" from {principal} on {entity}'
-                )
-            else:
-                msg = f"Invalid entity op: {e.op}"
-                raise Exception(msg)
+            match e.op:
+                case e.SET_INHERIT:
+                    msg = _("{manager} has activated inheritance on {entity}")
+                case e.UNSET_INHERIT:
+                    msg = _("{manager} has deactivated inheritance on {entity}")
+                case e.GRANT:
+                    msg = _('{manager} has given role "{role}" to {principal} on {entity}')
+                case e.REVOKE:
+                    msg = _(
+                        '{manager} has revoked role "{role}" from {principal} on {entity}'
+                    )
+                case _:
+                    msg = f"Invalid entity op: {e.op}"
+                    raise Exception(msg)
         elif e.op == e.GRANT:
             msg = _('{manager} has given role "{role}" to {principal}')
         elif e.op == e.REVOKE:

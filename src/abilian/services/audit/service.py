@@ -353,6 +353,7 @@ def format_large_value(value: Any) -> Any:
 
 def get_model_changes(
     entity_type: str,
+    *,
     year: int | None = None,
     month: int | None = None,
     day: int | None = None,

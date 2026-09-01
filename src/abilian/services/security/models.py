@@ -65,7 +65,7 @@ class Permission(UniqueName):
     __slots__ = ("label",)
 
     def __init__(
-        self, name: str, label: None | str | LazyString = None, assignable: bool = True
+        self, name: str, label: str | LazyString | None = None, assignable: bool = True
     ) -> None:
         super().__init__(name)
         if label is None:
@@ -102,7 +102,7 @@ class Role(UniqueName):
     __slots__ = ("assignable", "label")
 
     def __init__(
-        self, name: str, label: None | str | LazyString = None, assignable: bool = True
+        self, name: str, label: str | LazyString | None = None, assignable: bool = True
     ) -> None:
         super().__init__(name)
         if label is None:

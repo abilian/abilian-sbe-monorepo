@@ -121,16 +121,17 @@ def group_post(group_id):
 
         user = User.query.get(user_id)
 
-        if action == "add":
-            user.join(group)
-        elif action == "remove":
-            user.leave(group)
-        elif action == "add-admin":
-            if user not in group.admins:
-                group.admins.append(user)
-        elif action == "remove-admin":
-            if user in group.admins:
-                group.admins.remove(user)
+        match action:
+            case "add":
+                user.join(group)
+            case "remove":
+                user.leave(group)
+            case "add-admin":
+                if user not in group.admins:
+                    group.admins.append(user)
+            case "remove-admin":
+                if user in group.admins:
+                    group.admins.remove(user)
 
     db.session.commit()
 

@@ -1030,6 +1030,7 @@ class TimeInput(Input):
     def __init__(
         self,
         template: None = None,
+        *,
         widget_mode: str = "dropdown",
         h24_mode: bool = True,
         minuteStep: int = 1,

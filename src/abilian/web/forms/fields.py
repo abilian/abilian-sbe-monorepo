@@ -494,6 +494,7 @@ class QuerySelect2Field(SelectFieldBase):
         self,
         label=None,
         validators=None,
+        *,
         query_factory=None,
         get_pk=None,
         get_label=None,
@@ -536,12 +537,13 @@ class QuerySelect2Field(SelectFieldBase):
         else:
             self.get_pk = get_pk
 
-        if get_label is None:
-            self.get_label = lambda x: x
-        elif isinstance(get_label, str):
-            self.get_label = operator.attrgetter(get_label)
-        else:
-            self.get_label = get_label
+        match get_label:
+            case None:
+                self.get_label = lambda x: x
+            case str():
+                self.get_label = operator.attrgetter(get_label)
+            case _:
+                self.get_label = get_label
 
         self.allow_blank = allow_blank
         self.blank_text = blank_text
@@ -671,6 +673,7 @@ class JsonSelect2Field(SelectFieldBase):
         self,
         label=None,
         validators=None,
+        *,
         ajax_source=None,
         widget=None,
         blank_text="",
@@ -707,10 +710,10 @@ class JsonSelect2Field(SelectFieldBase):
         data = self.data
         if not self.multiple:
             if data is None:
-                raise StopIteration
+                return
             data = [data]
         elif not data:
-            raise StopIteration
+            return
 
         for obj in data:
             yield (obj.id, obj.name, True)
@@ -786,12 +789,13 @@ class LocaleSelectField(SelectField):
 
     @staticmethod
     def coerce(value: Locale | None) -> Locale | None:
-        if isinstance(value, babel.Locale):
-            return value
-        if isinstance(value, str):
-            return babel.Locale.parse(value)
-        if value is None:
-            return None
+        match value:
+            case babel.Locale():
+                return value
+            case str():
+                return babel.Locale.parse(value)
+            case None:
+                return None
 
         msg = f"Value cannot be converted to Locale(), or is not None, {value!r}"
         raise ValueError(msg)

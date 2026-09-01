@@ -49,7 +49,7 @@ class AccessControlBlueprint(Blueprint):
         self,
         name: str,
         import_name: str,
-        allowed_roles: None | str | Role | Collection[Role] = None,
+        allowed_roles: str | Role | Collection[Role] | None = None,
         **kwargs: Any,
     ) -> None:
         """

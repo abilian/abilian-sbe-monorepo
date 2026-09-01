@@ -42,13 +42,14 @@ class Entry:
             "to_xml": to_xml,
         }
 
-        if self.obj.sbe_type == "cmis:folder":
-            result = render_template("cmis/folder.xml", **ctx)
-        elif self.obj.sbe_type == "cmis:document":
-            result = render_template("cmis/document.xml", **ctx)
-        else:
-            msg = f"Unknown base object type: {self.obj.sbe_type}"
-            raise Exception(msg)
+        match self.obj.sbe_type:
+            case "cmis:folder":
+                result = render_template("cmis/folder.xml", **ctx)
+            case "cmis:document":
+                result = render_template("cmis/document.xml", **ctx)
+            case _:
+                msg = f"Unknown base object type: {self.obj.sbe_type}"
+                raise Exception(msg)
 
         if "no_xml_header" not in options:
             result = XML_HEADER + result

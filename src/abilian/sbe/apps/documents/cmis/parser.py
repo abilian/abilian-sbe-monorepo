@@ -101,11 +101,12 @@ class Property:
             self.value = value = None
 
         if value:
-            if self.type in ("id", "string"):
-                self.value = value
-            elif self.type == "datetime":
-                # FIXME
-                self.value = datetime(value)
-            else:
-                msg = f"Unknown value type: {self.type}"
-                raise Exception(msg)
+            match self.type:
+                case "id" | "string":
+                    self.value = value
+                case "datetime":
+                    # FIXME
+                    self.value = datetime(value)
+                case _:
+                    msg = f"Unknown value type: {self.type}"
+                    raise Exception(msg)

@@ -218,10 +218,10 @@ class ObjectEdit(ObjectView):
         Model=None,
         pk=None,
         Form=None,
+        *args,
         template=None,
         view_endpoint=None,
         message_success=None,
-        *args,
         **kwargs,
     ) -> None:
         super().__init__(Model, pk, Form, *args, template=template, **kwargs)

@@ -77,9 +77,7 @@ def init_extensions(app: Flask) -> None:
                 return f'<script type="module" src="http://localhost:5173/{path}"></script>'
         else:
             # Production mode - use built assets
-            asset_name = (
-                path.split("/")[-1].replace(".css", ".css").replace(".js", ".js")
-            )
+            asset_name = path.rsplit("/", 1)[-1]
             if path.endswith(".css"):
                 return f'<link rel="stylesheet" href="/static/vite/{asset_name}" />'
             if path.endswith(".js"):

@@ -157,6 +157,7 @@ class DynamicIcon(Icon):
     def __init__(
         self,
         endpoint: str | Callable | None = None,
+        *,
         width: int = 12,
         height: int = 12,
         css: str = "",
@@ -207,13 +208,21 @@ class StaticIcon(DynamicIcon):
     def __init__(
         self,
         filename: str,
+        *,
         endpoint: str = "static",
         width: int = 12,
         height: int = 12,
         css: str = "",
         size: int | None = None,
     ) -> None:
-        super().__init__(endpoint, width, height, css, size, filename=filename)
+        super().__init__(
+            endpoint,
+            width=width,
+            height=height,
+            css=css,
+            size=size,
+            filename=filename,
+        )
 
 
 class Endpoint:
@@ -263,6 +272,7 @@ class Action:
         category: str,
         name: str,
         title: LazyString | str = "",
+        *,
         description: str = "",
         icon: str | Icon | None = None,
         url: str | Callable = "",
@@ -362,11 +372,16 @@ class Action:
         self._title = title
 
     def _build_css_class(self) -> None:
-        css_cat = self.CSS_CLASS.format(
-            action=self, category=self.category, name=self.name
+        # Sanitize only the interpolated identifiers. The utility classes appended
+        # to CSS_CLASS legitimately contain ":" (Tailwind variants such as
+        # "hover:bg-blue-700") and "/" (opacity modifiers such as "bg-black/50"),
+        # which sanitizing the whole string would silently mangle.
+        def sanitize(value: str) -> str:
+            return re.sub(r"[^ _a-zA-Z0-9-]", "-", str(value))
+
+        self.css_class = self.CSS_CLASS.format(
+            action=self, category=sanitize(self.category), name=sanitize(self.name)
         )
-        css_cat = re.sub(r"[^ _a-zA-Z0-9-]", "-", css_cat)
-        self.css_class = css_cat
 
     @property
     def description(self) -> LazyString | str:
@@ -391,17 +406,18 @@ class Action:
             return None
 
         if not isinstance(endpoint, Endpoint):
-            if isinstance(endpoint, str):
-                endpoint = self.Endpoint(endpoint)
-            elif isinstance(endpoint, (tuple, list)):
-                assert len(endpoint) == 2
-                endpoint, kwargs = endpoint
-                assert isinstance(endpoint, str)
-                assert isinstance(kwargs, dict)
-                endpoint = self.Endpoint(endpoint, **kwargs)
-            else:
-                msg = f'Invalid endpoint specifier: "{endpoint!r}"'
-                raise TypeError(msg)
+            match endpoint:
+                case str():
+                    endpoint = self.Endpoint(endpoint)
+                case tuple() | list():
+                    assert len(endpoint) == 2
+                    endpoint, kwargs = endpoint
+                    assert isinstance(endpoint, str)
+                    assert isinstance(kwargs, dict)
+                    endpoint = self.Endpoint(endpoint, **kwargs)
+                case _:
+                    msg = f'Invalid endpoint specifier: "{endpoint!r}"'
+                    raise TypeError(msg)
 
         return endpoint
 

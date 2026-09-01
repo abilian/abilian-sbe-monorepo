@@ -224,10 +224,11 @@ def checkin_checkout(doc_id):
         doc.updated_at = d
         session.commit()
 
-        if action == "lock":
-            return redirect(url_for(doc))
-        if action == "checkout":
-            return document_download(doc_id, attach=True)
+        match action:
+            case "lock":
+                return redirect(url_for(doc))
+            case "checkout":
+                return document_download(doc_id, attach=True)
 
     if action == "unlock":
         del doc.lock

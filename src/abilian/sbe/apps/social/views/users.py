@@ -218,13 +218,14 @@ def user_post(user_id):
     action = request.form.get("action")
     return_url = request.form.get("return_url")
 
-    if action == "follow":
-        current_user.follow(user)
-    elif action == "unfollow":
-        current_user.unfollow(user)
-    else:
-        msg = "Should not happen"
-        raise Exception(msg)
+    match action:
+        case "follow":
+            current_user.follow(user)
+        case "unfollow":
+            current_user.unfollow(user)
+        case _:
+            msg = "Should not happen"
+            raise Exception(msg)
     db.session.commit()
 
     if return_url:

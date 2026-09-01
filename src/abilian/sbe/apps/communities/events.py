@@ -31,7 +31,8 @@ def update_community(
         community.touch()
 
         if isinstance(object, Document):
-            if verb == "post":
-                community.document_count += 1
-            elif verb == "delete":
-                community.document_count -= 1
+            match verb:
+                case "post":
+                    community.document_count += 1
+                case "delete":
+                    community.document_count -= 1

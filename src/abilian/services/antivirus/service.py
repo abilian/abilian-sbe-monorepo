@@ -83,15 +83,16 @@ class AntiVirusService(Service):
 
     def _scan(self, file_or_stream):
         content = file_or_stream
-        if isinstance(file_or_stream, Blob):
-            try:
-                file_or_stream = bytes(file_or_stream.file)
-            except TypeError as e:
-                self.logger.warning("Error during content scan: {error}", error=str(e))
-                return None
+        match file_or_stream:
+            case Blob():
+                try:
+                    file_or_stream = bytes(file_or_stream.file)
+                except TypeError as e:
+                    self.logger.warning("Error during content scan: {error}", error=str(e))
+                    return None
 
-        elif isinstance(file_or_stream, str):
-            file_or_stream = file_or_stream.encode(os.fsencode)
+            case str():
+                file_or_stream = file_or_stream.encode(os.fsencode)
 
         if isinstance(file_or_stream, bytes):
             content = open(file_or_stream, "rb")

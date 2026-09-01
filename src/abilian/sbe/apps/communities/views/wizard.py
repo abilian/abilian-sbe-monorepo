@@ -242,11 +242,12 @@ def wizard_new_accounts() -> str | Response:
     new_accounts = []
 
     for user in wizard_accounts:
-        if user["status"] == "existing":
-            wizard_existing_account[user["email"]] = user["role"]
+        match user["status"]:
+            case "existing":
+                wizard_existing_account[user["email"]] = user["role"]
 
-        elif user["status"] == "new":
-            new_accounts.append(user)
+            case "new":
+                new_accounts.append(user)
 
     existing_account = json.dumps(wizard_existing_account)
 

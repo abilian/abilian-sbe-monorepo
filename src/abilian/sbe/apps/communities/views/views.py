@@ -392,31 +392,32 @@ def members_post() -> Response:
     user_id = int(user_id)
     user = User.query.get(user_id)
 
-    if action in ("add-user-role", "set-user-role"):
-        role = request.form["role"].lower()
+    match action:
+        case "add-user-role" | "set-user-role":
+            role = request.form["role"].lower()
 
-        community.set_membership(user, role)
+            community.set_membership(user, role)
 
-        if action == "add-user-role":
+            if action == "add-user-role":
+                app = unwrap(current_app)
+                activity.send(app, actor=user, verb="join", object=community)
+
+            db.session.commit()
+            return redirect(url_for(".members", community_id=community.slug))
+
+        case "delete":
+            membership_id = int(request.form["membership"])
+            membership = Membership.query.get(membership_id)
+            if membership.user_id != user_id:
+                raise InternalServerError
+
+            community.remove_membership(user)
+
             app = unwrap(current_app)
-            activity.send(app, actor=user, verb="join", object=community)
+            activity.send(app, actor=user, verb="leave", object=community)
 
-        db.session.commit()
-        return redirect(url_for(".members", community_id=community.slug))
-
-    if action == "delete":
-        membership_id = int(request.form["membership"])
-        membership = Membership.query.get(membership_id)
-        if membership.user_id != user_id:
-            raise InternalServerError
-
-        community.remove_membership(user)
-
-        app = unwrap(current_app)
-        activity.send(app, actor=user, verb="leave", object=community)
-
-        db.session.commit()
-        return redirect(url_for(".members", community_id=community.slug))
+            db.session.commit()
+            return redirect(url_for(".members", community_id=community.slug))
 
     msg = f"Unknown action: {action!r}"
     raise BadRequest(msg)

@@ -63,15 +63,16 @@ class Response:
         obj = self.obj
         props = E.prop()
         for property_name in self.property_list:
-            if property_name == "creationdate":
-                props.append(E.creationdate("1997-12-01T17:42:21-08:00"))
-            elif property_name == "displayname":
-                props.append(E.displayname(obj.name))
-            elif property_name == "resourcetype":
-                if obj.is_folder:
-                    props.append(E.resourcetype(E.collection()))
-                else:
-                    props.append(E.resourcetype())
+            match property_name:
+                case "creationdate":
+                    props.append(E.creationdate("1997-12-01T17:42:21-08:00"))
+                case "displayname":
+                    props.append(E.displayname(obj.name))
+                case "resourcetype":
+                    if obj.is_folder:
+                        props.append(E.resourcetype(E.collection()))
+                    else:
+                        props.append(E.resourcetype())
 
         return E.response(
             E.href(self.href), E.propstat(props), E.status("HTTP/1.1 200 OK")

@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import contextlib
 from contextlib import AbstractContextManager
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 from flask_login import login_user, logout_user
@@ -15,6 +16,9 @@ from sqlalchemy.exc import DatabaseError
 
 from abilian.services import get_service
 from abilian.web import url_for
+
+#: Fixture files shared by more than one test tier.
+DATA_DIR = Path(__file__).parent / "data"
 
 if TYPE_CHECKING:
     from flask.testing import FlaskClient

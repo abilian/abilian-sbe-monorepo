@@ -252,6 +252,7 @@ class WhooshIndexService(IndexService):
     def search(
         self,
         q: str,
+        *,
         index_name: str = "default",
         fields: dict[str, float] | None = None,
         Models: Collection[type[Model]] = (),
@@ -473,11 +474,12 @@ class WhooshIndexService(IndexService):
         document = adapter.get_document(obj)
 
         for k, v in document.items():
-            if v is None:
-                del document[k]
-                continue
-            if isinstance(v, (User, Group, Role)):
-                document[k] = indexable_role(v)
+            match v:
+                case None:
+                    del document[k]
+                    continue
+                case User() | Group() | Role():
+                    document[k] = indexable_role(v)
 
         if not document.get("allowed_roles_and_users"):
             # no data for security: assume anybody can access the document

@@ -61,14 +61,15 @@ def unsubscribe_sbe(token: str) -> str:
     if expired or invalid:
         return render_template_i18n("notifications/invalid-token.html")
 
-    if request.method == "GET":
-        return render_template_i18n(
-            "notifications/confirm-unsubscribe.html", token=token
-        )
+    match request.method:
+        case "GET":
+            return render_template_i18n(
+                "notifications/confirm-unsubscribe.html", token=token
+            )
 
-    if request.method == "POST":
-        preferences = cast("PreferenceService", get_service("preferences"))
-        preferences.set_preferences(user, **{"sbe:notifications:daily": False})
-        db.session.commit()
-        return render_template_i18n("notifications/unsubscribed.html", token=token)
+        case "POST":
+            preferences = cast("PreferenceService", get_service("preferences"))
+            preferences.set_preferences(user, **{"sbe:notifications:daily": False})
+            db.session.commit()
+            return render_template_i18n("notifications/unsubscribed.html", token=token)
     raise MethodNotAllowed

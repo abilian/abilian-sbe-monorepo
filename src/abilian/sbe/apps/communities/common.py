@@ -53,14 +53,15 @@ def activity_time_format(time: datetime, now: datetime | None = None) -> str:
         time_delta.seconds,
     )
 
-    if days == 0 and hours == 0 and minutes == 0:
-        return f"{seconds}{_l('s')}"
+    match days:
+        case 0 if hours == 0 and minutes == 0:
+            return f"{seconds}{_l('s')}"
 
-    if days == 0 and hours == 0:
-        return f"{minutes}{_l('m')}"
+        case 0 if hours == 0:
+            return f"{minutes}{_l('m')}"
 
-    if days == 0:
-        return f"{hours}{_l('h')}"
+        case 0:
+            return f"{hours}{_l('h')}"
 
     if days < 30:
         return f"{days}{_l('d')}"
