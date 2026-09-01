@@ -4,12 +4,12 @@
  * 168 lines were identical. The gallery has no DataTable, so it took everything
  * except the table configuration and the filter box.
  *
- * Still jQuery: this is bound to DataTables and bootbox, which stay for now.
+ * Still jQuery: this is bound to DataTables, which stays for now.
  */
-define("SBEFolderCommonSetup", ["Abilian", "jquery", "bootbox"], (
+define("SBEFolderCommonSetup", ["Abilian", "jquery", "AbilianConfirm"], (
   Abilian,
   $,
-  bootbox
+  confirmDialog
 ) => {
   "use strict";
 
@@ -56,8 +56,11 @@ define("SBEFolderCommonSetup", ["Abilian", "jquery", "bootbox"], (
       });
       msg += $("<div />").append(elList).html();
 
-      bootbox.confirm(msg, (confirm) => {
-        if (confirm) {
+      confirmDialog({
+        message: msg,
+        okLabel: CONFIG.deleteLabel,
+        cancelLabel: CONFIG.cancelLabel,
+        onConfirm() {
           const actionVal = $("<input />", {
             type: "hidden",
             name: "action",
@@ -65,7 +68,7 @@ define("SBEFolderCommonSetup", ["Abilian", "jquery", "bootbox"], (
           });
           buttonForm.append(actionVal);
           buttonForm.submit();
-        }
+        },
       });
     }
 

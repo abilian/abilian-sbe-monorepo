@@ -1,7 +1,7 @@
 /**
  Allow to setup a delete button for urls managed by abilian.web.views.object.ObjectDelete.
  */
-require(["AbilianWidget", "jquery", "bootbox"], (Abilian, $, bootbox) => {
+require(["AbilianWidget", "jquery", "AbilianConfirm"], (Abilian, $, confirmDialog) => {
   "use strict";
 
   const defaults = {
@@ -26,26 +26,16 @@ require(["AbilianWidget", "jquery", "bootbox"], (Abilian, $, bootbox) => {
 
   ConfirmDialog.prototype.openModal = function () {
     const self = this;
-    const title = `<strong class="text-danger"><i class="glyphicon glyphicon-warning-sign"></i> ${this.options.title}</strong>`;
+    const title = `<span class="text-red-600"><i class="fa fa-exclamation-triangle"></i> ${this.options.title}</span>`;
 
-    bootbox.dialog({
+    confirmDialog({
       title: title,
-      message: `<p class="lead">${this.options.message}</p>`,
-      closeButton: true,
-      buttons: {
-        confirm: {
-          label: this.options.label,
-          className: "btn-danger", // or btn-primary, or btn-danger, or nothing at all
-          callback() {
-            self.onConfirm();
-          },
-        },
-        cancel: {
-          label: this.options.cancelLabel,
-          className: "", // or btn-primary, or btn-danger, or nothing at all
-        },
+      message: `<p class="text-xl font-light text-gray-600">${this.options.message}</p>`,
+      okLabel: this.options.label,
+      cancelLabel: this.options.cancelLabel,
+      onConfirm() {
+        self.onConfirm();
       },
-      keyboard: true,
     });
   };
 

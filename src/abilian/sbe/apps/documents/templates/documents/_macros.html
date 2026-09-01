@@ -298,6 +298,8 @@
       <script>
         {%- set data = {
             'deleteConfirmMsg': _("Delete selected elements?"),
+            'deleteLabel': _("Delete"),
+            'cancelLabel': _("Cancel"),
          } %}
         var CONFIG = {{ data | tojson | safe }};
       </script>

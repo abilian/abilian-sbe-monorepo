@@ -1,9 +1,9 @@
 {%- set locale = get_locale() %}
 (function(factory) {
     'use strict';
-    define('Abilian', ['AbilianNS', 'jquery', 'FileAPI', 'bootbox'], factory);
+    define('Abilian', ['AbilianNS', 'jquery', 'FileAPI'], factory);
 }
-(function(Abilian, $, FileAPI, bootbox) {
+(function(Abilian, $, FileAPI) {
 
     window.onbeforeprint = Abilian.fn.before_print;
 
@@ -29,7 +29,6 @@
     }
     {%- endif %}
 
-    bootbox.setDefaults({ 'locale': Abilian.locale });
 
     $.extend(
         $.fn.datepicker.defaults,
