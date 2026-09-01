@@ -84,3 +84,54 @@ def test_stylesheet_is_applied(logged_in: Page, base_url: str) -> None:
     assert body_bg not in ("", "rgba(0, 0, 0, 0)"), (
         f"no stylesheet applied to body, background is {body_bg!r}"
     )
+
+
+#: Seeded by seed.py, which serve.sh runs before starting the app.
+COMMUNITY = "e2e-community"
+
+
+@pytest.mark.parametrize("app_path", ["wall", "docs", "forum", "wiki"])
+def test_community_apps_have_no_js_errors(
+    logged_in: Page, base_url: str, js_errors: JSErrors, app_path: str
+) -> None:
+    logged_in.goto(
+        f"{base_url}/communities/{COMMUNITY}/{app_path}/", wait_until="networkidle"
+    )
+    js_errors.assert_clean(f"/communities/{COMMUNITY}/{app_path}/")
+
+
+def test_folder_listing_initialises_its_datatable(
+    logged_in: Page, base_url: str
+) -> None:
+    """The documents listing is the most intricate page in the app.
+
+    Its DataTable, sorting and select-all come from folder.js, which the branch
+    had commented out entirely; server-side nothing noticed, because the page
+    still rendered.
+    """
+    logged_in.goto(
+        f"{base_url}/communities/{COMMUNITY}/docs/", wait_until="networkidle"
+    )
+
+    assert logged_in.locator("#objects-table").count() > 0, "no folder listing table"
+    # DataTables wraps the table once it has initialised.
+    assert logged_in.locator(".dataTables_wrapper").count() > 0, (
+        "DataTables never initialised on the folder listing"
+    )
+
+
+def test_a_modal_opens(logged_in: Page, base_url: str) -> None:
+    """initModals() binds data-toggle="modal"; ModalActionMixin emits it."""
+    logged_in.goto(
+        f"{base_url}/communities/{COMMUNITY}/docs/", wait_until="networkidle"
+    )
+
+    trigger = logged_in.locator('[data-toggle="modal"]').first
+    if trigger.count() == 0:
+        pytest.skip("no modal trigger on the folder listing")
+
+    target = trigger.get_attribute("href") or trigger.get_attribute("data-target")
+    trigger.click()
+
+    modal = logged_in.locator(target)
+    assert modal.is_visible(), f"clicking the trigger did not open {target}"

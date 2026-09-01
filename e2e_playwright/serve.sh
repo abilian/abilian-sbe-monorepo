@@ -43,5 +43,6 @@ done
 rm -f "$E2E_DIR/e2e.db"
 uv run flask initdb
 uv run flask createuser --role admin --name Admin "$E2E_EMAIL" "$E2E_PASSWORD"
+uv run flask script e2e_playwright/seed.py
 
 exec uv run flask run --port "$E2E_PORT" --host 127.0.0.1
