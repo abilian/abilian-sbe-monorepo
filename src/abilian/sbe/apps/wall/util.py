@@ -80,15 +80,16 @@ def get_recent_entries(
             break
 
         # Remove entries corresponding to deleted objects
-        if entry.object is None:
-            db.session.delete(entry)
-            deleted = True
-            continue
+        match entry.object:
+            case None:
+                db.session.delete(entry)
+                deleted = True
+                continue
 
-        if isinstance(entry.object, (Folder, Document)) and not has_permission(
-            current_user, READ, obj=entry.object, inherit=True
-        ):
-            continue
+            case Folder() | Document() if (not has_permission(
+                current_user, READ, obj=entry.object, inherit=True
+            )):
+                continue
 
         entries.append(entry)
 

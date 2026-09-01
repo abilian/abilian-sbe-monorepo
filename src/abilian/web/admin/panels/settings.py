@@ -76,12 +76,13 @@ class SessionLifeTimeKey(Key):
     def _get_current(self, field: str) -> int:
         td = current_app.config.get(self.id)
         if td:
-            if field == "days":
-                return td.days
-            if field == "hours":
-                return int(td.seconds / 3600)
-            if field == "minutes":
-                return int(td.seconds % 3600 / 60)
+            match field:
+                case "days":
+                    return td.days
+                case "hours":
+                    return int(td.seconds / 3600)
+                case "minutes":
+                    return int(td.seconds % 3600 / 60)
         return 0
 
     @property

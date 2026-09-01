@@ -228,7 +228,7 @@ class UUID(sa.types.TypeDecorator):
         return dialect.type_descriptor(sa.types.CHAR(32))
 
     def process_bind_param(
-        self, value: None | str | uuid.UUID, dialect: Dialect
+        self, value: str | uuid.UUID | None, dialect: Dialect
     ) -> str | None:
         if value is None:
             return value

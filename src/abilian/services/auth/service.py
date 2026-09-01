@@ -220,11 +220,12 @@ class AuthService(Service):
 
         for access_controller in reversed(access_controllers):
             verdict = access_controller(user=user, roles=user_roles)
-            if verdict is None:
-                continue
+            match verdict:
+                case None:
+                    continue
 
-            if verdict is True:
-                return None
+                case True:
+                    return None
             if user.is_anonymous:
                 return self.redirect_to_login()
             raise Forbidden

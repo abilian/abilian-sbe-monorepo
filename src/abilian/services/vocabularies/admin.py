@@ -120,11 +120,12 @@ class VocabularyPanel(AdminPanel):
         if return_to is not None:
             return_endpoint += f"_{return_to}"
 
-        if return_to == "group":
-            return_args["group"] = group or "_"
-        elif return_to == "model":
-            return_args["group"] = Model.Meta.group or "_"
-            return_args["Model"] = Model.Meta.name
+        match return_to:
+            case "group":
+                return_args["group"] = group or "_"
+            case "model":
+                return_args["group"] = Model.Meta.group or "_"
+                return_args["Model"] = Model.Meta.name
 
         if "up" in data:
             cmp_op = Model.position.__lt__

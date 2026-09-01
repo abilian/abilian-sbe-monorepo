@@ -84,12 +84,13 @@ def stats_since(dt: timedelta) -> dict[str, int]:
 
     for entity_type, count in counts_per_type:
         entity_class = entity_type.split(".")[-1]
-        if entity_class == "User":
-            new_members = count
-        elif entity_class == "Document":
-            new_documents = count
-        elif entity_class == "Message":
-            new_messages = count
+        match entity_class:
+            case "User":
+                new_members = count
+            case "Document":
+                new_documents = count
+            case "Message":
+                new_messages = count
 
     active_users = (
         session.query(sa.func.count(User.id))

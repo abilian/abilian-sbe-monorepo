@@ -307,14 +307,15 @@ class SessionBlobStoreService(Service):
         - If parameter is a scoped_session instance, a new session will be
           instaniated.
         """
-        if model_or_session is None:
-            return db.session
+        match model_or_session:
+            case None:
+                return db.session
 
-        if isinstance(model_or_session, Session):
-            return model_or_session
+            case Session():
+                return model_or_session
 
-        if isinstance(model_or_session, sa.orm.scoped_session):
-            return model_or_session()
+            case sa.orm.scoped_session():
+                return model_or_session()
 
         session = sa.orm.object_session(model_or_session)
 

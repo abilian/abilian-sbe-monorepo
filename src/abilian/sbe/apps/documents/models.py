@@ -392,13 +392,14 @@ class Folder(PathAndSecurityIndexable, CmisObject):
 
         def key(x):
             principal = x[0]
-            if isinstance(principal, User):
-                # Defensive programming here, this shouldn't happen actually
-                last_name = principal.last_name or ""
-                first_name = principal.first_name or ""
-                return last_name.lower(), first_name.lower()
-            if isinstance(principal, Group):
-                return principal.name
+            match principal:
+                case User():
+                    # Defensive programming here, this shouldn't happen actually
+                    last_name = principal.last_name or ""
+                    first_name = principal.first_name or ""
+                    return last_name.lower(), first_name.lower()
+                case Group():
+                    return principal.name
             msg = f"Bad class here: {type(principal)}"
             raise TypeError(msg)
 

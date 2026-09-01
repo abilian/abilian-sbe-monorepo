@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from datetime import date
+from dataclasses import dataclass
+from datetime import date, datetime
 from itertools import groupby, islice
 from typing import Any
 
@@ -60,14 +61,14 @@ def files():
     return render_template("wall/files.html", grouped_docs=grouped_docs)
 
 
+@dataclass(frozen=True)
 class Attachment:
-    def __init__(self, url, name, owner, date, content_length, content_type) -> None:
-        self.url = url
-        self.name = name
-        self.owner = owner
-        self.date = date
-        self.content_length = content_length
-        self.content_type = content_type
+    url: str
+    name: str
+    owner: str
+    date: datetime
+    content_length: int | None
+    content_type: str
 
     @property
     def icon(self):

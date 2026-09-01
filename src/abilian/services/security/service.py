@@ -288,6 +288,7 @@ class SecurityService(Service):
     def get_principals(
         self,
         role: Role,
+        *,
         anonymous: bool = True,
         users: bool = True,
         groups: bool = True,
@@ -668,7 +669,7 @@ class SecurityService(Service):
         permission: Permission | str,
         obj: Model | None = None,
         inherit: bool = False,
-        roles: None | Role | str | list[Role | str] = None,
+        roles: Role | str | list[Role | str] | None = None,
     ) -> bool:
         """
         :param obj: target object to check permissions.
