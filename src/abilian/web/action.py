@@ -487,9 +487,14 @@ class Action:
 
 
 class ModalActionMixin:
-    """Mixin for actions that open modals. Uses Alpine.js for modal control."""
+    """Mixin for actions that open a modal.
+
+    Emits the `data-toggle="modal"` markup that `initModals()` in
+    vite/src/alpine-components.js binds, the same idiom the templates use.
+    """
+
     template_string = (
-        '<a class="{{ action.css_class }}" href="{{ url }}" @click.prevent="$dispatch(\'open-modal\', { id: \'{{ url }}\' })">'
+        '<a class="{{ action.css_class }}" href="{{ url }}" data-toggle="modal">'
         "{%- if action.icon %}{{ action.icon}} {% endif %}"
         "{{ action.title }}"
         "</a>"

@@ -77,14 +77,16 @@ def test_global_page_renders(
     assert_page_is_whole(response)
 
 
-def test_vite_assets_resolve_in_production_mode(
+def test_referenced_assets_resolve_in_production_mode(
     community1: Community, app: Application, client: FlaskClient, monkeypatch
 ) -> None:
-    """The production asset URLs must actually resolve.
+    """Every CSS/JS file the page references must actually be served.
 
     The suite runs with DEBUG=True, where `vite_asset` points at the Vite dev
     server, so the production branch would otherwise never be exercised -- which
-    is how it came to emit `/static/vite/...`, a path nothing serves.
+    is how it came to emit `/static/vite/...`, a path nothing serves. The same
+    check covers the vendored <script> tags, where a wrong filename is likewise
+    invisible server-side.
 
     Needs the built assets: run `make front` first.
     """
@@ -97,9 +99,9 @@ def test_vite_assets_resolve_in_production_mode(
         )
     html = response.get_data(as_text=True)
 
-    urls = re.findall(r'(?:href|src)="(/static/[^"]+\.(?:css|js))"', html)
-    vite_urls = [url for url in urls if "/vite/" in url]
-    assert vite_urls, "page linked no Vite assets in production mode"
+    urls = sorted(set(re.findall(r'(?:href|src)="(/static/[^"]+\.(?:css|js))"', html)))
+    assert any("/vite/" in url for url in urls), "page linked no Vite assets"
+    assert any("font-awesome" in url for url in urls), "page linked no icon font"
 
-    for url in vite_urls:
-        assert client.get(url).status_code == 200, f"asset does not resolve: {url}"
+    broken = [url for url in urls if client.get(url).status_code != 200]
+    assert not broken, f"referenced but not served: {broken}"

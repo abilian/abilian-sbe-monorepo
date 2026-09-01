@@ -3,9 +3,14 @@
 // --- Core Libraries ---
 // Import Alpine.js FIRST and start it immediately
 import Alpine from "alpinejs";
+import collapse from "@alpinejs/collapse";
 
 // Make Alpine available globally
 window.Alpine = Alpine;
+
+// x-collapse is used in document.html, single_view.html and the
+// audit/tag macros; without the plugin the directive silently does nothing.
+Alpine.plugin(collapse);
 
 // Start Alpine IMMEDIATELY before any other code runs
 // This allows Alpine to set up its mutation observer and process directives

@@ -9,6 +9,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 
+  {# Vendored CSS the Tailwind build does not replace: FontAwesome (`fa fa-*` is
+     used throughout, including by action.py's Glyphicon/FAIcon) and select2,
+     which renders its own markup and is unusable unstyled. #}
+  {%- for filename in [
+    'font-awesome/css/font-awesome.css',
+    'select2/select2.css',
+    'select2/select2-bootstrap.css',
+  ] %}
+  <link rel="stylesheet" href="{{ url_for('abilian_static', filename=filename) }}"/>
+  {%- endfor %}
+
   <!-- Vite integration for CSS and JS -->
   {{ vite_asset('src/styles.css') }}
   {{ vite_asset('src/main.js') }}
@@ -25,70 +36,85 @@
       type="image/png"
       href="{{ config['FAVICO_URL'] | string }}"/>
 
-  {# RequireJS shim for legacy code compatibility #}
+  {# Minimal RequireJS stand-in for the legacy AMD modules. Resolves module
+     names to the globals their <script> tags define, and fetches the few
+     modules too large to ship on every page (1.4MB combined) on first use --
+     the lazy behaviour of the RequireJS `paths` config this replaced. #}
   <script>
-    // Minimal RequireJS shim for backward compatibility
-    window.require = window.require || function(deps, callback) {
-      if (typeof deps === 'string') {
-        // Single module require
-        return window[deps] || {};
-      }
-      // Multiple dependencies - execute callback immediately with available globals
-      var modules = [];
-      if (Array.isArray(deps)) {
-        deps.forEach(function(dep) {
-          if (dep === 'jquery') modules.push(window.jQuery || window.$);
-          else if (dep === 'Abilian') modules.push(window.Abilian || {});
-          else if (dep === 'domReady!' || dep === 'domReady') modules.push(document);
-          else if (dep === 'bootbox') modules.push(window.bootbox || {});
-          else if (dep === 'FileAPI') modules.push(window.FileAPI || {});
-          else if (dep === 'AbilianNS') modules.push(window.Abilian || {});
-          else if (dep === 'SBEFolderListingSetup') modules.push(window.SBEFolderListingSetup || function(){});
-          else if (dep === 'SBEFolderGalleryListingSetup') modules.push(window.SBEFolderGalleryListingSetup || function(){});
-          else if (dep === 'jquery.dataTables') modules.push(window.jQuery.fn.dataTable || {});
-          else modules.push(window[dep] || {});
-        });
-      }
-      if (callback) {
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', function() {
-            callback.apply(null, modules);
-          });
-        } else {
-          setTimeout(function() { callback.apply(null, modules); }, 0);
+    (function () {
+      var LAZY = {
+        ckeditor: {
+          url: "{{ url_for('abilian_static', filename='ckeditor/ckeditor.js') }}",
+          global: "CKEDITOR"
+        },
+        d3: {
+          url: "{{ url_for('abilian_static', filename='nvd3/d3.min.js') }}",
+          global: "d3"
+        },
+        nvd3: {
+          url: "{{ url_for('abilian_static', filename='nvd3/nv.d3.js') }}",
+          global: "nv", deps: ["d3"]
         }
-      }
-    };
+      };
+      var pending = {};
 
-    window.define = window.define || function(name, deps, factory) {
-      var module;
-      if (typeof name === 'string' && Array.isArray(deps) && typeof factory === 'function') {
-        // Named module with dependencies
-        var modules = [];
-        deps.forEach(function(dep) {
-          if (dep === 'jquery') modules.push(window.jQuery || window.$);
-          else if (dep === 'bootbox') modules.push(window.bootbox || {});
-          else if (dep === 'FileAPI') modules.push(window.FileAPI || {});
-          else if (dep === 'AbilianNS') modules.push(window.Abilian || {});
-          else modules.push(window[dep] || {});
-        });
-        module = factory.apply(null, modules);
-        window[name] = module;
-      } else if (typeof name === 'function') {
-        // Anonymous module
-        module = name();
-      } else if (Array.isArray(name) && typeof deps === 'function') {
-        // Module with dependencies but no name
-        var modules = [];
-        name.forEach(function(dep) {
-          if (dep === 'jquery') modules.push(window.jQuery || window.$);
-          else modules.push(window[dep] || {});
-        });
-        module = deps.apply(null, modules);
+      function loadLazy(name) {
+        var spec = LAZY[name];
+        if (window[spec.global]) return Promise.resolve(window[spec.global]);
+        if (!pending[name]) {
+          pending[name] = Promise.all((spec.deps || []).map(loadLazy)).then(function () {
+            return new Promise(function (resolve, reject) {
+              var el = document.createElement("script");
+              el.src = spec.url;
+              el.onload = function () { resolve(window[spec.global]); };
+              el.onerror = function () { reject(new Error("failed to load " + spec.url)); };
+              document.head.appendChild(el);
+            });
+          });
+        }
+        return pending[name];
       }
-      return module;
-    };
-    define.amd = true;
+
+      // Non-lazy modules are plain globals, already set by their <script> tag.
+      function resolveSync(dep) {
+        if (dep === "jquery") return window.jQuery || window.$;
+        if (dep === "domReady!" || dep === "domReady") return document;
+        if (dep === "Abilian" || dep === "AbilianNS") return window.Abilian;
+        if (dep === "jquery.dataTables") return window.jQuery.fn.dataTable;
+        return window[dep];
+      }
+
+      function resolve(dep) {
+        return LAZY[dep] ? loadLazy(dep) : Promise.resolve(resolveSync(dep));
+      }
+
+      function domReady() {
+        if (document.readyState !== "loading") return Promise.resolve();
+        return new Promise(function (r) {
+          document.addEventListener("DOMContentLoaded", r);
+        });
+      }
+
+      window.require = window.require || function (deps, callback) {
+        if (typeof deps === "string") return window[deps];
+        domReady()
+          .then(function () { return Promise.all((deps || []).map(resolve)); })
+          .then(function (modules) { if (callback) callback.apply(null, modules); })
+          .catch(function (err) { console.error("require() failed:", err); });
+      };
+
+      window.define = window.define || function (name, deps, factory) {
+        if (typeof name === "string" && Array.isArray(deps) && typeof factory === "function") {
+          window[name] = factory.apply(null, deps.map(resolveSync));
+          return window[name];
+        }
+        if (typeof name === "function") return name();
+        if (Array.isArray(name) && typeof deps === "function") {
+          return deps.apply(null, name.map(resolveSync));
+        }
+      };
+      window.define.amd = true;
+    })();
   </script>
 
   {# jQuery must load FIRST for legacy scripts - but Vite also loads it as a module #}
@@ -181,18 +207,46 @@
   {%- endblock footer %}
 {%- endblock body %}
 
-{# Legacy Abilian scripts loaded from static #}
-<script src="{{ url_for('abilian_static', filename='bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
-<script src="{{ url_for('abilian_static', filename='bootstrap-timepicker/js/bootstrap-timepicker.js') }}"></script>
-<script src="{{ url_for('abilian_static', filename='typeahead/typeahead.js') }}"></script>
-<script src="{{ url_for('abilian_static', filename='typeahead/hogan-2.0.0.js') }}"></script>
-<script src="{{ url_for('abilian_static', filename='bootstrap-switch/bootstrap-switch.js') }}"></script>
-<script src="{{ url_for('abilian_static', filename='js/abilian.js') }}"></script>
-<script src="{{ url_for('abilian_static', filename='js/datatables-setup.js') }}"></script>
-<script src="{{ url_for('abilian_static', filename='js/widgets/base.js') }}"></script>
-{# SBE-specific scripts - temporarily disabled to fix base functionality #}
-{# <script src="{{ url_for('abilian_sbe_static', filename='js/sbe-datatable.js') }}"></script> #}
-{# <script src="{{ url_for('abilian_sbe_static', filename='js/folder.js') }}"></script> #}
+{# Legacy scripts, in dependency order: libraries, then the widget layer that
+   registers against them. Loaded as plain tags until they are ported to Vite
+   entry points. #}
+{%- set legacy_js = [
+  'select2/select2.js',
+  'datatables/js/jquery.dataTables.js',
+  'bootstrap-datepicker/js/bootstrap-datepicker.js',
+  'bootstrap-timepicker/js/bootstrap-timepicker.js',
+  'typeahead/typeahead.js',
+  'typeahead/hogan-2.0.0.js',
+  'bootstrap-switch/bootstrap-switch.js',
+  'js/abilian.js',
+  'js/datatables-setup.js',
+  'js/datatables-advanced-search.js',
+  'js/widgets/base.js',
+  'js/widgets/select2.js',
+  'js/widgets/richtext.js',
+  'js/widgets/file.js',
+  'js/widgets/image.js',
+  'js/widgets/tags.js',
+  'js/widgets/dynamic-row.js',
+  'js/widgets/delete.js',
+] -%}
+{%- for filename in legacy_js %}
+<script src="{{ url_for('abilian_static', filename=filename) }}"></script>
+{%- endfor %}
+
+{%- set sbe_js = [
+  'vendor/jquery.fileapi.js',
+  'vendor/bootstrap-tagsinput.js',
+  'js/sbe-datatable.js',
+  'js/folder.js',
+  'js/folder_edit.js',
+  'js/folder_gallery.js',
+  'js/folder_upload.js',
+  'js/document_viewer.js',
+] -%}
+{%- for filename in sbe_js %}
+<script src="{{ url_for('abilian_sbe_static', filename=filename) }}"></script>
+{%- endfor %}
 
 {%- block js %}{%- endblock js %} {# this block should be
     used to load additional libraries #}
