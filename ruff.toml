@@ -89,6 +89,9 @@ lint.extend-ignore = [
 "tests/**/*.py" = [
     "INP001", # implicit namespace packages
 ]
+"e2e_playwright/**/*.py" = [
+    "INP001", # implicit namespace packages
+]
 "**/__init__.py" = [
     "F401", # 'module' imported but unused
 ]

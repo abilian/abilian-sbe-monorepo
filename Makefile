@@ -110,6 +110,10 @@ install:
 	$(MAKE) front
 
 
+.PHONY: test-e2e
+test-e2e:  ## Run the Playwright browser tests
+	cd e2e_playwright && honcho start
+
 .PHONY: front
 front:  ## Build the front-end assets (CSS/JS) into the package
 	cd vite && npm install && npm run build

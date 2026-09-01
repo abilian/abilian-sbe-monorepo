@@ -72,3 +72,6 @@ htmlcov
 # Cruft
 /src/abilian/sbe/apps/documents/tests/data/dummy_files/existing-doc/
 /src/abilian/sbe/apps/documents/tests/data/dummy_files/folder 1/
+
+# Playwright e2e scratch instance
+/tmp/abilian-sbe-e2e/
