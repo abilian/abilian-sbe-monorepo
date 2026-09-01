@@ -380,7 +380,9 @@ class SecurityEntryPresenter(BaseEntryPresenter):
                 case e.UNSET_INHERIT:
                     msg = _("{manager} has deactivated inheritance on {entity}")
                 case e.GRANT:
-                    msg = _('{manager} has given role "{role}" to {principal} on {entity}')
+                    msg = _(
+                        '{manager} has given role "{role}" to {principal} on {entity}'
+                    )
                 case e.REVOKE:
                     msg = _(
                         '{manager} has revoked role "{role}" from {principal} on {entity}'

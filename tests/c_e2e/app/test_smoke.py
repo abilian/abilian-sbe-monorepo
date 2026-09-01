@@ -105,3 +105,48 @@ def test_referenced_assets_resolve_in_production_mode(
 
     broken = [url for url in urls if client.get(url).status_code != 200]
     assert not broken, f"referenced but not served: {broken}"
+
+
+#: (dependency, dependent) -- the dependency must be present and load first.
+#: These are the pairs whose breakage is silent server-side: the page still
+#: returns 200, and the widget just never initialises in the browser.
+SCRIPT_ORDER = [
+    ("jquery/js/jquery", "js/abilian.js"),
+    ("jquery/js/jquery", "select2/select2.js"),
+    ("jquery/js/jquery", "datatables/js/jquery.dataTables.js"),
+    ("datatables/js/jquery.dataTables.js", "js/datatables-setup.js"),
+    ("datatables/js/jquery.dataTables.js", "js/datatables-advanced-search.js"),
+    ("select2/select2.js", "js/widgets/select2.js"),
+    ("js/widgets/base.js", "js/widgets/select2.js"),
+    ("js/widgets/base.js", "js/widgets/delete.js"),
+    ("fileapi/FileAPI.js", "js/widgets/file.js"),
+    ("fileapi/FileAPI.js", "js/widgets/image.js"),
+    ("sbe/vendor/jquery.fileapi.js", "sbe/js/folder_upload.js"),
+    ("datatables/js/jquery.dataTables.js", "sbe/js/folder.js"),
+]
+
+
+def test_scripts_are_present_and_correctly_ordered(
+    community1: Community, app: Application, client: FlaskClient
+) -> None:
+    """Widget libraries must be loaded, and loaded before their dependents.
+
+    The branch once dropped select2, DataTables and the widget scripts from the
+    page while leaving `datatables-setup.js` behind to throw on `$.fn.dataTable`.
+    Nothing server-side noticed, because a page missing its scripts still
+    renders a perfectly good 200.
+    """
+    security_service.start()
+
+    with client_login(client, community1.test_user):
+        response = client.get(
+            url_for("wall.index", community_id=community1.slug), follow_redirects=True
+        )
+    html = response.get_data(as_text=True)
+
+    for dependency, dependent in SCRIPT_ORDER:
+        assert dependency in html, f"{dependency} is not loaded"
+        assert dependent in html, f"{dependent} is not loaded"
+        assert html.index(dependency) < html.index(dependent), (
+            f"{dependency} must load before {dependent}"
+        )

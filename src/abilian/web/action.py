@@ -520,7 +520,7 @@ class ButtonAction(Action):
         '{% elif action.btn_class == "danger" %}text-white bg-red-600 hover:bg-red-700'
         '{% elif action.btn_class == "warning" %}text-white bg-yellow-600 hover:bg-yellow-700'
         '{% elif action.btn_class == "info" %}text-white bg-cyan-600 hover:bg-cyan-700'
-        '{% else %}text-gray-700 bg-white border border-gray-300 hover:bg-gray-50{% endif %}'
+        "{% else %}text-gray-700 bg-white border border-gray-300 hover:bg-gray-50{% endif %}"
         ' {{ action.css_class}}" '
         'name="{{ action.submit_name }}" '
         'value="{{ action.name }}">'

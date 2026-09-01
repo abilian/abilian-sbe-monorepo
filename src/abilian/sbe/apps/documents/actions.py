@@ -249,9 +249,11 @@ _actions = (
         icon="eye-open",
         url=lambda ctx: url_for(".document_preview", doc_id=ctx["object"].id),
         condition=(
-            lambda ctx: ctx["object"].antivirus_ok
-            and ctx["object"].content_type
-            in ("text/html", "text/plain", "application/pdf")
+            lambda ctx: (
+                ctx["object"].antivirus_ok
+                and ctx["object"].content_type
+                in ("text/html", "text/plain", "application/pdf")
+            )
         ),
     ),
     # viewers

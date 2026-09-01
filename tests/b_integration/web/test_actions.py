@@ -9,7 +9,13 @@ import pytest
 from flask import Flask
 from markupsafe import Markup
 
-from abilian.web.action import Action, Glyphicon, StaticIcon, actions
+from abilian.web.action import (
+    Action,
+    Glyphicon,
+    ModalActionMixin,
+    StaticIcon,
+    actions,
+)
 
 if TYPE_CHECKING:
     from flask.ctx import AppContext
@@ -107,7 +113,7 @@ def test_render(app: Flask) -> None:
 
     assert CONDITIONAL.render() == Markup(
         '<a class="action action-cat_1 action-cat_1-conditional '
-        'inline-flex items-center px-4 py-2 text-sm font-medium rounded-md '
+        "inline-flex items-center px-4 py-2 text-sm font-medium rounded-md "
         'text-white bg-yellow-600 hover:bg-yellow-700" href="http://condition.al">'
         '<i class="fa fa-hand-right"></i> '
         "Conditional Action</a>"
@@ -119,3 +125,38 @@ def test_render(app: Flask) -> None:
         '<img src="/static/icons/other.png" width="14" height="14" /> '
         "Other Action</a>"
     )
+
+
+class ModalAction(ModalActionMixin, Action):
+    pass
+
+
+def test_modal_action_renders_a_modal_trigger(app: Flask) -> None:
+    """The markup must be what initModals() actually binds.
+
+    This once rendered `@click.prevent="$dispatch('open-modal', ...)"`, an event
+    with no listener anywhere, which silently made every modal action a no-op.
+    """
+    action = ModalAction("cat_1", "modal", "Modal Action", url="#modal-thing")
+
+    rendered = action.render()
+
+    assert 'data-toggle="modal"' in rendered
+    assert 'href="#modal-thing"' in rendered
+    assert "Modal Action" in rendered
+    assert "$dispatch" not in rendered
+
+
+def test_css_class_keeps_tailwind_variants(app: Flask) -> None:
+    """Utility classes may contain ":" and "/"; identifiers may not.
+
+    The sanitizer used to run over the whole class string, turning
+    "hover:bg-blue-700" into a class that does not exist.
+    """
+    action = Action(
+        "cat:with:colons", "name", "T", url="/", css="hover:bg-blue-700 bg-black/50"
+    )
+
+    assert "hover:bg-blue-700" in action.css_class
+    assert "bg-black/50" in action.css_class
+    assert "cat-with-colons" in action.css_class

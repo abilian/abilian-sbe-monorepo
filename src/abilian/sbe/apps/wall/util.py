@@ -89,9 +89,9 @@ def get_recent_entries(
                 deleted = True
                 continue
 
-            case Folder() | Document() if (not has_permission(
+            case Folder() | Document() if not has_permission(
                 current_user, READ, obj=entry.object, inherit=True
-            )):
+            ):
                 continue
 
         entries.append(entry)
