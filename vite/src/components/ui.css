@@ -1,0 +1,248 @@
+/* UI components inherited from Bootstrap's vocabulary.
+ *
+ * What is left of bootstrap-compat.css, which existed to keep un-migrated
+ * markup rendering. These are not compatibility shims any more: the markup that
+ * uses them is Tailwind throughout, and a third of them are applied at runtime
+ * by our own JavaScript -- folder_upload.js adds .text-danger and .glyphicon,
+ * file.js adds .progress-bar, folder_edit.js toggles .has-error -- so scanning
+ * templates alone does not find them.
+ *
+ * Renaming them out of Bootstrap's vocabulary is a separate job: it means
+ * touching the markup and the scripts together.
+ */
+
+.btn {
+  @apply inline-block font-semibold text-center align-middle cursor-pointer border border-transparent rounded-md px-4 py-2 leading-normal transition-colors duration-150;
+}
+
+.btn-primary {
+  @apply text-white bg-blue-600 border-blue-600;
+}
+
+.btn-primary:hover {
+  @apply bg-blue-700 border-blue-700;
+}
+
+.btn-default {
+  @apply text-gray-700 bg-white border-gray-300;
+}
+
+.btn-default:hover {
+  @apply bg-gray-50;
+}
+
+.btn-success {
+  @apply text-white bg-green-600 border-green-600;
+}
+
+.btn-success:hover {
+  @apply bg-green-700;
+}
+
+.btn-danger {
+  @apply text-white bg-red-600 border-red-600;
+}
+
+.btn-danger:hover {
+  @apply bg-red-700;
+}
+
+.form-control {
+  @apply block w-full px-3 py-2 text-base leading-normal text-gray-700 bg-white border border-gray-300 rounded-md transition-all duration-150;
+}
+
+.form-control:focus {
+  @apply border-blue-500 outline-none ring-4 ring-blue-100;
+}
+
+.table {
+  @apply w-full mb-4 text-gray-700 border-collapse;
+}
+
+.table th, .table td {
+  @apply px-3 py-3 align-top border-b border-gray-200;
+}
+
+.table thead th {
+  @apply align-bottom border-b-2 border-gray-200 font-semibold;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  @apply bg-gray-50;
+}
+
+.nav-tabs {
+  @apply flex flex-wrap pl-0 mb-0 list-none border-b border-gray-200;
+}
+
+.nav-tabs li {
+  @apply -mb-px;
+}
+
+.nav-tabs li a {
+  @apply block px-4 py-2 mr-0.5 leading-normal text-gray-500 no-underline bg-transparent border border-transparent rounded-t-md transition-colors duration-150;
+}
+
+.nav-tabs li a:hover {
+  @apply text-gray-700 bg-gray-50;
+}
+
+.nav-tabs li.active a {
+  @apply text-gray-700 bg-white border-gray-200 border-b-white;
+}
+
+.alert {
+  @apply p-4 mb-4 border border-transparent rounded-md;
+}
+
+.alert-warning {
+  @apply bg-yellow-50 border-yellow-300 text-yellow-800;
+}
+
+.alert-danger {
+  @apply bg-red-50 border-red-300 text-red-800;
+}
+
+.badge {
+  @apply inline-block px-2 py-1 text-xs font-semibold leading-none rounded;
+}
+
+.dropdown-menu {
+  @apply absolute z-10 mt-2 py-2 bg-white border border-gray-200 rounded-md shadow-lg;
+}
+
+.dropdown-menu li a {
+  @apply block px-4 py-2 text-gray-700 no-underline;
+}
+
+.dropdown-menu li a:hover {
+  @apply bg-gray-100;
+}
+
+.breadcrumb {
+  @apply flex flex-wrap px-4 py-2 mb-4 list-none bg-gray-100 rounded-md;
+}
+
+.breadcrumb li {
+  @apply flex items-center;
+}
+
+.breadcrumb li + li:before {
+  @apply px-2 text-gray-500 content-['/'];
+}
+
+.breadcrumb li a {
+  @apply text-blue-600 no-underline;
+}
+
+.breadcrumb li a:hover {
+  @apply text-blue-700;
+}
+
+.breadcrumb li.active {
+  @apply text-gray-500;
+}
+
+.btn-link {
+  @apply text-blue-600 bg-transparent border-transparent;
+}
+
+.btn-link:hover {
+  @apply text-blue-800 underline;
+}
+
+.btn-group > .btn {
+  @apply relative rounded-none;
+}
+
+.btn-group > .btn:first-child {
+  @apply rounded-l-md;
+}
+
+.btn-group > .btn:last-child {
+  @apply rounded-r-md;
+}
+
+.form-inline .form-control {
+  @apply w-auto inline-block;
+}
+
+.help-block {
+  @apply mt-1 text-sm text-gray-500;
+}
+
+.has-error .form-control {
+  @apply border-red-500;
+}
+
+.has-error .control-label, .has-error .help-block {
+  @apply text-red-600;
+}
+
+.has-warning .form-control {
+  @apply border-yellow-500;
+}
+
+.has-success .form-control {
+  @apply border-green-500;
+}
+
+.input-group .form-control {
+  @apply relative flex-1 z-[2];
+}
+
+.input-group .form-control:not(:first-child) {
+  @apply rounded-l-none;
+}
+
+.input-group .form-control:not(:last-child) {
+  @apply rounded-r-none;
+}
+
+.input-group-btn > .btn {
+  @apply relative;
+}
+
+.input-group-btn:first-child > .btn {
+  @apply rounded-r-none;
+}
+
+.input-group-btn:last-child > .btn {
+  @apply rounded-l-none;
+}
+
+.text-danger {
+  @apply text-red-600;
+}
+
+.label {
+  @apply inline px-2 py-0.5 text-xs font-semibold leading-none text-white rounded;
+}
+
+.label-default {
+  @apply bg-gray-500;
+}
+
+.progress {
+  @apply h-5 overflow-hidden bg-gray-200 rounded;
+}
+
+.progress-bar {
+  @apply flex flex-col justify-center h-full text-xs text-white text-center bg-blue-600 transition-all duration-500;
+}
+
+.small, small {
+  @apply text-sm;
+}
+
+.dropdown {
+  @apply relative;
+}
+
+.dropdown.open > .dropdown-menu {
+  @apply block;
+}
+
+.glyphicon {
+  @apply inline-block font-normal leading-none;
+}

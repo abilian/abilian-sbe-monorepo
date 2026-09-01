@@ -67,7 +67,7 @@ DOCUMENT_BODY_TEMPLATE = """
     <img src="{{ obj.icon }}" style="vertical-align: middle;" alt=""/>
 
     {% for p in parents[:-1] %}
-      <a href="{{ p.path }}">{{ p.label }}</a> <span class="divider">/</span>
+      <a href="{{ p.path }}">{{ p.label }}</a> <span class="h-px my-2 overflow-hidden bg-gray-200">/</span>
     {% endfor %}
 
     <a href="{{ url_for(obj) }}">{{ obj.name }}</a>
@@ -78,7 +78,7 @@ DOCUMENT_BODY_TEMPLATE = """
                          community_id=obj.community.slug,
                          doc_id=obj.id,
                          attach=True) }}">
-      <i class="glyphicon glyphicon-download"></i>
+      <i class="inline-block font-normal leading-none glyphicon-download"></i>
       {{ _('Download') }} (<small>{{ obj.content_length|filesize  }}</small>)
     </a>
   {%- endif %}

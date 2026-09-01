@@ -110,7 +110,7 @@
                   var button_form = $(this.form);
                   var filename = $button.closest('li').find('a').text();
                   var msg = '<h2>"' + filename + '"</h2>'
-                      + '<p class="lead">{{ _("Delete attachment?") }}</p>';
+                      + '<p class="text-xl font-light text-gray-600">{{ _("Delete attachment?") }}</p>';
                   bootbox.confirm(msg,
                       function (confirm) {
                         if (confirm) {

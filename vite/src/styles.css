@@ -3,7 +3,7 @@
 @import "tailwindcss" source("../../src");
 
 /* Component modules - all part of the 'components' layer */
-@import './components/bootstrap-compat.css' layer(components);
+@import './components/ui.css' layer(components);
 @import './components/forms.css' layer(components);
 @import './components/modals.css' layer(components);
 @import './components/activities.css' layer(components);
