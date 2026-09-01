@@ -1,64 +1,68 @@
-define("SBEDocumentViewerSetup", ["Abilian", "jquery"], (Abilian, $) => {
+/* Page-flip navigation for the document preview (documents/document.html).
+ *
+ * Vanilla JS: this only ever touched the DOM, so jQuery bought it nothing.
+ * Still an AMD module because the template calls
+ * require(['Abilian', 'SBEDocumentViewerSetup'], ...).
+ */
+define("SBEDocumentViewerSetup", ["Abilian"], () => {
   "use strict";
+
+  const KEY_LEFT = 37;
+  const KEY_RIGHT = 39;
+
   function setupDocumentViewer() {
-    const container = $(".preview-container");
-    const img = container.find("img.preview");
-    const imgSrc = img.attr("src");
-    const previewPrev = container.find(".preview-prev");
-    const previewNext = container.find(".preview-next");
-    const pageNum = container.data("pageNum");
+    const container = document.querySelector(".preview-container");
+    if (!container) return;
 
-    function showNav() {
-      $(document).bind("keydown", keyDown);
-    }
+    const img = container.querySelector("img.preview");
+    const previewPrev = container.querySelector(".preview-prev");
+    const previewNext = container.querySelector(".preview-next");
+    if (!img) return;
 
-    function hideNav() {
-      $(document).unbind("keydown", keyDown);
-    }
+    const imgSrc = img.getAttribute("src");
+    const pageNum = Number(container.dataset.pageNum);
 
-    if (pageNum > 1) {
-      container.hover(showNav, hideNav);
-    } else {
-      previewPrev.hide();
-      previewNext.hide();
+    function showPage(page) {
+      img.setAttribute("src", `${imgSrc}&page=${page}`);
+      img.dataset.page = String(page);
     }
 
     // TODO: what if we want to go past the last page?
     function loadNext() {
-      let page = img.data("page") + 1;
-      if (page >= pageNum) {
-        page = page - 1;
-      }
-      img.attr("src", imgSrc + "&page=" + page);
-      img.data("page", page);
-      return true;
+      const page = Number(img.dataset.page) + 1;
+      showPage(page >= pageNum ? page - 1 : page);
     }
 
     function loadPrev() {
-      let page = img.data("page") - 1;
-      if (page < 0) {
-        page = 0;
-      }
-      img.attr("src", imgSrc + "&page=" + page);
-      img.data("page", page);
-      return true;
+      const page = Number(img.dataset.page) - 1;
+      showPage(page < 0 ? 0 : page);
     }
 
-    previewNext.click(loadNext);
-    previewPrev.click(loadPrev);
-
     function keyDown(e) {
-      const code = e.keyCode;
-      // Note: we prevent default keyboard action
-      if (code === 39) {
+      if (e.keyCode === KEY_RIGHT) {
+        e.preventDefault();
         loadNext();
-        return false;
-      }
-      if (code === 37) {
+      } else if (e.keyCode === KEY_LEFT) {
+        e.preventDefault();
         loadPrev();
-        return false;
       }
-      return true;
+    }
+
+    if (previewNext) previewNext.addEventListener("click", loadNext);
+    if (previewPrev) previewPrev.addEventListener("click", loadPrev);
+
+    // Arrow keys only while the pointer is over the preview, so they do not
+    // hijack the arrows for the rest of the page.
+    if (pageNum > 1) {
+      container.addEventListener("mouseenter", () => {
+        document.addEventListener("keydown", keyDown);
+      });
+      container.addEventListener("mouseleave", () => {
+        document.removeEventListener("keydown", keyDown);
+      });
+    } else {
+      if (previewPrev) previewPrev.style.display = "none";
+      if (previewNext) previewNext.style.display = "none";
     }
   }
 

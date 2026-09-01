@@ -135,3 +135,33 @@ def test_a_modal_opens(logged_in: Page, base_url: str) -> None:
 
     modal = logged_in.locator(target)
     assert modal.is_visible(), f"clicking the trigger did not open {target}"
+
+
+EXISTING_FOLDER = "Existing Folder"
+
+
+def test_duplicate_folder_name_is_rejected(logged_in: Page, base_url: str) -> None:
+    """folder_edit.js checks the title before letting the form submit.
+
+    It had been inert since the Tailwind conversion: it bound to
+    `button.btn-primary`, a class the converted modals no longer carry, and
+    toggled `hide`, a Bootstrap class that no longer exists.
+    """
+    logged_in.goto(
+        f"{base_url}/communities/{COMMUNITY}/docs/", wait_until="networkidle"
+    )
+
+    logged_in.locator('[href="#modal-new-folder"]').first.click()
+    modal = logged_in.locator("#modal-new-folder")
+    assert modal.is_visible(), "the new-folder modal did not open"
+
+    modal.locator('input[name="title"]').fill(EXISTING_FOLDER)
+    modal.locator('button[type="submit"]').click()
+
+    help_text = modal.locator("span.help-block")
+    help_text.wait_for(state="visible", timeout=5_000)
+    assert EXISTING_FOLDER in help_text.inner_text(), (
+        f"expected a duplicate-name error, got {help_text.inner_text()!r}"
+    )
+    # The modal must still be open: the submit was blocked.
+    assert modal.is_visible()

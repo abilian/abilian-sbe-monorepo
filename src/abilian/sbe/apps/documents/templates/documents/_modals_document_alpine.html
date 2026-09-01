@@ -205,7 +205,7 @@
             var editForm = document.getElementById('modal-edit-form');
             if (editForm) {
               setupFolderEdit(
-                  $(editForm).closest('[x-show]'),
+                  editForm.closest('[x-show]'),
                   '{{ doc.id }}',
                   'document-edit');
 

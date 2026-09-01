@@ -49,7 +49,7 @@
         ['Abilian', 'SBEFolderEditSetup'],
         function (Abilian, setupFolderEdit) {
           Abilian.fn.onAppInit(function () {
-            setupFolderEdit($('#modal-new-folder'),
+            setupFolderEdit('#modal-new-folder',
                 '{{ folder.id }}',
                 'new');
           });

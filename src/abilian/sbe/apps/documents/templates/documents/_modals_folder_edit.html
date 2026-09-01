@@ -23,7 +23,7 @@
                    id="inputName" name="title"
                    data-check-url="{{ url_for('.check_valid_name', community_id=g.community.slug) }}"
                    value="{{ folder.title }}"/>
-            <span class="help-block text-sm text-gray-500 mt-1"></span>
+            <span class="help-block hidden text-sm text-gray-500 mt-1"></span>
           </div>
 
           <div>
@@ -57,7 +57,7 @@
         function (Abilian, setupFolderEdit) {
           Abilian.fn.onAppInit(function () {
             setupFolderEdit(
-                $('#modal-edit'),
+                '#modal-edit',
                 '{{ folder.id }}',
                 'folder-edit');
 

@@ -18,6 +18,7 @@ from abilian.core.models.subjects import User
 from abilian.sbe.apps.communities.models import MANAGER, Community
 
 COMMUNITY_NAME = "E2E Community"
+EXISTING_FOLDER = "Existing Folder"
 ADMIN_EMAIL = os.environ.get("E2E_EMAIL", "admin@example.com")
 
 existing = Community.query.filter(Community.name == COMMUNITY_NAME).first()
@@ -41,6 +42,13 @@ if existing is None:
     # no current_user to default from, so set it explicitly.
     doc.owner = admin
     doc.creator = admin
+    db.session.commit()
+
+    # A subfolder to collide with, so the title-uniqueness check in
+    # folder_edit.js has something to reject.
+    subfolder = community.folder.create_subfolder(EXISTING_FOLDER)
+    subfolder.owner = admin
+    subfolder.creator = admin
     db.session.commit()
 
     print(f"seeded community {community.slug!r} with 1 document for {ADMIN_EMAIL}")
