@@ -106,8 +106,13 @@ install:
 	@echo "--> Activating pre-commit hook"
 	pre-commit install
 	@echo "Remember to run `uv run $SHELL` to activate the virtualenv"
-	yarn
+	npm install
+	$(MAKE) front
 
+
+.PHONY: front
+front:  ## Build the front-end assets (CSS/JS) into the package
+	cd vite && npm install && npm run build
 
 .PHONY: update-deps
 update-deps:  ## Update dependencies
@@ -126,5 +131,6 @@ help:
 ## Publish to PyPI
 publish: clean
 	git push --tags
+	$(MAKE) front
 	uv build
 	twine upload dist/*

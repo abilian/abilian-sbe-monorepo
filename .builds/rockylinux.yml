@@ -28,6 +28,7 @@ tasks:
       cd abilian-sbe
       uv sync
       npm install
+      make front
 
   - lint: |
       cd abilian-sbe

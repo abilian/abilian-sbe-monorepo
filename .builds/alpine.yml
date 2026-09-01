@@ -35,6 +35,7 @@ tasks:
   - setup: |
       cd abilian-sbe
       npm install
+      make front
 
   - lint-nox: |
       cd abilian-sbe

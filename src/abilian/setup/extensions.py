@@ -8,8 +8,10 @@ from typing import TYPE_CHECKING
 import defusedxml
 import sqlalchemy as sa
 import sqlalchemy.exc
+from flask import current_app, url_for
 from flask_migrate import Migrate
 from loguru import logger
+from markupsafe import Markup
 
 import abilian.core.util
 import abilian.i18n
@@ -39,6 +41,34 @@ defusedxml.defuse_stdlib()
 
 db = extensions.db
 
+#: Vite dev server, used only when the app runs in debug mode.
+VITE_DEV_SERVER = "http://localhost:5173"
+
+
+def vite_asset(path: str) -> Markup:
+    """Render the tag loading a Vite-built asset.
+
+    In debug mode the asset is served by the Vite dev server. Otherwise it comes
+    from the build output shipped inside the package, which `make front` writes
+    to `abilian/sbe/static/vite/` and `abilian_sbe_static` serves.
+    """
+    filename = path.rsplit("/", 1)[-1]
+
+    if current_app.debug:
+        base = current_app.config.get("VITE_DEV_SERVER", VITE_DEV_SERVER)
+        url = f"{base}/{path}"
+    else:
+        url = url_for("abilian_sbe_static", filename=f"vite/{filename}")
+
+    if filename.endswith(".css"):
+        return Markup(f'<link rel="stylesheet" href="{url}" />')
+    if filename.endswith(".js"):
+        return Markup(f'<script type="module" src="{url}"></script>')
+
+    msg = f"Don't know how to load Vite asset {path!r}: expected .css or .js"
+    raise ValueError(msg)
+
+
 # Silence those warnings for now.
 warnings.simplefilter("ignore", category=sa.exc.SAWarning)
 
@@ -60,35 +90,7 @@ def init_extensions(app: Flask) -> None:
     auth_service.init_app(app)
 
     vite.init_app(app)
-
-    # Make vite functions available in templates
-    app.jinja_env.globals["vite"] = vite
-
-    # Quick and dirty vite_asset helper for templates
-    def vite_asset(path: str) -> str:
-        """Generate HTML tag for Vite asset (CSS or JS)."""
-        is_dev = app.config.get("DEBUG", False)
-
-        if is_dev:
-            # Development mode - use Vite dev server
-            if path.endswith(".css"):
-                return f'<link rel="stylesheet" href="http://localhost:5173/{path}" />'
-            if path.endswith(".js"):
-                return f'<script type="module" src="http://localhost:5173/{path}"></script>'
-        else:
-            # Production mode - use built assets
-            asset_name = path.rsplit("/", 1)[-1]
-            if path.endswith(".css"):
-                return f'<link rel="stylesheet" href="/static/vite/{asset_name}" />'
-            if path.endswith(".js"):
-                return (
-                    f'<script type="module" src="/static/vite/{asset_name}"></script>'
-                )
-        return ""
-
-    from markupsafe import Markup
-
-    app.jinja_env.globals["vite_asset"] = lambda path: Markup(vite_asset(path))
+    app.jinja_env.globals["vite_asset"] = vite_asset
 
     # Initialize legacy assets for favicons and other static resources
     from abilian.web import assets as legacy_assets

@@ -46,6 +46,7 @@ tasks:
       export PATH=$HOME/.local/bin:$PATH
       cd abilian-sbe
       npm install
+      make front
 
   - lint-nox: |
       export PATH=$HOME/.local/bin:$PATH

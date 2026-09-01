@@ -10,6 +10,7 @@ the safety net the Bootstrap -> Tailwind migration needs.
 
 from __future__ import annotations
 
+import re
 from typing import TYPE_CHECKING
 
 import pytest
@@ -74,3 +75,31 @@ def test_global_page_renders(
         response = client.get(url_for(endpoint), follow_redirects=True)
 
     assert_page_is_whole(response)
+
+
+def test_vite_assets_resolve_in_production_mode(
+    community1: Community, app: Application, client: FlaskClient, monkeypatch
+) -> None:
+    """The production asset URLs must actually resolve.
+
+    The suite runs with DEBUG=True, where `vite_asset` points at the Vite dev
+    server, so the production branch would otherwise never be exercised -- which
+    is how it came to emit `/static/vite/...`, a path nothing serves.
+
+    Needs the built assets: run `make front` first.
+    """
+    monkeypatch.setitem(app.config, "DEBUG", False)
+    security_service.start()
+
+    with client_login(client, community1.test_user):
+        response = client.get(
+            url_for("wall.index", community_id=community1.slug), follow_redirects=True
+        )
+    html = response.get_data(as_text=True)
+
+    urls = re.findall(r'(?:href|src)="(/static/[^"]+\.(?:css|js))"', html)
+    vite_urls = [url for url in urls if "/vite/" in url]
+    assert vite_urls, "page linked no Vite assets in production mode"
+
+    for url in vite_urls:
+        assert client.get(url).status_code == 200, f"asset does not resolve: {url}"
