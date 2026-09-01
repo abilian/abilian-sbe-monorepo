@@ -5,8 +5,6 @@ from __future__ import annotations
 import warnings
 from typing import TYPE_CHECKING, Never, cast
 
-from devtools import debug
-
 from abilian.core.models.subjects import User
 from abilian.services import get_service, security_service
 from abilian.services.security import ADMIN, SecurityService
@@ -41,7 +39,6 @@ def test_all_simple_endpoints_with_no_login(client, app: Application) -> None:
     security_service.start(ignore_state=True)
 
     for rule in all_rules_to_test(app):
-        debug(rule)
         if rule.endpoint in ENDPOINTS_TO_IGNORE:
             continue
 

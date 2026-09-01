@@ -14,7 +14,6 @@ dependencies = [
     "markupSafe>=2.1.4,<2.2.0",
     # Flask extensions
     "flask-babel>=1.0.0,<1.1.0",
-    "flask-assets==2.1.0",
     "flask-mail>=0.9.1",
     "flask-migrate>=4.0.5,<4.1.0",
     "flask-login>=0.6.3,<0.7.0",
@@ -36,11 +35,6 @@ dependencies = [
     "wtforms==3.1.2",
     "WTForms-Alchemy==0.18.0",
     "wtforms-sqlalchemy>=0.4.1,<0.5.0",
-    # Web assets
-    "webassets==2.0",
-    "jsmin",
-    "cssmin",
-    "closure==20161201",
     #
     "python-dateutil>=2.8.2,<3.0.0",
     # Search
@@ -68,7 +62,6 @@ dependencies = [
     "validate_email",
     "toolz",
     "html2text>=2024,<2025",
-    "devtools",
     "svcs>=24.1.0",
     "attrs>=24.2.0",
     # Markdown support for Wiki
@@ -171,9 +164,6 @@ DEP002 = [
     # Used by Flask
     "python-dotenv",
     # Used by webassets
-    'jsmin',
-    'cssmin',
-    'closure',
     # Used implicitly by SQLA
     'psycopg2',
     # Web

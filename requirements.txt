@@ -105,9 +105,7 @@ ast-serialize==0.8.0 \
 asttokens==2.4.1 \
     --hash=sha256:051ed49c3dcae8913ea7cd08e46a606dba30b79993209636c4875bc1d637bc24 \
     --hash=sha256:b03869718ba9a6eb027e134bfdf69f38a236d681c83c160d510768af11254ba0
-    # via
-    #   devtools
-    #   snoop
+    # via snoop
 async-timeout==5.0.1 ; python_full_version <= '3.11.2' \
     --hash=sha256:39e3809566ff85354557ec2398b55e096c8364bacac9405a7a1fa429e77fe76c \
     --hash=sha256:d9321a7a3d5a6a5e187e824d2fa0793ce379a202935782d555d6e9d2735677d3
@@ -325,9 +323,6 @@ click==8.5.0 \
     #   flask
     #   mkdocs
     #   reuse
-closure==20161201 \
-    --hash=sha256:12ed70dae89f1c2f096c8c15a41be946aa089cca2b60e26a71dfed10ad0c97bf
-    # via abilian-sbe
 colorama==0.4.6 \
     --hash=sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44 \
     --hash=sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6
@@ -417,9 +412,6 @@ cryptography==50.0.1 \
     # via
     #   types-pyopenssl
     #   types-redis
-cssmin==0.2.0 \
-    --hash=sha256:e012f0cc8401efcf2620332339011564738ae32be8c84b2e43ce8beaec1067b6
-    # via abilian-sbe
 defusedxml==0.7.1 \
     --hash=sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69 \
     --hash=sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61
@@ -450,10 +442,6 @@ deptry==0.25.1 \
     --hash=sha256:e3fa3321078e11cd1ac3f10ce3ff0547731c53f9253b87c757a8749c76fe8fa9 \
     --hash=sha256:e6f7b8fa72932e51e86799b10dcd29381b2132dc799c790dca3b28ab08dffb28
     # via abilian-devtools
-devtools==0.12.2 \
-    --hash=sha256:c366e3de1df4cdd635f1ad8cbcd3af01a384d7abda71900e68d43b04eb6aaca7 \
-    --hash=sha256:efceab184cb35e3a11fa8e602cc4fadacaa2e859e920fc6f87bf130b69885507
-    # via abilian-sbe
 distlib==0.4.3 \
     --hash=sha256:4b0ce306c966eb73bc3a7b6abad017c556dadd92c44701562cd528ac7fde4d5b \
     --hash=sha256:f152097224a0ae24be5a0f6bae1b9359af82133bce63f98a95f86cae1aede9ed
@@ -484,9 +472,7 @@ execnet==2.1.2 \
 executing==2.2.1 \
     --hash=sha256:3632cc370565f6648cc328b32435bd120a1e4ebb20c77e3fdde9a13cd1e533c4 \
     --hash=sha256:760643d3452b4d777d295bb167ccc74c64a81df23fb5e08eff250c425a4b2017
-    # via
-    #   devtools
-    #   snoop
+    # via snoop
 filelock==3.32.5 \
     --hash=sha256:142cd9fa77a872c5e78c62329a0d15278fadc686eb89e760017968961a4fd6b2 \
     --hash=sha256:f6a6a28f743f9b95ce19db5abe0f376f75eb56517dff21e1a4751e2657d3e83d
@@ -500,7 +486,6 @@ flask==3.0.3 \
     --hash=sha256:ceb27b0af3823ea2737928a4d99d125a06175b8512c445cbd9a9ce200ef76842
     # via
     #   abilian-sbe
-    #   flask-assets
     #   flask-babel
     #   flask-linktester
     #   flask-login
@@ -512,10 +497,6 @@ flask==3.0.3 \
     #   flask-wtf
     #   pytest-flask
     #   sentry-sdk
-flask-assets==2.1.0 \
-    --hash=sha256:a56c476b15f84701712cc3b4b4a001ebbe62b1dcbe81c23f96fbe6f261b75324 \
-    --hash=sha256:f84d6532ffe59c9ff352885e8740ff4da25c0bcfacd805f0a806815e44354813
-    # via abilian-sbe
 flask-babel==1.0.0 \
     --hash=sha256:247f4ec34cf605d03781f480bccb1a5acb719df1d1a2a743c091ab3db5d5fde2 \
     --hash=sha256:d6a70468f9a8919d59fba2a291a003da3a05ff884275dddbd965f3b98b09ab3e
@@ -689,9 +670,6 @@ jinja2==3.1.6 \
     #   mkdocs
     #   mkdocs-material
     #   reuse
-jsmin==3.0.1 \
-    --hash=sha256:c0959a121ef94542e807a674142606f7e90214a2b3d1eb17300244bbb5cc2bfc
-    # via abilian-sbe
 langid==1.1.6 \
     --hash=sha256:044bcae1912dab85c33d8e98f2811b8f4ff1213e5e9a9e9510137b84da2cb293
     # via abilian-sbe
@@ -1121,7 +1099,6 @@ pygments==2.21.0 \
     --hash=sha256:2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9 \
     --hash=sha256:610ca751c9bc2492b38eb9a38a7fbc93edbbb2d7182edaf34e66ae493dee5c8c
     # via
-    #   devtools
     #   mkdocs-material
     #   pytest
     #   snoop
@@ -1513,12 +1490,6 @@ watchdog==6.0.0 \
     --hash=sha256:e3df4cbb9a450c6d49318f6d14f4bbc80d763fa587ba46ec86f99f9e6876bb26 \
     --hash=sha256:ef810fbf7b781a5a593894e4f439773830bdecb885e6880d957d5b9382a960d2
     # via mkdocs
-webassets==2.0 \
-    --hash=sha256:167132337677c8cedc9705090f6d48da3fb262c8e0b2773b29f3352f050181cd \
-    --hash=sha256:a31a55147752ba1b3dc07dee0ad8c8efff274464e08bbdb88c1fd59ffd552724
-    # via
-    #   abilian-sbe
-    #   flask-assets
 webencodings==0.6.1 \
     --hash=sha256:565f9ad031c702dae404e27a099e3e09186a3ab1b9520f06d215502b651fd910 \
     --hash=sha256:7fab6269c8bf237c657876b52058ccb182e861518d1c695c1a9aaa8c1c105d5b
