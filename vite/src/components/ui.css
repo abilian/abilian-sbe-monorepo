@@ -251,3 +251,17 @@
 .glyphicon {
   @apply inline-block font-normal leading-none;
 }
+
+/* Tables on narrow screens.
+ *
+ * Every listing table is `min-w-full`, i.e. exactly the container width, so at
+ * 375px the columns crushed instead of scrolling -- "Login enabled" became
+ * "LOG ENAB" stacked over two lines. Only 7 of the 19 tables sit in a scroll
+ * container, so widening them would have pushed the page sideways; making the
+ * table its own scroll box needs no wrapper and covers all of them.
+ */
+@media (max-width: 640px) {
+  table.min-w-full {
+    @apply block overflow-x-auto whitespace-nowrap;
+  }
+}

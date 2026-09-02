@@ -31,6 +31,27 @@
   }
 }
 
+/* Link colour.
+ *
+ * Bootstrap coloured every <a> and let buttons override it; Tailwind's preflight
+ * makes links inherit, so after the migration the sidebar menus and box content
+ * rendered their links as plain body text with nothing to say they were
+ * clickable.
+ *
+ * Scoped to box bodies rather than applied to every <a>: the community tabs and
+ * the navbar set their colours on a wrapping element, and a blanket rule made
+ * every tab look active.
+ */
+@layer components {
+  .box-body a:not(.btn):not([class*="bg-"]):not([class*="text-"]) {
+    @apply text-blue-600;
+  }
+
+  .box-body a:not(.btn):not([class*="bg-"]):not([class*="text-"]):hover {
+    @apply text-blue-800 underline;
+  }
+}
+
 /* Component modules - all part of the 'components' layer */
 @import './components/ui.css' layer(components);
 @import './components/forms.css' layer(components);

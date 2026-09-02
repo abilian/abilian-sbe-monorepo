@@ -120,10 +120,15 @@
           const titleInput = document.getElementById('title');
           if (!titleInput) return;
 
-          // Create counter element
-          const counter = document.createElement('span');
-          counter.className = 'thread-title-counter text-sm ml-2';
-          titleInput.parentNode.appendChild(counter);
+          // Reuse the counter if there is one: init() runs more than once
+          // (Alpine initialises the tree, and again on its own start), and
+          // appending unconditionally left two "0/150" badges side by side.
+          let counter = titleInput.parentNode.querySelector('.thread-title-counter');
+          if (!counter) {
+            counter = document.createElement('span');
+            counter.className = 'thread-title-counter text-sm ml-2';
+            titleInput.parentNode.appendChild(counter);
+          }
 
           // Update function
           const updateCounter = () => {
