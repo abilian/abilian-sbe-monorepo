@@ -87,19 +87,12 @@ require(["AbilianNS", "jquery", "Hogan"], function (Abilian, $, Hogan) {
       el.select2({ allowClear: !el.hasClass("required") });
     });
 
-    $('[data-toggle="on-off"]').each(function () {
-      var parent = this.parentNode;
-      var $el = $(this);
-
-      if (parent.tagName === "LABEL") {
-        $el.insertAfter(parent);
-        parent = $(parent);
-        if (parent.text().trim().length === 0) {
-          parent.remove();
-        }
-      }
-      $el.bootstrapSwitch();
-    });
+    /* [data-toggle="on-off"] used to be handed to bootstrap-switch, whose
+       stylesheet existed only in the LESS that was removed with the pipeline.
+       Unstyled, it rendered the raw text "ON OFF" next to a bare checkbox --
+       and it moved the input out of its <label>, so it lost its alignment and
+       its click target too. These render as ordinary checkboxes now, like every
+       other boolean field in the app. */
 
     $(".timepicker")
       .timepicker()
