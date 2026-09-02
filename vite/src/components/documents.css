@@ -132,7 +132,11 @@ table#objects-table tbody td > img + i,
 }
 
 .document-horizontal-menu {
-  @apply float-right hidden relative top-[-99px] right-[89px] -mb-[35px];
+  /* Was positioned with float-right plus top-[-99px] right-[89px] -mb-[35px],
+     a set of magic offsets tuned to one viewport: at 375px the buttons landed
+     on top of "New folder". It sits in normal flow now, pushed right by the
+     template's flex row. */
+  @apply ml-auto;
 }
 
 .document-thumbnail-menu {

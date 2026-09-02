@@ -97,6 +97,10 @@
 }
 
 /* The wrapper puts info and pagination on one line when there is room. */
-.dataTables_wrapper .dataTables_info + .dataTables_paginate {
-  @apply -mt-10;
+/* Info and pagination share a line when there is room; below `sm` they stack,
+   and pulling the pagination up would put it on top of the info text. */
+@media (min-width: 640px) {
+  .dataTables_wrapper .dataTables_info + .dataTables_paginate {
+    @apply -mt-10;
+  }
 }

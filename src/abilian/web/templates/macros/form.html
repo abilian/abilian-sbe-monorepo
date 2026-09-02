@@ -1,7 +1,9 @@
 {# edit macros - Tailwind version #}
 {%- macro m_field(field, horizontal=False, label_width=2, field_width=8) %}
   {%- set is_hidden = field.is_hidden or field.type in ('CSRFTokenField', 'HiddenField') %}
-  {%- set with_label = kwargs.pop('with_label', not is_hidden) %}
+  {# A BooleanField carries its label inside the checkbox wrapper below, so a
+     separate one above renders the text twice. #}
+  {%- set with_label = kwargs.pop('with_label', not is_hidden and field.type != 'BooleanField') %}
   {%- set placeholder = '' %}
 
   {%- if not with_label %}
