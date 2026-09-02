@@ -13,6 +13,17 @@ nav[role="navigation"] a:hover {
   @apply bg-white/5 text-white;
 }
 
+/* Dropdown panels are white, so the light-on-dark rule above makes their links
+   nearly invisible. The user menu's "Preferences" and "Logout" were pale grey
+   on white. */
+nav[role="navigation"] .nav-menu a {
+  @apply block px-0 py-0 text-gray-700;
+}
+
+nav[role="navigation"] .nav-menu a:hover {
+  @apply bg-transparent text-gray-900;
+}
+
 /* Active navigation items - dark theme */
 nav[role="navigation"] li.active > a,
 nav[role="navigation"] .active > a {

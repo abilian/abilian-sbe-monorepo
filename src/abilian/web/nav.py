@@ -88,10 +88,11 @@ class NavGroup(NavItem):
         </svg>
       </button>
       <ul x-show="open" @click.away="open = false" x-transition
-          class="absolute left-0 z-10 mt-2 w-48 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 py-1">
+          class="nav-menu absolute left-0 z-10 mt-2 w-48 origin-top-left rounded-md
+                 bg-white text-gray-700 shadow-lg ring-1 ring-black ring-opacity-5 py-1">
         {%- for item in action_items %}
         {%- if item.divider %}<li class="border-t border-gray-100 my-1"></li>{%- endif %}
-        <li class="{% if item.status == 'active' %}bg-gray-100{% endif %}">{{ item.render() }}</li>
+        <li class="px-4 py-2 hover:bg-gray-100 {% if item.status == 'active' %}bg-gray-100{% endif %}">{{ item.render() }}</li>
         {%- endfor %}
       </ul>
     </div>

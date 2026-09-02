@@ -5,11 +5,13 @@
  */
 
 #dashboard .stats {
-  @apply text-center pt-6 pb-2.5 mb-2.5;
+  /* Was four inline-block cells at a fixed w-[22%], which at 375px left ~82px
+     each and ran "new documents" into "new messages". Two up on small screens. */
+  @apply grid grid-cols-2 gap-x-4 gap-y-6 text-center pt-6 pb-2.5 mb-2.5 sm:grid-cols-4;
 }
 
 #dashboard .stats li {
-  @apply inline-block text-center w-[22%];
+  @apply text-center;
 }
 
 #dashboard .stats li strong {
