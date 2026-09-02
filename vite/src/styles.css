@@ -2,6 +2,12 @@
 /* Scan templates in parent project's src directory */
 @import "tailwindcss" source("../../src");
 
+/* Styles user-generated content: the wiki body and forum posts carry
+   `prose`, but Tailwind v4 registers plugins from CSS, and the only place
+   this was ever declared was a v3 tailwind.config.js that v4 never loaded.
+   Without it `prose` was inert and rendered markdown lost every heading. */
+@plugin "@tailwindcss/typography";
+
 /* Component modules - all part of the 'components' layer */
 @import './components/ui.css' layer(components);
 @import './components/forms.css' layer(components);

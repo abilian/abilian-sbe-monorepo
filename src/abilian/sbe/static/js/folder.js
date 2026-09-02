@@ -51,8 +51,10 @@ define("SBEFolderCommonSetup", ["Abilian", "jquery", "AbilianConfirm"], (
       const elList = $("<ul />").attr({ class: "folder-items" });
 
       elements.each(function () {
-        const li = $("<li />").html($(this).html());
-        elList.append(li);
+        // The names, not the markup: cloning the cell brought the folder icon
+        // and its absolutely-positioned badge along, and they escaped the
+        // dialog box.
+        elList.append($("<li />").text($(this).text().trim()));
       });
       msg += $("<div />").append(elList).html();
 

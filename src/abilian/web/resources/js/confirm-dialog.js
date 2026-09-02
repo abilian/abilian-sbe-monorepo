@@ -23,9 +23,12 @@ define("AbilianConfirm", [], () => {
     const opts = { ...DEFAULTS, ...options };
 
     const dialog = document.createElement("dialog");
+    // m-auto matters: a native <dialog> is centred by the UA stylesheet's
+    // `margin: auto`, and Tailwind's preflight resets margin to 0, which pins
+    // the dialog to the top-left corner.
     dialog.className =
-      "rounded-lg border border-gray-200 p-0 shadow-2xl backdrop:bg-black/50 " +
-      "w-full max-w-lg";
+      "m-auto rounded-lg border border-gray-200 p-0 shadow-2xl " +
+      "backdrop:bg-black/50 w-full max-w-lg";
 
     const okClasses = opts.danger
       ? "bg-red-600 hover:bg-red-700"
