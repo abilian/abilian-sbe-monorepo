@@ -152,7 +152,7 @@ _actions = (
         "documents:folder-listing",
         "move-files",
         _l("Move to another folder"),
-        icon="move",
+        icon="arrows",
         url="#modal-move-files",
         modal=True,
         permission=WRITE,
@@ -246,7 +246,7 @@ _actions = (
         "documents:content",
         "preview",
         _l("View in browser"),
-        icon="eye-open",
+        icon="eye",
         url=lambda ctx: url_for(".document_preview", doc_id=ctx["object"].id),
         condition=(
             lambda ctx: (

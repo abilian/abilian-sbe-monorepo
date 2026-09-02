@@ -23,7 +23,7 @@ class GroupsPanel(AdminPanel):
 
     id = "groups"
     label = _l("Groups")
-    icon = "grain"
+    icon = "th"
 
     def install_additional_rules(self, add_url_rule: Callable) -> None:
         add_url_rule("/groups", view_func=views.JsonGroupsList.as_view("json_list"))

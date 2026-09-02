@@ -24,7 +24,7 @@ class DashboardPanel(AdminPanel):
     id = "dashboard"
     path = ""
     label = _l("Dashboard")
-    icon = "eye-open"
+    icon = "eye"
 
     def get(self) -> str:
         login_entries = LoginSession.query.order_by(LoginSession.started_at.asc()).all()

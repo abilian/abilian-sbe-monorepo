@@ -30,3 +30,9 @@ nav[role="navigation"] .active > a {
 }
 
 /* Alpine.js will handle mobile menu visibility with x-show */
+
+/* User menu avatar. The NavGroup renders <img class="avatar" width=20 height=20>;
+   without this it is a hard-edged square butted against the user's name. */
+nav .avatar {
+  @apply h-6 w-6 shrink-0 rounded-full object-cover;
+}

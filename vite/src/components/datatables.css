@@ -55,3 +55,48 @@
 .advanced-search-filters .criterion .control-label > label {
   @apply inline;
 }
+
+/* Info line and pagination.
+ *
+ * datatables-setup.js registers DataTables 1.9's "bootstrap" pagination
+ * renderer, which emits <div class="dataTables_paginate"><ul class="pagination">.
+ * Nothing styled either, so every listing ended with a stack of bare text:
+ * "Showing 1 to 2 of 2 entries / Previous / 1 / Next".
+ */
+.dataTables_wrapper {
+  @apply mt-2;
+}
+
+.dataTables_info {
+  @apply py-3 text-sm text-gray-500;
+}
+
+.dataTables_paginate {
+  @apply flex justify-end py-2;
+}
+
+.dataTables_paginate .pagination {
+  @apply inline-flex items-center gap-1 pl-0 list-none;
+}
+
+.dataTables_paginate .pagination li a {
+  @apply inline-flex h-8 min-w-8 items-center justify-center rounded-md border
+         border-gray-300 bg-white px-2 text-sm text-gray-700 no-underline;
+}
+
+.dataTables_paginate .pagination li a:hover {
+  @apply bg-gray-50;
+}
+
+.dataTables_paginate .pagination li.active a {
+  @apply border-blue-600 bg-blue-600 text-white;
+}
+
+.dataTables_paginate .pagination li.disabled a {
+  @apply cursor-default border-gray-200 text-gray-400 hover:bg-white;
+}
+
+/* The wrapper puts info and pagination on one line when there is room. */
+.dataTables_wrapper .dataTables_info + .dataTables_paginate {
+  @apply -mt-10;
+}

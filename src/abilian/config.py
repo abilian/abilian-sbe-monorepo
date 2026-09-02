@@ -26,6 +26,9 @@ class DefaultConfig:
     BABEL_ACCEPT_LANGUAGES = ["en"]
     DEFAULT_COUNTRY = None
 
+    # Shown in the page title, the logo alt text and the login heading.
+    SITE_NAME = "Abilian SBE"
+
     # Sentry
     SENTRY_SDK_URL = "https://browser.sentry-cdn.com/4.5.3/bundle.min.js"
 

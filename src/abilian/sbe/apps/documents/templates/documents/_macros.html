@@ -58,16 +58,15 @@
               <li><a class="doc-unselect-all block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" href="#unselect-all">{{ _("Unselect all") }}</a></li>
             </ul>
           </div>
-          <div class="relative -top-2 -mb-12">
+          <div class="flex-1">
             <input id="filter" type="text"
                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                    placeholder="{{ _('Filter...') }}" />
           </div>
         </div>
       {% endif %}
-      &nbsp;
       {% if edit %}
-        <span id="horizontal-doc-menu" class="document-horizontal-menu flex items-center gap-x-2">
+        <span id="horizontal-doc-menu" class="document-horizontal-menu mt-4 flex items-center gap-x-2">
         {%- for action in actions.for_category('documents:folder-listing') %}
           <div>
             {{ action.render() }}
@@ -76,9 +75,8 @@
         </span>
       {% endif %}
 
-      <br><br>
       <div class="overflow-x-auto">
-        <table class="document-table-thumbnail w-full text-sm bg-white relative -mt-14" id="objects-table">
+        <table class="document-table-thumbnail mt-4 w-full text-sm bg-white" id="objects-table">
           <thead>
           <tr class="text-gray-500 border-b-2 border-gray-100">
             <th class="w-[1%] px-2 py-3">
@@ -125,7 +123,8 @@
                         community_id=g.community.slug, doc_id=obj.id,
                         size=obj.preview_size) %}
                   <a class="text-gray-500 hover:text-blue-600" href="{{ url_for(obj) }}">
-                    <img class="document-preview" style="background-image: url('{{ icon_src }}');" src="" alt="" data-page="0"/>
+                    <span class="document-preview" role="img" aria-label="{{ obj.title }}"
+                          style="background-image: url('{{ icon_src }}');"></span>
                   </a>
                 {% endif %}
                 {%- if obj.object_type == 'folder' %}

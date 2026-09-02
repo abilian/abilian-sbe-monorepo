@@ -61,7 +61,7 @@ _actions = (
         "view",
         _l("View"),
         endpoint=".page",
-        icon="eye-open",
+        icon="eye",
     ),
     WikiPageAction(
         "wiki:page",
@@ -89,7 +89,7 @@ _actions = (
         "changes",
         _l("Changes"),
         endpoint=".page_changes",
-        icon="time",
+        icon="clock-o",
     ),
     WikiPageModalAction(
         "wiki:page",
@@ -117,7 +117,7 @@ _actions = (
         "help",
         _l("Syntax help"),
         endpoint=".wiki_help",
-        icon="info-sign",
+        icon="info-circle",
     ),
 )
 
