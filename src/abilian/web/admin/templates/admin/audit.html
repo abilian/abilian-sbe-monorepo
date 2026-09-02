@@ -31,10 +31,13 @@
         {%- endif %}
 
         <div>
-          <div id="date-chooser" class="relative flex" data-date-end-date="+1d">
+          {# `date` and `input-group-addon` are hooks bootstrap-datepicker looks
+             for, not styles: without them it finds no component to attach to
+             and falls back to rendering the calendar inline and always open. #}
+          <div id="date-chooser" class="date relative flex" data-date-end-date="+1d">
             <input class="block px-3 py-2 text-sm border border-gray-300 rounded-l-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                    type="text" value="{% if current_date %}{{ current_date }}{%- endif %}"/>
-            <span class="inline-flex items-center px-3 border border-l-0 border-gray-300 bg-gray-50 rounded-r-md text-gray-500">
+            <span class="input-group-addon inline-flex items-center px-3 border border-l-0 border-gray-300 bg-gray-50 rounded-r-md text-gray-500 cursor-pointer">
               <i class="fa fa-calendar"></i>
             </span>
           </div>

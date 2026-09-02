@@ -108,7 +108,12 @@
 }
 
 .dropdown-menu {
-  @apply absolute z-10 mt-2 py-2 bg-white border border-gray-200 rounded-md shadow-lg;
+  /* `hidden` is the point: Bootstrap's .dropdown-menu is display:none until
+     opened, and the compat shim dropped that. Every .dropdown-menu was
+     therefore permanently visible -- most visibly bootstrap-datepicker, which
+     renders as .datepicker.dropdown-menu and sat open on the audit page.
+     Our own dropdowns set style.display inline, which still wins. */
+  @apply hidden absolute z-10 mt-2 py-2 bg-white border border-gray-200 rounded-md shadow-lg;
 }
 
 .dropdown-menu li a {

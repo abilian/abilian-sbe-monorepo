@@ -8,6 +8,29 @@
    Without it `prose` was inert and rendered markdown lost every heading. */
 @plugin "@tailwindcss/typography";
 
+/* Default heading sizes.
+ *
+ * Tailwind's preflight strips them, on the assumption that every heading gets
+ * explicit utilities. Most here do, but ~20 in app templates predate the
+ * migration and were relying on browser defaults -- the admin dashboard's
+ * "Today" / "This week" sections, the error pages, the home page. In the base
+ * layer, so any heading that does carry utilities still wins.
+ */
+@layer base {
+  h1 {
+    @apply text-2xl font-bold text-gray-900;
+  }
+  h2 {
+    @apply text-xl font-semibold text-gray-900;
+  }
+  h3 {
+    @apply text-lg font-semibold text-gray-900;
+  }
+  h4 {
+    @apply text-base font-semibold text-gray-900;
+  }
+}
+
 /* Component modules - all part of the 'components' layer */
 @import './components/ui.css' layer(components);
 @import './components/forms.css' layer(components);
