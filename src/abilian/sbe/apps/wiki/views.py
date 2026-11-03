@@ -515,7 +515,7 @@ def get_page_by_title(title: str) -> WikiPage:
 
 def create_home_page() -> WikiPage:
     path = Path(__file__).parent / "data" / "default_page.txt"
-    default_src = path.open("rt").read()
+    default_src = path.read_text(encoding="utf-8")
     page = WikiPage(title="Home", body_src=default_src)
     page.community_id = g.community.id
     db.session.add(page)

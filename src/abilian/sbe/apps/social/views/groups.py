@@ -30,10 +30,8 @@ from abilian.web.views import default_view
 from .social import social
 
 DEFAULT_GROUP_MUGSHOT = (
-    (Path(__file__).parent / ".." / ".." / ".." / "static" / "images" / "frog.jpg")
-    .open("rb")
-    .read()
-)
+    Path(__file__).parent / ".." / ".." / ".." / "static" / "images" / "frog.jpg"
+).read_bytes()
 
 
 @social.route("/groups/")

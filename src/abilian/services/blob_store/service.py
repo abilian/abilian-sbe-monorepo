@@ -490,7 +490,7 @@ class BlobStoreTransaction:
                 blob_store.delete(uuid)
 
         for uuid in self._set:
-            blob_store.set(uuid, self.uuid_path(uuid).open("rb"))
+            blob_store.set(uuid, self.uuid_path(uuid).read_bytes())
 
     def uuid_path(self, uuid: UUID) -> Path:
         return self.tmp_folder / str(uuid)

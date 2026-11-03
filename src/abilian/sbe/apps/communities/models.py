@@ -219,7 +219,7 @@ class Community(Entity):
 
         if not self.image:
             fn = Path(__file__).parent / "views" / "data" / "community.png"
-            self.image = Blob(fn.open("rb").read())
+            self.image = Blob(fn.read_bytes())
 
     @property
     def has_calendar(self) -> bool:
