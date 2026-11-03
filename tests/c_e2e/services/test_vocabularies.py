@@ -74,9 +74,9 @@ def test_items(db, session) -> None:
     labels = [i.label for i in query.active().order_by(PriorityVoc.position).all()]
     assert labels == expected_ordering
 
-    # no default ordering when using .values(): explicit ordering required
+    # no default ordering when using .with_entities(): explicit ordering required
     query = PriorityVoc.query.active().order_by(PriorityVoc.position.asc())
-    labels = [i.label for i in query.values(PriorityVoc.label)]
+    labels = [i.label for i in query.with_entities(PriorityVoc.label)]
     assert labels == expected_ordering
 
     # test db-side constraint for non-empty labels

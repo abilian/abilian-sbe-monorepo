@@ -68,7 +68,7 @@ def filter_user_communities() -> Or | Term:
         ids = (
             Membership.query.filter(Membership.user == current_user)
             .order_by(Membership.community_id.asc())
-            .values(Membership.community_id)
+            .with_entities(Membership.community_id)
         )
         communities = [wq.Term("community_id", i[0]) for i in ids]
 
