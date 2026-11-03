@@ -78,7 +78,7 @@ class CorrectInputRequired(validators.DataRequired):
 
 
 class Required(CorrectInputRequired):
-    field_flags = ("required",)
+    field_flags = {"required": True}
 
     @property
     def rule(self):
@@ -187,7 +187,7 @@ class NoneOf(validators.NoneOf, Rule):
 class FlagHidden(Rule):
     """Flag the field as hidden."""
 
-    field_flags = ("hidden",)
+    field_flags = {"hidden": True}
 
     def __call__(self, form, field):
         pass
@@ -196,7 +196,7 @@ class FlagHidden(Rule):
 class AntiVirus(Rule):
     """Check content for viruses."""
 
-    field_flags = ("antivirus",)
+    field_flags = {"antivirus": True}
 
     def __call__(self, form, field):
         service = get_service("antivirus")
@@ -211,7 +211,7 @@ class AntiVirus(Rule):
 class RenderEmpty:
     """Force display."""
 
-    field_flags = ("render_empty",)
+    field_flags = {"render_empty": True}
 
     def __call__(self, form, field):
         pass
