@@ -161,6 +161,7 @@ class JSON(sa.types.TypeDecorator):
     """
 
     impl = sa.types.Text
+    cache_ok = True
 
     def process_bind_param(self, value: Any, dialect: Dialect) -> str | None:
         if value is not None:
@@ -177,6 +178,8 @@ class JSON(sa.types.TypeDecorator):
 
 class JSONUniqueListType(JSON):
     """Store a list in JSON format, with items made unique and sorted."""
+
+    cache_ok = True
 
     @property
     def python_type(self):
@@ -221,6 +224,7 @@ class UUID(sa.types.TypeDecorator):
     """
 
     impl = sa.types.CHAR
+    cache_ok = True
 
     def load_dialect_impl(self, dialect: Dialect) -> CHAR:
         if dialect.name == "postgresql":
@@ -254,6 +258,7 @@ class Locale(sa.types.TypeDecorator):
     """Store a :class:`babel.Locale` instance."""
 
     impl = sa.types.UnicodeText
+    cache_ok = True
 
     @property
     def python_type(self):
@@ -285,6 +290,7 @@ class Timezone(sa.types.TypeDecorator):
     """Store a :class:`pytz.tzfile.DstTzInfo` instance."""
 
     impl = sa.types.UnicodeText
+    cache_ok = True
 
     @property
     def python_type(self):

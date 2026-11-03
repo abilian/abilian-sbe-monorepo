@@ -88,6 +88,7 @@ class PermissionType(UniqueNameType):
     """
 
     Type = Permission
+    cache_ok = True
 
 
 @total_ordering
@@ -133,6 +134,7 @@ class RoleType(UniqueNameType):
     """
 
     Type = Role
+    cache_ok = True
 
 
 #: marker for role assigned to 'Anonymous'
