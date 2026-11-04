@@ -937,7 +937,7 @@ class Chosen(Select):
         kwargs.setdefault("id", field.id)
         params = html_params(name=field.name, **kwargs)
         html = [f'<select {params} class="chzn-select">']
-        for val, label, selected in field.iter_choices():
+        for val, label, selected, *_rest in field.iter_choices():
             html.append(self.render_option(val, label, selected))
         html.append("</select>")
         return Markup("".join(html))
@@ -1403,7 +1403,7 @@ class ListWidget(wtforms.widgets.ListWidget):
 
         if not is_empty:
             data = (
-                [label for v, label, checked in field.iter_choices() if checked]
+                [label for v, label, checked, *_rest in field.iter_choices() if checked]
                 if (hasattr(field, "iter_choices") and callable(field.iter_choices))
                 else field.object_data
             )
@@ -1542,14 +1542,18 @@ class Select2(Select):
         return super().__call__(field, **kwargs)
 
     def render_view(self, field, **kwargs):
-        labels = [str(label) for v, label, checked in field.iter_choices() if checked]
+        labels = [
+            str(label)
+            for v, label, checked, *_rest in field.iter_choices()
+            if checked
+        ]
         return "; ".join(labels)
 
     @classmethod
-    def render_option(cls, value, label, selected, **kwargs):
-        if value is None:
+    def render_option(cls, choice, **kwargs):
+        if choice.value is None:
             return Markup("<option></option>")
-        return Select.render_option(value, label, selected, **kwargs)
+        return super().render_option(choice, **kwargs)
 
 
 class Select2Ajax:

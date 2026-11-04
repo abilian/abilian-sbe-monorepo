@@ -437,28 +437,10 @@ class Select2Field(SelectField):
 
     widget = Select2()
 
-    @property
-    def choices(self):
-        choices = self._choices
-        return choices() if callable(choices) else choices
-
-    @choices.setter
-    def choices(self, choices) -> None:
-        self._choices = choices
-
 
 class Select2MultipleField(SelectMultipleField):
     widget = Select2(multiple=True)
     multiple = True
-
-    @property
-    def choices(self):
-        choices = self._choices
-        return choices() if callable(choices) else choices
-
-    @choices.setter
-    def choices(self, choices) -> None:
-        self._choices = choices
 
 
 class QuerySelect2Field(SelectFieldBase):
