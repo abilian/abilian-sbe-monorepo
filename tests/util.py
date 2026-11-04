@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import contextlib
 from contextlib import AbstractContextManager
+from functools import cache
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -120,10 +121,11 @@ def stop_all_services(app: Application) -> None:
             service.stop()
 
 
+@cache
 def redis_available() -> bool:
     redis_host = "127.0.0.1"
     try:
-        client = Redis(redis_host, socket_connect_timeout=1)
+        client = Redis(redis_host, socket_connect_timeout=0.5)
         client.ping()
     except Exception:
         return False

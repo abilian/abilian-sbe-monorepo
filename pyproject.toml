@@ -46,9 +46,9 @@ dependencies = [
     # Search
     "whoosh-reloaded>=2.7.5,<3.0.0",
     # task queue
-    "dramatiq>=1.15.0,<2.0.0",
-    "redis>=4.6.0,<5.0",
-    "flask-dramatiq>=0.6.0,<0.7.0",
+    "dramatiq>=1.15.0",
+    "redis>=4.6.0",
+    "flask-dramatiq>=0.6.0",
     "dramatiq-abort>=1.1.0,<2.0.0",
     "apscheduler>=3.10.4,<4.0.0",
     # Infra
@@ -111,7 +111,7 @@ doc = [
 ]
 dev = [
     "abilian-devtools>=0.7",
-    "mypy>=1.5.1,<2.0.0",
+    "mypy>=1.5.1",
     "Flask-DebugToolbar",
     # "sqlparse>=0.4.4,<0.5.0",
     # Dev server
