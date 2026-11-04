@@ -9,7 +9,7 @@ import errno
 import os
 import sys
 import warnings
-from functools import cached_property, partial
+from functools import cached_property, partial, update_wrapper
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -229,10 +229,14 @@ class Application(
         `/path/to/myplugin/resources` from url `http://.../static/myplugin`
         """
         url_path = f"{self.static_url_path}/{url_path}/<path:filename>"
+        view_func = update_wrapper(
+            partial(send_file_from_directory, directory=directory),
+            send_file_from_directory,
+        )
         self.add_url_rule_with_role(
             url_path,
             endpoint=endpoint,
-            view_func=partial(send_file_from_directory, directory=directory),
+            view_func=view_func,
             roles=roles,
         )
         self.add_access_controller(

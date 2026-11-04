@@ -115,8 +115,8 @@ class LessImportFilter(Filter):
             out.write(_in.read())
             return
 
-        out_dir = os.path.dirname(output_path)
-        rel_path = os.path.relpath(source_path, out_dir)
+        out_dir = os.path.realpath(os.path.dirname(output_path))
+        rel_path = os.path.relpath(os.path.realpath(source_path), out_dir)
 
         # note: when import as CSS, import statement is put at the top of the
         # generated file (order of import is not preserved, less content will be
@@ -278,7 +278,9 @@ class Less(ExternalTool):
         #     self.fix_source_map_urls(source_map_dest)
 
         # rewrite css url()
-        replace_url = partial(self.fix_url, os.path.dirname(output_path))
+        replace_url = partial(
+            self.fix_url, os.path.realpath(os.path.dirname(output_path))
+        )
         buf.seek(0)
         url_rewriter = get_filter("cssrewrite", replace=replace_url)
         url_rewriter.set_context(self.ctx)
@@ -297,8 +299,10 @@ class Less(ExternalTool):
             # base64 embeded
             return url
 
-        src_path = os.path.normpath(os.path.abspath(os.path.join(cur_path, url)))
-        possible_paths = [p for p in self.ctx.url_mapping if src_path.startswith(p)]
+        src_path = os.path.realpath(os.path.join(cur_path, url))
+        possible_paths = [
+            p for p in self.ctx.url_mapping if src_path.startswith(os.path.realpath(p))
+        ]
         if not possible_paths:
             return url
 
@@ -308,7 +312,8 @@ class Less(ExternalTool):
             # possible_paths.sort(lambda p: -len(p))
 
         path = possible_paths[0]
-        return self.ctx.url_mapping[path] + src_path[len(path) :]
+        real_path = os.path.realpath(path)
+        return self.ctx.url_mapping[path] + src_path[len(real_path) :]
 
     def fix_source_map_urls(self, filename) -> None:
         with open(filename) as f:

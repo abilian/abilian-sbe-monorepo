@@ -49,3 +49,10 @@ def test_staticicon(app) -> None:
             == '<img class="avatar" src="/static/path/to/icon.png" width="14" '
             'height="14" />'
         )
+
+
+def test_static_url_with_csrf(app, client, monkeypatch) -> None:
+    monkeypatch.setitem(app.config, "WTF_CSRF_ENABLED", True)
+    response = client.get("/static/abilian/img/logo-abilian-32x32.png")
+    assert response.status_code == 200
+    response.close()
